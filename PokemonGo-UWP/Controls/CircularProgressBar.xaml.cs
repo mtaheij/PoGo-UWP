@@ -39,7 +39,7 @@ namespace PokemonGo_UWP.Controls
         private static void OnImageSourcePathChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             CircularProgressBar circularProgressBar = sender as CircularProgressBar;
-			try
+            try
 			{
 				var ImageSourcePath = circularProgressBar?.ImageSourcePath;
 
