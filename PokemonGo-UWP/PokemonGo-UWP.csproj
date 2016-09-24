@@ -138,6 +138,7 @@
     <Content Include="Assets\Audio\EncounterPokemon.mp3" />
     <Content Include="Assets\Audio\Gameplay.mp3" />
     <Content Include="Assets\Audio\pokemon_found_ding.wav" />
+    <Content Include="Assets\Backgrounds\sky_day.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_bug.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_default.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_dragon.png" />
@@ -158,6 +159,7 @@
     <Content Include="Assets\Backgrounds\Park.png" />
     <Content Include="Assets\Backgrounds\Parkscene_Background.png" />
     <Content Include="Assets\Backgrounds\Parkscene_Background_Night.png" />
+    <Content Include="Assets\Backgrounds\sky_night.png" />
     <Content Include="Assets\Backgrounds\ui_bg_blue_02.png" />
     <Content Include="Assets\Backgrounds\ui_bg_green.png" />
     <Content Include="Assets\Backgrounds\ui_bg_green_02.png" />
@@ -168,12 +170,15 @@
     <Content Include="Assets\Backgrounds\ui_bg_purple_02.png" />
     <Content Include="Assets\Backgrounds\ui_settings_bg.png" />
     <Content Include="Assets\Buttons\btn_action_menu.png" />
+    <Content Include="Assets\Buttons\btn_attack.png" />
     <Content Include="Assets\Buttons\btn_back_normal_dark.png" />
+    <Content Include="Assets\Buttons\btn_claim.png" />
     <Content Include="Assets\Buttons\btn_close.png" />
     <Content Include="Assets\Buttons\btn_close_dark.png" />
     <Content Include="Assets\Buttons\btn_close_normal.png" />
     <Content Include="Assets\Buttons\btn_close_normal_dark.png" />
     <Content Include="Assets\Buttons\btn_empty.png" />
+    <Content Include="Assets\Buttons\btn_go.png" />
     <Content Include="Assets\Buttons\btn_incubator.png" />
     <Content Include="Assets\Buttons\btn_incubator_dark.png" />
     <Content Include="Assets\Buttons\btn_items.png" />
@@ -210,6 +215,7 @@
     <Content Include="Assets\Candy\Water.png" />
     <Content Include="Assets\Icons\circle_255_filled_01.png" />
     <Content Include="Assets\Icons\CompassIcon.png" />
+    <Content Include="Assets\Icons\crown.png" />
     <Content Include="Assets\Icons\Footprint_Far.png" />
     <Content Include="Assets\Icons\Footprint_Mid.png" />
     <Content Include="Assets\Icons\Footprint_Near.png" />
@@ -314,6 +320,12 @@
     <Content Include="Assets\LiveTiles\Transparent\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\LiveTiles\Transparent\Wide310x150Logo.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.png" />
+    <Content Include="Assets\UI\bush.png" />
+    <Content Include="Assets\UI\ash_withincense.png" />
+    <Content Include="Assets\Teams\gym_base_blue.png" />
+    <Content Include="Assets\Teams\gym_base_empty.png" />
+    <Content Include="Assets\Teams\gym_base_red.png" />
+    <Content Include="Assets\Teams\gym_base_yellow.png" />
     <Content Include="Assets\UI\ash_withincense.png" />
     <Content Include="Assets\UI\night_sky_texture_by_amdillon.jpg" />
     <Content Include="Assets\Pokemons\1.png" />
@@ -745,6 +757,9 @@
     <Compile Include="Controls\MessageDialog\TextboxMessageDialog.xaml.cs">
       <DependentUpon>TextboxMessageDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OutdoorBackground.xaml.cs">
+      <DependentUpon>OutdoorBackground.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -917,6 +932,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OutdoorBackground.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
