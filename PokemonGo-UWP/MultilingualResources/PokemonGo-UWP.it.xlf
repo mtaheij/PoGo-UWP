@@ -588,8 +588,9 @@ Hai ottenuto anche {1} Polvere di stella, {2} Caramelle e {3} PE.</target>
           <target state="final">LOGIN con Account PTC</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="final">Per effettuare il login, inserisci Username/Email e Password. Se non ti fidi, per favore chiudila ora. Niantic potrebbe bannarti nell'utilizzo di quest'app. Usa a tuo rischio e pericolo.</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">Per effettuare il login, inserisci Username/Email e Password. Se non ti fidi, per favore chiudila ora. Niantic potrebbe bannarti nell'utilizzo di quest'app. Usa a tuo rischio e pericolo.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

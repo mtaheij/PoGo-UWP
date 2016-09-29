@@ -586,8 +586,9 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <target state="translated">LOGIN mit PTC Account</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="translated">Um dich einzuloggen, musst du deinen Benutzernamen/E-Mail und Passwort eingeben. Wenn du der App nicht vertraust, solltest du sie jetzt schließen. Niantic kann dich für die Verwendung dieser App sperren. Verwendung auf eigene Gefahr.</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">Um dich einzuloggen, musst du deinen Benutzernamen/E-Mail und Passwort eingeben. Wenn du der App nicht vertraust, solltest du sie jetzt schließen. Niantic kann dich für die Verwendung dieser App sperren. Verwendung auf eigene Gefahr.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

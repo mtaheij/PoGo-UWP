@@ -588,7 +588,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="translated">以 PTC 账户登陆</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
           <target state="needs-review-translation">登录需要输入您的帐号跟密码，如果您不信任我们的话，请不要接着往下操作。我们一概不负责任。</target>
           <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>

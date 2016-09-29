@@ -321,8 +321,9 @@
           <target state="final">Logg på med PTC bruker</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="final">For å logge inn, må du oppgi Brukernavn/E-post og Passord ovenfor. Hvis du ikke stoler på appen, vennligst lukk den nå. Niantic kan utestenge deg om du bruker appen. Bruk på eget ansvar.</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">For å logge inn, må du oppgi Brukernavn/E-post og Passord ovenfor. Hvis du ikke stoler på appen, vennligst lukk den nå. Niantic kan utestenge deg om du bruker appen. Bruk på eget ansvar.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

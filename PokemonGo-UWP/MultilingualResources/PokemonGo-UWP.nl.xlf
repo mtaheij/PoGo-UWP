@@ -587,8 +587,9 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
           <target state="translated" state-qualifier="mt-suggestion">Login met PTC Account</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="translated">Je moet je gebruikersnaam/e-mail en wachtwoord invoeren om je aan te melden. Als je dit niet vertrouwt, sluit de app dan. Gebruik deze app op eigen risico.</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">Je moet je gebruikersnaam/e-mail en wachtwoord invoeren om je aan te melden. Als je dit niet vertrouwt, sluit de app dan. Gebruik deze app op eigen risico.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

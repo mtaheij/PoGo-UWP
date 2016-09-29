@@ -591,8 +591,9 @@ Tu as aussi reçu {1} Poudre d'étoile, {2} Bonbon et {3} XP.</target>
           <target state="translated">Connexion avec un compte PTC</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="translated">Pour te connecter tu dois insérer ton Nom d'ulitisateur/Email et ton mot de passe au dessus. Si tu n'as pas confiance en cette application, ferme là maintenant. Niantic peut te bannir pour l'utilisation de cette application. À utiliser à tes risques et périls.</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">Pour te connecter tu dois insérer ton Nom d'ulitisateur/Email et ton mot de passe au dessus. Si tu n'as pas confiance en cette application, ferme là maintenant. Niantic peut te bannir pour l'utilisation de cette application. À utiliser à tes risques et périls.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

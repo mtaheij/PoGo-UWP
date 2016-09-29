@@ -2144,7 +2144,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="translated">חשבון PTC עם כניסה למערכת</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
           <target state="needs-review-translation">כדי להיכנס למערכת, הכנס שם משתמש/אימייל והסיסמא שלך לעיל. אם אתה לא סומך יישום זה, אנא סגור אותו עכשיו. Niantic עשוי לאסור אותך לשימוש הזה app. השימוש על אחריותכם בלבד.</target>
           <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>

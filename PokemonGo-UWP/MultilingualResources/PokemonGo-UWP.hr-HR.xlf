@@ -321,8 +321,9 @@
           <target state="translated">Ulogiraj se sa PTC Računom</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
-          <target state="translated">Da bi ste se ulogirali, unesite Nadimak/Email i lozinku od gore. Ako ne vjeruješ toj aplikaciji, izađi odmah. Niantic vas moze banovati zbog korištenja ove aplikacije. Koristi na vlastitu odgovornost</target>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
+          <target state="needs-review-translation">Da bi ste se ulogirali, unesite Nadimak/Email i lozinku od gore. Ako ne vjeruješ toj aplikaciji, izađi odmah. Niantic vas moze banovati zbog korištenja ove aplikacije. Koristi na vlastitu odgovornost</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>

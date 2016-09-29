@@ -588,7 +588,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="translated">PŘIHLÁSIT pomocí PTC</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
-          <source>To login, enter your Username/Email and Password above. If you don't trust this app, please close it now. Niantic may ban you for using this app. Use at your own risk.</source>
+          <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
           <target state="needs-review-translation">Pro přihlášení do této aplikace potřebujete zadat Přihlašovací jméno/Email. Pokud aplikaci nevěříte, nepoužívejte ji. Neneseme za ně žádnou zodpovědnost.</target>
           <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>

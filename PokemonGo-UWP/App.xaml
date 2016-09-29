@@ -57,6 +57,7 @@
             <utils:PokemonIdToPokemonNameConverter x:Key="PokemonIdToPokemonNameConverter" />
             <utils:PokemonSortingModesToIconConverter x:Key="PokemonSortingModesToIconConverter" />
             <utils:PokemonSortingModesTranslationConverter x:Key="PokemonSortingModesTranslationConverter" />
+            <utils:EggDataToEggKmWalkedConverter x:Key="EggDataToEggKmWalkedConverter" />
             <utils:EggDataToEggProgressConverter x:Key="EggDataToEggProgressConverter" />
             <utils:ItemToItemDescriptionConverter x:Key="ItemToItemDescriptionConverter" />
             <utils:IncubatorUsagesCountToUsagesTextConverter x:Key="IncubatorUsagesCountToUsagesTextConverter" />
