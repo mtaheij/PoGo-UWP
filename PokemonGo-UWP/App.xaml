@@ -18,6 +18,7 @@
             <utils:PokemonIdToNumericId x:Key="PokemonIdToNumericId" />
             <utils:ItemClickEventArgsToClickedItemConverter x:Key="ItemClickEventArgsToClickedItemConverter" />
             <utils:PokemonIdToPokemonSpriteConverter x:Key="PokemonIdToPokemonSpriteConverter" />
+            <utils:PokemonIdToPokemonIVConverter x:Key="PokemonIdToPokemonIVConverter" />
             <utils:PokemonTypeTranslationConverter x:Key="PokemonTypeTranslationConverter" />
             <utils:PokemonDetailPageViewModeToCloseButtonImageSourceConverter x:Key="PokemonDetailPageViewModeToCloseButtonImageSourceConverter" />
             <utils:PokemonToCurrentCandiesConverter x:Key="PokemonToCurrentCandiesConverter" />

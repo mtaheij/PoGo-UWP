@@ -144,6 +144,39 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
     }
+    public class PokemonIdToPokemonIVConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return string.Empty;
+
+            var pokemonData = (PokemonDataWrapper)value;
+            var ivAttack = pokemonData.IndividualAttack;
+            var ivDefense = pokemonData.IndividualDefense;
+            var ivStamina = pokemonData.IndividualStamina;
+            var ivTotal = ivAttack + ivDefense + ivStamina;
+            var ivPercent = (double)ivTotal / 45;
+            //var ivDiv = (double)ivTotal / 45;
+            //var ivPercent = ivDiv * 100.0;
+            //var ivAttack = pokemonData.IndividualAttack - GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseAttack;
+            //var ivDefense = pokemonData.IndividualDefense - GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseDefense;
+            //var ivStamina = pokemonData.IndividualStamina - GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseStamina;
+            //var baseAttack = GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseAttack;
+            //var baseDefense = GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseDefense;
+            //var baseStamina = GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseStamina;
+
+            return ivAttack.ToString("#0") + " / " + ivDefense.ToString("#0") + " / " + ivStamina.ToString("#0") + "  :  " + ivPercent.ToString("##0.0 %");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
 
     public class PokemonTypeTranslationConverter : IValueConverter
     {

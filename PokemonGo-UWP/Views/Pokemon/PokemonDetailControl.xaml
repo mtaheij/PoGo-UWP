@@ -151,14 +151,12 @@
                           Fill="White" />
                 </Grid>
             </Grid>
-
             <Border CornerRadius="5"
                     Background="#FAFAFA"
                     Margin="10,0,10,-10"
                     Padding="0,32,0,75"
                     BorderThickness="0"
-                    Grid.RowSpan="4"
-                    Grid.Row="2">
+                    >
                 <StackPanel Orientation="Vertical">
 
                     <!-- Name & Stamina -->
@@ -186,7 +184,7 @@
                                     VerticalAlignment="Stretch"
                                     HorizontalAlignment="Left"
                                     Style="{StaticResource ButtonSymbolIcon}"
-                                    Command="{Binding ElementName=Root, Path=RenamePokemonCommand}">
+                                    Command="{Binding RenamePokemonCommand, ElementName=Root}">
                                 <Viewbox>
                                     <SymbolIcon Symbol="Edit" />
                                 </Viewbox>
@@ -245,19 +243,19 @@
                                                Margin="0,0,8,0"
                                                FontSize="17"
                                                FontFamily="{StaticResource LatoRegularFont}"
-                                               Visibility="{Binding Converter={StaticResource PokemonToPokemonSecondTypeVisibilityConverter}, ConverterParameter=False}"
+                                               Visibility="{Binding ConverterParameter=False, Converter={StaticResource PokemonToPokemonSecondTypeVisibilityConverter}}"
                                                Foreground="{StaticResource TitleTextColor}">
-                                                    <Run Text="{Binding Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}, ConverterParameter=1}" />
+                                                    <Run Text="{Binding ConverterParameter=1, Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}}" />
                                                     <Run Text="/" />
-                                                    <Run Text="{Binding Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}, ConverterParameter=2}" />
+                                                    <Run Text="{Binding ConverterParameter=2, Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}}" />
                                     </TextBlock>
 
                                     <TextBlock HorizontalAlignment="Center"
                                                Margin="32,0"
                                                FontSize="17"
                                                FontFamily="{StaticResource LatoRegularFont}"
-                                               Text="{Binding Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}, ConverterParameter=1}"
-                                               Visibility="{Binding Converter={StaticResource PokemonToPokemonSecondTypeVisibilityConverter}, ConverterParameter=True}"
+                                               Text="{Binding ConverterParameter=1, Converter={StaticResource PokemonToTranslatedPokemonTypeConverter}}"
+                                               Visibility="{Binding ConverterParameter=True, Converter={StaticResource PokemonToPokemonSecondTypeVisibilityConverter}}"
                                                Foreground="{StaticResource TitleTextColor}" />
                                 </Grid>
                             </Viewbox>
@@ -288,7 +286,7 @@
                                 <TextBlock FontFamily="{StaticResource LatoRegularFont}"
                                            Foreground="{StaticResource TitleTextColor}"
                                            VerticalAlignment="Bottom"
-                                           Text="{Binding WeightKg, Converter={StaticResource StringFormatConverter}, ConverterParameter=\{0:N2\}}"
+                                           Text="{Binding WeightKg, ConverterParameter=\{0:N2\}, Converter={StaticResource StringFormatConverter}}"
                                            FontSize="17" />
                                 <StackPanel Orientation="Vertical"
                                             VerticalAlignment="Bottom">
@@ -348,7 +346,7 @@
                                 <TextBlock FontFamily="{StaticResource LatoRegularFont}"
                                            Foreground="{StaticResource TitleTextColor}"
                                            VerticalAlignment="Bottom"
-                                           Text="{Binding HeightM, Converter={StaticResource StringFormatConverter}, ConverterParameter=\{0:N2\}}"
+                                           Text="{Binding HeightM, ConverterParameter=\{0:N2\}, Converter={StaticResource StringFormatConverter}}"
                                            FontSize="17" />
                                 <StackPanel Orientation="Vertical"
                                             VerticalAlignment="Bottom">
@@ -419,7 +417,7 @@
                                     <TextBlock FontSize="19"
                                                FontFamily="{StaticResource LatoRegularFont}"
                                                Foreground="{StaticResource TitleTextColor}"
-                                               Text="{Binding ElementName=Root, Path=StardustAmount}"
+                                               Text="{Binding StardustAmount, ElementName=Root}"
                                                Margin="-4,0,0,0"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center" />
@@ -470,7 +468,7 @@
                                     Background="#E8EEE0">
                                 <interactivity:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="Tapped">
-                                        <core:InvokeCommandAction Command="{Binding ElementName=Root, Path=PowerUpPokemonCommand}" />
+                                        <core:InvokeCommandAction Command="{Binding PowerUpPokemonCommand, ElementName=Root}" />
                                     </core:EventTriggerBehavior>
                                 </interactivity:Interaction.Behaviors>
                                 <Grid HorizontalAlignment="Right"
@@ -497,8 +495,7 @@
                                                    Text="{Binding Converter={StaticResource PokemonToStardustForPowerUpConverter}}"
                                                    HorizontalAlignment="Left"
                                                    Margin="-6,0,0,0"
-                                                   VerticalAlignment="Center">
-                                        </TextBlock>
+                                                   VerticalAlignment="Center"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1"
@@ -515,8 +512,7 @@
                                                    Foreground="{Binding Converter={StaticResource PokemonToCandiesForPowerUpForegroundConverter}}"
                                                    Text="{Binding Converter={StaticResource PokemonToCandiesForPowerUpConverter}}"
                                                    HorizontalAlignment="Left"
-                                                   VerticalAlignment="Center">
-                                        </TextBlock>
+                                                   VerticalAlignment="Center"/>
                                     </StackPanel>
 
                                 </Grid>
@@ -531,7 +527,7 @@
                                     x:Uid="PowerUpButton"
                                     MinWidth="125"
                                     Margin="0,10"
-                                    Command="{Binding ElementName=Root, Path=PowerUpPokemonCommand}" />
+                                    Command="{Binding PowerUpPokemonCommand, ElementName=Root}" />
 
                             <!-- Evolve -->
                             <Border Grid.Column="0"
@@ -545,7 +541,7 @@
                                     Visibility="{Binding Converter={StaticResource PokemonToPokemonEvolveVisibilityConverter}}">
                                 <interactivity:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="Tapped">
-                                        <core:InvokeCommandAction Command="{Binding ElementName=Root, Path=EvolvePokemonCommand}" />
+                                        <core:InvokeCommandAction Command="{Binding EvolvePokemonCommand, ElementName=Root}" />
                                     </core:EventTriggerBehavior>
                                 </interactivity:Interaction.Behaviors>
 
@@ -568,8 +564,7 @@
                                                    FontFamily="{StaticResource LatoRegularFont}"
                                                    Foreground="{Binding Converter={StaticResource PokemonToCandiesForEvolveForegroundConverter}}"
                                                    Text="{Binding Converter={StaticResource PokemonToCandiesForEvolveConverter}}"
-                                                   VerticalAlignment="Center">
-                                        </TextBlock>
+                                                   VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -583,11 +578,44 @@
                                     x:Uid="EvolveButton"
                                     MinWidth="125"
                                     Margin="0,0,0,15"
-                                    Command="{Binding ElementName=Root, Path=EvolvePokemonCommand}"
+                                    Command="{Binding EvolvePokemonCommand, ElementName=Root}"
                                     Visibility="{Binding Converter={StaticResource PokemonToPokemonEvolveVisibilityConverter}}" />
 
                         </Grid>
 
+                        <!--IV values -->
+                        <Grid Padding="8"
+                              Margin="16,0"
+                              HorizontalAlignment="Stretch"
+                              BorderBrush="#dadada"
+                              BorderThickness="0,0.5,0,0">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- text -->
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Foreground="#414544"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="10"
+                                       Text="Attack / Defense / Stamina" />
+                            
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="0"
+                                       Foreground="#414544"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding Converter={StaticResource PokemonIdToPokemonIVConverter}}"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="10"/>
+
+                        </Grid>
                         <!-- Moves -->
                         <Grid Padding="8"
                               Margin="16,0"

@@ -49,6 +49,12 @@
                                  Text="{Binding EggKmWalkedTarget, Converter={StaticResource StringFormatConverter}, ConverterParameter=\{0:0\}}" />
                             <Run Text="km" />
                     </TextBlock>
+                    <TextBlock Margin="0,4" 
+                               HorizontalAlignment="Center"
+                               FontFamily="{StaticResource LatoLightFont}"
+                               FontSize="12"
+                               Foreground="{StaticResource TitleTextColor}"
+                               Text="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonNameConverter}}" />
 
                     <TextBlock x:Uid="EggDetailTextBlock"
                                Margin="0,15,0,0"
