@@ -107,6 +107,31 @@ namespace PokemonGo_UWP.Utils
         #endregion
     }
 
+    public class PokemonIdToNearbyPokestopConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return string.Empty;
+            if (value.GetType() != typeof(NearbyPokemonWrapper)) return "../Assets/UI/bush.png";
+
+            var pokemonData = (NearbyPokemonWrapper)value;
+            //var fortImageUrl = pokemonData.FortImageUrl;
+            if (pokemonData.FortImageUrl == "") return "../Assets/UI/bush.png";
+            
+            Uri fortImageUri = new Uri(pokemonData.FortImageUrl);
+            return fortImageUri;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
     public class PokemonIdToPokemonNameConverter : IValueConverter
     {
         #region Implementation of IValueConverter

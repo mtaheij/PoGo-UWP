@@ -711,6 +711,9 @@
   <data name="Unown.Description" xml:space="preserve">
     <value>This Pokémon is shaped like ancient writing. It is a mystery as to which came first, the ancient writings or the various Unown. Research into this topic is ongoing but nothing is known.</value>
   </data>
+  <data name="Wobbuffet.Description" xml:space="preserve">
+    <value>If two or more Wobbuffet meet, they will turn competitive and try to outdo each other’s endurance. However, they may try to see which one can endure the longest without food. Trainers need to beware of this habit.</value>
+  </data>
   <data name="Wooper.Description" xml:space="preserve">
     <value>Wooper usually lives in water. However, it occasionally comes out onto land in search of food. On land, it coats its body with a gooey, toxic film.</value>
   </data>

@@ -806,6 +806,14 @@
           <source>Yanma is capable of seeing 360 degrees without having to move its eyes. It is a great flier that is adept at making sudden stops and turning midair. This Pokémon uses its flying ability to quickly chase down targeted prey.</source>
           <target state="new">Yanma is capable of seeing 360 degrees without having to move its eyes. It is a great flier that is adept at making sudden stops and turning midair. This Pokémon uses its flying ability to quickly chase down targeted prey.</target>
         </trans-unit>
+        <trans-unit id="Unown.Description" translate="yes" xml:space="preserve">
+          <source>This Pokémon is shaped like ancient writing. It is a mystery as to which came first, the ancient writings or the various Unown. Research into this topic is ongoing but nothing is known.</source>
+          <target state="new">This Pokémon is shaped like ancient writing. It is a mystery as to which came first, the ancient writings or the various Unown. Research into this topic is ongoing but nothing is known.</target>
+        </trans-unit>
+        <trans-unit id="Wobbuffet.Description" translate="yes" xml:space="preserve">
+          <source>If two or more Wobbuffet meet, they will turn competitive and try to outdo each other’s endurance. However, they may try to see which one can endure the longest without food. Trainers need to beware of this habit.</source>
+          <target state="new">If two or more Wobbuffet meet, they will turn competitive and try to outdo each other’s endurance. However, they may try to see which one can endure the longest without food. Trainers need to beware of this habit.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

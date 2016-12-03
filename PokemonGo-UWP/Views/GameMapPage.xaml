@@ -480,17 +480,23 @@
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                    <Image VerticalAlignment="Top" HorizontalAlignment="Left"
-                                                       Source="../Assets/UI/bush.png" Stretch="Uniform" 
-                                                       Height="60">
-                                                    </Image>
+                                                    <Ellipse Width="60"
+                                                             Height="60">
+                                                             <Ellipse.Projection>
+                                                                 <PlaneProjection />
+                                                             </Ellipse.Projection>
+                                                             <Ellipse.Fill>
+                                                                 <ImageBrush ImageSource="{Binding Converter={StaticResource PokemonIdToNearbyPokestopConverter}}"
+                                                                        Stretch="UniformToFill" />
+                                                             </Ellipse.Fill>
+                                                    </Ellipse>
                                                     <Image Canvas.ZIndex="100"
                                                        Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
                                                        Visibility="{Binding PokemonId, Converter={StaticResource NearbyPokemonInPokedexToVisibilityConverter}}"
-                                                       Height="60"
-                                                       Width="60"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center"
+                                                       Height="40"
+                                                       Width="40"
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Right"
                                                        Stretch="Uniform"
                                                        Margin="6,0" />
 
@@ -498,10 +504,10 @@
                                                     UriSource="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}, ConverterParameter=uri}"
                                                     Style="{ThemeResource NearbyPokemonNotInPokedexBitmapIconStyle}"
                                                     Visibility="{Binding PokemonId, Converter={StaticResource InverseNearbyPokemonInPokedexToVisibilityConverter}}"
-                                                    Height="60"
-                                                    Width="60"
-                                                    VerticalAlignment="Center"
-                                                    HorizontalAlignment="Center"
+                                                    Height="40"
+                                                    Width="40"
+                                                    VerticalAlignment="Bottom"
+                                                    HorizontalAlignment="Right"
                                                     Margin="6,0" />
                                             </Grid>
                                         </DataTemplate>
