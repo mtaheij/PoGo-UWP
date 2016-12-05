@@ -3651,6 +3651,202 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <source>If two or more Wobbuffet meet, they will turn competitive and try to outdo each other’s endurance. However, they may try to see which one can endure the longest without food. Trainers need to beware of this habit.</source>
           <target state="new">If two or more Wobbuffet meet, they will turn competitive and try to outdo each other’s endurance. However, they may try to see which one can endure the longest without food. Trainers need to beware of this habit.</target>
         </trans-unit>
+        <trans-unit id="Blissey.Description" translate="yes" xml:space="preserve">
+          <source>Blissey senses sadness with its fluffy coat of fur. If it does so, this Pokémon will rush over to a sad person, no matter how far away, to share a Lucky Egg that brings a smile to any face.</source>
+          <target state="new">Blissey senses sadness with its fluffy coat of fur. If it does so, this Pokémon will rush over to a sad person, no matter how far away, to share a Lucky Egg that brings a smile to any face.</target>
+        </trans-unit>
+        <trans-unit id="Celebi.Description" translate="yes" xml:space="preserve">
+          <source>This Pokémon came from the future by crossing over time. It is thought that so long as Celebi appears, a bright and shining future awaits us.</source>
+          <target state="new">This Pokémon came from the future by crossing over time. It is thought that so long as Celebi appears, a bright and shining future awaits us.</target>
+        </trans-unit>
+        <trans-unit id="Corsola.Description" translate="yes" xml:space="preserve">
+          <source>Corsola’s branches glitter very beautifully in seven colors when they catch sunlight. If any branch breaks off, this Pokémon grows it back in just one night.</source>
+          <target state="new">Corsola’s branches glitter very beautifully in seven colors when they catch sunlight. If any branch breaks off, this Pokémon grows it back in just one night.</target>
+        </trans-unit>
+        <trans-unit id="Delibird.Description" translate="yes" xml:space="preserve">
+          <source>Delibird carries its food bundled up in its tail. There once was a famous explorer who managed to reach the peak of the world’s highest mountain, thanks to one of these Pokémon sharing its food.</source>
+          <target state="new">Delibird carries its food bundled up in its tail. There once was a famous explorer who managed to reach the peak of the world’s highest mountain, thanks to one of these Pokémon sharing its food.</target>
+        </trans-unit>
+        <trans-unit id="Donphan.Description" translate="yes" xml:space="preserve">
+          <source>Donphan’s favorite attack is curling its body into a ball, then charging at its foe while rolling at high speed. Once it starts rolling, this Pokémon can’t stop very easily.</source>
+          <target state="new">Donphan’s favorite attack is curling its body into a ball, then charging at its foe while rolling at high speed. Once it starts rolling, this Pokémon can’t stop very easily.</target>
+        </trans-unit>
+        <trans-unit id="Dunsparce.Description" translate="yes" xml:space="preserve">
+          <source>Dunsparce has a drill for its tail. It uses this tail to burrow into the ground backward. This Pokémon is known to make its nest in complex shapes deep under the ground.</source>
+          <target state="new">Dunsparce has a drill for its tail. It uses this tail to burrow into the ground backward. This Pokémon is known to make its nest in complex shapes deep under the ground.</target>
+        </trans-unit>
+        <trans-unit id="Elekid.Description" translate="yes" xml:space="preserve">
+          <source>Elekid stores electricity in its body. If it touches metal and accidentally discharges all its built-up electricity, this Pokémon begins swinging its arms in circles to recharge itself.</source>
+          <target state="new">Elekid stores electricity in its body. If it touches metal and accidentally discharges all its built-up electricity, this Pokémon begins swinging its arms in circles to recharge itself.</target>
+        </trans-unit>
+        <trans-unit id="Entei.Description" translate="yes" xml:space="preserve">
+          <source>Entei embodies the passion of magma. This Pokémon is thought to have been born in the eruption of a volcano. It sends up massive bursts of fire that utterly consume all that they touch.</source>
+          <target state="new">Entei embodies the passion of magma. This Pokémon is thought to have been born in the eruption of a volcano. It sends up massive bursts of fire that utterly consume all that they touch.</target>
+        </trans-unit>
+        <trans-unit id="Forretress.Description" translate="yes" xml:space="preserve">
+          <source>Forretress conceals itself inside its hardened steel shell. The shell is opened when the Pokémon is catching prey, but it does so at such a quick pace that the shell’s inside cannot be seen.</source>
+          <target state="new">Forretress conceals itself inside its hardened steel shell. The shell is opened when the Pokémon is catching prey, but it does so at such a quick pace that the shell’s inside cannot be seen.</target>
+        </trans-unit>
+        <trans-unit id="Girafarig.Description" translate="yes" xml:space="preserve">
+          <source>Girafarig’s rear head also has a brain, but it is small. The rear head attacks in response to smells and sounds. Approaching this Pokémon from behind can cause the rear head to suddenly lash out and bite.</source>
+          <target state="new">Girafarig’s rear head also has a brain, but it is small. The rear head attacks in response to smells and sounds. Approaching this Pokémon from behind can cause the rear head to suddenly lash out and bite.</target>
+        </trans-unit>
+        <trans-unit id="Gligar.Description" translate="yes" xml:space="preserve">
+          <source>Gligar glides through the air without a sound as if it were sliding. This Pokémon hangs on to the face of its foe using its clawed hind legs and the large pincers on its forelegs, then injects the prey with its poison barb.</source>
+          <target state="new">Gligar glides through the air without a sound as if it were sliding. This Pokémon hangs on to the face of its foe using its clawed hind legs and the large pincers on its forelegs, then injects the prey with its poison barb.</target>
+        </trans-unit>
+        <trans-unit id="Granbull.Description" translate="yes" xml:space="preserve">
+          <source>Granbull has a particularly well-developed lower jaw. The enormous fangs are heavy, causing the Pokémon to tip its head back for balance. Unless it is startled, it will not try to bite indiscriminately.</source>
+          <target state="new">Granbull has a particularly well-developed lower jaw. The enormous fangs are heavy, causing the Pokémon to tip its head back for balance. Unless it is startled, it will not try to bite indiscriminately.</target>
+        </trans-unit>
+        <trans-unit id="Heracross.Description" translate="yes" xml:space="preserve">
+          <source>Heracross charges in a straight line at its foe, slips beneath the foe’s grasp, and then scoops up and hurls the opponent with its mighty horn. This Pokémon even has enough power to topple a massive tree.</source>
+          <target state="new">Heracross charges in a straight line at its foe, slips beneath the foe’s grasp, and then scoops up and hurls the opponent with its mighty horn. This Pokémon even has enough power to topple a massive tree.</target>
+        </trans-unit>
+        <trans-unit id="Hitmontop.Description" translate="yes" xml:space="preserve">
+          <source>Hitmontop spins on its head at high speed, all the while delivering kicks. This technique is a remarkable mix of both offense and defense at the same time. The Pokémon travels faster spinning than it does walking.</source>
+          <target state="new">Hitmontop spins on its head at high speed, all the while delivering kicks. This technique is a remarkable mix of both offense and defense at the same time. The Pokémon travels faster spinning than it does walking.</target>
+        </trans-unit>
+        <trans-unit id="HoOh.Description" translate="yes" xml:space="preserve">
+          <source>Ho-Oh’s feathers glow in seven colors depending on the angle at which they are struck by light. These feathers are said to bring happiness to the bearers. This Pokémon is said to live at the foot of a rainbow.</source>
+          <target state="new">Ho-Oh’s feathers glow in seven colors depending on the angle at which they are struck by light. These feathers are said to bring happiness to the bearers. This Pokémon is said to live at the foot of a rainbow.</target>
+        </trans-unit>
+        <trans-unit id="Houndoom.Description" translate="yes" xml:space="preserve">
+          <source>In a Houndoom pack, the one with its horns raked sharply toward the back serves a leadership role. These Pokémon choose their leader by fighting among themselves.</source>
+          <target state="new">In a Houndoom pack, the one with its horns raked sharply toward the back serves a leadership role. These Pokémon choose their leader by fighting among themselves.</target>
+        </trans-unit>
+        <trans-unit id="Houndour.Description" translate="yes" xml:space="preserve">
+          <source>Houndour hunt as a coordinated pack. They communicate with each other using a variety of cries to corner their prey. This Pokémon’s remarkable teamwork is unparalleled.</source>
+          <target state="new">Houndour hunt as a coordinated pack. They communicate with each other using a variety of cries to corner their prey. This Pokémon’s remarkable teamwork is unparalleled.</target>
+        </trans-unit>
+        <trans-unit id="Kingdra.Description" translate="yes" xml:space="preserve">
+          <source>Kingdra lives at extreme ocean depths that are otherwise uninhabited. It has long been believed that the yawning of this Pokémon creates spiraling ocean currents.</source>
+          <target state="new">Kingdra lives at extreme ocean depths that are otherwise uninhabited. It has long been believed that the yawning of this Pokémon creates spiraling ocean currents.</target>
+        </trans-unit>
+        <trans-unit id="Larvitar.Description" translate="yes" xml:space="preserve">
+          <source>Larvitar is born deep under the ground. To come up to the surface, this Pokémon must eat its way through the soil above. Until it does so, Larvitar cannot see its parents.</source>
+          <target state="new">Larvitar is born deep under the ground. To come up to the surface, this Pokémon must eat its way through the soil above. Until it does so, Larvitar cannot see its parents.</target>
+        </trans-unit>
+        <trans-unit id="Lugia.Description" translate="yes" xml:space="preserve">
+          <source>Lugia’s wings pack devastating power—a light fluttering of its wings can blow apart regular houses. As a result, this Pokémon chooses to live out of sight deep under the sea.</source>
+          <target state="new">Lugia’s wings pack devastating power—a light fluttering of its wings can blow apart regular houses. As a result, this Pokémon chooses to live out of sight deep under the sea.</target>
+        </trans-unit>
+        <trans-unit id="Magby.Description" translate="yes" xml:space="preserve">
+          <source>Magby’s state of health is determined by observing the fire it breathes. If the Pokémon is spouting yellow flames from its mouth, it is in good health. When it is fatigued, black smoke will be mixed in with the flames.</source>
+          <target state="new">Magby’s state of health is determined by observing the fire it breathes. If the Pokémon is spouting yellow flames from its mouth, it is in good health. When it is fatigued, black smoke will be mixed in with the flames.</target>
+        </trans-unit>
+        <trans-unit id="Magcargo.Description" translate="yes" xml:space="preserve">
+          <source>Magcargo’s shell is actually its skin that hardened as a result of cooling. Its shell is very brittle and fragile—just touching it causes it to crumble apart. This Pokémon returns to its original size by dipping itself in magma.</source>
+          <target state="new">Magcargo’s shell is actually its skin that hardened as a result of cooling. Its shell is very brittle and fragile—just touching it causes it to crumble apart. This Pokémon returns to its original size by dipping itself in magma.</target>
+        </trans-unit>
+        <trans-unit id="Mantine.Description" translate="yes" xml:space="preserve">
+          <source>On sunny days, schools of Mantine can be seen elegantly leaping over the sea’s waves. This Pokémon is not bothered by the Remoraid that hitches rides.</source>
+          <target state="new">On sunny days, schools of Mantine can be seen elegantly leaping over the sea’s waves. This Pokémon is not bothered by the Remoraid that hitches rides.</target>
+        </trans-unit>
+        <trans-unit id="Miltank.Description" translate="yes" xml:space="preserve">
+          <source>Miltank gives over five gallons of milk on a daily basis. Its sweet milk is enjoyed by children and grown-ups alike. People who can’t drink milk turn it into yogurt and eat it instead.</source>
+          <target state="new">Miltank gives over five gallons of milk on a daily basis. Its sweet milk is enjoyed by children and grown-ups alike. People who can’t drink milk turn it into yogurt and eat it instead.</target>
+        </trans-unit>
+        <trans-unit id="Octillery.Description" translate="yes" xml:space="preserve">
+          <source>Octillery grabs onto its foe using its tentacles. This Pokémon tries to immobilize it before delivering the finishing blow. If the foe turns out to be too strong, Octillery spews ink to escape.</source>
+          <target state="new">Octillery grabs onto its foe using its tentacles. This Pokémon tries to immobilize it before delivering the finishing blow. If the foe turns out to be too strong, Octillery spews ink to escape.</target>
+        </trans-unit>
+        <trans-unit id="Phanpy.Description" translate="yes" xml:space="preserve">
+          <source>For its nest, Phanpy digs a vertical pit in the ground at the edge of a river. It marks the area around its nest with its trunk to let the others know that the area has been claimed.</source>
+          <target state="new">For its nest, Phanpy digs a vertical pit in the ground at the edge of a river. It marks the area around its nest with its trunk to let the others know that the area has been claimed.</target>
+        </trans-unit>
+        <trans-unit id="Piloswine.Description" translate="yes" xml:space="preserve">
+          <source>Piloswine is covered by a thick coat of long hair that enables it to endure the freezing cold. This Pokémon uses its tusks to dig up food that has been buried under ice.</source>
+          <target state="new">Piloswine is covered by a thick coat of long hair that enables it to endure the freezing cold. This Pokémon uses its tusks to dig up food that has been buried under ice.</target>
+        </trans-unit>
+        <trans-unit id="Pineco.Description" translate="yes" xml:space="preserve">
+          <source>Pineco hangs from a tree branch and patiently waits for prey to come along. If the Pokémon is disturbed while eating by someone shaking its tree, it drops down to the ground and explodes with no warning.</source>
+          <target state="new">Pineco hangs from a tree branch and patiently waits for prey to come along. If the Pokémon is disturbed while eating by someone shaking its tree, it drops down to the ground and explodes with no warning.</target>
+        </trans-unit>
+        <trans-unit id="Porygon2.Description" translate="yes" xml:space="preserve">
+          <source>Porygon2 was created by humans using the power of science. The man-made Pokémon has been endowed with artificial intelligence that enables it to learn new gestures and emotions on its own.</source>
+          <target state="new">Porygon2 was created by humans using the power of science. The man-made Pokémon has been endowed with artificial intelligence that enables it to learn new gestures and emotions on its own.</target>
+        </trans-unit>
+        <trans-unit id="Pupitar.Description" translate="yes" xml:space="preserve">
+          <source>Pupitar creates a gas inside its body that it compresses and forcefully ejects to propel itself like a jet. The body is very durable—it avoids damage even if it hits solid steel.</source>
+          <target state="new">Pupitar creates a gas inside its body that it compresses and forcefully ejects to propel itself like a jet. The body is very durable—it avoids damage even if it hits solid steel.</target>
+        </trans-unit>
+        <trans-unit id="Qwilfish.Description" translate="yes" xml:space="preserve">
+          <source>Qwilfish sucks in water, inflating itself. This Pokémon uses the pressure of the water it swallowed to shoot toxic quills all at once from all over its body. It finds swimming somewhat challenging.</source>
+          <target state="new">Qwilfish sucks in water, inflating itself. This Pokémon uses the pressure of the water it swallowed to shoot toxic quills all at once from all over its body. It finds swimming somewhat challenging.</target>
+        </trans-unit>
+        <trans-unit id="Raikou.Description" translate="yes" xml:space="preserve">
+          <source>Raikou embodies the speed of lightning. The roars of this Pokémon send shock waves shuddering through the air and shake the ground as if lightning bolts had come crashing down.</source>
+          <target state="new">Raikou embodies the speed of lightning. The roars of this Pokémon send shock waves shuddering through the air and shake the ground as if lightning bolts had come crashing down.</target>
+        </trans-unit>
+        <trans-unit id="Remoraid.Description" translate="yes" xml:space="preserve">
+          <source>Remoraid sucks in water, then expels it at high velocity using its abdominal muscles to shoot down flying prey. When evolution draws near, this Pokémon travels downstream from rivers.</source>
+          <target state="new">Remoraid sucks in water, then expels it at high velocity using its abdominal muscles to shoot down flying prey. When evolution draws near, this Pokémon travels downstream from rivers.</target>
+        </trans-unit>
+        <trans-unit id="Scizor.Description" translate="yes" xml:space="preserve">
+          <source>Scizor has a body with the hardness of steel. It is not easily fazed by ordinary sorts of attacks. This Pokémon flaps its wings to regulate its body temperature.</source>
+          <target state="new">Scizor has a body with the hardness of steel. It is not easily fazed by ordinary sorts of attacks. This Pokémon flaps its wings to regulate its body temperature.</target>
+        </trans-unit>
+        <trans-unit id="Shuckle.Description" translate="yes" xml:space="preserve">
+          <source>Shuckle quietly hides itself under rocks, keeping its body concealed inside its hard shell while eating berries it has stored away. The berries mix with its body fluids to become a juice.</source>
+          <target state="new">Shuckle quietly hides itself under rocks, keeping its body concealed inside its hard shell while eating berries it has stored away. The berries mix with its body fluids to become a juice.</target>
+        </trans-unit>
+        <trans-unit id="Skarmory.Description" translate="yes" xml:space="preserve">
+          <source>Skarmory is entirely encased in hard, protective armor. This Pokémon flies at close to 190 mph. It slashes foes with its wings that possess swordlike cutting edges.</source>
+          <target state="new">Skarmory is entirely encased in hard, protective armor. This Pokémon flies at close to 190 mph. It slashes foes with its wings that possess swordlike cutting edges.</target>
+        </trans-unit>
+        <trans-unit id="Slugma.Description" translate="yes" xml:space="preserve">
+          <source>Molten magma courses throughout Slugma’s circulatory system. If this Pokémon is chilled, the magma cools and hardens. Its body turns brittle and chunks fall off, reducing its size.</source>
+          <target state="new">Molten magma courses throughout Slugma’s circulatory system. If this Pokémon is chilled, the magma cools and hardens. Its body turns brittle and chunks fall off, reducing its size.</target>
+        </trans-unit>
+        <trans-unit id="Smeargle.Description" translate="yes" xml:space="preserve">
+          <source>Smeargle marks the boundaries of its territory using a body fluid that leaks out from the tip of its tail. Over 5,000 different marks left by this Pokémon have been found.</source>
+          <target state="new">Smeargle marks the boundaries of its territory using a body fluid that leaks out from the tip of its tail. Over 5,000 different marks left by this Pokémon have been found.</target>
+        </trans-unit>
+        <trans-unit id="Smoochum.Description" translate="yes" xml:space="preserve">
+          <source>Smoochum actively runs about, but also falls quite often. Whenever the chance arrives, it will look for its reflection to make sure its face hasn’t become dirty.</source>
+          <target state="new">Smoochum actively runs about, but also falls quite often. Whenever the chance arrives, it will look for its reflection to make sure its face hasn’t become dirty.</target>
+        </trans-unit>
+        <trans-unit id="Sneasel.Description" translate="yes" xml:space="preserve">
+          <source>Sneasel scales trees by punching its hooked claws into the bark. This Pokémon seeks out unguarded nests and steals eggs for food while the parents are away.</source>
+          <target state="new">Sneasel scales trees by punching its hooked claws into the bark. This Pokémon seeks out unguarded nests and steals eggs for food while the parents are away.</target>
+        </trans-unit>
+        <trans-unit id="Snubbull.Description" translate="yes" xml:space="preserve">
+          <source>By baring its fangs and making a scary face, Snubbull sends smaller Pokémon scurrying away in terror. However, this Pokémon seems a little sad at making its foes flee.</source>
+          <target state="new">By baring its fangs and making a scary face, Snubbull sends smaller Pokémon scurrying away in terror. However, this Pokémon seems a little sad at making its foes flee.</target>
+        </trans-unit>
+        <trans-unit id="Stantler.Description" translate="yes" xml:space="preserve">
+          <source>Stantler’s magnificent antlers were traded at high prices as works of art. As a result, this Pokémon was hunted close to extinction by those who were after the priceless antlers.</source>
+          <target state="new">Stantler’s magnificent antlers were traded at high prices as works of art. As a result, this Pokémon was hunted close to extinction by those who were after the priceless antlers.</target>
+        </trans-unit>
+        <trans-unit id="Steelix.Description" translate="yes" xml:space="preserve">
+          <source>Steelix lives even further underground than Onix. This Pokémon is known to dig toward the earth’s core. There are records of this Pokémon reaching a depth of over six-tenths of a mile underground.</source>
+          <target state="new">Steelix lives even further underground than Onix. This Pokémon is known to dig toward the earth’s core. There are records of this Pokémon reaching a depth of over six-tenths of a mile underground.</target>
+        </trans-unit>
+        <trans-unit id="Suicune.Description" translate="yes" xml:space="preserve">
+          <source>Suicune embodies the compassion of a pure spring of water. It runs across the land with gracefulness. This Pokémon has the power to purify dirty water.</source>
+          <target state="new">Suicune embodies the compassion of a pure spring of water. It runs across the land with gracefulness. This Pokémon has the power to purify dirty water.</target>
+        </trans-unit>
+        <trans-unit id="Swinub.Description" translate="yes" xml:space="preserve">
+          <source>Swinub roots for food by rubbing its snout against the ground. Its favorite food is a mushroom that grows under the cover of dead grass. This Pokémon occasionally roots out hot springs.</source>
+          <target state="new">Swinub roots for food by rubbing its snout against the ground. Its favorite food is a mushroom that grows under the cover of dead grass. This Pokémon occasionally roots out hot springs.</target>
+        </trans-unit>
+        <trans-unit id="Teddiursa.Description" translate="yes" xml:space="preserve">
+          <source>This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa concocts its own honey by blending fruits and pollen collected by Beedrill.</source>
+          <target state="new">This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa concocts its own honey by blending fruits and pollen collected by Beedrill.</target>
+        </trans-unit>
+        <trans-unit id="Tyranitar.Description" translate="yes" xml:space="preserve">
+          <source>Tyranitar is so overwhelmingly powerful, it can bring down a whole mountain to make its nest. This Pokémon wanders about in mountains seeking new opponents to fight.</source>
+          <target state="new">Tyranitar is so overwhelmingly powerful, it can bring down a whole mountain to make its nest. This Pokémon wanders about in mountains seeking new opponents to fight.</target>
+        </trans-unit>
+        <trans-unit id="Tyrogue.Description" translate="yes" xml:space="preserve">
+          <source>Tyrogue becomes stressed out if it does not get to train every day. When raising this Pokémon, the Trainer must establish and uphold various training methods.</source>
+          <target state="new">Tyrogue becomes stressed out if it does not get to train every day. When raising this Pokémon, the Trainer must establish and uphold various training methods.</target>
+        </trans-unit>
+        <trans-unit id="Ursaring.Description" translate="yes" xml:space="preserve">
+          <source>In the forests inhabited by Ursaring, it is said that there are many streams and towering trees where they gather food. This Pokémon walks through its forest gathering food every day.</source>
+          <target state="new">In the forests inhabited by Ursaring, it is said that there are many streams and towering trees where they gather food. This Pokémon walks through its forest gathering food every day.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

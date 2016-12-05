@@ -96,6 +96,15 @@
                             <Image Source="ms-appx:///Assets/Buttons/btn_empty.png" Height="25" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
+                            <Button>
+                                <TextBlock Text="Buddy Pokemon" VerticalAlignment="Center" Style="{StaticResource TextSettingsTitle}" />
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Click">
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Placeholder" VerticalAlignment="Center" Style="{StaticResource TextSettingsTitle}" />
                             <Image Source="ms-appx:///Assets/Buttons/btn_empty.png" Height="25" />
                         </StackPanel>
