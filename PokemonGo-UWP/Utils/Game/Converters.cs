@@ -119,11 +119,10 @@ namespace PokemonGo_UWP.Utils
             var pokemonData = (NearbyPokemonWrapper)value;
             //var fortImageUrl = pokemonData.FortImageUrl;
             if (pokemonData.FortImageUrl == "") return "../Assets/UI/bush.png";
-            
+
             Uri fortImageUri = new Uri(pokemonData.FortImageUrl);
             return fortImageUri;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return value;
@@ -131,6 +130,26 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
     }
+
+    /*       public class PokestopIdToPokestopNameConverter : IValueConverter
+           {
+               #region Implementation of IValueConverter
+
+               public object Convert(object value, Type targetType, object parameter, string language)
+               {
+                   if (value == null) return string.Empty;
+                   if (value.GetType() != typeof(FortDataWrapper)) return string.Empty;
+
+                   var fortData = (FortDataWrapper)value;
+                   return fortData.;
+               }
+               public object ConvertBack(object value, Type targetType, object parameter, string language)
+           {
+               return value;
+           }
+
+               #endregion
+   */
 
     public class PokemonIdToPokemonNameConverter : IValueConverter
     {
@@ -156,7 +175,10 @@ namespace PokemonGo_UWP.Utils
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var s = parameter as string;
+            //            var id = (int)value;
             if (s != null && s.Equals("uri"))
+                //                return new Uri($"ms-appx:///Assets/Pokemons/Gen2/{id.ToString("000")}.png");
+                //            return new BitmapImage(new Uri($"ms-appx:///Assets/Pokemons/Gen2/{id.ToString("000")}.png"));
                 return new Uri($"ms-appx:///Assets/Pokemons/{(int)value}.png");
             return new BitmapImage(new Uri($"ms-appx:///Assets/Pokemons/{(int)value}.png"));
             //return new Uri($"ms-appx:///Assets/Pokemons/{(int)value}.png");
@@ -169,6 +191,229 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
     }
+
+    public class BuddyPokemonToPokemonIconConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return string.Empty;
+
+            var buddyPokemon = (BuddyPokemon)value;
+            if (buddyPokemon.Id == 0) return string.Empty;
+            var pokemonId = GameClient.PokemonsInventory.FirstOrDefault(item => item.Id == buddyPokemon.Id).PokemonId;
+
+            return new BitmapImage(new Uri($"ms-appx:///Assets/Pokemons/{(int)pokemonId}.png"));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+
+    }
+
+    public class BuddyPokemonToBuddyPlacementConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return string.Empty;
+
+            var buddyPokemon = (BuddyPokemon)value;
+            if (buddyPokemon.Id == 0) return string.Empty;
+            var pokemonId = GameClient.PokemonsInventory.FirstOrDefault(item => item.Id == buddyPokemon.Id).PokemonId;
+            var buddySize = GameClient.GetExtraDataForPokemon(pokemonId).BuddySize;
+            var height = 0;
+            var width = 0;
+            var margin = "";
+            var valign = "";
+
+            switch (buddySize)
+            {
+                case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyBig:
+                    height = 200;
+                    width = 200;
+                    margin = "10,30";
+                    valign = "Bottom";
+                    break;
+                case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyFlying:
+                    height = 100;
+                    width = 100;
+                    margin = "10,100";
+                    valign = "Bottom";
+                    break;
+                case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyMedium:
+                    height = 100;
+                    width = 100;
+                    margin = "40,30";
+                    valign = "Bottom";
+                    break;
+                case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyShoulder:
+                    height = 60;
+                    width = 60;
+                    margin = "110,10";
+                    valign = "Top";
+                    break;
+                default:
+                    break;
+
+            }
+            if (parameter as string == "height") return height;
+            if (parameter as string == "width") return width;
+            if (parameter as string == "margin") return margin;
+            if (parameter as string == "valign") return valign;
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+
+
+    }
+
+    public class BuddyIsDeployedVisibilityConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return Visibility.Collapsed;
+
+            var buddyPokemon = (BuddyPokemon)value;
+            return (buddyPokemon.Id != 0) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class PokemonIsBuddyVisibilityConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return Visibility.Collapsed;
+
+            var pokemon = (PokemonDataWrapper)value;
+            return (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class BuddyPokemonProgressConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null || !(value is PokemonDataWrapper)) return 0.0;
+            var pokemon = (PokemonDataWrapper)value;
+            //var startKmWalked = 0.0;
+            var lastKmAwarded = 0.0;
+            var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
+            var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
+            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            {
+                //startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                return (double)(((kmPlayerWalked - lastKmAwarded) / kmBuddyDistance) * 100);
+            }
+            else
+                return 0.0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class BuddyPokemonDistanceWalkedConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null || !(value is PokemonDataWrapper)) return string.Empty;
+            var pokemon = (PokemonDataWrapper)value;
+            var startKmWalked = 0.0;
+            var lastKmAwarded = 0.0;
+            var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
+            var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
+            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            {
+                startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                return (kmPlayerWalked - lastKmAwarded).ToString("###0.00") + " / " + kmBuddyDistance.ToString("#0") + " km";
+            }
+            else
+                return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class BuddyPokemonTotalKmWalkedConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null || !(value is PokemonDataWrapper)) return string.Empty;
+            var pokemon = (PokemonDataWrapper)value;
+            //var startKmWalked = 0.0;
+            var lastKmAwarded = 0.0;
+            //var buddyTotalKmWalked = 0.0;
+            var buddyTotalKmWalked = pokemon.BuddyTotalKmWalked;
+            //var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
+            var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
+            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            {
+                //startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                //buddyTotalKmWalked = pokemon.BuddyTotalKmWalked;
+                return (kmPlayerWalked - lastKmAwarded + buddyTotalKmWalked).ToString("###0.00");
+            }
+            else
+                //return string.Empty;
+                return buddyTotalKmWalked.ToString("###0.00");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
     public class PokemonIdToPokemonIVConverter : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -183,6 +428,7 @@ namespace PokemonGo_UWP.Utils
             var ivStamina = pokemonData.IndividualStamina;
             var ivTotal = ivAttack + ivDefense + ivStamina;
             var ivPercent = (double)ivTotal / 45;
+            var pokemonLevel = PokemonInfo.GetLevel(pokemonData.WrappedData);
             //var ivDiv = (double)ivTotal / 45;
             //var ivPercent = ivDiv * 100.0;
             //var ivAttack = pokemonData.IndividualAttack - GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseAttack;
@@ -192,7 +438,7 @@ namespace PokemonGo_UWP.Utils
             //var baseDefense = GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseDefense;
             //var baseStamina = GameClient.GetExtraDataForPokemon(pokemonData.PokemonId).Stats.BaseStamina;
 
-            return ivAttack.ToString("#0") + " / " + ivDefense.ToString("#0") + " / " + ivStamina.ToString("#0") + "  :  " + ivPercent.ToString("##0.0 %");
+            return ivAttack.ToString("#0") + " / " + ivDefense.ToString("#0") + " / " + ivStamina.ToString("#0") + "  :  lvl " + pokemonLevel.ToString("#0.0") + "  :  " + ivPercent.ToString("##0.0 %");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

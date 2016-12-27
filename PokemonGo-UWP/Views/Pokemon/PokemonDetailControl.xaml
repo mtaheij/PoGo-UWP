@@ -621,7 +621,7 @@
                               Margin="16,0"
                               HorizontalAlignment="Stretch"
                               BorderBrush="#dadada"
-                              BorderThickness="0,0.5,0,0.5">
+                              BorderThickness="0,0.5,0,0">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -678,6 +678,87 @@
                                        FontFamily="{StaticResource LatoRegularFont}" />
 
                         </Grid>
+                        
+                        <!-- Buddy stats -->
+                        <Grid Padding="8"
+                              Margin="16,0"
+                              HorizontalAlignment="Stretch"
+                              BorderBrush="#dadada"
+                              Visibility="{Binding Converter={StaticResource PokemonIsBuddyVisibilityConverter}}"
+                              BorderThickness="0,0.5,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ProgressBar Grid.Row="0"
+                                 Value="{Binding Converter={StaticResource BuddyPokemonProgressConverter}}"
+                                 Width="180"
+                                 Height="4"
+                                 Style="{StaticResource PokemonHPProgressBarStyle}"
+                                 Foreground="{StaticResource EggProgressColor}"
+                                 IsIndeterminate="False"
+                                 HorizontalAlignment="Center"
+                                 HorizontalContentAlignment="Center" Margin="62,0,66,0" />
+                            <TextBlock Grid.Row="1"
+                               Margin="0,4"
+                               HorizontalAlignment="Center"
+                               FontFamily="{StaticResource LatoRegularFont}"
+                               FontSize="15"
+                               Foreground="{StaticResource TitleTextColor}"
+                               Text="{Binding Converter={StaticResource BuddyPokemonDistanceWalkedConverter}}" />
+                        </Grid>
+
+                        <Grid Padding="8"
+                              Margin="16,0"
+                              HorizontalAlignment="Stretch"
+                              BorderBrush="#dadada"
+                              BorderThickness="0,0.5,0,0">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- text -->
+                            <TextBlock Grid.Column="0"
+                                       Grid.Row="0"
+                                       Foreground="#414544"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding Converter={StaticResource BuddyPokemonTotalKmWalkedConverter}}"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="13"/>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       Foreground="#414544"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="10"
+                                       Text="Total buddy walked" />
+
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="0"
+                                       Foreground="#414544"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding BuddyCandyAwarded, ConverterParameter=\{0:D\}, Converter={StaticResource StringFormatConverter}}"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="13"/>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Foreground="#414544"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource LatoRegularFont}"
+                                       FontSize="10"
+                                       Text="Candy awarded" />
+
+                        </Grid>
+
                         <TextBlock Margin="10,15,10,3"
                                    HorizontalAlignment="Center"
                                    Foreground="#414544"

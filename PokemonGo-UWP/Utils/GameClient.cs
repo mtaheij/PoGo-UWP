@@ -392,6 +392,7 @@ namespace PokemonGo_UWP.Utils
             }
         }
 
+
         #endregion
 
         #region Game Logic
@@ -745,7 +746,18 @@ namespace PokemonGo_UWP.Utils
                 }
             }
             Logger.Write("Finished updating map objects");
-            
+
+            // Update BuddyPokemon Stats
+            //if (GameClient.PlayerProfile.BuddyPokemon.Id != 0)
+            //if (true)
+            //{
+                var buddyWalkedResponse = await GetBuddyWalked();
+                if (buddyWalkedResponse.Success)
+                {
+                    Logger.Write($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
+                };
+            //}
+
             // Update Hatched Eggs
             var hatchedEggResponse = mapObjects.Item3;
             if (hatchedEggResponse.Success)
@@ -1005,6 +1017,11 @@ namespace PokemonGo_UWP.Utils
 
         }
 
+        public static async Task<GetBuddyWalkedResponse> GetBuddyWalked()
+        {
+            return await _client.Player.GetBuddyWalked();
+        }
+
         #endregion
 
         #region Pokemon Handling
@@ -1134,6 +1151,11 @@ namespace PokemonGo_UWP.Utils
             // Cast ulong to long... because Niantic is a bunch of retarded idiots...
             long pokeId = (long)pokemonId;
             return await _client.Inventory.SetFavoritePokemon(pokeId, isFavorite);
+        }
+
+        public static async Task<SetBuddyPokemonResponse> SetBuddyPokemon(ulong id)
+        {
+            return await _client.Player.SetBuddyPokemon(id);
         }
 
         public static async Task<NicknamePokemonResponse> SetPokemonNickName(ulong pokemonId, string nickName)

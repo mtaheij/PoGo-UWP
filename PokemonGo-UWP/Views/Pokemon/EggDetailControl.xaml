@@ -38,7 +38,7 @@
                                  Foreground="{StaticResource EggProgressColor}"
                                  IsIndeterminate="False"
                                  HorizontalAlignment="Center"
-                                 HorizontalContentAlignment="Center" />
+                                 HorizontalContentAlignment="Center" Margin="62,0,66,0" />
                     <TextBlock Margin="0,4" 
                                HorizontalAlignment="Center"
                                FontFamily="{StaticResource LatoRegularFont}"
@@ -54,8 +54,8 @@
                                FontFamily="{StaticResource LatoLightFont}"
                                FontSize="12"
                                Foreground="{StaticResource TitleTextColor}"
-                               Text="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonNameConverter}}" />
-
+                               Text="{Binding CreationTimeMs, Converter={StaticResource MsToDateFormatConverter}}" />
+       <!--                    Text="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonNameConverter}}" -->
                     <TextBlock x:Uid="EggDetailTextBlock"
                                Margin="0,15,0,0"
                                Visibility="{Binding EggIncubatorId, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=True}"

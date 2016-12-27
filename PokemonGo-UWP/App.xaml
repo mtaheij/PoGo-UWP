@@ -19,7 +19,14 @@
             <utils:PokemonIdToNumericId x:Key="PokemonIdToNumericId" />
             <utils:ItemClickEventArgsToClickedItemConverter x:Key="ItemClickEventArgsToClickedItemConverter" />
             <utils:PokemonIdToPokemonSpriteConverter x:Key="PokemonIdToPokemonSpriteConverter" />
+            <utils:BuddyIsDeployedVisibilityConverter x:Key="BuddyIsDeployedVisibilityConverter" />
+            <utils:PokemonIsBuddyVisibilityConverter x:Key="PokemonIsBuddyVisibilityConverter" />
+            <utils:BuddyPokemonProgressConverter x:Key="BuddyPokemonProgressConverter" />
+            <utils:BuddyPokemonDistanceWalkedConverter x:Key="BuddyPokemonDistanceWalkedConverter" />
+            <utils:BuddyPokemonTotalKmWalkedConverter x:Key="BuddyPokemonTotalKmWalkedConverter" />
             <utils:PokemonIdToPokemonIVConverter x:Key="PokemonIdToPokemonIVConverter" />
+            <utils:BuddyPokemonToPokemonIconConverter x:Key="BuddyPokemonToPokemonIconConverter" />
+            <utils:BuddyPokemonToBuddyPlacementConverter x:Key="BuddyPokemonToBuddyPlacementConverter" />
             <utils:PokemonTypeTranslationConverter x:Key="PokemonTypeTranslationConverter" />
             <utils:PokemonDetailPageViewModeToCloseButtonImageSourceConverter x:Key="PokemonDetailPageViewModeToCloseButtonImageSourceConverter" />
             <utils:PokemonToCurrentCandiesConverter x:Key="PokemonToCurrentCandiesConverter" />
