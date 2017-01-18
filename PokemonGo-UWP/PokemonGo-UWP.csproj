@@ -220,6 +220,8 @@
     <Content Include="Assets\Icons\Footprint_Mid.png" />
     <Content Include="Assets\Icons\Footprint_Near.png" />
     <Content Include="Assets\Icons\FrontPortraitRing.png" />
+    <Content Include="Assets\Icons\gender-female.png" />
+    <Content Include="Assets\Icons\gender-male.png" />
     <Content Include="Assets\Icons\hint_gym_blue.png" />
     <Content Include="Assets\Icons\hint_gym_neutral.png" />
     <Content Include="Assets\Icons\hint_gym_red.png" />
@@ -854,6 +856,8 @@
     <Content Include="Assets\Fonts\Lato-Regular.ttf" />
     <Content Include="Assets\Fonts\Lato-Bold.ttf" />
     <None Include="project.json" />
+    <Content Include="Assets\UI\player-avatar-incense.png" />
+    <Content Include="Assets\UI\player-avatar.png" />
     <Content Include="Styles\NianticStyleLight.json" />
     <PRIResource Include="Strings\es-MX\Resources.resw" />
     <PRIResource Include="Strings\es-MX\PokemonTypes.resw" />

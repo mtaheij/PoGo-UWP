@@ -25,6 +25,7 @@
             <utils:BuddyPokemonDistanceWalkedConverter x:Key="BuddyPokemonDistanceWalkedConverter" />
             <utils:BuddyPokemonTotalKmWalkedConverter x:Key="BuddyPokemonTotalKmWalkedConverter" />
             <utils:PokemonIdToPokemonIVConverter x:Key="PokemonIdToPokemonIVConverter" />
+            <utils:PokemonToPokemonDisplayConverter x:Key="PokemonToPokemonDisplayConverter" />
             <utils:BuddyPokemonToPokemonIconConverter x:Key="BuddyPokemonToPokemonIconConverter" />
             <utils:BuddyPokemonToBuddyPlacementConverter x:Key="BuddyPokemonToBuddyPlacementConverter" />
             <utils:PokemonTypeTranslationConverter x:Key="PokemonTypeTranslationConverter" />

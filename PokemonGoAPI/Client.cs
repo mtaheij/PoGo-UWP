@@ -14,6 +14,7 @@ using PokemonGo.RocketAPI.Exceptions;
 using System.Diagnostics;
 using System;
 using Google.Protobuf.Collections;
+using POGOLib.Official.Util.Hash;
 
 namespace PokemonGo.RocketAPI
 {
@@ -47,6 +48,11 @@ namespace PokemonGo.RocketAPI
         internal string ApiUrl { get; set; }
         internal AuthTicket AuthTicket => AccessToken?.AuthTicket;
         public AccessToken AccessToken { get; set; }
+        private static string hashKey = "";
+
+        public static IHasher Hasher = new PokeHashHasher(hashKey);
+
+
 
         #region Constructors
 

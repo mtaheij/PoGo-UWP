@@ -39,6 +39,7 @@ using System.Collections.Specialized;
 using Windows.UI.Popups;
 using System.ComponentModel;
 using PokemonGo_UWP.Views;
+using POGOLib.Official.Util.Hash;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -757,6 +758,9 @@ namespace PokemonGo_UWP.Utils
                     Logger.Write($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
                 };
             //}
+
+            // Update TimeOfDay
+            //var ToD = mapObjects.Item1.Types.TimeOfDay.
 
             // Update Hatched Eggs
             var hatchedEggResponse = mapObjects.Item3;

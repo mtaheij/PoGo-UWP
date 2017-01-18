@@ -192,6 +192,73 @@ namespace PokemonGo_UWP.Utils
         #endregion
     }
 
+    public class PokemonToPokemonDisplayConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return string.Empty;
+            var pokemon = (PokemonDataWrapper)value;
+            //check if display features not yet implemented
+            if (pokemon.WrappedData.PokemonDisplay == null) return "n/a";
+
+            if (parameter as string == "costume")
+            {
+                switch (pokemon.WrappedData.PokemonDisplay.Costume)
+                {
+                    case PokemonDisplay.Types.Costume.Holiday2016:
+                        return "Holiday2016";
+                    case PokemonDisplay.Types.Costume.Unset:
+                    default:
+                        return "none";
+                }
+            }
+            if (parameter as string == "gendericon")
+            {
+                switch (pokemon.WrappedData.PokemonDisplay.Gender)
+                {
+                    case PokemonDisplay.Types.Gender.Female:
+                        return new Uri("ms-appx:///Assets/Icons/gender-female.png");
+                    case PokemonDisplay.Types.Gender.Male:
+                        return new Uri("ms-appx:///Assets/Icons/gender-male.png");
+                    case PokemonDisplay.Types.Gender.Less:
+                        return string.Empty;
+                    case PokemonDisplay.Types.Gender.Unset:
+                        return string.Empty;
+                    default:
+                        return string.Empty;
+                }
+            }
+            if (parameter as string == "gender")
+            {
+                switch (pokemon.WrappedData.PokemonDisplay.Gender)
+                {
+                    case PokemonDisplay.Types.Gender.Female:
+                        return "female";
+                    case PokemonDisplay.Types.Gender.Male:
+                        return "male";
+                    case PokemonDisplay.Types.Gender.Less:
+                        return "genderless";
+                    case PokemonDisplay.Types.Gender.Unset:
+                        return "not set";
+                    default:
+                        return string.Empty;
+                }
+            }
+            if (parameter as string == "shiny") return (pokemon.WrappedData.PokemonDisplay.Shiny) ? "YES" : "NO";
+            return string.Empty;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
     public class BuddyPokemonToPokemonIconConverter : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -1074,7 +1141,7 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var itemId = (value as ItemAward)?.ItemId ?? ((value as ItemData)?.ItemId ?? ((value as ItemDataWrapper)?.ItemId ?? ((AppliedItemWrapper)value).ItemId));
+            var itemId = (value as ItemAward)?.ItemId ?? (value as ItemData)?.ItemId ?? (value as ItemDataWrapper)?.ItemId ?? (value as AppliedItemWrapper).ItemId;
 
             return new Uri($"ms-appx:///Assets/Items/Item_{(int)itemId}.png");  
         }
@@ -2417,7 +2484,8 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((bool)value) ? new Uri($"ms-appx:///Assets/Ui/ash_withincense.png") : new Uri($"ms-appx:///Assets/Ui/ash.png");
+            //return ((bool)value) ? new Uri($"ms-appx:///Assets/Ui/ash_withincense.png") : new Uri($"ms-appx:///Assets/Ui/ash.png");
+            return ((bool)value) ? new Uri($"ms-appx:///Assets/Ui/player-avatar-incense.png") : new Uri($"ms-appx:///Assets/Ui/player-avatar.png");
         }
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
