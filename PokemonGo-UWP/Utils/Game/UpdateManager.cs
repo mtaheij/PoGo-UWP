@@ -67,7 +67,7 @@ namespace PokemonGo_UWP.Utils
                 var minVersion = GetVersionFromPattern(@"(\d*)\.(\d*)\.(\d*)", VersionInfo.Instance.minimum_version);
 
                 //compare major & minor & build (ignore revision)
-                if (IsVersionGreater(currentVersion, repoVersion))
+/*                if (IsVersionGreater(currentVersion, repoVersion))
                 {
                     UpdateStatus updateStatus = UpdateStatus.UpdateAvailable;
                     //patch architecture
@@ -86,7 +86,7 @@ namespace PokemonGo_UWP.Utils
                 {
                     return new UpdateInfo(UpdateStatus.NextVersionNotReady);
                 }
-
+*/
                 return new UpdateInfo(UpdateStatus.NoUpdate);
             }
             catch (Exception)

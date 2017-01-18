@@ -6,6 +6,11 @@ using PokemonGo.RocketAPI.Extensions;
 using POGOProtos.Networking.Envelopes;
 using POGOProtos.Networking.Requests;
 using static POGOProtos.Networking.Envelopes.RequestEnvelope.Types;
+using System.Collections.Generic;
+using POGOLib.Official.Util.Hash;
+using System.Threading.Tasks;
+using Nito.AsyncEx;
+using Nito.AsyncEx.Synchronous;
 
 namespace PokemonGo.RocketAPI.Helpers
 {
@@ -36,10 +41,12 @@ namespace PokemonGo.RocketAPI.Helpers
         }
 
         public RequestEnvelope SetRequestEnvelopeUnknown6(RequestEnvelope requestEnvelope)
+        //public async System.Threading.Tasks.Task<RequestEnvelope> SetRequestEnvelopeUnknown6(RequestEnvelope requestEnvelope)
         {
-            if(_sessionHash == null)
+            if (_sessionHash == null)
             {
-                _sessionHash = new byte[32];
+                //_sessionHash = new byte[32];
+                _sessionHash = new byte[16];
                 _random.NextBytes(_sessionHash);
             }
 
@@ -51,17 +58,89 @@ namespace PokemonGo.RocketAPI.Helpers
             var normAccel = new Vector(_deviceInfo.Sensors.AccelRawX, _deviceInfo.Sensors.AccelRawY, _deviceInfo.Sensors.AccelRawZ);
             normAccel.NormalizeVector(1.0f);//1.0f on iOS, 9.81 on Android?
 
+            // Hashing code here
+            bool UseHashServer = true;
+            //string hashKey = "";
+            ulong LocHash1 = 0;
+            ulong LocHash2 = 0;
+            ByteString SessHash = null;
+            long Unk25 = 0;
+            ulong Timestmp = (ulong)DateTime.UtcNow.ToUnixTime();
+            List<ulong> ReqHash = new List<ulong>();
+            ByteString EncSig = null;
+            //IHasher Hasher = new PokeHashHasher(hashKey);
+
+            if (UseHashServer)
+            {
+                var sign = new Signature
+                {
+                    Timestamp = Timestmp,
+                    SessionHash = ByteString.CopyFrom(_sessionHash)
+                };
+                var locationBytes = new List<byte>();
+                locationBytes.AddRange(BitConverter.GetBytes(requestEnvelope.Latitude).Reverse());
+                locationBytes.AddRange(BitConverter.GetBytes(requestEnvelope.Longitude).Reverse());
+                locationBytes.AddRange(BitConverter.GetBytes(requestEnvelope.Accuracy).Reverse());
+
+                var requestBytes = new List<byte[]>();
+                foreach (var req in requestEnvelope.Requests)
+                {
+                    requestBytes.Add(req.ToByteArray());
+                }
+
+                //HashData HashContent = GetServerHashes(Hasher, requestEnvelope, sign, locationBytes.ToArray(), requestBytes.ToArray(), authSeed);
+                //Task<HashData> hashContent;
+                //var hashContent = Client.Hasher.GetHashDataAsync(requestEnvelope, sign, locationBytes.ToArray(), requestBytes.ToArray(), authSeed);
+                //var hashContent = AsyncContext.Run(() => Client.Hasher.GetHashDataAsync(requestEnvelope, sign, locationBytes.ToArray(), requestBytes.ToArray(), authSeed));
+
+                //var task = Client.Hasher.GetHashDataAsync(requestEnvelope, sign, locationBytes.ToArray(), requestBytes.ToArray(), authSeed);
+                var task = Task.Run(async () => await Client.Hasher.GetHashDataAsync(requestEnvelope, sign, locationBytes.ToArray(), requestBytes.ToArray(), authSeed).ConfigureAwait(false));
+                var hashContent = task.WaitAndUnwrapException();
+
+                //var result = AsyncContext.Run(hashContent);
+
+                //LocHash1 = hashContent.Result.LocationAuthHash;
+                //LocHash2 = hashContent.Result.LocationHash;
+                LocHash1 = hashContent.LocationAuthHash;
+                LocHash2 = hashContent.LocationHash;
+                SessHash = ByteString.CopyFrom(_sessionHash);
+                Unk25 = Client.Hasher.Unknown25;
+                //foreach (var req in hashContent.Result.RequestHashes)
+                foreach (var req in hashContent.RequestHashes)
+                {
+                    ReqHash.Add(req);
+                }
+
+            }
+            else
+            {
+                LocHash1 = Utils.GenerateLocation1(authSeed, requestEnvelope.Latitude, requestEnvelope.Longitude,
+                            requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1);
+                LocHash2 = Utils.GenerateLocation2(requestEnvelope.Latitude, requestEnvelope.Longitude,
+                            requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1);
+                SessHash = ByteString.CopyFrom(_sessionHash);
+                Unk25 = _deviceInfo.VersionData.VersionHash;
+                foreach (var request in requestEnvelope.Requests)
+                {
+                    ReqHash.Add(Utils.GenerateRequestHash(authSeed, request.ToByteArray(), _deviceInfo.VersionData.HashSeed1));
+                }
+            }
             var sig = new Signature
             {
-                LocationHash1 =
-                    Utils.GenerateLocation1(authSeed, requestEnvelope.Latitude, requestEnvelope.Longitude,
-                        requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1),
-                LocationHash2 =
-                    Utils.GenerateLocation2(requestEnvelope.Latitude, requestEnvelope.Longitude,
-                        requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1),
-                SessionHash = ByteString.CopyFrom(_sessionHash),
-                Unknown25 = _deviceInfo.VersionData.VersionHash,
-                Timestamp = (ulong)DateTime.UtcNow.ToUnixTime(),
+                //LocationHash1 =
+                //    Utils.GenerateLocation1(authSeed, requestEnvelope.Latitude, requestEnvelope.Longitude,
+                //        requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1),
+                LocationHash1 = LocHash1,
+                //LocationHash2 =
+                //    Utils.GenerateLocation2(requestEnvelope.Latitude, requestEnvelope.Longitude
+                //        requestEnvelope.Accuracy, _deviceInfo.VersionData.HashSeed1),
+                LocationHash2 = LocHash2,
+                //SessionHash = ByteString.CopyFrom(_sessionHash),
+                SessionHash = SessHash,
+                //Unknown25 = _deviceInfo.VersionData.VersionHash,
+                Unknown25 = Unk25,
+                //Timestamp = (ulong)DateTime.UtcNow.ToUnixTime(),
+                Timestamp = Timestmp,
                 TimestampSinceStart = (ulong)_deviceInfo.TimeSnapshot,
                 SensorInfo = new Signature.Types.SensorInfo
                 {
@@ -113,7 +192,7 @@ namespace PokemonGo.RocketAPI.Helpers
             };
 
 
-            if(_deviceInfo.GpsSattelitesInfo.Length > 0)
+            if (_deviceInfo.GpsSattelitesInfo.Length > 0)
             {
                 sig.GpsInfo = new Signature.Types.AndroidGpsInfo();
                 //sig.GpsInfo.TimeToFix //currently not filled
@@ -149,9 +228,18 @@ namespace PokemonGo.RocketAPI.Helpers
 
             foreach (var request in requestEnvelope.Requests)
             {
-                sig.RequestHash.Add(
-                    Utils.GenerateRequestHash(authSeed, request.ToByteArray(), _deviceInfo.VersionData.HashSeed1)
-                    );
+                //sig.RequestHash.Add(Utils.GenerateRequestHash(authSeed, request.ToByteArray(), _deviceInfo.VersionData.HashSeed1));
+                sig.RequestHash.Add(ReqHash);
+            }
+
+            // Encryption code here
+            if (UseHashServer)
+            {
+                EncSig = ByteString.CopyFrom(Client.Hasher.GetEncryptedSignature(sig.ToByteArray(), (uint)_deviceInfo.TimeSnapshot));
+            }
+            else
+            {
+                EncSig = ByteString.CopyFrom(PCrypt.encrypt(sig.ToByteArray(), (uint)_deviceInfo.TimeSnapshot));
             }
 
             requestEnvelope.Unknown6 = new Unknown6
@@ -159,7 +247,8 @@ namespace PokemonGo.RocketAPI.Helpers
                 RequestType = 6,
                 Unknown2 = new Unknown6.Types.Unknown2
                 {
-                     EncryptedSignature = ByteString.CopyFrom(PCrypt.encrypt(sig.ToByteArray(), (uint)_deviceInfo.TimeSnapshot))
+                    //EncryptedSignature = ByteString.CopyFrom(PCrypt.encrypt(sig.ToByteArray(), (uint)_deviceInfo.TimeSnapshot))
+                    EncryptedSignature = EncSig
                 }
             };
 
@@ -185,13 +274,14 @@ namespace PokemonGo.RocketAPI.Helpers
 
 
         public RequestEnvelope GetRequestEnvelope(params Request[] customRequests)
+        //public async System.Threading.Tasks.Task<RequestEnvelope> GetRequestEnvelope(params Request[] customRequests)
         {
             return SetRequestEnvelopeUnknown6(new RequestEnvelope
             {
                 StatusCode = 2, //1
 
                 RequestId = GetNextRequestId(), //3
-                Requests = {customRequests}, //4
+                Requests = { customRequests }, //4
 
                 //Unknown6 = , //6
                 Latitude = _latitude, //7
@@ -199,10 +289,11 @@ namespace PokemonGo.RocketAPI.Helpers
                 Accuracy = (int)_accuracy, //9
                 AuthTicket = _authTicket, //11
                 MsSinceLastLocationfix = _random.Next(500, 1000) //12
-        });
+            });
         }
 
         public RequestEnvelope GetInitialRequestEnvelope(params Request[] customRequests)
+        //public async System.Threading.Tasks.Task<RequestEnvelope> GetInitialRequestEnvelope(params Request[] customRequests)
         {
             return SetRequestEnvelopeUnknown6(new RequestEnvelope
             {
@@ -229,6 +320,7 @@ namespace PokemonGo.RocketAPI.Helpers
         }
 
         public RequestEnvelope GetRequestEnvelope(RequestType type, IMessage message)
+        //public async System.Threading.Tasks.Task<RequestEnvelope> GetRequestEnvelope(RequestType type, IMessage message)
         {
             return GetRequestEnvelope(new Request
             {
