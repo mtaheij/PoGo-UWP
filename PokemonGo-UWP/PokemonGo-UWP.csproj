@@ -1195,6 +1195,7 @@
     <Compile Include="ViewModels\PokedexDetailViewModel.cs" />
     <Compile Include="ViewModels\PokedexPageViewModel.cs" />
     <Compile Include="ViewModels\ItemsInventoryPageViewModel.cs" />
+    <Compile Include="ViewModels\PokehashKeyPageViewModel.cs" />
     <Compile Include="ViewModels\PokemonDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PokemonInventoryPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
@@ -1205,6 +1206,9 @@
     </Compile>
     <Compile Include="Views\Item\ItemUseOnPokemonPage.xaml.cs">
       <DependentUpon>ItemUseOnPokemonPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PokehashKeyPage.xaml.cs">
+      <DependentUpon>PokehashKeyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pokemon\EggDetailPage.xaml.cs">
       <DependentUpon>EggDetailPage.xaml</DependentUpon>
@@ -1333,6 +1337,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\Item\ItemUseOnPokemonPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PokehashKeyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

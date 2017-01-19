@@ -362,6 +362,23 @@ namespace PokemonGo_UWP.Utils
             // TODO: Investigate whether or not this needs to be unsubscribed when the app closes.
         }
 
+        public static void SetCredentialsFromSettings()
+        {
+            var credentials = SettingsService.Instance.UserCredentials;
+            if (credentials != null)
+            {
+                credentials.RetrievePassword();
+                _clientSettings = new Settings()
+                {
+                    AuthType = SettingsService.Instance.LastLoginService,
+                    PtcUsername = SettingsService.Instance.LastLoginService == AuthType.Ptc ? credentials.UserName : null,
+                    PtcPassword = SettingsService.Instance.LastLoginService == AuthType.Ptc ? credentials.Password : null,
+                    GoogleUsername = SettingsService.Instance.LastLoginService == AuthType.Google ? credentials.UserName : null,
+                    GooglePassword = SettingsService.Instance.LastLoginService == AuthType.Google ? credentials.Password : null,
+                };
+            }
+        }
+
         /// <summary>
         /// When new items are added to the Pokedex, reset the Nearby Pokemon so their state can be re-run.
         /// </summary>
@@ -430,7 +447,7 @@ namespace PokemonGo_UWP.Utils
                 _client.CheckChallengeReceived -= _client_CheckChallengeReceived;
             }
 
-            _client = new Client(_clientSettings, null, DeviceInfos.Current);
+            _client = new Client(SettingsService.Instance.PokehashAuthKey, _clientSettings, null, DeviceInfos.Current);
 
             //Register EventHandlers
             _client.CheckChallengeReceived += _client_CheckChallengeReceived;

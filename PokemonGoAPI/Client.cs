@@ -48,9 +48,8 @@ namespace PokemonGo.RocketAPI
         internal string ApiUrl { get; set; }
         internal AuthTicket AuthTicket => AccessToken?.AuthTicket;
         public AccessToken AccessToken { get; set; }
-        private static string hashKey = "";
 
-        public static IHasher Hasher = new PokeHashHasher(hashKey);
+        public static IHasher Hasher = new PokeHashHasher(string.Empty);
 
 
 
@@ -75,8 +74,10 @@ namespace PokemonGo.RocketAPI
         /// <param name="apiFailureStrategy"></param>
         /// <param name="deviceInfo"></param>
         /// <param name="accessToken"></param>
-        public Client(ISettings settings, IApiFailureStrategy apiFailureStrategy, IDeviceInfo deviceInfo, AccessToken accessToken = null) : this()
+        public Client(string PokehashAuthKey, ISettings settings, IApiFailureStrategy apiFailureStrategy, IDeviceInfo deviceInfo, AccessToken accessToken = null) : this()
         {
+            Hasher = new PokeHashHasher(PokehashAuthKey);
+
             Settings = settings;
             ApiFailure = apiFailureStrategy;
             AccessToken = accessToken;
