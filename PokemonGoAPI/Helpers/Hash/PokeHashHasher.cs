@@ -172,12 +172,6 @@ namespace POGOLib.Official.Util.Hash
                         authKey = key;
                         authKey.Requests++;
 
-                        // TODO: Remove code below
-                        //if (authKey.MaxRequests == 150)
-                        //{
-                        //    authKey.Requests += 50;
-                        //}
-                        
                         break;
                     }
 
