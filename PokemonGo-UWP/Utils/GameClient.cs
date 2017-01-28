@@ -674,16 +674,25 @@ namespace PokemonGo_UWP.Utils
             }
 
         }
+
         private static async void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if(e.PropertyName==nameof(LocationServiceHelper.Instance.Geoposition))
 			{
-				// Updating player's position
-				var position = LocationServiceHelper.Instance.Geoposition.Coordinate.Point.Position;
-				if (_client != null)
-					await _client.Player.UpdatePlayerLocation(position.Latitude, position.Longitude, LocationServiceHelper.Instance.Geoposition.Coordinate.Accuracy);
+                if (_lastPlayerLocationUpdate == null || _lastPlayerLocationUpdate.AddSeconds((int)GameClient.GameSetting.MapSettings.GetMapObjectsMinRefreshSeconds) < DateTime.Now)
+                {
+                    // Updating player's position
+                    var position = LocationServiceHelper.Instance.Geoposition.Coordinate.Point.Position;
+                    if (_client != null)
+                    {
+                        _lastPlayerLocationUpdate = DateTime.Now;
+                        await _client.Player.UpdatePlayerLocation(position.Latitude, position.Longitude, LocationServiceHelper.Instance.Geoposition.Coordinate.Accuracy);
+                    }
+                }
 			}
 		}
+
+        private static DateTime _lastPlayerLocationUpdate;
 
         /// <summary>
         ///     DateTime for the last map update

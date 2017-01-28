@@ -86,6 +86,11 @@ namespace PokemonGo.RocketAPI.Rpc
             {
                 Client.ApiUrl = serverResponse.ApiUrl;
             }
+
+            if ((int)serverResponse.StatusCode == 51 && !String.IsNullOrEmpty(serverResponse.ApiUrl) && String.IsNullOrEmpty(Client.ApiUrl))
+            {
+                Client.ApiUrl = serverResponse.ApiUrl;
+            }
         }
     }
 }
