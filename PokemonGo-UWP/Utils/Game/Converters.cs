@@ -207,9 +207,9 @@ namespace PokemonGo_UWP.Utils
             {
                 switch (pokemon.WrappedData.PokemonDisplay.Costume)
                 {
-                    case PokemonDisplay.Types.Costume.Holiday2016:
+                    case Costume.Holiday2016:
                         return "Holiday2016";
-                    case PokemonDisplay.Types.Costume.Unset:
+                    case Costume.Unset:
                     default:
                         return "none";
                 }
@@ -218,13 +218,13 @@ namespace PokemonGo_UWP.Utils
             {
                 switch (pokemon.WrappedData.PokemonDisplay.Gender)
                 {
-                    case PokemonDisplay.Types.Gender.Female:
+                    case Gender.Female:
                         return new Uri("ms-appx:///Assets/Icons/gender-female.png");
-                    case PokemonDisplay.Types.Gender.Male:
+                    case Gender.Male:
                         return new Uri("ms-appx:///Assets/Icons/gender-male.png");
-                    case PokemonDisplay.Types.Gender.Less:
+                    case Gender.Less:
                         return string.Empty;
-                    case PokemonDisplay.Types.Gender.Unset:
+                    case Gender.Unset:
                         return string.Empty;
                     default:
                         return string.Empty;
@@ -234,13 +234,13 @@ namespace PokemonGo_UWP.Utils
             {
                 switch (pokemon.WrappedData.PokemonDisplay.Gender)
                 {
-                    case PokemonDisplay.Types.Gender.Female:
+                    case Gender.Female:
                         return "female";
-                    case PokemonDisplay.Types.Gender.Male:
+                    case Gender.Male:
                         return "male";
-                    case PokemonDisplay.Types.Gender.Less:
+                    case Gender.Less:
                         return "genderless";
-                    case PokemonDisplay.Types.Gender.Unset:
+                    case Gender.Unset:
                         return "not set";
                     default:
                         return string.Empty;

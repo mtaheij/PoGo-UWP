@@ -518,6 +518,7 @@ namespace PokemonGo_UWP.ViewModels
                     CurrentCaptureAward = caughtPokemonResponse.CaptureAward;
                     CatchSuccess?.Invoke(this, null);
                     _capturedPokemonId = caughtPokemonResponse.CapturedPokemonId;
+                    await GameClient.UpdatePlayerStats();
                     if (CurrentPokemon is MapPokemonWrapper)
                         GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
                     else if (CurrentPokemon is LuredPokemon)

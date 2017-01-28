@@ -21,14 +21,14 @@ namespace POGOLib.Official.Util.Hash
     ///     to buy an API key, go to this url.
     ///     https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
     /// 
-    ///     Android version: 0.51.0
-    ///     IOS version: 1.21.0
+    ///     Android version: 0.53.0
+    ///     IOS version: 1.23.1
     /// </summary>
     public class PokeHashHasher : IHasher
     {
         private const string PokeHashUrl = "http://pokehash.buddyauth.com/";
 
-        private const string PokeHashEndpoint = "api/v122/hash";
+        private const string PokeHashEndpoint = "api/v123_1/hash";
 
         private readonly Semaphore _keySelectorMutex;
 
@@ -76,9 +76,9 @@ namespace POGOLib.Official.Util.Hash
             //            _httpClient.DefaultRequestHeaders.Add("X-AuthToken", authKey);
         }
 
-        public Version PokemonVersion { get; } = new Version("0.51.0");
+        public Version PokemonVersion { get; } = new Version("0.53.0");
 
-        public long Unknown25 { get; } = -8832040574896607694;
+        public long Unknown25 { get; } = -76506539888958491;
 
         public async Task<HashData> GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
         {
@@ -125,6 +125,10 @@ namespace POGOLib.Official.Util.Hash
                     
                     case (HttpStatusCode) 429:
                         message = $"Your request has been limited. {responseContent}";
+                        break;
+
+                    case HttpStatusCode.ServiceUnavailable:
+                        message = $"The service is unavailable, highlatency(?)";
                         break;
 
                     default:
