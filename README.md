@@ -1,9 +1,8 @@
 # Warning!
 
 The Game is Working but with some small issues:
-- Captcha feature is missing, meaning that this version is not 100% safe. The latest update was released just to allow you to play again while we deal with missing features.
-- PTC login may fail and cause the app to crash
-These issues may be fixed soon.
+- The app is not 100% safe from bans. This means your Trainer account might be banned when you use it. 
+I am trying to make a legit-like app, without cheats, but by using this app, you might be discovered and your account can be banned.
 
 # Important information
 You can find the installation file for PoGo in [Releases](https://github.com/mtaheij/PoGo-UWP/releases/). **Please read the whole release information before installing.**
@@ -12,13 +11,13 @@ You can find the installation file for PoGo in [Releases](https://github.com/mta
 
 Check [Wiki](https://github.com/mtaheij/PoGo-UWP/wiki) for information about the project, installing instructions and more in different language.
 
-# Social
+# Social (Not owned by me)
 
 [Reddit](https://www.reddit.com/r/PoGoUWP/)
 
-We have an official reddit made to discuss about PoGo. Make sure to follow the subreddit rules and you're good to go.
+There is a reddit made to discuss about PoGo. Make sure to follow the subreddit rules and you're good to go.
 
-We decided to have 3 social chat groups to make sure everyone can use their favorite service to disscuss. Feel free to join any of them, or all at once. You're not limited to just one.
+There are 3 social chat groups to make sure everyone can use their favorite service to disscuss. Feel free to join any of them, or all at once. You're not limited to just one.
 
 [Skype](https://join.skype.com/hOeCHq2oEyhA)
 

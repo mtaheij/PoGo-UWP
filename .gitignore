@@ -8,7 +8,6 @@ packages
 bin/
 obj/
 /PokemonGo/RocketAPI/Proto/google/protobuf
-/Google Protobuf
 /PokemonGo-UWP/null
 /PokemonGo-UWP/Utils/BingKey.cs
 /.vs/config/applicationhost.config
@@ -18,6 +17,4 @@ obj/
 *.suo
 *.user
 *.tss
-/PokemonGo-UWP/BundleArtifacts
-/PokemonGoAPI/Proto - kopie
 /pokehash keys.txt
