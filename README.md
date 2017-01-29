@@ -1,5 +1,14 @@
 # Warning!
 
+As of version 1.2.2:
+To use this App, you will need a (paid) authorization key for a third-party hashing service.
+Such a key can be obtained on the following page: https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
+A 150 RPM key will be sufficient for this app.
+
+Explanation: Every request that is sent to Niantic's game servers, must be signed by a hash value, calculated from various variables.
+Before version 1.2.2, this hashing could be done by the app itself, but the algorithms were changed by Niantic and the crack is not publically available.
+So far, the Pokefarmer team is the only one that can provide valid hashes. By using their hashing service - it needs an authorization key - the app is able to sign the requests correctly.
+
 The Game is Working but with some small issues:
 - The app is not 100% safe from bans. This means your Trainer account might be banned when you use it. 
 I am trying to make a legit-like app, without cheats, but by using this app, you might be discovered and your account can be banned.
