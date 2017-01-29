@@ -631,7 +631,6 @@ namespace PokemonGo_UWP.Utils
             #endregion
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
             await LocationServiceHelper.Instance.InitializeAsync();
-            LocationServiceHelper.Instance.PropertyChanged += LocationHelperPropertyChanged;
             // Before starting we need game settings
             GameSetting =
                 await
@@ -639,6 +638,7 @@ namespace PokemonGo_UWP.Utils
                         DateTime.Now.AddMonths(1));
             // Update geolocator settings based on server
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);
+            LocationServiceHelper.Instance.PropertyChanged += LocationHelperPropertyChanged;
             if (_heartbeat == null)
                 _heartbeat = new Heartbeat();
             await _heartbeat.StartDispatcher();

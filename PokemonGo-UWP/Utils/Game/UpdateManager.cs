@@ -21,7 +21,7 @@ namespace PokemonGo_UWP.Utils
     /// </summary>
     public static class UpdateManager
     {
-        private const string VersionFileUrl = @"https://raw.githubusercontent.com/PoGo-Devs/PoGo/master/version.json";
+        private const string VersionFileUrl = @"https://raw.githubusercontent.com/mtaheij/PoGo-UWP/master/version.json";
 
         /// <summary>
         ///     Checks if we have an updated version and returns update info
@@ -60,14 +60,13 @@ namespace PokemonGo_UWP.Utils
                 return new UpdateInfo(UpdateStatus.NoUpdate);
 #endif
 
-
                 // Check if version is newer
                 var currentVersion = Package.Current.Id.Version;
                 var repoVersion = GetVersionFromPattern(@"(\d*)\.(\d*)\.(\d*)", VersionInfo.Instance.latest_release.version);
                 var minVersion = GetVersionFromPattern(@"(\d*)\.(\d*)\.(\d*)", VersionInfo.Instance.minimum_version);
 
                 //compare major & minor & build (ignore revision)
-/*                if (IsVersionGreater(currentVersion, repoVersion))
+                if (IsVersionGreater(currentVersion, repoVersion))
                 {
                     UpdateStatus updateStatus = UpdateStatus.UpdateAvailable;
                     //patch architecture
@@ -86,7 +85,7 @@ namespace PokemonGo_UWP.Utils
                 {
                     return new UpdateInfo(UpdateStatus.NextVersionNotReady);
                 }
-*/
+
                 return new UpdateInfo(UpdateStatus.NoUpdate);
             }
             catch (Exception)
