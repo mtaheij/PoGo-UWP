@@ -198,6 +198,8 @@ namespace PokemonGo_UWP.Views
         {
             base.OnNavigatedTo(e);
             SubscribeToCaptureEvents();
+
+            AudioUtils.SoundEnded += AudioUtils_SoundEnded;
         }
 
 
@@ -205,6 +207,8 @@ namespace PokemonGo_UWP.Views
         {
             base.OnNavigatingFrom(e);
             UnsubscribeToCaptureEvents();
+
+            AudioUtils.SoundEnded -= AudioUtils_SoundEnded;
         }
 
         #endregion
@@ -249,6 +253,8 @@ namespace PokemonGo_UWP.Views
         private void GameManagerViewModelOnCatchSuccess(object sender, EventArgs eventArgs)
         {
             CatchStarted.Stop();
+            AudioUtils.StopSound(AudioUtils.ENCOUNTER_POKEMON);
+            AudioUtils.PlaySound(AudioUtils.GOTCHA);
             ShowCatchStatsModalStoryboard.Begin();
         }
 
@@ -349,6 +355,11 @@ namespace PokemonGo_UWP.Views
 
             prevTime = DateTime.Now;
             ThreadPoolTimer.CreatePeriodicTimer(PokeballUpdateLoop, TimeSpan.FromMilliseconds(20));
+        }
+
+        private void AudioUtils_SoundEnded(object sender, EventArgs e)
+        {
+            AudioUtils.PlaySound(AudioUtils.GAMEPLAY);
         }
 
         #endregion

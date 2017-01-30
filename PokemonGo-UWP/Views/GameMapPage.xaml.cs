@@ -221,6 +221,8 @@ namespace PokemonGo_UWP.Views
                 SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
                 SubscribeToCaptureEvents();
 
+                AudioUtils.SoundEnded += AudioUtils_SoundEnded;
+
             }
             catch (Exception ex)
             {
@@ -255,6 +257,13 @@ namespace PokemonGo_UWP.Views
                 SaveZoomLevel();
             SettingsService.Instance.MapPitch = GameMapControl.Pitch;
             SettingsService.Instance.MapHeading = GameMapControl.Heading;
+
+            AudioUtils.SoundEnded -= AudioUtils_SoundEnded;
+
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                AudioUtils.StopSounds();
+            }
         }
 
         private void SaveZoomLevel()
@@ -375,6 +384,8 @@ namespace PokemonGo_UWP.Views
         {
             if (PokeMenuPanel.Opacity > 0)
                 HidePokeMenuStoryboard.Begin();
+            AudioUtils.StopSound(AudioUtils.GAMEPLAY);
+            AudioUtils.PlaySound(AudioUtils.LEVELUP);
             ShowLevelUpPanelStoryboard.Begin();
         }
 
@@ -417,6 +428,11 @@ namespace PokemonGo_UWP.Views
         private void ViewModelOnAppliedItemStarted(object sender, AppliedItemWrapper AppliedItem)
         {
             ShowAppliedItemStoryboard.Begin();
+        }
+
+        private void AudioUtils_SoundEnded(object sender, EventArgs e)
+        {
+            AudioUtils.PlaySound(AudioUtils.GAMEPLAY);
         }
     }
 }

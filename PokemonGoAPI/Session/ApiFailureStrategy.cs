@@ -114,7 +114,8 @@ namespace PokemonGoAPI.Session
                     await Reauthenticate();
                     request.AuthTicket = _client.AuthTicket;
                     OnFailureToggleUpdateTimer?.Invoke(true);
-                    throw new ApiNonRecoverableException("Relogin completed.");
+                    //throw new ApiNonRecoverableException("Relogin completed.");
+                    break;
                 default:
                     Logger.Write($"Unknown status code: {response.StatusCode}");
                     break;

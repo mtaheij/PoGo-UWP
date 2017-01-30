@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.System.Threading;
 using Windows.UI.Core;
+using PokemonGo_UWP.Utils;
 
 namespace PokemonGo_UWP.Views
 {
@@ -44,17 +45,17 @@ namespace PokemonGo_UWP.Views
                 });
             }, delay);
             SubscribeToCaptureEvents();
-        }
 
-        #region Overrides of Page
+            AudioUtils.SoundEnded += AudioUtils_SoundEnded;
+        }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
             UnsubscribeToCaptureEvents();
-        }
 
-        #endregion
+            AudioUtils.SoundEnded -= AudioUtils_SoundEnded;
+        }
 
         #endregion
 
@@ -85,6 +86,13 @@ namespace PokemonGo_UWP.Views
         {
             ViewModel.EvolveAnimationIsRunning = true;
             ShowEvolveMenuStoryboard.Begin();
+            AudioUtils.StopSounds();
+            AudioUtils.PlaySound(AudioUtils.EVOLUTION);
+        }
+
+        private void AudioUtils_SoundEnded(object sender, EventArgs e)
+        {
+            AudioUtils.PlaySound(AudioUtils.GAMEPLAY);
         }
 
         #endregion

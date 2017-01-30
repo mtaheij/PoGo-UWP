@@ -16,6 +16,11 @@ namespace PokemonGo_UWP.Utils
         public const string GAMEPLAY = "Gameplay.mp3";
         public const string ENCOUNTER_POKEMON = "EncounterPokemon.mp3";
         public const string POKEMON_FOUND_DING = "pokemon_found_ding.wav";
+        public const string EVOLUTION = "Evolution.mp3";
+        public const string GOTCHA = "Gotcha.mp3";
+        public const string LEVELUP = "Levelup.mp3";
+        public const string PROFESSOR = "Professor.mp3";
+        public const string TITLE = "Title.mp3";
 
         #endregion
 
@@ -24,6 +29,11 @@ namespace PokemonGo_UWP.Utils
         private static readonly MediaPlayer GameplaySound = new MediaPlayer();
         private static readonly MediaPlayer EncounterSound = new MediaPlayer();
         private static readonly MediaPlayer PokemonFoundSound = new MediaPlayer();
+        private static readonly MediaPlayer EvolutionSound = new MediaPlayer();
+        private static readonly MediaPlayer GotchaSound = new MediaPlayer();
+        private static readonly MediaPlayer LevelupSound = new MediaPlayer();
+        private static readonly MediaPlayer ProfessorSound = new MediaPlayer();
+        private static readonly MediaPlayer TitleSound = new MediaPlayer();
 
         #endregion
 
@@ -37,11 +47,39 @@ namespace PokemonGo_UWP.Utils
             GameplaySound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{GAMEPLAY}"));
             EncounterSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{ENCOUNTER_POKEMON}"));
             PokemonFoundSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{POKEMON_FOUND_DING}"));
+            EvolutionSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{EVOLUTION}"));
+            GotchaSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{GOTCHA}"));
+            LevelupSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{LEVELUP}"));
+            ProfessorSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{PROFESSOR}"));
+            TitleSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{TITLE}"));
+
+            EncounterSound.MediaEnded += Sound_Ended;
+            EvolutionSound.MediaEnded += Sound_Ended;
+            GotchaSound.MediaEnded += Sound_Ended;
+            LevelupSound.MediaEnded += Sound_Ended;
+
             // Set mode and volume
-            GameplaySound.AudioCategory = EncounterSound.AudioCategory = PokemonFoundSound.AudioCategory = MediaPlayerAudioCategory.GameMedia;
+            GameplaySound.AudioCategory =   EncounterSound.AudioCategory = 
+                                            PokemonFoundSound.AudioCategory =
+                                            EvolutionSound.AudioCategory =
+                                            GotchaSound.AudioCategory =
+                                            LevelupSound.AudioCategory =
+                                            ProfessorSound.AudioCategory =
+                                            TitleSound.AudioCategory =
+                                            MediaPlayerAudioCategory.GameMedia;
+
+            // Enable loop only for gameplay sounds
             GameplaySound.IsLoopingEnabled = true;
+            ProfessorSound.IsLoopingEnabled = true;
             ToggleSounds();
 
+        }
+
+        public static event EventHandler SoundEnded;
+
+        private static void Sound_Ended(MediaPlayer sender, object args)
+        {
+            SoundEnded?.Invoke(null, null);
         }
 
         /// <summary>
@@ -50,7 +88,14 @@ namespace PokemonGo_UWP.Utils
         public static void ToggleSounds()
         {
             GameplaySound.IsMuted =
-                EncounterSound.IsMuted = PokemonFoundSound.IsMuted = !SettingsService.Instance.IsMusicEnabled;
+                EncounterSound.IsMuted = 
+                PokemonFoundSound.IsMuted =
+                EvolutionSound.IsMuted =
+                GotchaSound.IsMuted =
+                LevelupSound.IsMuted =
+                ProfessorSound.IsMuted =
+                TitleSound.IsMuted =
+                !SettingsService.Instance.IsMusicEnabled;
 
         }
 
@@ -75,8 +120,27 @@ namespace PokemonGo_UWP.Utils
                 case POKEMON_FOUND_DING:
                     PokemonFoundSound.Play();
                     break;
-            }
-        }
+                case EVOLUTION:
+                    GameplaySound.Pause();
+                    EvolutionSound.Play();
+                    break;
+                case GOTCHA:
+                    GameplaySound.Pause();
+                    GotchaSound.Play();
+                    break;
+                case LEVELUP:
+                    GameplaySound.Pause();
+                    LevelupSound.Play();
+                    break;
+                case PROFESSOR:
+                    GameplaySound.Pause();
+                    ProfessorSound.Play();
+                    break;
+                case TITLE:
+                    TitleSound.Play();
+                    break;
+    }
+}
 
         /// <summary>
         /// Stops the selected asset
@@ -99,6 +163,26 @@ namespace PokemonGo_UWP.Utils
                     PokemonFoundSound.Pause();
                     PokemonFoundSound.PlaybackSession.Position = TimeSpan.Zero;
                     break;
+                case EVOLUTION:
+                    EvolutionSound.Pause();
+                    EvolutionSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
+                case GOTCHA:
+                    GotchaSound.Pause();
+                    GotchaSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
+                case LEVELUP:
+                    LevelupSound.Pause();
+                    LevelupSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
+                case PROFESSOR:
+                    ProfessorSound.Pause();
+                    ProfessorSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
+                case TITLE:
+                    TitleSound.Pause();
+                    TitleSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
             }
         }
 
@@ -113,6 +197,16 @@ namespace PokemonGo_UWP.Utils
             EncounterSound.PlaybackSession.Position = TimeSpan.Zero;
             PokemonFoundSound.Pause();
             PokemonFoundSound.PlaybackSession.Position = TimeSpan.Zero;
+            EvolutionSound.Pause();
+            EvolutionSound.PlaybackSession.Position = TimeSpan.Zero;
+            GotchaSound.Pause();
+            GotchaSound.PlaybackSession.Position = TimeSpan.Zero;
+            LevelupSound.Pause();
+            LevelupSound.PlaybackSession.Position = TimeSpan.Zero;
+            ProfessorSound.Pause();
+            ProfessorSound.PlaybackSession.Position = TimeSpan.Zero;
+            TitleSound.Pause();
+            TitleSound.PlaybackSession.Position = TimeSpan.Zero;
         }
     }
 }

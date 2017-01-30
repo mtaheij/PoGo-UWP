@@ -1,3 +1,4 @@
+using PokemonGo_UWP.Utils;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -9,6 +10,7 @@ namespace PokemonGo_UWP.Views
         public Splash(SplashScreen splashScreen)
         {
             InitializeComponent();
+            AudioUtils.PlaySound(AudioUtils.TITLE);
             Window.Current.SizeChanged += (s, e) => Resize(splashScreen);
             Resize(splashScreen);
         }

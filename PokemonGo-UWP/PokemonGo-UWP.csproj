@@ -137,8 +137,13 @@
     <Content Include="Assets\Achievements\youngster_lv2.png" />
     <Content Include="Assets\Achievements\youngster_lv3.png" />
     <Content Include="Assets\Audio\EncounterPokemon.mp3" />
+    <Content Include="Assets\Audio\Evolution.mp3" />
     <Content Include="Assets\Audio\Gameplay.mp3" />
+    <Content Include="Assets\Audio\Gotcha.mp3" />
+    <Content Include="Assets\Audio\Levelup.mp3" />
     <Content Include="Assets\Audio\pokemon_found_ding.wav" />
+    <Content Include="Assets\Audio\Professor.mp3" />
+    <Content Include="Assets\Audio\Title.mp3" />
     <Content Include="Assets\Backgrounds\sky_day.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_bug.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_default.png" />
