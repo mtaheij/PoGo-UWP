@@ -145,6 +145,7 @@
     <Compile Include="Helpers\Hash\PCryptPokeHash.cs" />
     <Compile Include="Helpers\Hash\PokeHashHasher.cs" />
     <Compile Include="Helpers\Hash\PokeHash\PokeHashAuthKey.cs" />
+    <Compile Include="Helpers\Hash\PokeHash\PokeHashException.cs" />
     <Compile Include="Helpers\Hash\PokeHash\PokeHashRequest.cs" />
     <Compile Include="Helpers\Hash\PokeHash\PokeHashResponse.cs" />
     <Compile Include="Helpers\IDeviceInfos.cs" />

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
+using PokemonGoAPI.Helpers.Hash.PokeHash;
 using PokemonGoAPI.Session;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 
 namespace PokemonGo_UWP.ViewModels
@@ -104,8 +106,15 @@ namespace PokemonGo_UWP.ViewModels
                     if (accessToken != null)
                     {
                         GameClient.SetCredentialsFromSettings();
-                        await GameClient.InitializeClient();
-                        await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                        try
+                        {
+                            await GameClient.InitializeClient();
+                            await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                        }
+                        catch (PokeHashException ex)
+                        {
+                            await new MessageDialog("It seems that is not a valid hashing key").ShowAsyncQueue();
+                        }
                     }
                     else
                     {

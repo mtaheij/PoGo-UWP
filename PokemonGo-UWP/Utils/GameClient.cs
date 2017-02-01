@@ -40,6 +40,7 @@ using Windows.UI.Popups;
 using System.ComponentModel;
 using PokemonGo_UWP.Views;
 using POGOLib.Official.Util.Hash;
+using PokemonGoAPI.Helpers.Hash.PokeHash;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -493,6 +494,13 @@ namespace PokemonGo_UWP.Utils
                     Debug.WriteLine("AccessTokenExpired Exception caught");
                     _client.AccessToken.Expire();
                     await _client.Login.DoLogin();
+                }
+                else if (e is PokeHashException)
+                {
+                    PokeHashException pex = e as PokeHashException;
+                    Debug.WriteLine("A PokeHash Exception occurred");
+                    await new MessageDialog("A PokeHash Exception occurred, this could mean that your hashing key expired. Anyway: We are unable to sign the requests. More info on the error:" + pex.message).ShowAsyncQueue();
+                    throw e;
                 }
                 else
                 {

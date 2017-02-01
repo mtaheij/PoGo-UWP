@@ -12,6 +12,8 @@ using POGOLib.Official.Util.Encryption.PokeHash;
 using POGOLib.Official.Util.Hash.PokeHash;
 using POGOProtos.Networking.Envelopes;
 using PokemonGo.RocketAPI;
+using PokemonGoAPI.Helpers.Hash.PokeHash;
+using Windows.UI.Popups;
 
 namespace POGOLib.Official.Util.Hash
 {
@@ -140,7 +142,7 @@ namespace POGOLib.Official.Util.Hash
                 message = $"[PokeHash]: {message}";
 
                 Logger.Write(message);
-                throw new Exception(message);
+                throw new PokeHashException(response, message);
             }
         }
 

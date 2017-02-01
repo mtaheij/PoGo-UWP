@@ -28,6 +28,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PokemonGo_UWP.Utils.Helpers;
 using PokemonGo_UWP.Controls;
+using PokemonGoAPI.Helpers.Hash.PokeHash;
 
 namespace PokemonGo_UWP
 {
@@ -343,8 +344,15 @@ namespace PokemonGo_UWP
             }
             else
             {
-                await GameClient.InitializeClient();
-                NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                try
+                {
+                    await GameClient.InitializeClient();
+                    NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                }
+                catch (PokeHashException ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
+                {
+                    await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
+                }
             }
 
 
