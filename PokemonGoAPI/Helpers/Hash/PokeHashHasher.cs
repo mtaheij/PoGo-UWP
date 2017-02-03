@@ -23,14 +23,14 @@ namespace POGOLib.Official.Util.Hash
     ///     to buy an API key, go to this url.
     ///     https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
     /// 
-    ///     Android version: 0.53.0
-    ///     IOS version: 1.23.1
+    ///     Android version: 0.55.0
+    ///     IOS version: 1.25.0
     /// </summary>
     public class PokeHashHasher : IHasher
     {
         private const string PokeHashUrl = "http://pokehash.buddyauth.com/";
 
-        private const string PokeHashEndpoint = "api/v123_1/hash";
+        private const string PokeHashEndpoint = "api/v125/hash";
 
         private readonly Semaphore _keySelectorMutex;
 
@@ -73,14 +73,12 @@ namespace POGOLib.Official.Util.Hash
 
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //            _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("POGOLib (https://github.com/AeonLucid/POGOLib)");
             _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("PoGo-UWP");
-            //            _httpClient.DefaultRequestHeaders.Add("X-AuthToken", authKey);
         }
 
-        public Version PokemonVersion { get; } = new Version("0.53.0");
+        public Version PokemonVersion { get; } = new Version("0.55.0");
 
-        public long Unknown25 { get; } = -76506539888958491;
+        public long Unknown25 { get; } = -9156899491064153954;
 
         public async Task<HashData> GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
         {
