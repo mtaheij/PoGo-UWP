@@ -39,7 +39,7 @@ Contributing to Issues
 
 * Check if the issue you are going to file already exists in our [GitHub issues][open-issue].
 * If you can't find your issue already,
-  [open a new issue](https://github.com/ST-Apps/PoGo-UWP/issues/new),
+  [open a new issue](https://github.com/mtaheij/PoGo-UWP/issues/new),
   making sure to follow the directions as best you can.
 
 Contributing to Code
@@ -158,6 +158,6 @@ is also appropriate, as is using Markdown syntax.
 [fork-a-repo]: https://help.github.com/articles/fork-a-repo/
 [closing-via-message]: https://help.github.com/articles/closing-issues-via-commit-messages/
 [good-git-resources]: https://help.github.com/articles/good-resources-for-learning-git-and-github/
-[open-issue]: https://github.com/ST-Apps/PoGo-UWP/issues
-[help-wanted-issue]: https://github.com/ST-Apps/PoGo-UWP/issues?q=is%3Aopen+is%3Aissue+label%3A%220%20-%20Backlog%22
+[open-issue]: https://github.com/mtaheij/PoGo-UWP/issues
+[help-wanted-issue]: https://github.com/mtaheij/PoGo-UWP/issues?q=is%3Aopen+is%3Aissue+label%3A%220%20-%20Backlog%22
 [semantic linefeeds]: http://rhodesmill.org/brandon/2012/one-sentence-per-line/
