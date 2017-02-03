@@ -115,31 +115,53 @@ namespace PokemonGo.RocketAPI.Helpers
 
             var sig = new Signature
             {
-                LocationHash1 = LocHash1,
-                LocationHash2 = LocHash2,
+                LocationHash1 = (int)LocHash1,
+                LocationHash2 = (int)LocHash2,
                 SessionHash = SessHash,
                 Unknown25 = Unk25,
                 Timestamp = Timestmp,
                 TimestampSinceStart = (ulong)_deviceInfo.TimeSnapshot,
-                SensorInfo = new Signature.Types.SensorInfo
+                SensorInfo =
                 {
-                    AccelNormalizedX = normAccel.X,
-                    AccelNormalizedY = normAccel.Y,
-                    AccelNormalizedZ = normAccel.Z,
-                    AccelRawX = -_deviceInfo.Sensors.AccelRawX,
-                    AccelRawY = -_deviceInfo.Sensors.AccelRawY,
-                    AccelRawZ = -_deviceInfo.Sensors.AccelRawZ,
-                    MagnetometerX = _deviceInfo.Sensors.MagnetometerX,
-                    MagnetometerY = _deviceInfo.Sensors.MagnetometerY,
-                    MagnetometerZ = _deviceInfo.Sensors.MagnetometerZ,
-                    GyroscopeRawX = _deviceInfo.Sensors.GyroscopeRawX,
-                    GyroscopeRawY = _deviceInfo.Sensors.GyroscopeRawY,
-                    GyroscopeRawZ = _deviceInfo.Sensors.GyroscopeRawZ,
-                    AngleNormalizedX = _deviceInfo.Sensors.AngleNormalizedX,
-                    AngleNormalizedY = _deviceInfo.Sensors.AngleNormalizedY,
-                    AngleNormalizedZ = _deviceInfo.Sensors.AngleNormalizedZ,
-                    AccelerometerAxes = _deviceInfo.Sensors.AccelerometerAxes,
-                    TimestampSnapshot = (ulong)(_deviceInfo.Sensors.TimeSnapshot - _random.Next(150, 260))
+                    new Signature.Types.SensorInfo
+                    {
+                        /*AccelNormalizedX = normAccel.X,
+                        AccelNormalizedY = normAccel.Y,
+                        AccelNormalizedZ = normAccel.Z,
+                        AccelRawX = -_deviceInfo.Sensors.AccelRawX,
+                        AccelRawY = -_deviceInfo.Sensors.AccelRawY,
+                        AccelRawZ = -_deviceInfo.Sensors.AccelRawZ,
+                        MagnetometerX = _deviceInfo.Sensors.MagnetometerX,
+                        MagnetometerY = _deviceInfo.Sensors.MagnetometerY,
+                        MagnetometerZ = _deviceInfo.Sensors.MagnetometerZ,
+                        GyroscopeRawX = _deviceInfo.Sensors.GyroscopeRawX,
+                        GyroscopeRawY = _deviceInfo.Sensors.GyroscopeRawY,
+                        GyroscopeRawZ = _deviceInfo.Sensors.GyroscopeRawZ,
+                        AngleNormalizedX = _deviceInfo.Sensors.AngleNormalizedX,
+                        AngleNormalizedY = _deviceInfo.Sensors.AngleNormalizedY,
+                        AngleNormalizedZ = _deviceInfo.Sensors.AngleNormalizedZ,
+                        AccelerometerAxes = _deviceInfo.Sensors.AccelerometerAxes, */
+                        GravityX = normAccel.X,
+                        GravityY = normAccel.Y,
+                        GravityZ = normAccel.Z,
+                        AttitudePitch = -_deviceInfo.Sensors.AccelRawX,
+                        AttitudeYaw = -_deviceInfo.Sensors.AccelRawY,
+                        AttitudeRoll = -_deviceInfo.Sensors.AccelRawZ,
+                        LinearAccelerationX = _deviceInfo.Sensors.MagnetometerX,
+                        LinearAccelerationY = _deviceInfo.Sensors.MagnetometerY,
+                        LinearAccelerationZ = _deviceInfo.Sensors.MagnetometerZ,
+                        RotationRateX = _deviceInfo.Sensors.GyroscopeRawX,
+                        RotationRateY = _deviceInfo.Sensors.GyroscopeRawY,
+                        RotationRateZ = _deviceInfo.Sensors.GyroscopeRawZ,
+                        MagneticFieldX = _deviceInfo.Sensors.AngleNormalizedX,
+                        MagneticFieldY = _deviceInfo.Sensors.AngleNormalizedY,
+                        MagneticFieldZ = _deviceInfo.Sensors.AngleNormalizedZ,
+                        //Status = _deviceInfo.Sensors.AccelerometerAxes,
+                        //following two values copied from Aeonlucid PoGoLib
+                        Status = 3,
+                        MagneticFieldAccuracy = -1,
+                        TimestampSnapshot = (ulong)(_deviceInfo.Sensors.TimeSnapshot - _random.Next(150, 260))
+                    }
                 },
 
                 DeviceInfo = new Signature.Types.DeviceInfo
@@ -171,7 +193,7 @@ namespace PokemonGo.RocketAPI.Helpers
                 : null
             };
 
-            if (_deviceInfo.GpsSattelitesInfo.Length > 0)
+            /*if (_deviceInfo.GpsSattelitesInfo.Length > 0)
             {
                 sig.GpsInfo = new Signature.Types.AndroidGpsInfo();
                 //sig.GpsInfo.TimeToFix //currently not filled
@@ -186,7 +208,7 @@ namespace PokemonGo.RocketAPI.Helpers
                     sig.GpsInfo.Snr.Add(sat.Snr);
                     sig.GpsInfo.UsedInFix.Add(sat.UsedInFix);
                 });
-            }
+            }*/
 
             _deviceInfo.LocationFixes.ToList().ForEach(loc => sig.LocationFix.Add(new Signature.Types.LocationFix
             {
@@ -201,7 +223,7 @@ namespace PokemonGo.RocketAPI.Helpers
                 VerticalAccuracy = loc.VerticalAccuracy,
                 Course = loc.Course,
                 Speed = loc.Speed,
-                TimestampSnapshot = loc.TimeSnapshot
+                TimestampSnapshot = (ulong)loc.TimeSnapshot
 
             }));
 

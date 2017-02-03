@@ -21,7 +21,7 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
     <AppxBundle>Always</AppxBundle>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -1443,10 +1443,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Google.Protobuf\Google.Protobuf.csproj">
-      <Project>{8a901eed-55b1-4355-b3e4-79bc08d129f6}</Project>
-      <Name>Google.Protobuf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PokemonGoAPI\PokemonGoAPI.csproj">
       <Project>{c7fe57c5-a786-4b6e-b2c9-c026f347d461}</Project>
       <Name>PokemonGoAPI</Name>
