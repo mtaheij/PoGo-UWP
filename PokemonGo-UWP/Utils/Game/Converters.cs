@@ -28,6 +28,7 @@ using Windows.Graphics.Display;
 using Windows.Foundation;
 using Windows.Services.Maps;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Input;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -86,6 +87,59 @@ namespace PokemonGo_UWP.Utils
         }
 
         #endregion
+    }
+
+    public class TappedRoutedEventArgsToClickedItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            TappedRoutedEventArgs args = (TappedRoutedEventArgs)value;
+            FrameworkElement clickedItem = args.OriginalSource as FrameworkElement;
+            return clickedItem.DataContext;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+    }
+
+    public class DoubleTappedRoutedEventArgsToClickedItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            DoubleTappedRoutedEventArgs args = (DoubleTappedRoutedEventArgs)value;
+            FrameworkElement clickedItem = args.OriginalSource as FrameworkElement;
+            return clickedItem.DataContext;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+    }
+
+    public class HoldingRoutedEventArgsToClickedItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            HoldingRoutedEventArgs args = (HoldingRoutedEventArgs)value;
+            if (args.HoldingState == Windows.UI.Input.HoldingState.Completed)
+            {
+                FrameworkElement clickedItem = args.OriginalSource as FrameworkElement;
+                return clickedItem.DataContext;
+            }
+            else
+            {
+                args.Handled = true;
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
     }
 
     public class PokemonIdToPokedexDescription : IValueConverter

@@ -1179,6 +1179,16 @@ namespace PokemonGo_UWP.Utils
         }
 
         /// <summary>
+        /// Transfers multiple Pokemons at once
+        /// </summary>
+        /// <param name="pokemonIds"></param>
+        /// <returns></returns>
+        public static async Task<ReleasePokemonResponse> TransferPokemons(ulong[] pokemonIds)
+        {
+            return await _client.Inventory.TransferPokemons(pokemonIds);
+        }
+
+        /// <summary>
         /// Favourites/Unfavourites the Pokemon
         /// </summary>
         /// <param name="pokemonId"></param>

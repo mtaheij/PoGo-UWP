@@ -266,6 +266,18 @@ namespace PokemonGo_UWP.ViewModels
                   cannotTransferDialog.Show();
                   return;
               }
+              // This is also for the buddy pokemon
+              if (Convert.ToBoolean(SelectedPokemon.IsBuddy))
+              {
+                  var cannotTransferDialog = new PoGoMessageDialog(Resources.CodeResources.GetString("CannotTransferBuddy"), "")
+                  {
+                      CoverBackground = true,
+                      AnimationType = PoGoMessageDialogAnimation.Bottom
+                  };
+                  cannotTransferDialog.Show();
+                  return;
+              }
+
               // Ask for confirmation before moving the Pokemon
               var name = Resources.Pokemon.GetString(SelectedPokemon.PokemonId.ToString());
               var dialog =

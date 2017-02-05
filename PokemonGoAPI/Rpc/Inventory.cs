@@ -22,6 +22,16 @@ namespace PokemonGo.RocketAPI.Rpc
             return await PostProtoPayload<Request, ReleasePokemonResponse>(RequestType.ReleasePokemon, message);
         }
 
+        public async Task<ReleasePokemonResponse> TransferPokemons(ulong[] pokemonIds)
+        {
+            var message = new ReleasePokemonMessage
+            {
+                PokemonIds = { pokemonIds }
+            };
+
+            return await PostProtoPayload<Request, ReleasePokemonResponse>(RequestType.ReleasePokemon, message);
+        }
+
         public async Task<EvolvePokemonResponse> EvolvePokemon(ulong pokemonId)
         {
             var message = new EvolvePokemonMessage

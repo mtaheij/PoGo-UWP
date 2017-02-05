@@ -57,4 +57,22 @@ namespace PokemonGo_UWP.Utils
             return template;
         }
     }
+
+    public class SelectedItemsTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate DefaultStateTemplate { get; set; }
+        public DataTemplate SelectedStateTemplate { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        {
+            GridViewItem gvi = container as GridViewItem;
+            if (gvi != null)
+            {
+                if (gvi.IsSelected)
+                    return SelectedStateTemplate;
+                else
+                    return DefaultStateTemplate;
+            }
+            return base.SelectTemplateCore(item, container);
+        }
+    }
 }

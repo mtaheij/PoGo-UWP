@@ -14,6 +14,8 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using PokemonGo_UWP.Utils.Extensions;
 using Windows.UI.Xaml.Media.Animation;
+using PokemonGo_UWP.Controls;
+using POGOProtos.Networking.Responses;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -75,11 +77,14 @@ namespace PokemonGo_UWP.ViewModels
                 ulong pokemonId = (ulong)NavigationHelper.NavigationState["LastViewedPokemonDetailID"];
                 NavigationHelper.NavigationState.Remove("LastViewedPokemonDetailID");
                 var pokemon = PokemonInventory.Where(p => p.Id == pokemonId).FirstOrDefault();
-                if(pokemon != null)
+                if (pokemon != null)
                 {
                     ScrollPokemonToVisibleRequired?.Invoke(pokemon);
                 }
             }
+
+            // set the selectioMode to GoToDetail
+            currentSelectionMode = SelectionMode.GoToDetail;
 
             await Task.CompletedTask;
         }
@@ -113,6 +118,7 @@ namespace PokemonGo_UWP.ViewModels
 
         public delegate void ScrollPokemonToVisibleHandler(PokemonDataWrapper p);
         public event ScrollPokemonToVisibleHandler ScrollPokemonToVisibleRequired;
+        public event EventHandler<PokemonDataWrapper> MultiplePokemonSelected;
 
         /// <summary>
         /// Player's profile, we use it just for the maximum ammount of pokemon
@@ -158,6 +164,38 @@ namespace PokemonGo_UWP.ViewModels
         public ObservableCollection<EggIncubator> IncubatorsInventory => GameClient.IncubatorsInventory;
 
         /// <summary>
+        /// Flag for an ongoing server request. Used to disable the controls
+        /// </summary>
+        private bool _serverRequestRunning;
+        public bool ServerRequestRunning
+        {
+            get { return _serverRequestRunning; }
+            set
+            {
+                Set(ref _serverRequestRunning, value);
+                ReturnToGameScreen.RaiseCanExecuteChanged();
+                GotoPokemonDetailCommand.RaiseCanExecuteChanged();
+                GotoEggDetailCommand.RaiseCanExecuteChanged();
+                CloseMultipleSelectPokemonCommand.RaiseCanExecuteChanged();
+                TransferMultiplePokemonCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public enum SelectionMode
+        {
+            GoToDetail,
+            MultipleSelect
+        };
+
+        public SelectionMode currentSelectionMode;
+
+        /// <summary>
+        /// Collection of selected pokemons to transfer
+        /// </summary>
+        public ObservableCollection<PokemonDataWrapper> SelectedPokemons { get; private set; } =
+            new ObservableCollection<PokemonDataWrapper>();
+
+        /// <summary>
         /// Total amount of Pokemon in players inventory
         /// </summary>
         public int TotalPokemonCount {
@@ -175,11 +213,12 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         /// Going back to map page
         /// </summary>
-        public DelegateCommand ReturnToGameScreen
-            =>
-                _returnToGameScreen ??
-                (_returnToGameScreen =
-                    new DelegateCommand(() => { NavigationService.GoBack(); }, () => true));
+        public DelegateCommand ReturnToGameScreen => _returnToGameScreen ?? (
+            _returnToGameScreen = new DelegateCommand(() => 
+            {
+                if (ServerRequestRunning) return;
+                NavigationService.GoBack();
+            }, () => true));
 
         #endregion
 
@@ -204,27 +243,194 @@ namespace PokemonGo_UWP.ViewModels
         /// Navigate to the detail page for the selected pokemon
         /// </summary>
         private DelegateCommand<PokemonDataWrapper> _gotoPokemonDetailCommand;
-        public DelegateCommand<PokemonDataWrapper> GotoPokemonDetailCommand => _gotoPokemonDetailCommand ?? (_gotoPokemonDetailCommand = new DelegateCommand<PokemonDataWrapper>((selectedPokemon) => 
+        public DelegateCommand<PokemonDataWrapper> GotoPokemonDetailCommand => _gotoPokemonDetailCommand ?? (_gotoPokemonDetailCommand = new DelegateCommand<PokemonDataWrapper>((selectedPokemon) =>
         {
-            NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
+            // If the multiple select mode is on, select additional pokemons in stead of going to the details
+            if (currentSelectionMode == SelectionMode.MultipleSelect)
             {
-                SelectedPokemonId = selectedPokemon.Id.ToString(),
-                SortingMode = CurrentPokemonSortingMode,
-                ViewMode = PokemonDetailPageViewMode.Normal
-            }, new SuppressNavigationTransitionInfo());
+                SelectPokemon(selectedPokemon);
+            }
+            else
+            {
+                NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
+                {
+                    SelectedPokemonId = selectedPokemon.Id.ToString(),
+                    SortingMode = CurrentPokemonSortingMode,
+                    ViewMode = PokemonDetailPageViewMode.Normal
+                }, new SuppressNavigationTransitionInfo());
+            }
         }));
 
         /// <summary>
         /// Navigate to detail page for the selected egg
         /// </summary>
         private DelegateCommand<PokemonDataWrapper> _gotoEggDetailCommand;
-        public DelegateCommand<PokemonDataWrapper> GotoEggDetailCommand => _gotoEggDetailCommand ?? (_gotoEggDetailCommand =  new DelegateCommand<PokemonDataWrapper>((selectedEgg) =>
+        public DelegateCommand<PokemonDataWrapper> GotoEggDetailCommand => _gotoEggDetailCommand ?? (_gotoEggDetailCommand = new DelegateCommand<PokemonDataWrapper>((selectedEgg) =>
+       {
+           NavigationService.Navigate(typeof(EggDetailPage), selectedEgg.Id.ToString(), new SuppressNavigationTransitionInfo());
+       }));
+
+        #endregion
+
+        #region Multiple Select and transfer
+        private DelegateCommand<PokemonDataWrapper> _selectMultiplePokemonCommand;
+        public DelegateCommand<PokemonDataWrapper> SelectMultiplePokemonCommand => _selectMultiplePokemonCommand ?? (_selectMultiplePokemonCommand = new DelegateCommand<PokemonDataWrapper>((selectedPokemon) =>
         {
-            NavigationService.Navigate(typeof(EggDetailPage), selectedEgg.Id.ToString(), new SuppressNavigationTransitionInfo());
+            // switch the selectionMode, so that additional pokemons can be selected by a simple tap
+            currentSelectionMode = SelectionMode.MultipleSelect;
+
+            SelectPokemon(selectedPokemon);
         }));
 
-        #endregion
+        private void SelectPokemon(PokemonDataWrapper selectedPokemon)
+        {
+            if (SelectedPokemons.Contains(selectedPokemon))
+            {
+                SelectedPokemons.Remove(selectedPokemon);
 
-        #endregion
+                // If no pokemons are left selected, close the selection mode
+                if (SelectedPokemons.Count == 0)
+                {
+                    currentSelectionMode = SelectionMode.GoToDetail;
+                    MultiplePokemonSelected?.Invoke(null, selectedPokemon);
+                }
+            }
+            else
+            {
+                if (selectedPokemon != null)
+                {
+                    SelectedPokemons.Add(selectedPokemon);
+
+                    // When the first pokemon is selected, open selection mode
+                    if (SelectedPokemons.Count == 1)
+                    {
+                        MultiplePokemonSelected?.Invoke(null, selectedPokemon);
+                    }
+                }
+            }
+            RaisePropertyChanged(() => SelectedPokemons);
+            RaisePropertyChanged(() => SelectedPokemonCount);
+        }
+
+        public string SelectedPokemonCount
+        {
+            get { return "(" + SelectedPokemons.Count.ToString() + ")"; }
+        }
+
+        private DelegateCommand _closeMultipleSelectPokemonCommand;
+        public DelegateCommand CloseMultipleSelectPokemonCommand => _closeMultipleSelectPokemonCommand ?? (_closeMultipleSelectPokemonCommand = new DelegateCommand(() =>
+        {
+            // Switch the selectionMode back to details
+            currentSelectionMode = SelectionMode.GoToDetail;
+
+            // Clear the selection of any pokemons
+            SelectedPokemons.Clear();
+            RaisePropertyChanged(() => SelectedPokemons);
+            RaisePropertyChanged(() => SelectedPokemonCount);
+
+            // Close the multiple selection view
+            MultiplePokemonSelected?.Invoke(null, null);
+        }));
+
+        private DelegateCommand _transferMultiplePokemonCommand;
+        public DelegateCommand TransferMultiplePokemonCommand => _transferMultiplePokemonCommand ?? (_transferMultiplePokemonCommand = new DelegateCommand(() =>
+        {
+            // build a list of PokemonIds and transfer them
+            ulong[] pokemonIds = new ulong[SelectedPokemons.Count];
+
+            int i = 0;
+            foreach (PokemonDataWrapper pokemon in SelectedPokemons)
+            {
+                // Catch if the Pokémon is a Favorite or Buddy, transferring is not permitted in these cases
+                // TODO: This isn't a MessageDialog in the original apps, implement error style (Shell needed)
+                if (Convert.ToBoolean(pokemon.Favorite))
+                {
+                    var cannotTransferDialog = new PoGoMessageDialog(Resources.CodeResources.GetString("CannotTransferFavorite"), "")
+                    {
+                        CoverBackground = true,
+                        AnimationType = PoGoMessageDialogAnimation.Bottom
+                    };
+                    cannotTransferDialog.Show();
+                    return;
+                }
+                if (Convert.ToBoolean(pokemon.IsBuddy))
+                {
+                    var cannotTransferDialog = new PoGoMessageDialog(Resources.CodeResources.GetString("CannotTransferBuddy"), "")
+                    {
+                        CoverBackground = true,
+                        AnimationType = PoGoMessageDialogAnimation.Bottom
+                    };
+                    cannotTransferDialog.Show();
+                    return;
+                }
+
+                pokemonIds[i] = pokemon.Id;
+                i++;
+            }
+
+            // Ask for confirmation before moving the Pokemons
+            var dialog =
+                new PoGoMessageDialog(
+                    string.Format(Resources.CodeResources.GetString("TransferMultiplePokemonWarningTitle"), SelectedPokemons.Count),
+                    Resources.CodeResources.GetString("TransferMultiplePokemonWarningText"))
+                {
+                    AcceptText = Resources.CodeResources.GetString("YesText"),
+                    CancelText = Resources.CodeResources.GetString("NoText"),
+                    CoverBackground = true,
+                    AnimationType = PoGoMessageDialogAnimation.Bottom
+                };
+
+            dialog.AcceptInvoked += async (sender, e) =>
+            {
+                // User confirmed transfer
+                try
+                {
+                    ServerRequestRunning = true;
+                    var pokemonTransferResponse = await GameClient.TransferPokemons(pokemonIds);
+
+                    switch (pokemonTransferResponse.Result)
+                    {
+                        case ReleasePokemonResponse.Types.Result.Unset:
+                            break;
+                        case ReleasePokemonResponse.Types.Result.Success:
+                            // Remove the transferred pokemons from the inventory on screen
+                            foreach (PokemonDataWrapper transferredPokemon in SelectedPokemons)
+                            {
+                                PokemonInventory.Remove(transferredPokemon);
+                            }
+                            RaisePropertyChanged(() => PokemonInventory);
+
+                            // TODO: Implement message informing about success of transfer (Shell needed)
+                            await GameClient.UpdateInventory();
+                            await GameClient.UpdatePlayerStats();
+
+                            // Reset to default screen
+                            CloseMultipleSelectPokemonCommand.Execute();
+                            break;
+
+                        case ReleasePokemonResponse.Types.Result.PokemonDeployed:
+                            break;
+                        case ReleasePokemonResponse.Types.Result.Failed:
+                            break;
+                        case ReleasePokemonResponse.Types.Result.ErrorPokemonIsEgg:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                finally
+                {
+                    ServerRequestRunning = false;
+                }
+
+            };
+
+            dialog.Show();
+
+        }, () => !ServerRequestRunning));
     }
+
+    #endregion
+    
+    #endregion
 }

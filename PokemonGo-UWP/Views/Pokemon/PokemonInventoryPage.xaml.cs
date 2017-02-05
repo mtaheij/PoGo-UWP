@@ -19,12 +19,17 @@ namespace PokemonGo_UWP.Views
         {
             base.OnNavigatedTo(e);
             ViewModel.ScrollPokemonToVisibleRequired += ScrollPokemonToVisible;
+            ViewModel.MultiplePokemonSelected += ViewModel_MultiplePokemonSelected;
+
+            // Hide the multiple select panel
+            HideMultipleSelectStoryboard.Begin();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
             ViewModel.ScrollPokemonToVisibleRequired -= ScrollPokemonToVisible;
+            ViewModel.MultiplePokemonSelected -= ViewModel_MultiplePokemonSelected;
         }
 
         #endregion
@@ -32,6 +37,23 @@ namespace PokemonGo_UWP.Views
         private void ScrollPokemonToVisible(PokemonDataWrapper p)
         {
             PokemonInventory.PokemonInventoryGridView.ScrollIntoView(p);
+        }
+
+        private void ViewModel_MultiplePokemonSelected(object sender, PokemonDataWrapper e)
+        {
+            // Show or hide the 'Transfer multiple' button at the bottom of the screen
+            if (ViewModel.SelectedPokemons.Count > 0)
+            {
+                PokemonInventory.SelectPokemon(e);
+                ShowMultipleSelectStoryboard.Begin();
+                PokemonInventory.ShowHideSortingButton(false);
+            }
+            else
+            {
+                PokemonInventory.ClearSelectedPokemons();
+                HideMultipleSelectStoryboard.Begin();
+                PokemonInventory.ShowHideSortingButton(true);
+            }
         }
 
     }

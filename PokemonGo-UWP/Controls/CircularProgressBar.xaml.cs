@@ -121,7 +121,18 @@ namespace PokemonGo_UWP.Controls
 
         public Uri ImageSourcePath
         {
-            get { return (Uri)GetValue(ImageSourcePathProperty); }
+            get
+            {
+                try
+                {
+                    Uri u = (Uri)GetValue(ImageSourcePathProperty);
+                    return u;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
             set { SetValue(ImageSourcePathProperty, value); }
         }
         #endregion

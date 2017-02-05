@@ -2,6 +2,7 @@
 using PokemonGo_UWP.Utils;
 using System.Collections.ObjectModel;
 using Template10.Mvvm;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -14,7 +15,7 @@ namespace PokemonGo_UWP.Views
             this.InitializeComponent();
         }
 
-        #region Propertys
+        #region Properties
 
         public static readonly DependencyProperty PokemonInventoryProperty =
             DependencyProperty.Register(nameof(PokemonInventory), typeof(ObservableCollection<PokemonDataWrapper>), typeof(PokemonInventoryControl),
@@ -22,6 +23,10 @@ namespace PokemonGo_UWP.Views
 
         public static readonly DependencyProperty PokemonSelectedCommandProperty =
             DependencyProperty.Register(nameof(PokemonSelectedCommand), typeof(DelegateCommand<PokemonDataWrapper>), typeof(PokemonInventoryControl),
+                new PropertyMetadata(null));
+
+        public static readonly DependencyProperty PokemonMultipleSelectedCommandProperty =
+            DependencyProperty.Register(nameof(PokemonMultipleSelectedCommand), typeof(DelegateCommand<PokemonDataWrapper>), typeof(PokemonInventoryControl),
                 new PropertyMetadata(null));
 
         public static readonly DependencyProperty SortingModeProperty =
@@ -38,6 +43,12 @@ namespace PokemonGo_UWP.Views
         {
             get { return (DelegateCommand<PokemonDataWrapper>)GetValue(PokemonSelectedCommandProperty); }
             set { SetValue(PokemonSelectedCommandProperty, value); }
+        }
+
+        public DelegateCommand<PokemonDataWrapper> PokemonMultipleSelectedCommand
+        {
+            get { return (DelegateCommand<PokemonDataWrapper>)GetValue(PokemonMultipleSelectedCommandProperty); }
+            set { SetValue(PokemonMultipleSelectedCommandProperty, value); }
         }
 
         public PokemonSortingModes SortingMode
@@ -58,5 +69,33 @@ namespace PokemonGo_UWP.Views
         }
 
         #endregion
+
+        public void ClearSelectedPokemons()
+        {
+            PokemonInventoryGridView.SelectedItems.Clear();
+        }
+
+        public void SelectPokemon(PokemonDataWrapper selectedPokemon)
+        {
+            foreach(PokemonDataWrapper pdw in PokemonInventoryGridView.Items)
+            {
+                if (pdw == selectedPokemon)
+                {
+                PokemonInventoryGridView.SelectedItems.Add(pdw);
+                }
+            }
+        }
+
+        public void ShowHideSortingButton(bool Show)
+        {
+            if (Show)
+            {
+                ShowSortingButtonStoryboard.Begin();
+            }
+            else
+            {
+                HideSortingButtonStoryboard.Begin();
+            }
+        }
     }
 }

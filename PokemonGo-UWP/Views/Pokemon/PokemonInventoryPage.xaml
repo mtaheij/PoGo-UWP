@@ -98,6 +98,39 @@
                              Duration="0:0:0.2" />
         </Storyboard>
 
+        <Storyboard x:Name="ShowMultipleSelectStoryboard">
+            <FadeInThemeAnimation TargetName="MultipleSelect" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)"
+                                           Storyboard.TargetName="MultipleSelect">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>-1</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>10</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>            
+        </Storyboard>
+
+        <Storyboard x:Name="HideMultipleSelectStoryboard">
+            <FadeOutThemeAnimation TargetName="MultipleSelect" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)"
+                                           Storyboard.TargetName="MultipleSelect">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>10</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>-1</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>        </Storyboard>
+
     </Page.Resources>
     
     <!--Main UI-->
@@ -119,6 +152,7 @@
                     <local:PokemonInventoryControl x:Name="PokemonInventory"
                                                    PokemonInventory="{Binding PokemonInventory}"
                                                    PokemonSelectedCommand="{Binding GotoPokemonDetailCommand}"
+                                                   PokemonMultipleSelectedCommand="{Binding SelectMultiplePokemonCommand}"
                                                    SortingMode="{Binding CurrentPokemonSortingMode, Mode=TwoWay}" />
                 </PivotItem>
 
@@ -137,6 +171,7 @@
 
             </Pivot>
         </Border>
+
         <!--Close Button-->
         <Button Command="{Binding ReturnToGameScreen}"
                 Style="{StaticResource ButtonCircle}"
@@ -144,5 +179,39 @@
                 Margin="0,0,0,21">
             <Image Source="ms-appx:///Assets/Buttons/btn_close.png" />
         </Button>
+
+        <Grid x:Name ="MultipleSelect">
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="MultipleSelectGridTranslateTransform" />
+            </Grid.RenderTransform>
+
+            <Border Background="{StaticResource DarkPageBackgroundGradient }" Margin="0,12,0,0" Height="53" VerticalAlignment="Top">
+                <Grid>
+                    <Button Command="{Binding CloseMultipleSelectPokemonCommand}"
+                            x:Name="btnCloseMultipleSelect"
+                            Style="{StaticResource ButtonCancel}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Margin="10,10,0,10">
+                        <Image Source="ms-appx:///Assets/Buttons/btn_close.png" Width="20" />
+                    </Button>
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle }"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">SELECT POKÉMON</TextBlock> 
+                </Grid>
+            </Border>
+            <Button Command="{Binding TransferMultiplePokemonCommand}" x:Name="TransferMultiple" 
+                    Style="{StaticResource ButtonSubmit}" 
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,0,21"
+                    Width="200">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <Run>TRANSFER </Run>
+                    <Run Text="{Binding SelectedPokemonCount}"/>
+                </TextBlock>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

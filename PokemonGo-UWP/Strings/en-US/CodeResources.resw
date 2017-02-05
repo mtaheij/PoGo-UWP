@@ -365,4 +365,13 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="ActivitySearchFortStreakBonus" xml:space="preserve">
     <value>Streak Bonus</value>
   </data>
+  <data name="CannotTransferBuddy" xml:space="preserve">
+    <value>Cannot transfer your buddy Pokémon!</value>
+  </data>
+  <data name="TransferMultiplePokemonWarningText" xml:space="preserve">
+    <value>After you transfer, you can't undo the transfer.</value>
+  </data>
+  <data name="TransferMultiplePokemonWarningTitle" xml:space="preserve">
+    <value>Do you want to transfer {0} Pokémon to the Professor?</value>
+  </data>
 </root>

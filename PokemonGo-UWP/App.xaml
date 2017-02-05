@@ -18,6 +18,8 @@
             <utils:PokemonIdToNearbyPokestopConverter x:Key="PokemonIdToNearbyPokestopConverter"/>
             <utils:PokemonIdToNumericId x:Key="PokemonIdToNumericId" />
             <utils:ItemClickEventArgsToClickedItemConverter x:Key="ItemClickEventArgsToClickedItemConverter" />
+            <utils:TappedRoutedEventArgsToClickedItemConverter x:Key="TappedRoutedEventArgsToClickedItemConverter" />
+            <utils:HoldingRoutedEventArgsToClickedItemConverter x:Key="HoldingRoutedEventArgsToClickedItemConverter" />
             <utils:PokemonIdToPokemonSpriteConverter x:Key="PokemonIdToPokemonSpriteConverter" />
             <utils:BuddyIsDeployedVisibilityConverter x:Key="BuddyIsDeployedVisibilityConverter" />
             <utils:PokemonIsBuddyVisibilityConverter x:Key="PokemonIsBuddyVisibilityConverter" />

@@ -10,8 +10,190 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:media="using:Microsoft.Xaml.Interactions.Media"
     xmlns:entities="using:PokemonGo_UWP.Entities"
+    xmlns:utils="using:PokemonGo_UWP.Utils"
     xmlns:controls="using:Template10.Controls">
-    
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="defaultState" x:DataType="entities:PokemonDataWrapper">
+            <Grid Height="115">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="CPTextBlock"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center">
+                                           <Run x:Uid="CpTextBlock"
+                                                FontFamily="{StaticResource LatoMediumFont}"
+                                                FontSize="11"
+                                                Foreground="{StaticResource GrayTextColor}"
+                                                Text="WP" />
+                                           <Run FontFamily="{StaticResource LatoBoldFont}"
+                                                FontSize="19"
+                                                Foreground="{StaticResource TitleTextColor}"
+                                                Text="{x:Bind Cp}" />
+                </TextBlock>
+                <Image Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Source="ms-appx:///assets/Backgrounds/ui_bg_recentcatch.png"
+                               Visibility="{x:Bind CreationTimeMs, Converter={StaticResource PokemonLastHoursVisibiltyConverter}}"
+                               x:Phase="2" />
+                <Image x:Name="PokemonImage"
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="5,0"
+                               Source="{x:Bind PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                               x:Phase="2" />
+                <Viewbox Grid.Row="1"
+                                 Margin="0,-4,0,0"
+                                 Height="12"
+                                 Width="12"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 Visibility="{x:Bind IsFavorite, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                 x:Phase="2">
+                    <Path Style="{StaticResource FavoriteStarPathStyle}"
+                                  Data="{StaticResource FavoriteStarPathData}" />
+                </Viewbox>
+                <!--Deployment Indicator-->
+                <Grid Grid.Row="1"
+                              Height="20"
+                              Width="19"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Margin="0,5,0,0"
+                              Visibility="{x:Bind IsDeployed, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border Background="White"
+                                    BorderBrush="#bebebe"
+                                    BorderThickness="0.3"
+                                    CornerRadius="10"
+                                    Height="20"
+                                    VerticalAlignment="Top"
+                                    Child="{x:Bind Converter={StaticResource PokemonToDeploymentImageConverter}}" />
+                    <Path HorizontalAlignment="Left"
+                                  VerticalAlignment="Bottom"
+                                  Data="M17.2 0 L19 4.5 L14.4 2.8"
+                                  Stroke="#bebebe"
+                                  StrokeThickness="0.3"
+                                  Fill="White" />
+                </Grid>
+                <Viewbox Grid.Row="2"
+                                 Margin="3,5,3,0"
+                                 StretchDirection="DownOnly">
+                    <TextBlock x:Name="NameTextBlock"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource LatoBoldFont}"
+                                       FontSize="14"
+                                       CharacterSpacing="13"
+                                       Foreground="{StaticResource TitleTextColor}"
+                                       Text="{x:Bind Name}" />
+                </Viewbox>
+                <ProgressBar x:Name="StaminaProgress"
+                                     Grid.Row="3"
+                                     Value="{x:Bind Stamina}"
+                                     Maximum="{x:Bind StaminaMax}"
+                                     Margin="15,4"
+                                     Height="3"
+                                     Style="{StaticResource PokemonHPProgressBarStyle}"
+                                     Foreground="#6ee8b7"
+                                     IsIndeterminate="False"
+                                     HorizontalAlignment="Stretch"
+                                     x:Phase="1" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="selectedState" x:DataType="entities:PokemonDataWrapper">
+            <Grid Height="115" Background="Black">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Source="ms-appx:///assets/Backgrounds/ui_bg_recentcatch.png"
+                               Visibility="{x:Bind CreationTimeMs, Converter={StaticResource PokemonLastHoursVisibiltyConverter}}"
+                               x:Phase="2" />
+                <Image x:Name="PokemonImage"
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="5,0"
+                               Source="{x:Bind PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                               x:Phase="2" />
+                <Viewbox Grid.Row="1"
+                                 Margin="0,-4,0,0"
+                                 Height="12"
+                                 Width="12"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 Visibility="{x:Bind IsFavorite, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                 x:Phase="2">
+                    <Path Style="{StaticResource FavoriteStarPathStyle}"
+                                  Data="{StaticResource FavoriteStarPathData}" />
+                </Viewbox>
+                <!--Deployment Indicator-->
+                <Grid Grid.Row="1"
+                              Height="20"
+                              Width="19"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Margin="0,5,0,0"
+                              Visibility="{x:Bind IsDeployed, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border Background="White"
+                                    BorderBrush="#bebebe"
+                                    BorderThickness="0.3"
+                                    CornerRadius="10"
+                                    Height="20"
+                                    VerticalAlignment="Top"
+                                    Child="{x:Bind Converter={StaticResource PokemonToDeploymentImageConverter}}" />
+                    <Path HorizontalAlignment="Left"
+                                  VerticalAlignment="Bottom"
+                                  Data="M17.2 0 L19 4.5 L14.4 2.8"
+                                  Stroke="#bebebe"
+                                  StrokeThickness="0.3"
+                                  Fill="White" />
+                </Grid>
+                <Viewbox Grid.Row="2"
+                                 Margin="3,5,3,0"
+                                 StretchDirection="DownOnly">
+                    <TextBlock x:Name="NameTextBlock"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource LatoBoldFont}"
+                                       FontSize="14"
+                                       CharacterSpacing="13"
+                                       Foreground="{StaticResource TitleTextColor}"
+                                       Text="{x:Bind Name}" />
+                </Viewbox>
+                <ProgressBar x:Name="StaminaProgress"
+                                     Grid.Row="3"
+                                     Value="{x:Bind Stamina}"
+                                     Maximum="{x:Bind StaminaMax}"
+                                     Margin="15,4"
+                                     Height="3"
+                                     Style="{StaticResource PokemonHPProgressBarStyle}"
+                                     Foreground="#6ee8b7"
+                                     IsIndeterminate="False"
+                                     HorizontalAlignment="Stretch"
+                                     x:Phase="1" />
+            </Grid>
+        </DataTemplate>
+
+        <Storyboard x:Name="ShowSortingButtonStoryboard">
+            <FadeInThemeAnimation TargetName="SortingButton" />
+        </Storyboard>
+
+        <Storyboard x:Name="HideSortingButtonStoryboard">
+            <FadeOutThemeAnimation TargetName="SortingButton" />
+        </Storyboard>
+
+    </UserControl.Resources>
+
     <Grid>
         <!--Adaptive Layout-->
         <VisualStateManager.VisualStateGroups>
@@ -82,12 +264,16 @@
                   ItemsSource="{Binding ElementName=Root, Path=PokemonInventory, Mode=OneWay}"
                   ScrollViewer.VerticalScrollMode="Auto"
                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                  SelectionMode="None"
-                  IsItemClickEnabled="True">
+                  SelectionMode="Multiple"
+                  IsMultiSelectCheckBoxEnabled="False">
             <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="ItemClick">
+                <core:EventTriggerBehavior EventName="Tapped">
                     <core:InvokeCommandAction Command="{Binding ElementName=Root, Path=PokemonSelectedCommand, Mode=OneWay}"
-                                              InputConverter="{StaticResource ItemClickEventArgsToClickedItemConverter}" />
+                                              InputConverter="{StaticResource TappedRoutedEventArgsToClickedItemConverter}" />
+                </core:EventTriggerBehavior>
+                <core:EventTriggerBehavior EventName="Holding">
+                    <core:InvokeCommandAction Command="{Binding ElementName=Root, Path=PokemonMultipleSelectedCommand, Mode=OneWay}"
+                                              InputConverter="{StaticResource HoldingRoutedEventArgsToClickedItemConverter}" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
             <GridView.ItemContainerStyle>
@@ -111,100 +297,11 @@
                                    HorizontalAlignment="Center" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-            <GridView.ItemTemplate>
-                <!--Template-->
-                <DataTemplate x:DataType="entities:PokemonDataWrapper">
-                    <Grid Height="115">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Name="CPTextBlock"
-                                   Grid.Row="0"
-                                   HorizontalAlignment="Center">
-                                           <Run x:Uid="CpTextBlock"
-                                                FontFamily="{StaticResource LatoMediumFont}"
-                                                FontSize="11"
-                                                Foreground="{StaticResource GrayTextColor}"
-                                                Text="WP" />
-                                           <Run FontFamily="{StaticResource LatoBoldFont}"
-                                                FontSize="19"
-                                                Foreground="{StaticResource TitleTextColor}"
-                                                Text="{x:Bind Cp}" />
-                        </TextBlock>
-                        <Image Grid.Row="1"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Source="ms-appx:///assets/Backgrounds/ui_bg_recentcatch.png"
-                               Visibility="{x:Bind CreationTimeMs, Converter={StaticResource PokemonLastHoursVisibiltyConverter}}"
-                               x:Phase="2" />
-                        <Image x:Name="PokemonImage"
-                               Grid.Row="1"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="5,0"
-                               Source="{x:Bind PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                               x:Phase="2" />
-                        <Viewbox Grid.Row="1"
-                                 Margin="0,-4,0,0"
-                                 Height="12"
-                                 Width="12"
-                                 HorizontalAlignment="Right"
-                                 VerticalAlignment="Top"
-                                 Visibility="{x:Bind IsFavorite, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                 x:Phase="2">
-                            <Path Style="{StaticResource FavoriteStarPathStyle}"
-                                  Data="{StaticResource FavoriteStarPathData}" />
-                        </Viewbox>
-                        <!--Deployment Indicator-->
-                        <Grid Grid.Row="1"
-                              Height="20"
-                              Width="19"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Top"
-                              Margin="0,5,0,0"
-                              Visibility="{x:Bind IsDeployed, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Border Background="White"
-                                    BorderBrush="#bebebe"
-                                    BorderThickness="0.3"
-                                    CornerRadius="10"
-                                    Height="20"
-                                    VerticalAlignment="Top"
-                                    Child="{x:Bind Converter={StaticResource PokemonToDeploymentImageConverter}}" />
-                            <Path HorizontalAlignment="Left"
-                                  VerticalAlignment="Bottom"
-                                  Data="M17.2 0 L19 4.5 L14.4 2.8"
-                                  Stroke="#bebebe"
-                                  StrokeThickness="0.3"
-                                  Fill="White" />
-                        </Grid>
-                        <Viewbox Grid.Row="2"
-                                 Margin="3,5,3,0"
-                                 StretchDirection="DownOnly">
-                            <TextBlock x:Name="NameTextBlock"
-                                       HorizontalAlignment="Center"
-                                       FontFamily="{StaticResource LatoBoldFont}"
-                                       FontSize="14"
-                                       CharacterSpacing="13"
-                                       Foreground="{StaticResource TitleTextColor}"
-                                       Text="{x:Bind Name}" />
-                        </Viewbox>
-                        <ProgressBar x:Name="StaminaProgress"
-                                     Grid.Row="3"
-                                     Value="{x:Bind Stamina}"
-                                     Maximum="{x:Bind StaminaMax}"
-                                     Margin="15,4"
-                                     Height="3"
-                                     Style="{StaticResource PokemonHPProgressBarStyle}"
-                                     Foreground="#6ee8b7"
-                                     IsIndeterminate="False"
-                                     HorizontalAlignment="Stretch"
-                                     x:Phase="1" />
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
+            <GridView.ItemTemplateSelector>
+                <utils:SelectedItemsTemplateSelector
+                    DefaultStateTemplate="{StaticResource defaultState}"
+                    SelectedStateTemplate="{StaticResource selectedState}"/>
+            </GridView.ItemTemplateSelector>
         </GridView>
         <!--Sorting overlay Button-->
         <Button x:Name="SortingButton"

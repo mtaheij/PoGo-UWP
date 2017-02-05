@@ -58,7 +58,7 @@
                 <HyperlinkButton x:Uid="PokehashWebsite"
                                  HorizontalAlignment="Center"
                                  Margin="15,0,15,20"
-                                 NavigateUri="https://www.pokefarmer.com/#plans"
+                                 NavigateUri="https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer"
                                  Content="Get me a key!"/>
             </StackPanel>
         </Grid>
