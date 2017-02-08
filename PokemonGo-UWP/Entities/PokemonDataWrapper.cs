@@ -102,7 +102,7 @@ namespace PokemonGo_UWP.Entities
         // Stubb Var
         public bool IsBuddy
         {
-            get { return (GameClient.PlayerProfile.BuddyPokemon.Id == WrappedData.Id); }
+            get { return (GameClient.PlayerData.BuddyPokemon.Id == WrappedData.Id); }
         }
         public bool IsDeployed { get { return !string.IsNullOrEmpty(DeployedFortId) || IsBuddy; } }
 

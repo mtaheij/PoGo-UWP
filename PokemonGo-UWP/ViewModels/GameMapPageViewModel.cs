@@ -88,7 +88,15 @@ namespace PokemonGo_UWP.ViewModels
 
             AudioUtils.PlaySound(AudioUtils.GAMEPLAY);
 
-            if (parameter == null || mode == NavigationMode.Back) return;
+            if (parameter == null) return;
+
+            if (mode == NavigationMode.Back)
+            {
+                await UpdatePlayerData(true);
+                GameXPAwarded?.Invoke(null,null);
+                return;
+            }
+
             var gameMapNavigationMode = (GameMapNavigationModes)parameter;
 
             // We just resumed from suspension so we restart update service and we get data from suspension state
@@ -124,6 +132,7 @@ namespace PokemonGo_UWP.ViewModels
                     // We came here after the catching page so we need to restart map update timer and update player data. We also check for level up.
                     GameClient.ToggleUpdateTimer();
                     await UpdatePlayerData(true);
+                    GameXPAwarded?.Invoke(null, null);
                     break;
                 case GameMapNavigationModes.PokemonUpdate:
                     // As above
@@ -255,6 +264,8 @@ namespace PokemonGo_UWP.ViewModels
         /// </summary>
         public static ObservableCollection<FortDataWrapper> NearbyGyms => GameClient.NearbyGyms;
 
+        public ObservableCollection<int> AwardedXp => GameClient.AdwardedXP;
+
         #endregion
 
         #region Game Logic
@@ -283,6 +294,8 @@ namespace PokemonGo_UWP.ViewModels
         public event EventHandler<AppliedItemWrapper> AppliedItemStarted;
 
         #endregion
+
+        public event EventHandler GameXPAwarded;
 
         /// <summary>
         ///     Waits for GPS auth and, if auth is given, starts updating data
@@ -318,7 +331,7 @@ namespace PokemonGo_UWP.ViewModels
         {
             await GameClient.UpdateProfile();
             LevelUpResponse = await GameClient.UpdatePlayerStats(checkForLevelUp);
-            PlayerProfile = GameClient.PlayerProfile;
+            PlayerProfile = GameClient.PlayerData;
             PlayerStats = GameClient.PlayerStats;
             if (checkForLevelUp && LevelUpResponse != null)
             {

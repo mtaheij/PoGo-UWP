@@ -327,4 +327,11 @@
   <data name="EggDetailIncubatingTextBlock.Text" xml:space="preserve">
     <value>Walk to hatch this Egg.</value>
   </data>
+  <data name="SelectPokemonHeader.Text" xml:space="preserve">
+    <value>SELECT POKÉMON</value>
+  </data>
+  <data name="TransferButtonText.Text" xml:space="preserve">
+    <value>TRANSFER </value>
+    <comment>Watch out: there is a space behind TRANSFER</comment>
+  </data>
 </root>

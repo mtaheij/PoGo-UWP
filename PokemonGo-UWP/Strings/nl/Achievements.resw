@@ -112,6 +112,9 @@
   <data name="BadgeEvolvedTotalDescription" xml:space="preserve">
     <value>{0} Pokémon geëvolueerd</value>
   </data>
+  <data name="BadgeHatchedTotalDescription" xml:space="preserve">
+    <value>Hatched {0} Pokemon</value>
+  </data>
   <data name="BadgePikachuDescription" xml:space="preserve">
     <value>{0} Pikachu gevangen</value>
   </data>
@@ -165,6 +168,9 @@
   </data>
   <data name="PoisonDescription" xml:space="preserve">
     <value>{0} Giftige Pokemon gevangen</value>
+  </data>
+  <data name="PsychicDescription" xml:space="preserve">
+    <value>{0} Psychische Pokemon gevangen</value>
   </data>
   <data name="RockDescription" xml:space="preserve">
     <value>{0} Steen Pokemon gevangen</value>

@@ -219,6 +219,7 @@
                 </DiscreteObjectKeyFrame>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+
         <Storyboard x:Name="ShowBatterySaver">
             <DoubleAnimation
                 Storyboard.TargetName="GamePanel"
@@ -227,6 +228,7 @@
                 To="0"
                 Duration="0:0:0.2" />
         </Storyboard>
+
         <Storyboard x:Name="HideBatterySaver">
             <DoubleAnimation
                 Storyboard.TargetName="GamePanel"
@@ -840,7 +842,8 @@
                            Padding="10,0,0,0"
                            Grid.Column="0"
                            VerticalAlignment="Center">
-                <Button x:Name="AvatarButton" RelativePanel.AlignLeftWithPanel="True"
+                <Button x:Name="AvatarButton" 
+                        RelativePanel.AlignLeftWithPanel="True"
                         Style="{ThemeResource ImageButtonStyle}"
                         RelativePanel.AlignTopWithPanel="true"
                         Command="{Binding GotoPlayerProfilePageCommand}">

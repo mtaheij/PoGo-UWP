@@ -44,12 +44,16 @@ namespace PokemonGo_UWP.Views
         {
             ViewModel.EnterOutOfRange += GameManagerViewModelOnEnterOutOfRange;
             ViewModel.EnterSuccess += GameManagerViewModelOnEnterSuccess;
+
+            ViewModel.PlayerLevelInsufficient += GameManagerViewModelOnPlayerLevelInsufficient;
         }
 
         private void UnsubscribeToEnterEvents()
         {
             ViewModel.EnterOutOfRange -= GameManagerViewModelOnEnterOutOfRange;
             ViewModel.EnterSuccess -= GameManagerViewModelOnEnterSuccess;
+
+            ViewModel.PlayerLevelInsufficient -= GameManagerViewModelOnPlayerLevelInsufficient;
         }
 
         private void GameManagerViewModelOnEnterOutOfRange(object sender, EventArgs eventArgs)
@@ -59,6 +63,22 @@ namespace PokemonGo_UWP.Views
 
         private void GameManagerViewModelOnEnterSuccess(object sender, EventArgs eventArgs)
         {
+        }
+
+        private void GameManagerViewModelOnPlayerLevelInsufficient(object sender, EventArgs e)
+        {
+            ProfessorDialog dialog = new ProfessorDialog(BackGroundType.Light, false);
+            dialog.Messages.Add("This is a Gym, a place where you'll test your skills at Pokémon battles.");
+            dialog.Messages.Add("It looks like you don't have much experience as a Pokémon Trainer yet.");
+            dialog.Messages.Add("Come back when you've reached level 5!");
+
+            dialog.Closed += Dialog_Closed;
+            dialog.Show();
+        }
+
+        private void Dialog_Closed(object sender, EventArgs e)
+        {
+            ViewModel.AbandonGym.Execute();
         }
 
         #endregion

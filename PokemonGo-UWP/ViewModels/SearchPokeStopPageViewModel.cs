@@ -352,6 +352,7 @@ namespace PokemonGo_UWP.ViewModels
                         CurrentPokestop.UpdateCooldown(CurrentSearchResponse.CooldownCompleteTimestampMs);
                         SearchSuccess?.Invoke(this, null);
                         await GameClient.UpdateInventory();
+                        GameClient.AddGameXP(CurrentSearchResponse.ExperienceAwarded);
                         break;
                     case FortSearchResponse.Types.Result.OutOfRange:
                         // PokeStop can't be used because it's out of range, there's nothing that we can do

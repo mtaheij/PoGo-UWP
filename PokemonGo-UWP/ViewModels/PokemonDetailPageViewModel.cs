@@ -71,8 +71,8 @@ namespace PokemonGo_UWP.ViewModels
                 SelectedPokemon = PokemonInventory.First();
             }
 
-            StardustAmount = GameClient.PlayerProfile.Currencies.FirstOrDefault(item => item.Name.Equals("STARDUST")).Amount;
-            PlayerTeamIsSet = GameClient.PlayerProfile.Team != TeamColor.Neutral;
+            StardustAmount = GameClient.PlayerData.Currencies.FirstOrDefault(item => item.Name.Equals("STARDUST")).Amount;
+            PlayerTeamIsSet = GameClient.PlayerData.Team != TeamColor.Neutral;
         }
 
         /// <summary>
@@ -415,6 +415,7 @@ namespace PokemonGo_UWP.ViewModels
                               await dlg.ShowAsync();
                               await GameClient.UpdateProfile();
                               await GameClient.UpdatePlayerStats(false);
+                              RaisePropertyChanged(nameof(SelectedPokemon));
                               //GameClient.UpdateInventory;
                               break;
                           case SetBuddyPokemonResponse.Types.Result.Unest:
@@ -539,6 +540,7 @@ namespace PokemonGo_UWP.ViewModels
                             {
                                 SelectedPokemon = uppedPokemon;
                                 RaisePropertyChanged(nameof(SelectedPokemon));
+                                RaisePropertyChanged(nameof(StardustAmount));
                             }
                             await GameClient.UpdateInventory();
                             await GameClient.UpdateProfile();
@@ -615,6 +617,7 @@ namespace PokemonGo_UWP.ViewModels
                             PokemonEvolved?.Invoke(this, null);
                             await GameClient.UpdateInventory();
                             await GameClient.UpdateProfile();
+                            GameClient.AddGameXP(res.ExperienceAwarded);
                             break;
 
                         case EvolvePokemonResponse.Types.Result.FailedPokemonMissing:

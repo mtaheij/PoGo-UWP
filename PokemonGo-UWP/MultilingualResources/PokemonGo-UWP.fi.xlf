@@ -558,6 +558,22 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>Streak Bonus</source>
           <target state="new">Streak Bonus</target>
         </trans-unit>
+        <trans-unit id="CannotTransferBuddy" translate="yes" xml:space="preserve">
+          <source>Cannot transfer your buddy Pokémon!</source>
+          <target state="new">Cannot transfer your buddy Pokémon!</target>
+        </trans-unit>
+        <trans-unit id="TransferMultiplePokemonWarningText" translate="yes" xml:space="preserve">
+          <source>After you transfer, you can't undo the transfer.</source>
+          <target state="new">After you transfer, you can't undo the transfer.</target>
+        </trans-unit>
+        <trans-unit id="TransferMultiplePokemonWarningTitle" translate="yes" xml:space="preserve">
+          <source>Do you want to transfer {0} Pokémon to the Professor?</source>
+          <target state="new">Do you want to transfer {0} Pokémon to the Professor?</target>
+        </trans-unit>
+        <trans-unit id="DeployPokemonWarningText" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</source>
+          <target state="new">Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -1078,6 +1094,15 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
         <trans-unit id="EggDetailIncubatingTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Walk to hatch this Egg.</source>
           <target state="new">Walk to hatch this Egg.</target>
+        </trans-unit>
+        <trans-unit id="SelectPokemonHeader.Text" translate="yes" xml:space="preserve">
+          <source>SELECT POKÉMON</source>
+          <target state="new">SELECT POKÉMON</target>
+        </trans-unit>
+        <trans-unit id="TransferButtonText.Text" translate="yes" xml:space="preserve">
+          <source>TRANSFER </source>
+          <target state="new">TRANSFER </target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Watch out: there is a space behind TRANSFER</note>
         </trans-unit>
       </group>
     </body>

@@ -47,7 +47,7 @@
     <value>Een geneesmiddel dat een flauwgevallen Pokémon kan doen herleven. Het herstelt ook de helft van een flauwgevallen Pokémon maximale HP.</value>
   </data>
   <data name="D_ItemUltraBall" xml:space="preserve">
-    <value>Een apparaat voor het vangen van wilde Pokémon. Je gooit het als een bal op een wilde Pokémon.
+    <value>Een ultra-hight performance apparaat voor het vangen van Pokémon. Geeft een beter resultaat dan een Great ball.
 </value>
   </data>
   <data name="ItemBlukBerry" xml:space="preserve">
@@ -75,7 +75,7 @@
     <value>Incubator Basic</value>
   </data>
   <data name="ItemIncubatorBasicUnlimited" xml:space="preserve">
-    <value>Incubator Basic onbeperkt</value>
+    <value>Incubator Onbeperkt</value>
   </data>
   <data name="ItemItemStorageUpgrade" xml:space="preserve">
     <value>Object opslag Upgrade</value>

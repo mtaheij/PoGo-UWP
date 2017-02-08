@@ -22,6 +22,8 @@ namespace PokemonGo_UWP.Utils
         public const string PROFESSOR = "Professor.mp3";
         public const string TITLE = "Title.mp3";
 
+        public const string MESSAGE = "System_Message.mp3";
+
         #endregion
 
         #region Media Elements
@@ -34,6 +36,8 @@ namespace PokemonGo_UWP.Utils
         private static readonly MediaPlayer LevelupSound = new MediaPlayer();
         private static readonly MediaPlayer ProfessorSound = new MediaPlayer();
         private static readonly MediaPlayer TitleSound = new MediaPlayer();
+
+        private static readonly MediaPlayer MessageSound = new MediaPlayer();
 
         #endregion
 
@@ -53,6 +57,8 @@ namespace PokemonGo_UWP.Utils
             ProfessorSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{PROFESSOR}"));
             TitleSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{TITLE}"));
 
+            MessageSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{MESSAGE}"));
+
             EncounterSound.MediaEnded += Sound_Ended;
             EvolutionSound.MediaEnded += Sound_Ended;
             GotchaSound.MediaEnded += Sound_Ended;
@@ -66,6 +72,7 @@ namespace PokemonGo_UWP.Utils
                                             LevelupSound.AudioCategory =
                                             ProfessorSound.AudioCategory =
                                             TitleSound.AudioCategory =
+                                            MessageSound.AudioCategory = 
                                             MediaPlayerAudioCategory.GameMedia;
 
             // Enable loop only for gameplay sounds
@@ -139,6 +146,9 @@ namespace PokemonGo_UWP.Utils
                 case TITLE:
                     TitleSound.Play();
                     break;
+                case MESSAGE:
+                    MessageSound.Play();
+                    break;
     }
 }
 
@@ -183,6 +193,10 @@ namespace PokemonGo_UWP.Utils
                     TitleSound.Pause();
                     TitleSound.PlaybackSession.Position = TimeSpan.Zero;
                     break;
+                case MESSAGE:
+                    MessageSound.Pause();
+                    MessageSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
             }
         }
 
@@ -207,6 +221,8 @@ namespace PokemonGo_UWP.Utils
             ProfessorSound.PlaybackSession.Position = TimeSpan.Zero;
             TitleSound.Pause();
             TitleSound.PlaybackSession.Position = TimeSpan.Zero;
+            MessageSound.Pause();
+            MessageSound.PlaybackSession.Position = TimeSpan.Zero;
         }
     }
 }

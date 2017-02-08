@@ -141,7 +141,7 @@
         </trans-unit>
         <trans-unit id="BadgeHatchedTotalDescription" translate="yes" xml:space="preserve">
           <source>Hatched {0} Pokemon</source>
-          <target state="new">Hatched {0} Pokemon</target>
+          <target state="translated">Hatched {0} Pokemon</target>
         </trans-unit>
         <trans-unit id="BadgePikachuDescription" translate="yes" xml:space="preserve">
           <source>Caught {0} Pikachu</source>
@@ -217,7 +217,7 @@
         </trans-unit>
         <trans-unit id="PsychicDescription" translate="yes" xml:space="preserve">
           <source>Caught {0} Psychic Pokemon</source>
-          <target state="new">{0} Psychische Pokemon gevangen</target>
+          <target state="translated">{0} Psychische Pokemon gevangen</target>
         </trans-unit>
         <trans-unit id="RockDescription" translate="yes" xml:space="preserve">
           <source>Caught {0} Rock Pokemon</source>
@@ -282,13 +282,12 @@
         </trans-unit>
         <trans-unit id="NoText" translate="yes" xml:space="preserve">
           <source>NO</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Nee</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated" state-qualifier="tm-suggestion">Nee</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Capslock</note>
         </trans-unit>
         <trans-unit id="NoGpsPermissionsText" translate="yes" xml:space="preserve">
           <source>We need GPS permissions to run the game, please enable it and try again.</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Voor dit spel zijn GPS machtigingen nodig. Activeer deze in je telefoon en probeer het opnieuw.</target>
+          <target state="translated" state-qualifier="mt-suggestion">Voor dit spel zijn GPS machtigingen nodig. Activeer deze in je telefoon en probeer het opnieuw.</target>
         </trans-unit>
         <trans-unit id="PokemonRanAwayText" translate="yes" xml:space="preserve">
           <source>Pokémon ran away, sorry :(</source>
@@ -332,8 +331,7 @@ Open de pagina met installatiebestanden voor handmatige installatie?</target>
         </trans-unit>
         <trans-unit id="YesText" translate="yes" xml:space="preserve">
           <source>YES</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Ja</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated" state-qualifier="tm-suggestion">Ja</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Capslock</note>
         </trans-unit>
         <trans-unit id="InstinctTeamText" translate="yes" xml:space="preserve">
@@ -382,7 +380,7 @@ Open de pagina met installatiebestanden voor handmatige installatie?</target>
         </trans-unit>
         <trans-unit id="ActivityDefeatFort" translate="yes" xml:space="preserve">
           <source>Defeat Fort</source>
-          <target state="new">Fort verslagen</target>
+          <target state="translated">Fort verslagen</target>
         </trans-unit>
         <trans-unit id="ActivityEvolvePokemon" translate="yes" xml:space="preserve">
           <source>Evolve a Pokémon</source>
@@ -512,7 +510,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="CancelText" translate="yes" xml:space="preserve">
           <source>CANCEL</source>
-          <target state="new">CANCEL</target>
+          <target state="translated">CANCEL</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Capslock</note>
         </trans-unit>
         <trans-unit id="ItemDiscardWarningText" translate="yes" xml:space="preserve">
@@ -521,28 +519,28 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="SetNickName" translate="yes" xml:space="preserve">
           <source>Set Nickname</source>
-          <target state="new">Set Nickname</target>
+          <target state="translated">Kies Nickname</target>
         </trans-unit>
         <trans-unit id="OkText" translate="yes" xml:space="preserve">
           <source>OK</source>
-          <target state="new">OK</target>
+          <target state="translated">OK</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Space between . and K</note>
         </trans-unit>
         <trans-unit id="PokemonEncounterErrorText" translate="yes" xml:space="preserve">
           <source>There was an error loading the encounter with {0}, please try again later.</source>
-          <target state="new">There was an error loading the encounter with {0}, please try again later.</target>
+          <target state="translated">Er was een fout bij het laden van de ontmoeten met {0}, probeer het later nogmaals.</target>
         </trans-unit>
         <trans-unit id="PokemonEncounterNotInRangeText" translate="yes" xml:space="preserve">
           <source>{0} is not in catch range anymore.</source>
-          <target state="new">{0} is not in catch range anymore.</target>
+          <target state="translated">{0} is niet meer binnen bereik.</target>
         </trans-unit>
         <trans-unit id="CannotTransferFavorite" translate="yes" xml:space="preserve">
           <source>Cannot transfer a favorite Pokémon!</source>
-          <target state="new">Cannot transfer a favorite Pokémon!</target>
+          <target state="translated">Je kan een favoriete Pokémon niet overbrengen!</target>
         </trans-unit>
         <trans-unit id="CantUseBerryText" translate="yes" xml:space="preserve">
           <source>You already used a Berry.</source>
-          <target state="new">You already used a Berry.</target>
+          <target state="translated">Je hebt al een Berry gebruikt.</target>
         </trans-unit>
         <trans-unit id="LureDetailsTextEmpty" translate="yes" xml:space="preserve">
           <source>Can have a PokéStop Module installed</source>
@@ -550,28 +548,46 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="LureTitleTextEmpty" translate="yes" xml:space="preserve">
           <source>Empty module slot</source>
-          <target state="new">Empty module slot</target>
+          <target state="translated">Lege module plek</target>
         </trans-unit>
         <trans-unit id="IncubatorRemainingUsesText" translate="yes" xml:space="preserve">
           <source>{0} use(s) left</source>
-          <target state="new">{0} use(s) left</target>
+          <target state="translated">{0} keer over</target>
           <note from="MultilingualBuild" annotates="source" priority="2">If your language uses multiply sign, use × (unicode char) and not x</note>
         </trans-unit>
         <trans-unit id="ItemUseQuestionText" translate="yes" xml:space="preserve">
           <source>Use {0} ?</source>
-          <target state="new">Use {0} ?</target>
+          <target state="translated">Gebruik {0} ?</target>
         </trans-unit>
         <trans-unit id="ActivityCatchFirstCatchStreakBonus" translate="yes" xml:space="preserve">
           <source>Streak Bonus</source>
-          <target state="new">Streak Bonus</target>
+          <target state="translated">Streak Bonus</target>
         </trans-unit>
         <trans-unit id="ActivitySearchFortFirstOfTheDay" translate="yes" xml:space="preserve">
           <source>First Pokéstop of the day</source>
-          <target state="new">First Pokéstop of the day</target>
+          <target state="translated">Eerste Pokéstop van de dag</target>
         </trans-unit>
         <trans-unit id="ActivitySearchFortStreakBonus" translate="yes" xml:space="preserve">
           <source>Streak Bonus</source>
-          <target state="new">Streak Bonus</target>
+          <target state="translated">Streak Bonus</target>
+        </trans-unit>
+        <trans-unit id="CannotTransferBuddy" translate="yes" xml:space="preserve">
+          <source>Cannot transfer your buddy Pokémon!</source>
+          <target state="translated">Je kan je buddy Pokémon niet overbrengen!</target>
+        </trans-unit>
+        <trans-unit id="TransferMultiplePokemonWarningText" translate="yes" xml:space="preserve">
+          <source>After you transfer, you can't undo the transfer.</source>
+          <target state="needs-review-translation">Nadat je overgebracht hebt, kan je dit niet ongedaan maken</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="TransferMultiplePokemonWarningTitle" translate="yes" xml:space="preserve">
+          <source>Do you want to transfer {0} Pokémon to the Professor?</source>
+          <target state="needs-review-translation">Wil je {0} Pokémon overbrengen naar de Professor</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="DeployPokemonWarningText" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</source>
+          <target state="new">Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</target>
         </trans-unit>
       </group>
     </body>
@@ -600,8 +616,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="LoginDisclaimerTextBox.Text" translate="yes" xml:space="preserve">
           <source>WARNING: Niantic may ban you for using this app. Use at your own risk. If you don't trust this app, please close it now.</source>
-          <target state="needs-review-translation">Je moet je gebruikersnaam/e-mail en wachtwoord invoeren om je aan te melden. Als je dit niet vertrouwt, sluit de app dan. Gebruik deze app op eigen risico.</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Je moet je gebruikersnaam/e-mail en wachtwoord invoeren om je aan te melden. Als je dit niet vertrouwt, sluit de app dan. Gebruik deze app op eigen risico.</target>
         </trans-unit>
         <trans-unit id="NearbyPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>nearby</source>
@@ -670,8 +685,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="NumberTextBlock.Text" translate="yes" xml:space="preserve">
           <source>+ </source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion"># </target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated" state-qualifier="mt-suggestion"># </target>
           <note from="MultilingualBuild" annotates="source" priority="2">Watch out: there is a space after the +</note>
         </trans-unit>
         <trans-unit id="SlashSpaceCpTextBlock.Text" translate="yes" xml:space="preserve">
@@ -829,7 +843,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="AppraiseTextBlock.Text" translate="yes" xml:space="preserve">
           <source>APPRAISE</source>
-          <target state="new">APPRAISE</target>
+          <target state="translated">BEOORDELEN</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Capslock</note>
         </trans-unit>
         <trans-unit id="AwardedExperienceTextBlock.Text" translate="yes" xml:space="preserve">
@@ -838,31 +852,40 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="EggsHeader.Title" translate="yes" xml:space="preserve">
           <source>EGGS</source>
-          <target state="new">EGGS</target>
+          <target state="translated">EIEREN</target>
         </trans-unit>
         <trans-unit id="PokemonHeader.Title" translate="yes" xml:space="preserve">
           <source>POKÉMON</source>
-          <target state="new">POKÉMON</target>
+          <target state="translated">POKÉMON</target>
         </trans-unit>
         <trans-unit id="FortAlreadyHasModifierTextBlock.Text" translate="yes" xml:space="preserve">
           <source>This pokestop already has a lure module installed</source>
-          <target state="new">This pokestop already has a lure module installed</target>
+          <target state="translated">Deze pokéstop heeft al een lure module geïnstalleerd</target>
         </trans-unit>
         <trans-unit id="NoItemInInventoryTextBlock.Text" translate="yes" xml:space="preserve">
           <source>There is no troy disc in your inventory</source>
-          <target state="new">There is no troy disc in your inventory</target>
+          <target state="translated">Er is geen Troy disc in je inventaris</target>
         </trans-unit>
         <trans-unit id="TooFarAwayTextBlock.Text" translate="yes" xml:space="preserve">
           <source>This pokestop is too far away</source>
-          <target state="new">This pokestop is too far away</target>
+          <target state="translated">Deze pokéstop is te ver weg</target>
         </trans-unit>
         <trans-unit id="AddModifierSuccessTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Successfully added lure module</source>
-          <target state="new">Successfully added lure module</target>
+          <target state="translated">Lure module succesvol geïnstalleerd</target>
         </trans-unit>
         <trans-unit id="EggDetailIncubatingTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Walk to hatch this Egg.</source>
-          <target state="new">Walk to hatch this Egg.</target>
+          <target state="translated">Maak een wandeling om dit ei uit te broeden.</target>
+        </trans-unit>
+        <trans-unit id="SelectPokemonHeader.Text" translate="yes" xml:space="preserve">
+          <source>SELECT POKÉMON</source>
+          <target state="translated">SELECTEER POKÉMON</target>
+        </trans-unit>
+        <trans-unit id="TransferButtonText.Text" translate="yes" xml:space="preserve">
+          <source>TRANSFER </source>
+          <target state="translated">TRANSFER </target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Watch out: there is a space behind TRANSFER</note>
         </trans-unit>
       </group>
     </body>
@@ -920,9 +943,8 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="D_ItemUltraBall" translate="yes" xml:space="preserve">
           <source>An ultra-high performance Poké Ball that provides a higher success rate for catching Pokémon than a Great.</source>
-          <target state="needs-review-translation">Een apparaat voor het vangen van wilde Pokémon. Je gooit het als een bal op een wilde Pokémon.
+          <target state="translated">Een ultra-hight performance apparaat voor het vangen van Pokémon. Geeft een beter resultaat dan een Great ball.
 </target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="ItemBlukBerry" translate="yes" xml:space="preserve">
           <source>Bluk Berry</source>
@@ -954,13 +976,11 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemIncubatorBasic" translate="yes" xml:space="preserve">
           <source>Incubator</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Incubator Basic</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Incubator Basic</target>
         </trans-unit>
         <trans-unit id="ItemIncubatorBasicUnlimited" translate="yes" xml:space="preserve">
           <source>∞ Incubator</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Incubator Basic onbeperkt</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Incubator Onbeperkt</target>
         </trans-unit>
         <trans-unit id="ItemItemStorageUpgrade" translate="yes" xml:space="preserve">
           <source>Item Storage Upgrade</source>

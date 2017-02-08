@@ -12,10 +12,10 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
             <Canvas.Background>
-                <ImageBrush ImageSource="ms-appx:///Assets/SplashScreen.png"
-                            Stretch="Uniform">
+                <ImageBrush ImageSource="ms-appx:///Assets/UI/WarningScreen_BackgroundPlate.png"
+                            Stretch="Fill">
                     <ImageBrush.Transform>
-                        <TranslateTransform Y="10" />
+                        <TranslateTransform Y="0" />
                     </ImageBrush.Transform>
                 </ImageBrush>
             </Canvas.Background>

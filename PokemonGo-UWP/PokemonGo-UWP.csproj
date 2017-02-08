@@ -143,6 +143,7 @@
     <Content Include="Assets\Audio\Levelup.mp3" />
     <Content Include="Assets\Audio\pokemon_found_ding.wav" />
     <Content Include="Assets\Audio\Professor.mp3" />
+    <Content Include="Assets\Audio\System_Message.mp3" />
     <Content Include="Assets\Audio\Title.mp3" />
     <Content Include="Assets\Backgrounds\sky_day.png" />
     <Content Include="Assets\Backgrounds\details_type_bg_bug.png" />
@@ -640,6 +641,9 @@
     <None Include="project.json" />
     <Content Include="Assets\UI\player-avatar-incense.png" />
     <Content Include="Assets\UI\player-avatar.png" />
+    <Content Include="Assets\UI\Professor.png" />
+    <Content Include="Assets\UI\Spotlight.png" />
+    <Content Include="Assets\UI\WarningScreen_BackgroundPlate.png" />
     <Content Include="Styles\NianticStyleLight.json" />
     <PRIResource Include="Strings\es-MX\Resources.resw" />
     <PRIResource Include="Strings\es-MX\PokemonTypes.resw" />
@@ -986,6 +990,12 @@
     <Compile Include="Views\ChallengePage.xaml.cs">
       <DependentUpon>ChallengePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\ProfessorDialog.xaml.cs">
+      <DependentUpon>ProfessorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Item\AwardedXpOverlay.xaml.cs">
+      <DependentUpon>AwardedXpOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Item\ItemUseOnPokemonPage.xaml.cs">
       <DependentUpon>ItemUseOnPokemonPage.xaml</DependentUpon>
     </Compile>
@@ -1117,6 +1127,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\Dialogs\ProfessorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Item\AwardedXpOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Item\ItemUseOnPokemonPage.xaml">
       <SubType>Designer</SubType>

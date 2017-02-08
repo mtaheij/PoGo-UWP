@@ -38,7 +38,7 @@ namespace PokemonGo_UWP.ViewModels
                 PokemonInventory = JsonConvert.DeserializeObject<ObservableCollection<PokemonDataWrapper>>((string)suspensionState[nameof(PokemonInventory)]);
                 EggsInventory = JsonConvert.DeserializeObject<ObservableCollection<PokemonDataWrapper>>((string)suspensionState[nameof(EggsInventory)]);
                 CurrentPokemonSortingMode = (PokemonSortingModes)suspensionState[nameof(CurrentPokemonSortingMode)];
-                PlayerProfile = GameClient.PlayerProfile;
+                PlayerProfile = GameClient.PlayerData;
             }
             else
             {
@@ -68,7 +68,7 @@ namespace PokemonGo_UWP.ViewModels
 
                 RaisePropertyChanged(() => TotalPokemonCount);
 
-                PlayerProfile = GameClient.PlayerProfile;
+                PlayerProfile = GameClient.PlayerData;
             }
 
             // try restoring scrolling position 

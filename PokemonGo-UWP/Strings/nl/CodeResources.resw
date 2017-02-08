@@ -115,6 +115,9 @@ Open de pagina met installatiebestanden voor handmatige installatie?</value>
   <data name="ActivityFleePokemon" xml:space="preserve">
     <value>Pokémon is gevlucht</value>
   </data>
+  <data name="ActivityDefeatFort" xml:space="preserve">
+    <value>Fort verslagen</value>
+  </data>
   <data name="ActivityEvolvePokemon" xml:space="preserve">
     <value>Evolueer een Pokemon</value>
   </data>
@@ -208,5 +211,56 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</value>
   </data>
   <data name="TransferPokemonWarningTitle" xml:space="preserve">
     <value>Wil je echt {0} overbrengen naar de Professor?</value>
+  </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>CANCEL</value>
+    <comment>Capslock</comment>
+  </data>
+  <data name="SetNickName" xml:space="preserve">
+    <value>Kies Nickname</value>
+  </data>
+  <data name="OkText" xml:space="preserve">
+    <value>OK</value>
+    <comment>Space between . and K</comment>
+  </data>
+  <data name="PokemonEncounterErrorText" xml:space="preserve">
+    <value>Er was een fout bij het laden van de ontmoeten met {0}, probeer het later nogmaals.</value>
+  </data>
+  <data name="PokemonEncounterNotInRangeText" xml:space="preserve">
+    <value>{0} is niet meer binnen bereik.</value>
+  </data>
+  <data name="CannotTransferFavorite" xml:space="preserve">
+    <value>Je kan een favoriete Pokémon niet overbrengen!</value>
+  </data>
+  <data name="CantUseBerryText" xml:space="preserve">
+    <value>Je hebt al een Berry gebruikt.</value>
+  </data>
+  <data name="LureTitleTextEmpty" xml:space="preserve">
+    <value>Lege module plek</value>
+  </data>
+  <data name="IncubatorRemainingUsesText" xml:space="preserve">
+    <value>{0} keer over</value>
+    <comment>If your language uses multiply sign, use × (unicode char) and not x</comment>
+  </data>
+  <data name="ItemUseQuestionText" xml:space="preserve">
+    <value>Gebruik {0} ?</value>
+  </data>
+  <data name="ActivityCatchFirstCatchStreakBonus" xml:space="preserve">
+    <value>Streak Bonus</value>
+  </data>
+  <data name="ActivitySearchFortFirstOfTheDay" xml:space="preserve">
+    <value>Eerste Pokéstop van de dag</value>
+  </data>
+  <data name="ActivitySearchFortStreakBonus" xml:space="preserve">
+    <value>Streak Bonus</value>
+  </data>
+  <data name="CannotTransferBuddy" xml:space="preserve">
+    <value>Je kan je buddy Pokémon niet overbrengen!</value>
+  </data>
+  <data name="TransferMultiplePokemonWarningText" xml:space="preserve">
+    <value>Nadat je overgebracht hebt, kan je dit niet ongedaan maken</value>
+  </data>
+  <data name="TransferMultiplePokemonWarningTitle" xml:space="preserve">
+    <value>Wil je {0} Pokémon overbrengen naar de Professor</value>
   </data>
 </root>

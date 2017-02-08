@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using PokemonGo_UWP.Views;
 using Template10.Common;
 using Google.Protobuf;
+using POGOProtos.Networking.Responses;
+using POGOProtos.Data.Logs;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -43,7 +45,7 @@ namespace PokemonGo_UWP.ViewModels
             else
             {
                 // No saved state, get them from the client
-                PlayerProfile = GameClient.PlayerProfile;
+                PlayerProfile = GameClient.PlayerData;
                 PlayerStats = GameClient.PlayerStats;
             }
             ReadPlayerStatsValues();
@@ -111,6 +113,8 @@ namespace PokemonGo_UWP.ViewModels
         public ObservableCollection<KeyValuePair<AchievementType, object>> Achievements { get; } =
             new ObservableCollection<KeyValuePair<AchievementType, object>>();
 
+        public ObservableCollection<ActionLogEntry> ActionLog { get; } =
+            new ObservableCollection<ActionLogEntry>();
         #endregion
 
         #region Game Logic
@@ -186,6 +190,21 @@ namespace PokemonGo_UWP.ViewModels
                 PlayerStats.BigMagikarpCaught));
             Achievements.Add(new KeyValuePair<AchievementType, object>(AchievementType.AceTrainer,
                 PlayerStats.BattleTrainingWon));
+        }
+
+        #endregion
+
+        #region Read Action Log
+        private async void ReadActionLog()
+        {
+            ActionLog.Clear();
+
+            var ActionLogResponse = await GameClient.GetSfidaActionLog();
+
+            foreach(ActionLogEntry logEntry in ActionLogResponse.LogEntries)
+            {
+                ActionLog.Add(logEntry);
+            }
         }
 
         #endregion

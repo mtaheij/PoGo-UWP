@@ -374,4 +374,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="TransferMultiplePokemonWarningTitle" xml:space="preserve">
     <value>Do you want to transfer {0} Pokémon to the Professor?</value>
   </data>
+  <data name="DeployPokemonWarningText" xml:space="preserve">
+    <value>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</value>
+  </data>
 </root>

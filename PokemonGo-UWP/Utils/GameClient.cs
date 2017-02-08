@@ -219,9 +219,9 @@ namespace PokemonGo_UWP.Utils
         public static GlobalSettings GameSetting { get; private set; }
 
         /// <summary>
-        ///     Player's profile, we use it just for the username
+        ///     Player's data, we use it just for the username
         /// </summary>
-        public static PlayerData PlayerProfile { get; private set; }
+        public static PlayerData PlayerData { get; private set; }
 
         /// <summary>
         ///     Stats for the current player, including current level and experience related stuff
@@ -241,6 +241,14 @@ namespace PokemonGo_UWP.Utils
         public static bool IsXpBoostActive
         {
             get { return AppliedItems.Count(x => x.ItemType == ItemType.XpBoost && !x.IsExpired) > 0; }
+        }
+
+        public static ObservableCollection<int> AdwardedXP { get; set; } =
+            new ObservableCollection<int>();
+
+        public static void AddGameXP(int AwardedXP)
+        {
+            AdwardedXP.Add(AwardedXP);
         }
 
         #region Collections
@@ -346,10 +354,20 @@ namespace PokemonGo_UWP.Utils
         public static PokemonUpgradeSettings PokemonUpgradeSettings { get; private set; }
 
         /// <summary>
-        ///     Stores data about Pokemon moves
+        ///     Stores data about Pokemon Go settings
         /// </summary>
         public static IEnumerable<MoveSettings> MoveSettings { get; private set; } = new List<MoveSettings>();
-
+        public static IEnumerable<BadgeSettings> BadgeSettings { get; private set; } = new List<BadgeSettings>();
+        public static IEnumerable<GymBattleSettings> BattleSettings { get; private set; } = new List<GymBattleSettings>();
+        public static IEnumerable<EncounterSettings> EncounterSettings { get; private set; } = new List<EncounterSettings>();
+        public static IEnumerable<GymLevelSettings> GymLevelSettings { get; private set; } = new List<GymLevelSettings>();
+        public static IEnumerable<IapSettings> IapSettings { get; private set; } = new List<IapSettings>();
+        public static IEnumerable<ItemSettings> ItemSettings { get; private set; } = new List<ItemSettings>();
+        public static IEnumerable<PlayerLevelSettings> PlayerLevelSettings { get; private set; } = new List<PlayerLevelSettings>();
+        public static IEnumerable<QuestSettings> QuestSettings { get; private set; } = new List<QuestSettings>();
+        public static IEnumerable<IapItemDisplay> IapItemDisplay { get; private set; } = new List<IapItemDisplay>();
+        public static IEnumerable<MoveSequenceSettings> MoveSequenceSettings { get; private set; } = new List<MoveSequenceSettings>();
+        public static IEnumerable<CameraSettings> CameraSettings { get; private set; } = new List<CameraSettings>();
         #endregion
 
         #endregion
@@ -639,11 +657,11 @@ namespace PokemonGo_UWP.Utils
             #endregion
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
             await LocationServiceHelper.Instance.InitializeAsync();
-            // Before starting we need game settings
-            GameSetting =
-                await
-                    DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings,
-                        DateTime.Now.AddMonths(1));
+
+            // Before starting we need game settings and templates
+            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1));
+            await UpdateItemTemplates();
+
             // Update geolocator settings based on server
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);
             LocationServiceHelper.Instance.PropertyChanged += LocationHelperPropertyChanged;
@@ -654,8 +672,7 @@ namespace PokemonGo_UWP.Utils
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingUserDataText"));
             //await UpdateMapObjects();
             await UpdateInventory();
-            await UpdateItemTemplates();
-            if (PlayerProfile != null && PlayerStats != null)
+            if (PlayerData != null && PlayerStats != null)
                 Busy.SetBusy(false);
         }
 
@@ -760,7 +777,7 @@ namespace PokemonGo_UWP.Utils
                 .ToArray();
             Logger.Write($"Found {newGyms.Length} nearby Gyms");
             // For now, we do not show the gyms on the map, as they are not complete yet. Code remains, so we can still work on it.
-            //NearbyGyms.UpdateWith(newGyms, x => new FortDataWrapper(x), (x, y) => x.Id == y.Id);
+            NearbyGyms.UpdateWith(newGyms, x => new FortDataWrapper(x), (x, y) => x.Id == y.Id);
 
             // Update LuredPokemon
             var newLuredPokemon = newPokeStops.Where(item => item.LureInfo != null).Select(item => new LuredPokemon(item.LureInfo, item.Latitude, item.Longitude)).ToArray();
@@ -783,7 +800,7 @@ namespace PokemonGo_UWP.Utils
             Logger.Write("Finished updating map objects");
 
             // Update BuddyPokemon Stats
-            //if (GameClient.PlayerProfile.BuddyPokemon.Id != 0)
+            //if (GameClient.PlayerData.BuddyPokemon.Id != 0)
             //if (true)
             //{
                 var buddyWalkedResponse = await GetBuddyWalked();
@@ -907,7 +924,12 @@ namespace PokemonGo_UWP.Utils
         /// <returns></returns>
         public static async Task UpdateProfile()
         {
-            PlayerProfile = (await _client.Player.GetPlayer()).PlayerData;
+            PlayerData = (await _client.Player.GetPlayer()).PlayerData;
+        }
+
+        public static async Task<GetPlayerProfileResponse> GetPlayerProfile(string playerName)
+        {
+            return await _client.Player.GetPlayerProfile(playerName);
         }
 
         /// <summary>
@@ -973,20 +995,6 @@ namespace PokemonGo_UWP.Utils
                     .Select(item => item.PokemonSettings);
             }, DateTime.Now.AddMonths(1));
 
-            //PokemonUpgradeCosts = await DataCache.GetAsync(nameof(PokemonUpgradeCosts), async () =>
-            //{
-            //    await Task.CompletedTask;
-            //    // Update Pokemon upgrade templates
-            //    var tmpPokemonUpgradeCosts = itemTemplates.First(item => item.PokemonUpgrades != null).PokemonUpgrades;
-            //    var tmpResult = new Dictionary<int, object[]>();
-            //    for (var i = 0; i < tmpPokemonUpgradeCosts.CandyCost.Count; i++)
-            //    {
-            //        tmpResult.Add(i,
-            //            new object[] { tmpPokemonUpgradeCosts.CandyCost[i], tmpPokemonUpgradeCosts.StardustCost[i] });
-            //    }
-            //    return tmpResult;
-            //}, DateTime.Now.AddMonths(1));
-
             PokemonUpgradeSettings = await DataCache.GetAsync(nameof(PokemonUpgradeSettings), async () =>
             {
                 await Task.CompletedTask;
@@ -1000,6 +1008,83 @@ namespace PokemonGo_UWP.Utils
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.MoveSettings != null)
                                     .Select(item => item.MoveSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            BadgeSettings = await DataCache.GetAsync(nameof(BadgeSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.BadgeSettings != null)
+                                    .Select(item => item.BadgeSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            BattleSettings = await DataCache.GetAsync(nameof(BattleSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.BattleSettings != null)
+                                    .Select(item => item.BattleSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            EncounterSettings = await DataCache.GetAsync(nameof(EncounterSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.EncounterSettings != null)
+                                    .Select(item => item.EncounterSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            GymLevelSettings = await DataCache.GetAsync(nameof(GymLevelSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.GymLevel != null)
+                                    .Select(item => item.GymLevel);
+            }, DateTime.Now.AddMonths(1));
+
+            IapSettings = await DataCache.GetAsync(nameof(IapSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.IapSettings != null)
+                                    .Select(item => item.IapSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            ItemSettings = await DataCache.GetAsync(nameof(ItemSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.ItemSettings != null)
+                                    .Select(item => item.ItemSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            PlayerLevelSettings = await DataCache.GetAsync(nameof(PlayerLevelSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.PlayerLevel != null)
+                                    .Select(item => item.PlayerLevel);
+            }, DateTime.Now.AddMonths(1));
+
+            QuestSettings = await DataCache.GetAsync(nameof(QuestSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.QuestSettings != null)
+                                    .Select(item => item.QuestSettings);
+            }, DateTime.Now.AddMonths(1));
+
+            CameraSettings = await DataCache.GetAsync(nameof(CameraSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.Camera != null)
+                                    .Select(item => item.Camera);
+            }, DateTime.Now.AddMonths(1));
+
+            IapItemDisplay = await DataCache.GetAsync(nameof(IapItemDisplay), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.IapItemDisplay != null)
+                                    .Select(item => item.IapItemDisplay);
+            }, DateTime.Now.AddMonths(1));
+
+            MoveSequenceSettings = await DataCache.GetAsync(nameof(MoveSequenceSettings), async () =>
+            {
+                await Task.CompletedTask;
+                return itemTemplates.Where(item => item.MoveSequenceSettings != null)
+                                    .Select(item => item.MoveSequenceSettings);
             }, DateTime.Now.AddMonths(1));
         }
 
@@ -1060,6 +1145,45 @@ namespace PokemonGo_UWP.Utils
             return await _client.Player.GetBuddyWalked();
         }
 
+        public static async Task<CheckAwardedBadgesResponse> GetNewlyAwardedBadges()
+        {
+            return await _client.Player.GetNewlyAwardedBadges();
+        }
+
+        public static async Task<CollectDailyBonusResponse> CollectDailyBonus()
+        {
+            return await _client.Player.CollectDailyBonus();
+        }
+
+        public static async Task<CollectDailyDefenderBonusResponse> CollectDailyDefenderBonus()
+        {
+            return await _client.Player.CollectDailyDefenderBonus();
+        }
+
+        public static async Task<EquipBadgeResponse> EquipBadge(BadgeType type)
+        {
+            return await _client.Player.EquipBadge(type);
+        }
+
+        public static async Task<SetAvatarResponse> SetAvatar(PlayerAvatar playerAvatar)
+        {
+            return await _client.Player.SetAvatar(playerAvatar);
+        }
+
+        public static async Task<SetContactSettingsResponse> SetContactSetting(ContactSettings contactSettings)
+        {
+            return await _client.Player.SetContactSetting(contactSettings);
+        }
+
+        public static async Task<SetPlayerTeamResponse> SetPlayerTeam(TeamColor teamColor)
+        {
+            return await _client.Player.SetPlayerTeam(teamColor);
+        }
+
+        public static async Task<MarkTutorialCompleteResponse> MarkTutorialComplete(TutorialState[] completed_tutorials, bool send_marketing_emails, bool send_push_notifications)
+        {
+            return await _client.Player.MarkTutorialComplete(completed_tutorials, send_marketing_emails, send_push_notifications);
+        }
         #endregion
 
         #region Pokemon Handling
@@ -1329,7 +1453,6 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
 
-
         #region Misc
 
 
@@ -1343,7 +1466,33 @@ namespace PokemonGo_UWP.Utils
             return await _client.Misc.VerifyChallenge(token);
         }
 
+        /// <summary>
+        ///     Claims codename
+        /// </summary>
+        /// <param name="codename"></param>
+        /// <returns></returns>
+        public static async Task<ClaimCodenameResponse> ClaimCodename(string codename)
+        {
+            return await _client.Misc.ClaimCodename(codename);
+        }
 
+        /// <summary>
+        ///     Sends an echo
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<EchoResponse> SendEcho()
+        {
+            return await _client.Misc.SendEcho();
+        }
+
+        /// <summary>
+        ///     Gets Action log
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<SfidaActionLogResponse> GetSfidaActionLog()
+        {
+            return await _client.Misc.GetSfidaActionLog();
+        }
         #endregion
 
         #endregion

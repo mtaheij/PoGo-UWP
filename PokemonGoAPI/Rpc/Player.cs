@@ -121,7 +121,7 @@ namespace PokemonGo.RocketAPI.Rpc
 
         public async Task<SetPlayerTeamResponse> SetPlayerTeam(TeamColor teamColor)
         {
-            return
+            return 
                 await
                     PostProtoPayload<Request, SetPlayerTeamResponse>(RequestType.SetPlayerTeam, new SetPlayerTeamMessage
                     {
@@ -141,6 +141,16 @@ namespace PokemonGo.RocketAPI.Rpc
         {
             return await PostProtoPayload<Request, GetBuddyWalkedResponse>(RequestType.GetBuddyWalked, new GetBuddyWalkedMessage
             { });
+        }
+
+        public async Task<MarkTutorialCompleteResponse> MarkTutorialComplete(TutorialState[] completed_tutorials, bool send_marketing_emails, bool send_push_notifications)
+        {
+            return await PostProtoPayload<Request, MarkTutorialCompleteResponse>(RequestType.MarkTutorialComplete, new MarkTutorialCompleteMessage
+            {
+                TutorialsCompleted = { completed_tutorials },
+                SendMarketingEmails = send_marketing_emails,
+                SendPushNotifications = send_push_notifications
+            });
         }
     }
 }

@@ -134,7 +134,7 @@ namespace PokemonGo_UWP.ViewModels
                 (_returnToGameScreen =
                     new DelegateCommand(() => { NavigationService.Navigate(typeof(GameMapPage)); }, () => true));
 
-        public int MaxItemStorageFieldNumber => GameClient.PlayerProfile.MaxItemStorage;
+        public int MaxItemStorageFieldNumber => GameClient.PlayerData.MaxItemStorage;
 
         #endregion
 

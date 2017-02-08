@@ -195,4 +195,36 @@
   <data name="FavoriteTextBlock.Text" xml:space="preserve">
     <value>FAVORIET</value>
   </data>
+  <data name="AppraiseTextBlock.Text" xml:space="preserve">
+    <value>BEOORDELEN</value>
+    <comment>Capslock</comment>
+  </data>
+  <data name="EggsHeader.Title" xml:space="preserve">
+    <value>EIEREN</value>
+  </data>
+  <data name="PokemonHeader.Title" xml:space="preserve">
+    <value>POKÉMON</value>
+  </data>
+  <data name="FortAlreadyHasModifierTextBlock.Text" xml:space="preserve">
+    <value>Deze pokéstop heeft al een lure module geïnstalleerd</value>
+  </data>
+  <data name="NoItemInInventoryTextBlock.Text" xml:space="preserve">
+    <value>Er is geen Troy disc in je inventaris</value>
+  </data>
+  <data name="TooFarAwayTextBlock.Text" xml:space="preserve">
+    <value>Deze pokéstop is te ver weg</value>
+  </data>
+  <data name="AddModifierSuccessTextBlock.Text" xml:space="preserve">
+    <value>Lure module succesvol geïnstalleerd</value>
+  </data>
+  <data name="EggDetailIncubatingTextBlock.Text" xml:space="preserve">
+    <value>Maak een wandeling om dit ei uit te broeden.</value>
+  </data>
+  <data name="SelectPokemonHeader.Text" xml:space="preserve">
+    <value>SELECTEER POKÉMON</value>
+  </data>
+  <data name="TransferButtonText.Text" xml:space="preserve">
+    <value>TRANSFER </value>
+    <comment>Watch out: there is a space behind TRANSFER</comment>
+  </data>
 </root>

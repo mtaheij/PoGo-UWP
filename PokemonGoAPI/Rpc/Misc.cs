@@ -11,7 +11,6 @@ namespace PokemonGo.RocketAPI.Rpc
         {
         }
 
-
         public async Task<ClaimCodenameResponse> ClaimCodename(string codename)
         {
             return
@@ -23,37 +22,11 @@ namespace PokemonGo.RocketAPI.Rpc
                         });
         }
 
-/*        public async Task<CheckCodenameAvailableResponse> CheckCodenameAvailable(string codename)
-        {
-            return
-                await
-                    PostProtoPayload<Request, CheckCodenameAvailableResponse>(RequestType.CheckCodenameAvailable,
-                        new CheckCodenameAvailableMessage
-                        {
-                            Codename = codename
-                        });
-        }
-
-        public async Task<GetSuggestedCodenamesResponse> GetSuggestedCodenames()
-        {
-            return
-                await
-                    PostProtoPayload<Request, GetSuggestedCodenamesResponse>(RequestType.GetSuggestedCodenames,
-                        new GetSuggestedCodenamesMessage());
-        }
-*/
         public async Task<EchoResponse> SendEcho()
         {
             return await PostProtoPayload<Request, EchoResponse>(RequestType.Echo, new EchoMessage());
         }
 
-        public async Task<EncounterTutorialCompleteResponse> MarkTutorialComplete()
-        {
-            return
-                await
-                    PostProtoPayload<Request, EncounterTutorialCompleteResponse>(RequestType.MarkTutorialComplete,
-                        new MarkTutorialCompleteMessage());
-        }
         public async Task<CheckChallengeResponse> CheckChallenge()
         {
             return await PostProtoPayload<Request, CheckChallengeResponse>(RequestType.CheckChallenge, new CheckChallengeMessage());
@@ -67,6 +40,11 @@ namespace PokemonGo.RocketAPI.Rpc
                     Token = token
                 });
 
+        }
+
+        public async Task<SfidaActionLogResponse> GetSfidaActionLog()
+        {
+            return await PostProtoPayload<Request, SfidaActionLogResponse>(RequestType.SfidaActionLog, new SfidaActionLogMessage());
         }
     }
 }

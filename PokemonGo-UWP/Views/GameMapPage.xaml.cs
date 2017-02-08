@@ -193,7 +193,7 @@ namespace PokemonGo_UWP.Views
         private void GameMapControl_OnZoomLevelChanged(MapControl sender, object args)
         {
             var currentZoomLevel = sender.ZoomLevel;
-            sender.ZoomLevel = currentZoomLevel < 18 ? 18 : currentZoomLevel;
+            sender.ZoomLevel = currentZoomLevel < 17 ? 17 : currentZoomLevel;
         }
 
         #region Overrides of Page
@@ -349,6 +349,21 @@ namespace PokemonGo_UWP.Views
             ViewModel.LevelUpRewardsAwarded += ViewModelOnLevelUpRewardsAwarded;
             ViewModel.AppliedItemExpired += ViewModelOnAppliedItemExpired;
             ViewModel.AppliedItemStarted += ViewModelOnAppliedItemStarted;
+
+            ViewModel.GameXPAwarded += ViewModelOnGameXPAwarded;
+        }
+
+        private void ViewModelOnGameXPAwarded(object sender, EventArgs e)
+        {
+            while (ViewModel.AwardedXp.Count > 0)
+            {
+                AwardedXpOverlay XPoverlay = new Views.AwardedXpOverlay();
+                XPoverlay.XpCount = ViewModel.AwardedXp[0];
+
+                XPoverlay.Show();
+
+                ViewModel.AwardedXp.RemoveAt(0);
+            }
         }
 
         private TimeSpan tick = new TimeSpan(DateTime.Now.Ticks);
@@ -370,6 +385,8 @@ namespace PokemonGo_UWP.Views
             LocationServiceHelper.Instance.PropertyChanged -= LocationHelperPropertyChanged;
             GameClient.HeadingUpdated -= HeadingUpdated;
             ViewModel.LevelUpRewardsAwarded -= ViewModelOnLevelUpRewardsAwarded;
+
+            ViewModel.GameXPAwarded -= ViewModelOnGameXPAwarded;
         }
 
         private async void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)

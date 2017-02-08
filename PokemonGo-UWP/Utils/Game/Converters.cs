@@ -426,7 +426,7 @@ namespace PokemonGo_UWP.Utils
             if (value == null) return Visibility.Collapsed;
 
             var pokemon = (PokemonDataWrapper)value;
-            return (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id) ? Visibility.Visible : Visibility.Collapsed;
+            return (pokemon.Id == GameClient.PlayerData.BuddyPokemon.Id) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -449,10 +449,10 @@ namespace PokemonGo_UWP.Utils
             var lastKmAwarded = 0.0;
             var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
             var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
-            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            if (pokemon.Id == GameClient.PlayerData.BuddyPokemon.Id)
             {
-                //startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
-                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                //startKmWalked = GameClient.PlayerData.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerData.BuddyPokemon.LastKmAwarded;
                 return (double)(((kmPlayerWalked - lastKmAwarded) / kmBuddyDistance) * 100);
             }
             else
@@ -479,10 +479,10 @@ namespace PokemonGo_UWP.Utils
             var lastKmAwarded = 0.0;
             var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
             var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
-            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            if (pokemon.Id == GameClient.PlayerData.BuddyPokemon.Id)
             {
-                startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
-                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                startKmWalked = GameClient.PlayerData.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerData.BuddyPokemon.LastKmAwarded;
                 return (kmPlayerWalked - lastKmAwarded).ToString("###0.00") + " / " + kmBuddyDistance.ToString("#0") + " km";
             }
             else
@@ -511,10 +511,10 @@ namespace PokemonGo_UWP.Utils
             var buddyTotalKmWalked = pokemon.BuddyTotalKmWalked;
             //var kmBuddyDistance = GameClient.GetExtraDataForPokemon(pokemon.PokemonId).KmBuddyDistance;
             var kmPlayerWalked = GameClient.PlayerStats.KmWalked;
-            if (pokemon.Id == GameClient.PlayerProfile.BuddyPokemon.Id)
+            if (pokemon.Id == GameClient.PlayerData.BuddyPokemon.Id)
             {
-                //startKmWalked = GameClient.PlayerProfile.BuddyPokemon.StartKmWalked;
-                lastKmAwarded = GameClient.PlayerProfile.BuddyPokemon.LastKmAwarded;
+                //startKmWalked = GameClient.PlayerData.BuddyPokemon.StartKmWalked;
+                lastKmAwarded = GameClient.PlayerData.BuddyPokemon.LastKmAwarded;
                 //buddyTotalKmWalked = pokemon.BuddyTotalKmWalked;
                 return (kmPlayerWalked - lastKmAwarded + buddyTotalKmWalked).ToString("###0.00");
             }
@@ -679,7 +679,7 @@ namespace PokemonGo_UWP.Utils
         {
             var startustToPowerUp = System.Convert.ToInt32(GameClient.PokemonUpgradeSettings.StardustCost[
                 System.Convert.ToInt32(Math.Floor(PokemonInfo.GetLevel(((PokemonDataWrapper)value).WrappedData)) - 1)]);
-            return startustToPowerUp > GameClient.PlayerProfile.Currencies.FirstOrDefault(item => item.Name.Equals("STARDUST")).Amount ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : App.Current.Resources["TitleTextColor"];
+            return startustToPowerUp > GameClient.PlayerData.Currencies.FirstOrDefault(item => item.Name.Equals("STARDUST")).Amount ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : App.Current.Resources["TitleTextColor"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -1041,7 +1041,7 @@ namespace PokemonGo_UWP.Utils
             else
             {
                 // ArenaDeployment
-                switch (GameClient.PlayerProfile.Team)
+                switch (GameClient.PlayerData.Team)
                 {
                     case TeamColor.Red:
                         img.Source = new BitmapImage(new Uri("ms-appx:///assets/Icons/ic_arena_red.png"));

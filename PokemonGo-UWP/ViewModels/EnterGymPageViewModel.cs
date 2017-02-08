@@ -40,14 +40,21 @@ namespace PokemonGo_UWP.ViewModels
             }
             else
             {
-                // Navigating from game page, so we need to actually load the Gym
-                Busy.SetBusy(true, "Loading Gym");
-                CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
-                NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
-                Logger.Write($"Entering {CurrentGym.Id}");
-                CurrentGymInfo =
-                    await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
-                Busy.SetBusy(false);
+                if (GameClient.PlayerStats.Level < 5)
+                {
+                    PlayerLevelInsufficient?.Invoke(this, null);
+                }
+                else
+                {
+                    // Navigating from game page, so we need to actually load the Gym
+                    Busy.SetBusy(true, "Loading Gym");
+                    CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
+                    NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
+                    Logger.Write($"Entering {CurrentGym.Id}");
+                    CurrentGymInfo =
+                        await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                    Busy.SetBusy(false);
+                }
             }
         }
 
@@ -177,6 +184,11 @@ namespace PokemonGo_UWP.ViewModels
         ///     Event fired if the Player's inventory is full and he can't get items from the Pokestop
         /// </summary>
         public event EventHandler EnterInventoryFull;
+
+        /// <summary>
+        ///     Event fired if the Player is not yet level 5
+        /// </summary>
+        public event EventHandler PlayerLevelInsufficient;
 
         #endregion
 
