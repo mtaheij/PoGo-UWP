@@ -25,7 +25,7 @@ namespace PokemonGo.RocketAPI.Rpc
         protected RequestBuilder RequestBuilder
             =>
                 new RequestBuilder(Client.AuthToken, Client.AuthType, Client.CurrentLatitude, Client.CurrentLongitude,
-                    Client.CurrentAccuracy, Client.DeviceInfo, Client.AuthTicket);
+                    Client.CurrentAccuracy, Client.DeviceInfo, Client.AuthTicket, Client);
 
         private string ApiUrl => $"https://{Client.ApiUrl}/rpc";
 
@@ -33,7 +33,7 @@ namespace PokemonGo.RocketAPI.Rpc
             IMessage message) where TRequest : IMessage<TRequest>
             where TResponsePayload : IMessage<TResponsePayload>, new()
         {
-            var requestEnvelops = RequestBuilder.GetRequestEnvelope(type, message);
+            var requestEnvelops = await RequestBuilder.GetRequestEnvelope(type, message);
             return
                 await
                     Client.PostProtoPayload<TRequest, TResponsePayload>(ApiUrl, requestEnvelops,

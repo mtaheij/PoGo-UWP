@@ -458,7 +458,7 @@ namespace PokemonGo_UWP.Utils
         /// <summary>
         /// Creates and initializes API client
         /// </summary>
-        private static void CreateClient()
+        private static void CreateClient(Geoposition pos)
         {
             //Unregister old handlers
             if (_client != null)
@@ -467,6 +467,8 @@ namespace PokemonGo_UWP.Utils
             }
 
             _client = new Client(SettingsService.Instance.PokehashAuthKey, _clientSettings, null, DeviceInfos.Current);
+            _client.SetInitialLocation(pos);
+            _client.StartTime = PokemonGo.RocketAPI.Helpers.Utils.GetTime(true);
 
             //Register EventHandlers
             _client.CheckChallengeReceived += _client_CheckChallengeReceived;
@@ -485,7 +487,6 @@ namespace PokemonGo_UWP.Utils
         /// <returns></returns>
         public static async Task InitializeClient()
         {
-
             DataCache.Init();
 
             var credentials = SettingsService.Instance.UserCredentials;
@@ -499,7 +500,9 @@ namespace PokemonGo_UWP.Utils
                 GooglePassword = SettingsService.Instance.LastLoginService == AuthType.Google ? credentials.Password : null,
             };
 
-            CreateClient();
+            Geoposition pos = await GetInitialLocation();
+
+            CreateClient(pos);
 
             try
             {
@@ -542,7 +545,9 @@ namespace PokemonGo_UWP.Utils
                 AuthType = AuthType.Ptc
             };
 
-            CreateClient();
+            Geoposition pos = await GetInitialLocation();
+
+            CreateClient(pos);
 
             // Get PTC token
             await _client.Login.DoLogin();
@@ -573,7 +578,9 @@ namespace PokemonGo_UWP.Utils
                 AuthType = AuthType.Google
             };
 
-            CreateClient();
+            Geoposition pos = await GetInitialLocation();
+
+            CreateClient(pos);
 
             // Get Google token
             await _client.Login.DoLogin();
@@ -700,7 +707,7 @@ namespace PokemonGo_UWP.Utils
 
         }
 
-        private static async void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private static void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if(e.PropertyName==nameof(LocationServiceHelper.Instance.Geoposition))
 			{
@@ -711,7 +718,7 @@ namespace PokemonGo_UWP.Utils
                     if (_client != null)
                     {
                         _lastPlayerLocationUpdate = DateTime.Now;
-                        await _client.Player.UpdatePlayerLocation(position.Latitude, position.Longitude, LocationServiceHelper.Instance.Geoposition.Coordinate.Accuracy);
+                        _client.Player.UpdatePlayerLocation(position.Latitude, position.Longitude, LocationServiceHelper.Instance.Geoposition.Coordinate.Accuracy);
                     }
                 }
 			}
@@ -843,6 +850,21 @@ namespace PokemonGo_UWP.Utils
                         ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
                     });
                 }
+            }
+        }
+
+        private static async Task<Geoposition> GetInitialLocation()
+        {
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            Geolocator _geolocator;
+
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+                    _geolocator = new Geolocator { DesiredAccuracy = PositionAccuracy.Default };
+                    return await _geolocator.GetGeopositionAsync();
+                default:
+                    return null;
             }
         }
 

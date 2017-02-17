@@ -15,6 +15,10 @@ using System.Diagnostics;
 using System;
 using Google.Protobuf.Collections;
 using POGOLib.Official.Util.Hash;
+using Windows.Devices.Geolocation;
+using POGOProtos.Enums;
+using static POGOProtos.Networking.Envelopes.Signature.Types;
+using PokemonGoAPI.Helpers;
 
 namespace PokemonGo.RocketAPI
 {
@@ -51,7 +55,9 @@ namespace PokemonGo.RocketAPI
 
         public static IHasher Hasher = new PokeHashHasher(string.Empty);
 
-
+        internal Platform Platform { get; set; }
+        public long StartTime { get; set; }
+        public string Platform8Message { get; set; }
 
         #region Constructors
 
@@ -93,9 +99,39 @@ namespace PokemonGo.RocketAPI
             DeviceInfo = deviceInfo;
 
             Player.SetCoordinates(Settings.DefaultLatitude, Settings.DefaultLongitude, Settings.DefaultAccuracy);
+
+            Platform = Platform.Ios;
+            DeviceInfo iosInfo = DeviceInfoHelper.GetRandomIosDevice();
+            Settings.DeviceId = iosInfo.DeviceId;
+            Settings.DeviceBrand = iosInfo.DeviceBrand;
+            Settings.DeviceModel = iosInfo.DeviceModel;
+            Settings.DeviceModelBoot = iosInfo.DeviceModelBoot;
+            Settings.HardwareManufacturer = iosInfo.HardwareManufacturer;
+            Settings.HardwareModel = iosInfo.HardwareModel;
+            Settings.FirmwareBrand = iosInfo.FirmwareBrand;
+            Settings.FirmwareType = iosInfo.FirmwareType;
+
+            // Clear out the android fields.
+            Settings.AndroidBoardName = "";
+            Settings.AndroidBootloader = "";
+            Settings.DeviceModelIdentifier = "";
+            Settings.FirmwareTags = "";
+            Settings.FirmwareFingerprint = "";
+
+            Platform8Message = String.Empty;
         }
 
         #endregion
+
+        public void SetInitialLocation(Geoposition pos)
+        {
+            Player.SetCoordinates(pos.Coordinate.Latitude, pos.Coordinate.Longitude, pos.Coordinate.Accuracy);
+        }
+
+        public IHasher GetHasher()
+        {
+            return Hasher;
+        }
 
         #region HttpClient stuff
 
@@ -238,7 +274,6 @@ namespace PokemonGo.RocketAPI
         }
 
     #endregion
-
-}
+    }
 
 }

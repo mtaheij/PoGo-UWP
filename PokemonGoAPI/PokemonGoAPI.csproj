@@ -125,6 +125,7 @@
     <Compile Include="Exceptions\ApiNonRecoverableException.cs" />
     <Compile Include="Exceptions\GoogleException.cs" />
     <Compile Include="Exceptions\GoogleOfflineException.cs" />
+    <Compile Include="Exceptions\HasherException.cs" />
     <Compile Include="Exceptions\InvalidResponseException.cs" />
     <Compile Include="Exceptions\LoginFailedException.cs" />
     <Compile Include="Exceptions\PTCOfflineException.cs" />
@@ -135,7 +136,9 @@
     <Compile Include="Helpers\Crypt\Shuffle2.cs" />
     <Compile Include="Helpers\Crypt\Unshuffle.cs" />
     <Compile Include="Helpers\Crypt\Unshuffle2.cs" />
+    <Compile Include="Helpers\DeviceInfoHelper.cs" />
     <Compile Include="Helpers\Hash\HashData.cs" />
+    <Compile Include="Helpers\Hash\HashModel.cs" />
     <Compile Include="Helpers\Hash\HashVersionMismatchException.cs" />
     <Compile Include="Helpers\Hash\IHasher.cs" />
     <Compile Include="Helpers\Hash\Legacy\LegacyHasher.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Helpers\Hash\PokeHash\PokeHashResponse.cs" />
     <Compile Include="Helpers\IDeviceInfos.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\LehmerRng.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
     <Compile Include="Helpers\RequestBuilder.cs" />
     <Compile Include="Helpers\RetryHandler.cs" />

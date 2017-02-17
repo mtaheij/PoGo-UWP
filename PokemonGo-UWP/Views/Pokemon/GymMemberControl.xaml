@@ -1,0 +1,62 @@
+﻿<UserControl
+    x:Class="PokemonGo_UWP.Views.GymMemberControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PokemonGo_UWP.Views"
+    xmlns:control="using:PokemonGo_UWP.Controls"
+    xmlns:gif="using:XamlAnimatedGif"
+    xmlns:viewModels="using:PokemonGo_UWP.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="640"
+    d:DesignWidth="360">
+
+    <Grid Width="360">
+        <!--Trainer-->
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Right" 
+                  Width="Auto" Height="320" Margin="0,0,0,120">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-20"
+                       gif:AnimationBehavior.SourceUri="/Assets/UI/avatar.gif" Height="270"></Image>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                           FontSize="80" Opacity="0.3" Text="{Binding TrainerPublicProfile.Level}" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"
+                           Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                           FontSize="28" Text="{Binding TrainerPublicProfile.Name}" />
+        </Grid>
+        <!--Pokemon-->
+        <Image Width="200" Height="200" Margin="0,60,0,0" 
+                   Source="{Binding PokemonData.PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"></Image>
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,240" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Left" Width="100">
+                <!--TODO Crown should appear only if this is ultimate pokemon-->
+                <Image Source="/Assets/Icons/crown.png" Height="36" Stretch="Uniform"></Image>
+            </Grid>
+            <!--TODO Missing binding vars-->
+            <!--<TextBlock Grid.Row="1" HorizontalAlignment="Left"
+                           Foreground="#DDDDDD" FontSize="26" 
+                           Text="{Binding PokemonName}"></TextBlock>-->
+            <TextBlock Grid.Row="1" HorizontalAlignment="Left"
+                           Foreground="#DDDDDD" FontSize="26" 
+                           Text="{Binding PokemonData.Nickname}" />
+            <Rectangle Grid.Row="2" Fill="#DDDDDD" Width="100" Height="3" HorizontalAlignment="Left" ></Rectangle>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left">
+                <TextBlock VerticalAlignment="Bottom" Foreground="#DDDDDD" FontSize="20" 
+                               Text="CP"></TextBlock>
+                <TextBlock Foreground="#DDDDDD" FontSize="26" Margin="4,0,0,0" 
+                               Text="{Binding PokemonData.Cp}"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

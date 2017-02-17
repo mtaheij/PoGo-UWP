@@ -67,11 +67,6 @@ namespace PokemonGo.RocketAPI
 		public event EventHandler<LevelUpRewardsResponse> LevelUpRewardsReceived;
 
 		///<summary>
-		/// Fires every time a <see cref="PlayerUpdateResponse" /> is received from the API.
-		/// </summary>
-		public event EventHandler<PlayerUpdateResponse> PlayerUpdateReceived;
-
-		///<summary>
 		/// Fires every time a <see cref="VerifyChallengeResponse" /> is received from the API.
 		/// </summary>
 		public event EventHandler<VerifyChallengeResponse> VerifyChallengeReceived;
@@ -153,13 +148,6 @@ namespace PokemonGo.RocketAPI
         /// </summary>
         /// <param name="value"></param>
         public void RaiseLevelUpRewardsReceived(LevelUpRewardsResponse value) => LevelUpRewardsReceived?.Invoke(this, value);
-
-
-        /// <summary>
-        /// Provides a safe way to invoke the <see cref="PlayerUpdateReceived" /> event.
-        /// </summary>
-        /// <param name="value"></param>
-        public void RaisePlayerUpdateReceived(PlayerUpdateResponse value) => PlayerUpdateReceived?.Invoke(this, value);
 
 
         /// <summary>

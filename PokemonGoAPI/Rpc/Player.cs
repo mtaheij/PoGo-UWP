@@ -15,23 +15,9 @@ namespace PokemonGo.RocketAPI.Rpc
             Client = client;
         }
 
-        public async Task<PlayerUpdateResponse> UpdatePlayerLocation(double latitude, double longitude, double accuracy)
+        public void UpdatePlayerLocation(double latitude, double longitude, double accuracy)
         {
             SetCoordinates(latitude, longitude, accuracy);
-            var message = new PlayerUpdateMessage
-            {
-                Latitude = Client.CurrentLatitude,
-                Longitude = Client.CurrentLongitude
-            };
-
-            var updatePlayerLocationRequestEnvelope = RequestBuilder.GetRequestEnvelope(
-                new Request
-                {
-                    RequestType = RequestType.PlayerUpdate,
-                    RequestMessage = message.ToByteString()
-                });
-
-            return await PostProtoPayload<Request, PlayerUpdateResponse>(updatePlayerLocationRequestEnvelope);
         }
 
         internal void SetCoordinates(double lat, double lng, double accuracy)

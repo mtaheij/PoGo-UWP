@@ -1,0 +1,168 @@
+﻿<UserControl
+    x:Class="PokemonGo_UWP.Views.ChooseTeamDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PokemonGo_UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="640"
+    d:DesignWidth="400"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <Storyboard x:Name="ShowDialogStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="CoverGrid">
+                <EasingDoubleKeyFrame KeyTime="0"
+                                      Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="HideDialogStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="CoverGrid">
+                <EasingDoubleKeyFrame KeyTime="0"
+                                      Value="1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="CoverGrid"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Tapped="Grid_Tapped">
+        <Rectangle x:Name="LightBackgroundRect"
+                   Fill="{StaticResource LightPageBackgroundGradient}" />
+        <Image x:Name="Professor" 
+               Source="ms-appx:///Assets/UI/Professor.png" 
+               Margin="40,80,40,40"/>
+        <Image x:Name="TeamLogo" 
+               Source="ms-appx:///Assets/Teams/no-team.png" 
+               VerticalAlignment="Top" 
+               Margin="100"/>
+
+        <StackPanel x:Name="PanelLeaders" Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Visibility="Visible"
+                    Background="Transparent">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Canvas x:Name="YellowLeader" 
+                        Grid.Column="0"
+                        Height="300" 
+                        Background="Transparent"/>
+                <Canvas x:Name="BlueLeader" 
+                        Grid.Column="1"
+                        Height="300" 
+                        Background="Transparent"/>
+                <Canvas x:Name="RedLeader" 
+                        Grid.Column="2"
+                        Height="300" 
+                        Background="Transparent"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="PanelTeamChoice" Orientation="Vertical" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    Visibility="Visible"
+                    Background="Transparent">
+            <TextBlock x:Name="SelectTeam" 
+                       Text="Select a team to join" 
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource SubtitleTextBlockStyle}"
+                       Foreground="Black"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="TeamYellowButton" 
+                        Grid.Column="0" Width="100"
+                        Command="{Binding TeamYellowCommand}"
+                        Background="Transparent">
+                    <StackPanel Orientation="Vertical">
+                        <Canvas x:Name="YellowBack" 
+                                Height="300" 
+                                Background="Transparent"/>
+                        <TextBlock x:Name="YellowText" 
+                                   Text="Team Instinct" 
+                                   Style="{StaticResource BaseTextBlockStyle}" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TeamBlueButton" 
+                        Grid.Column="1" Width="100"
+                        Command="{Binding TeamBlueCommand}"
+                        Background="Transparent">
+                    <StackPanel Orientation="Vertical">
+                        <Canvas x:Name="BlueBack" 
+                                Height="300" 
+                                Background="Transparent"/>
+                        <TextBlock x:Name="BlueText" 
+                                   Text="Team Mystic" 
+                                   Style="{StaticResource BaseTextBlockStyle}" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TeamRedButton" 
+                        Grid.Column="2" Width="100"
+                        Command="{Binding TeamRedCommand}"
+                        Background="AliceBlue">
+                    <StackPanel Orientation="Vertical">
+                        <Canvas x:Name="RedBack" 
+                                Height="300" 
+                                Background="Transparent"/>
+                        <TextBlock x:Name="RedText" 
+                                   Text="Team Valor" 
+                                   Style="{StaticResource BaseTextBlockStyle}" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
+        <Canvas x:Name="TeamLeader" 
+                Margin="0,0,0,0"/>
+        <Grid>
+            <Rectangle x:Name="DialogRect" 
+                       Fill="White" 
+                       Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}" 
+                       Margin="20" />
+            <TextBlock x:Name="DialogText" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
+                        TextWrapping="WrapWholeWords"
+                        Margin="30"/>
+        </Grid>
+        <Button x:Name="ConfirmationButton" 
+                Command="{Binding ConfirmationButtonCommand}"
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right" 
+                Margin="40">
+            <Image Source="ms-appx:///Assets/Buttons/btn_ok_normal_dark.png" 
+                   Height="60" 
+                   Width="60"/>
+        </Button>
+        <Button x:Name="OkButton"
+                Command="{Binding OkButtonCommand}"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center" 
+                Style="{StaticResource ButtonSubmit}">
+        </Button>
+    </Grid>
+</UserControl>

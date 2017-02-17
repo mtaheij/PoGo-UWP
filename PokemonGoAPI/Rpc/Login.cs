@@ -1,9 +1,12 @@
 ﻿using Google.Protobuf;
+using POGOProtos.Networking.Envelopes;
+using POGOProtos.Networking.Platform.Responses;
 using POGOProtos.Networking.Requests;
 using POGOProtos.Networking.Requests.Messages;
 using POGOProtos.Networking.Responses;
 using PokemonGo.RocketAPI.Enums;
 using PokemonGo.RocketAPI.Exceptions;
+using PokemonGo.RocketAPI.Helpers;
 using PokemonGo.RocketAPI.Login;
 using PokemonGoAPI.Enums;
 using System;
@@ -50,8 +53,7 @@ namespace PokemonGo.RocketAPI.Rpc
 
         private async Task SetServer()
         {
-
-            var serverRequest = RequestBuilder.GetInitialRequestEnvelope(
+            var serverRequest = await RequestBuilder.GetRequestEnvelopeNecro(
                 new Request
                 {
                     RequestType = RequestType.GetPlayer,
@@ -79,6 +81,8 @@ namespace PokemonGo.RocketAPI.Rpc
 
             Client.AccessToken.AuthTicket = serverResponse.AuthTicket;
 
+            ProcessPlatform8Response(RequestBuilder, serverResponse);
+
             /* Temporary inserted here from 2.0 - there is better mechanism */
             //_client.ProcessMessages(serverResponse.Returns, typeof(GetPlayerResponse), typeof(CheckChallengeResponse));
 
@@ -90,6 +94,19 @@ namespace PokemonGo.RocketAPI.Rpc
             if ((int)serverResponse.StatusCode == 51 && !String.IsNullOrEmpty(serverResponse.ApiUrl) && String.IsNullOrEmpty(Client.ApiUrl))
             {
                 Client.ApiUrl = serverResponse.ApiUrl;
+            }
+        }
+
+        private void ProcessPlatform8Response(RequestBuilder RequestBuilder, ResponseEnvelope serverResponse)
+        {
+            foreach (var platformReturn in serverResponse.PlatformReturns)
+            {
+                if (platformReturn.Type == POGOProtos.Networking.Platform.PlatformRequestType.UnknownPtr8)
+                {
+                    UnknownPtr8Response ptr8Response = new UnknownPtr8Response();
+                    ptr8Response.MergeFrom(platformReturn.Response);
+                    _client.Platform8Message = ptr8Response.Message;
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using POGOLib.Official.Util.Encryption.Legacy;
 using POGOProtos.Networking.Envelopes;
+using PokemonGoAPI.Helpers.Hash;
 
 namespace POGOLib.Official.Util.Hash
 {
@@ -18,6 +19,22 @@ namespace POGOLib.Official.Util.Hash
 
         public long Unknown25 { get; } = -1553869577012279119;
 
+        Version IHasher.PokemonVersion
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        long IHasher.Unknown25
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public async Task<HashData> GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
         {
             return new HashData
@@ -31,6 +48,21 @@ namespace POGOLib.Official.Util.Hash
         public byte[] GetEncryptedSignature(byte[] signatureBytes, uint timestampSinceStartMs)
         {
             return PCryptLegacy.Encrypt(signatureBytes, timestampSinceStartMs);
+        }
+
+        Task<HashData> IHasher.GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
+        {
+            throw new NotImplementedException();
+        }
+
+        byte[] IHasher.GetEncryptedSignature(byte[] signatureBytes, uint timestampSinceStartMs)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<HashResponseContent> IHasher.RequestHashesAsync(HashRequestContent hashRequest)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -14,6 +14,10 @@ using POGOProtos.Networking.Envelopes;
 using PokemonGo.RocketAPI;
 using PokemonGoAPI.Helpers.Hash.PokeHash;
 using Windows.UI.Popups;
+using PokemonGoAPI.Helpers.Hash;
+using System.Diagnostics;
+using PokemonGo.RocketAPI.Helpers;
+using PokemonGoAPI.Exceptions;
 
 namespace POGOLib.Official.Util.Hash
 {
@@ -23,14 +27,24 @@ namespace POGOLib.Official.Util.Hash
     ///     to buy an API key, go to this url.
     ///     https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
     /// 
-    ///     Android version: 0.55.0
-    ///     IOS version: 1.25.0
+    ///     Android version: 0.57.2
+    ///     IOS version: 1.27.2
     /// </summary>
     public class PokeHashHasher : IHasher
     {
+        public class Stat
+        {
+            public DateTime Timestamp { get; set; }
+            public long ResponseTime { get; set; }
+        }
+        private List<Stat> statistics = new List<Stat>();
+        public bool VerboseLog { get; set; }
+        private DateTime lastPrintVerbose = DateTime.Now;
+
+
         private const string PokeHashUrl = "http://pokehash.buddyauth.com/";
 
-        private const string PokeHashEndpoint = "api/v125/hash";
+        private const string PokeHashEndpoint = "api/v127_2/hash";
 
         private readonly Semaphore _keySelectorMutex;
 
@@ -76,9 +90,116 @@ namespace POGOLib.Official.Util.Hash
             _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("PoGo-UWP");
         }
 
-        public Version PokemonVersion { get; } = new Version("0.55.0");
+        public Version PokemonVersion { get; } = new Version("0.57.2");
 
-        public long Unknown25 { get; } = -9156899491064153954;
+        public long Unknown25 { get; } = -816976800928766045;
+
+        public async Task<HashResponseContent> RequestHashesAsync(HashRequestContent hashRequest)
+        {
+            return await InternalRequestHashesAsync(hashRequest);
+        }
+
+        private async Task<HashResponseContent> InternalRequestHashesAsync(HashRequestContent request)
+        {
+            // NOTE: This is really bad. Don't create new HttpClient's all the time.
+            // Use a single client per-thread if you need one.
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                // The URL to the hashing server.
+                // Do not include "api/v1/hash" unless you know why you're doing it, and want to modify this code.
+                client.BaseAddress = new Uri("http://pokehash.buddyauth.com/");
+
+                // By default, all requests (and this example) are in JSON.
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Set the X-AuthToken to the key you purchased from Bossland GmbH
+                client.DefaultRequestHeaders.Add("X-AuthToken", SelectPokeHashKey().AuthKey);
+
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.ASCII, "application/json");
+                // An odd bug with HttpClient. You need to set the content type again.
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                Stopwatch watcher = new Stopwatch();
+                HttpResponseMessage response = null;
+                watcher.Start();
+                Stat stat = new Stat() { Timestamp = DateTime.Now };
+                try
+                {
+                    response = await client.PostAsync(PokeHashEndpoint, content);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    watcher.Stop();
+                    stat.ResponseTime = watcher.ElapsedMilliseconds;
+                    statistics.Add(stat);
+                    statistics.RemoveAll(x => x.Timestamp < DateTime.Now.AddMinutes(-1));
+                    if (VerboseLog && lastPrintVerbose.AddSeconds(15) < DateTime.Now)
+                    {
+
+                        if (statistics.Count > 0)
+                        {
+                            lastPrintVerbose = DateTime.Now;
+                            double agv = statistics.Sum(x => x.ResponseTime) / statistics.Count;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}] (HASH SERVER)  in last 1 minute  {statistics.Count} request/min , AVG: {agv:0.00} ms/request , Fastest : {statistics.Min(t => t.ResponseTime)}, Slowest: {statistics.Max(t => t.ResponseTime)}");
+                        }
+                    }
+                }
+
+                // TODO: Fix this up with proper retry-after when we get rate limited.
+                switch (response.StatusCode)
+                {
+                    // All good. Return the hashes back to the caller. :D
+                    case HttpStatusCode.OK:
+                        return JsonConvert.DeserializeObject<HashResponseContent>(await response.Content.ReadAsStringAsync());
+
+                    // Returned when something in your request is "invalid". Also when X-AuthToken is not set.
+                    // See the error message for why it is bad.
+                    case HttpStatusCode.BadRequest:
+                        string responseText = await response.Content.ReadAsStringAsync();
+                        if (responseText.Contains("Unauthorized")) throw new HasherException($"Your API key is incorrect or expired, please check (Pokefamer message : {responseText})");
+                        Console.WriteLine($"Bad request sent to the hashing server! {responseText}");
+                        break;
+
+                    // This error code is returned when your "key" is not in a valid state. (Expired, invalid, etc)
+                    case HttpStatusCode.Unauthorized:
+                        throw new HasherException("You are not authorized to use this service. Please check that your API key is correct.");
+
+                    // This error code is returned when you have exhausted your current "hashes per second" value
+                    // You should queue up your requests, and retry in a second.
+                    case (HttpStatusCode)429:
+                        Console.WriteLine($"Your request has been limited. {await response.Content.ReadAsStringAsync()}");
+                        long ratePeriodEndsAtTimestamp;
+                        IEnumerable<string> ratePeriodEndHeaderValues;
+                        if (response.Headers.TryGetValues("X-RatePeriodEnd", out ratePeriodEndHeaderValues))
+                        {
+                            // Get the rate-limit period ends at timestamp in seconds.
+                            ratePeriodEndsAtTimestamp = Convert.ToInt64(ratePeriodEndHeaderValues.First());
+                        }
+                        else
+                        {
+                            // If for some reason we couldn't get the timestamp, just default to 2 second wait.
+                            ratePeriodEndsAtTimestamp = Utils.GetTime(false) + 2;
+                        }
+
+                        long timeToWaitInSeconds = ratePeriodEndsAtTimestamp - Utils.GetTime(false);
+
+                        if (timeToWaitInSeconds > 0)
+                            await Task.Delay((int)(timeToWaitInSeconds * 1000));  // Wait until next rate-limit period begins.
+
+                        return await RequestHashesAsync(request);
+                    default:
+                        throw new HasherException($"Hash API server ({client.BaseAddress}{PokeHashEndpoint}) might be down!");
+                }
+            }
+
+            return null;
+        }
 
         public async Task<HashData> GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
         {
@@ -146,6 +267,63 @@ namespace POGOLib.Official.Util.Hash
 
         private int accessId;
         
+        private PokeHashAuthKey SelectPokeHashKey()
+        {
+            PokeHashAuthKey authKey = null;
+            var currentAccessId = accessId++;
+            var directlyUsable = false;
+
+            // Key Selection
+            try
+            {
+                _keySelectorMutex.WaitOne();
+
+                // First check, are any keys directly useable?
+                foreach (var key in _authKeys)
+                {
+                    if (key.WaitListCount != 0 ||
+                        !key.IsUsable()) continue;
+
+                    directlyUsable = true;
+
+                    // Increment requests because the key is directly used after this semaphore.
+                    authKey = key;
+                    authKey.Requests++;
+
+                    break;
+                }
+
+                if (authKey == null)
+                {
+                    // Second check, search for the best candidate.
+                    var waitingTime = int.MaxValue;
+
+                    foreach (var key in _authKeys)
+                    {
+                        var keyWaitingTime = key.GetTimeLeft();
+                        if (keyWaitingTime >= waitingTime) continue;
+
+                        waitingTime = keyWaitingTime;
+                        authKey = key;
+                    }
+
+                    if (authKey == null)
+                        throw new Exception($"No {nameof(authKey)} was set.");
+
+                    authKey.WaitListCount++;
+
+                    Logger.Write($"[PokeHash][{currentAccessId}][{authKey.AuthKey}] Best one takes {waitingTime}s. (Waitlist: {authKey.WaitListCount}, Requests: {authKey.Requests})");
+                }
+            }
+            finally
+            {
+                _keySelectorMutex.Release();
+            }
+
+            // return the auth token
+            return authKey;
+        }
+
         private Task<HttpResponseMessage> PerformRequest(HttpContent requestContent)
         {
             return Task.Run(async () =>

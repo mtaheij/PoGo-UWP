@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using POGOProtos.Networking.Envelopes;
+using PokemonGoAPI.Helpers.Hash;
 
 namespace POGOLib.Official.Util.Hash
 {
@@ -19,5 +20,6 @@ namespace POGOLib.Official.Util.Hash
 
         byte[] GetEncryptedSignature(byte[] signatureBytes, uint timestampSinceStartMs);
 
+        Task<HashResponseContent> RequestHashesAsync(HashRequestContent hashRequest);
     }
 }
