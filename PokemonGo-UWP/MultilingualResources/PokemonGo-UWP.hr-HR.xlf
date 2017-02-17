@@ -2314,8 +2314,8 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="new">Bubble Beam</target>
         </trans-unit>
         <trans-unit id="BubbleFast" translate="yes" xml:space="preserve">
-          <source>Bubble Fast</source>
-          <target state="new">Bubble Fast</target>
+          <source>Bubble</source>
+          <target state="new">Bubble</target>
         </trans-unit>
         <trans-unit id="BugBite" translate="yes" xml:space="preserve">
           <source>Bug Bite</source>
@@ -2330,8 +2330,8 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="new">Bug Buzz</target>
         </trans-unit>
         <trans-unit id="Bulldoze" translate="yes" xml:space="preserve">
-          <source>Bull doze</source>
-          <target state="new">Bull doze</target>
+          <source>Bulldoze</source>
+          <target state="new">Bulldoze</target>
         </trans-unit>
         <trans-unit id="BulletPunch" translate="yes" xml:space="preserve">
           <source>Bullet Punch</source>
@@ -2670,8 +2670,8 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="new">Pound</target>
         </trans-unit>
         <trans-unit id="PoundFast" translate="yes" xml:space="preserve">
-          <source>Pound Fast</source>
-          <target state="new">Pound Fast</target>
+          <source>Pound</source>
+          <target state="new">Pound</target>
         </trans-unit>
         <trans-unit id="PowerGem" translate="yes" xml:space="preserve">
           <source>Power Gem</source>
@@ -2822,8 +2822,8 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="new">Spark</target>
         </trans-unit>
         <trans-unit id="SparkFast" translate="yes" xml:space="preserve">
-          <source>Spark Fast</source>
-          <target state="new">Spark Fast</target>
+          <source>Spark</source>
+          <target state="new">Spark</target>
         </trans-unit>
         <trans-unit id="Splash" translate="yes" xml:space="preserve">
           <source>Splash</source>
@@ -2968,6 +2968,158 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
         <trans-unit id="TransformFast" translate="yes" xml:space="preserve">
           <source>Transform</source>
           <target state="new">Transform</target>
+        </trans-unit>
+        <trans-unit id="AirSlashFast" translate="yes" xml:space="preserve">
+          <source>Air Slash</source>
+          <target state="new">Air Slash</target>
+        </trans-unit>
+        <trans-unit id="AstonishFast" translate="yes" xml:space="preserve">
+          <source>Astonish</source>
+          <target state="new">Astonish</target>
+        </trans-unit>
+        <trans-unit id="AuroraBeam" translate="yes" xml:space="preserve">
+          <source>Aurora Beam</source>
+          <target state="new">Aurora Beam</target>
+        </trans-unit>
+        <trans-unit id="Avalanche" translate="yes" xml:space="preserve">
+          <source>Avalanche</source>
+          <target state="new">Avalanche</target>
+        </trans-unit>
+        <trans-unit id="BraveBird" translate="yes" xml:space="preserve">
+          <source>Brave Bird</source>
+          <target state="new">Brave Bird</target>
+        </trans-unit>
+        <trans-unit id="BulletSeedFast" translate="yes" xml:space="preserve">
+          <source>Bullet Seed</source>
+          <target state="new">Bullet Seed</target>
+        </trans-unit>
+        <trans-unit id="ChargeBeamFast" translate="yes" xml:space="preserve">
+          <source>Charge Beam</source>
+          <target state="new">Charge Beam</target>
+        </trans-unit>
+        <trans-unit id="CloseCombat" translate="yes" xml:space="preserve">
+          <source>Close Combat</source>
+          <target state="new">Close Combat</target>
+        </trans-unit>
+        <trans-unit id="CounterFast" translate="yes" xml:space="preserve">
+          <source>Counter</source>
+          <target state="new">Counter</target>
+        </trans-unit>
+        <trans-unit id="Crunch" translate="yes" xml:space="preserve">
+          <source>Crunch</source>
+          <target state="new">Crunch</target>
+        </trans-unit>
+        <trans-unit id="DragonTailFast" translate="yes" xml:space="preserve">
+          <source>Dragon Tail</source>
+          <target state="new">Dragon Tail</target>
+        </trans-unit>
+        <trans-unit id="DynamicPunch" translate="yes" xml:space="preserve">
+          <source>Dynamic Punch</source>
+          <target state="new">Dynamic Punch</target>
+        </trans-unit>
+        <trans-unit id="EnergyBall" translate="yes" xml:space="preserve">
+          <source>Energy Ball</source>
+          <target state="new">Energy Ball</target>
+        </trans-unit>
+        <trans-unit id="ExtrasensoryFast" translate="yes" xml:space="preserve">
+          <source>Extrasensory</source>
+          <target state="new">Extrasensory</target>
+        </trans-unit>
+        <trans-unit id="FireSpinFast" translate="yes" xml:space="preserve">
+          <source>Fire Spin</source>
+          <target state="new">Fire Spin</target>
+        </trans-unit>
+        <trans-unit id="FocusBlast" translate="yes" xml:space="preserve">
+          <source>Focus Blast</source>
+          <target state="new">Focus Blast</target>
+        </trans-unit>
+        <trans-unit id="FoulPlay" translate="yes" xml:space="preserve">
+          <source>Foul Play</source>
+          <target state="new">Foul Play</target>
+        </trans-unit>
+        <trans-unit id="Futuresight" translate="yes" xml:space="preserve">
+          <source>Futuresight</source>
+          <target state="new">Futuresight</target>
+        </trans-unit>
+        <trans-unit id="GrassKnot" translate="yes" xml:space="preserve">
+          <source>Grass Knot</source>
+          <target state="new">Grass Knot</target>
+        </trans-unit>
+        <trans-unit id="GyroBall" translate="yes" xml:space="preserve">
+          <source>Gyro Ball</source>
+          <target state="new">Gyro Ball</target>
+        </trans-unit>
+        <trans-unit id="HeavySlam" translate="yes" xml:space="preserve">
+          <source>Heavy Slam</source>
+          <target state="new">Heavy Slam</target>
+        </trans-unit>
+        <trans-unit id="HexFast" translate="yes" xml:space="preserve">
+          <source>Hex</source>
+          <target state="new">Hex</target>
+        </trans-unit>
+        <trans-unit id="InfestationFast" translate="yes" xml:space="preserve">
+          <source>Infestation</source>
+          <target state="new">Infestation</target>
+        </trans-unit>
+        <trans-unit id="IronTailFast" translate="yes" xml:space="preserve">
+          <source>Iron Tail</source>
+          <target state="new">Iron Tail</target>
+        </trans-unit>
+        <trans-unit id="MirrorCoat" translate="yes" xml:space="preserve">
+          <source>Mirror Coat</source>
+          <target state="new">Mirror Coat</target>
+        </trans-unit>
+        <trans-unit id="NightShade" translate="yes" xml:space="preserve">
+          <source>Night Shade</source>
+          <target state="new">Night Shade</target>
+        </trans-unit>
+        <trans-unit id="Outrage" translate="yes" xml:space="preserve">
+          <source>Outrage</source>
+          <target state="new">Outrage</target>
+        </trans-unit>
+        <trans-unit id="Overheat" translate="yes" xml:space="preserve">
+          <source>Overheat</source>
+          <target state="new">Overheat</target>
+        </trans-unit>
+        <trans-unit id="PowderSnowFast" translate="yes" xml:space="preserve">
+          <source>Powder Snow</source>
+          <target state="new">Powder Snow</target>
+        </trans-unit>
+        <trans-unit id="RockBlast" translate="yes" xml:space="preserve">
+          <source>Rock Blast</source>
+          <target state="new">Rock Blast</target>
+        </trans-unit>
+        <trans-unit id="SandTomb" translate="yes" xml:space="preserve">
+          <source>Sand Tomb</source>
+          <target state="new">Sand Tomb</target>
+        </trans-unit>
+        <trans-unit id="SilverWind" translate="yes" xml:space="preserve">
+          <source>Silver Wind</source>
+          <target state="new">Silver Wind</target>
+        </trans-unit>
+        <trans-unit id="SkyAttack" translate="yes" xml:space="preserve">
+          <source>Sky Attack</source>
+          <target state="new">Sky Attack</target>
+        </trans-unit>
+        <trans-unit id="SnarlFast" translate="yes" xml:space="preserve">
+          <source>Snarl</source>
+          <target state="new">Snarl</target>
+        </trans-unit>
+        <trans-unit id="StruggleBugFast" translate="yes" xml:space="preserve">
+          <source>Struggle Bug</source>
+          <target state="new">Struggle Bug</target>
+        </trans-unit>
+        <trans-unit id="VoltSwitchFast" translate="yes" xml:space="preserve">
+          <source>Volt Switch</source>
+          <target state="new">Volt Switch</target>
+        </trans-unit>
+        <trans-unit id="WildCharge" translate="yes" xml:space="preserve">
+          <source>Wild Charge</source>
+          <target state="new">Wild Charge</target>
+        </trans-unit>
+        <trans-unit id="ZapCannon" translate="yes" xml:space="preserve">
+          <source>Zap Cannon</source>
+          <target state="new">Zap Cannon</target>
         </trans-unit>
       </group>
     </body>

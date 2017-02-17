@@ -123,6 +123,7 @@
     <Compile Include="Exceptions\AccountLockedException.cs" />
     <Compile Include="Exceptions\AccountNotVerifiedException.cs" />
     <Compile Include="Exceptions\ApiNonRecoverableException.cs" />
+    <Compile Include="Exceptions\SessionInvalidatedException.cs" />
     <Compile Include="Exceptions\GoogleException.cs" />
     <Compile Include="Exceptions\GoogleOfflineException.cs" />
     <Compile Include="Exceptions\HasherException.cs" />
@@ -189,7 +190,6 @@
     <Compile Include="Session\ApiFailureStrategy.cs" />
     <EmbeddedResource Include="Properties\PokemonGoAPI.rd.xml" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

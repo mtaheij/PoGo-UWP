@@ -483,7 +483,7 @@ namespace PokemonGo_UWP.Utils
             {
                 startKmWalked = GameClient.PlayerData.BuddyPokemon.StartKmWalked;
                 lastKmAwarded = GameClient.PlayerData.BuddyPokemon.LastKmAwarded;
-                return (kmPlayerWalked - lastKmAwarded).ToString("###0.00") + " / " + kmBuddyDistance.ToString("#0") + " km";
+                return (kmPlayerWalked - lastKmAwarded).ToString("###0.00") + " / " + kmBuddyDistance.ToString("#0.#") + " km";
             }
             else
                 return string.Empty;
