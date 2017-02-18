@@ -1135,12 +1135,12 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
         </trans-unit>
         <trans-unit id="D_ItemNanabBerry" translate="yes" xml:space="preserve">
-          <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
-          <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
+          <source>Feed this to a Pokémon to calm it down, making it less erratic.</source>
+          <target state="new">Feed this to a Pokémon to calm it down, making it less erratic.</target>
         </trans-unit>
         <trans-unit id="D_ItemPinapBerry" translate="yes" xml:space="preserve">
-          <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
-          <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
+          <source>Feed this to a Pokémon to make it drop more candy.</source>
+          <target state="new">Feed this to a Pokémon to make it drop more candy.</target>
         </trans-unit>
         <trans-unit id="D_ItemWeparBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
@@ -1149,6 +1149,46 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
         <trans-unit id="D_ItemHyperPotion" translate="yes" xml:space="preserve">
           <source>A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 200 points.</source>
           <target state="new">A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 200 points.</target>
+        </trans-unit>
+        <trans-unit id="D_ItemDragonScale" translate="yes" xml:space="preserve">
+          <source>An Evolution Item that is required to evolve Seadra into Kingdra.</source>
+          <target state="new">An Evolution Item that is required to evolve Seadra into Kingdra.</target>
+        </trans-unit>
+        <trans-unit id="D_ItemKingsRock" translate="yes" xml:space="preserve">
+          <source>An Evolution Item that is required to evolve Poliwhirl into Politoed and Slowpoke into Slowking.</source>
+          <target state="new">An Evolution Item that is required to evolve Poliwhirl into Politoed and Slowpoke into Slowking.</target>
+        </trans-unit>
+        <trans-unit id="D_ItemMetalCoat" translate="yes" xml:space="preserve">
+          <source>An Evolution Item that is required to evolve Onix into Steelix and Scyther into Scizor.</source>
+          <target state="new">An Evolution Item that is required to evolve Onix into Steelix and Scyther into Scizor.</target>
+        </trans-unit>
+        <trans-unit id="D_ItemSunStone" translate="yes" xml:space="preserve">
+          <source>An Evolution Item that is required to evolve Gloom into Bellossom and Sunkern into Sunflora.</source>
+          <target state="new">An Evolution Item that is required to evolve Gloom into Bellossom and Sunkern into Sunflora.</target>
+        </trans-unit>
+        <trans-unit id="D_ItemUpGrade" translate="yes" xml:space="preserve">
+          <source>An Evolution Item that is required to evolve Porygon into Porygon2.</source>
+          <target state="new">An Evolution Item that is required to evolve Porygon into Porygon2.</target>
+        </trans-unit>
+        <trans-unit id="ItemDragonScale" translate="yes" xml:space="preserve">
+          <source>Dragon Scale</source>
+          <target state="new">Dragon Scale</target>
+        </trans-unit>
+        <trans-unit id="ItemKingsRock" translate="yes" xml:space="preserve">
+          <source>King's Rock</source>
+          <target state="new">King's Rock</target>
+        </trans-unit>
+        <trans-unit id="ItemMetalCoat" translate="yes" xml:space="preserve">
+          <source>Metal Coat</source>
+          <target state="new">Metal Coat</target>
+        </trans-unit>
+        <trans-unit id="ItemSunStone" translate="yes" xml:space="preserve">
+          <source>Sun Stone</source>
+          <target state="new">Sun Stone</target>
+        </trans-unit>
+        <trans-unit id="ItemUpGrade" translate="yes" xml:space="preserve">
+          <source>Up-Grade</source>
+          <target state="new">Up-Grade</target>
         </trans-unit>
       </group>
     </body>

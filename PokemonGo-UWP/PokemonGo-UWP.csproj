@@ -266,6 +266,11 @@
     <Content Include="Assets\Items\Egg-5.png" />
     <Content Include="Assets\Items\Egg.png" />
     <Content Include="Assets\Items\E_Item_902.png" />
+    <Content Include="Assets\Items\Item_1101.png" />
+    <Content Include="Assets\Items\Item_1102.png" />
+    <Content Include="Assets\Items\Item_1103.png" />
+    <Content Include="Assets\Items\Item_1104.png" />
+    <Content Include="Assets\Items\Item_1105.png" />
     <Content Include="Assets\Items\Item_301.png" />
     <Content Include="Assets\Items\Item_402.png" />
     <Content Include="Assets\Items\Item_501.png" />
@@ -285,9 +290,7 @@
     <Content Include="Assets\Items\Item_401.png" />
     <Content Include="Assets\Items\Item_701.png" />
     <Content Include="Assets\Items\Item_702.png" />
-    <Content Include="Assets\Items\Item_703.png" />
     <Content Include="Assets\Items\Item_704.png" />
-    <Content Include="Assets\Items\Item_705.png" />
     <Content Include="Assets\Items\Item_801.png" />
     <Content Include="Assets\Items\Item_COIN_01.png" />
     <Content Include="Assets\Items\Item_COIN_BOX_01.png" />
@@ -296,6 +299,8 @@
     <Content Include="Assets\Items\Item_COIN_HEAP_01.png" />
     <Content Include="Assets\Items\Item_COIN_POUCH_01.png" />
     <Content Include="Assets\Items\Item_COIN_STACK_01.png" />
+    <Content Include="Assets\Items\Item_703.png" />
+    <Content Include="Assets\Items\Item_705.png" />
     <Content Include="Assets\LiveTiles\Normal\NewStoreLogo.scale-100.png" />
     <Content Include="Assets\LiveTiles\Normal\NewStoreLogo.scale-125.png" />
     <Content Include="Assets\LiveTiles\Normal\NewStoreLogo.scale-150.png" />

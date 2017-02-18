@@ -157,10 +157,10 @@
     <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
   </data>
   <data name="D_ItemNanabBerry" xml:space="preserve">
-    <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
+    <value>Feed this to a Pokémon to calm it down, making it less erratic.</value>
   </data>
   <data name="D_ItemPinapBerry" xml:space="preserve">
-    <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
+    <value>Feed this to a Pokémon to make it drop more candy.</value>
   </data>
   <data name="D_ItemWeparBerry" xml:space="preserve">
     <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
