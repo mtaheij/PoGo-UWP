@@ -377,4 +377,28 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="DeployPokemonWarningText" xml:space="preserve">
     <value>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</value>
   </data>
+  <data name="CannotDeployBuddy" xml:space="preserve">
+    <value>You can't deploy your buddy Pokémon to a gym.</value>
+  </data>
+  <data name="ErrorAlreadyHasPokemonOnFort" xml:space="preserve">
+    <value>You already have a Pokemon deployed to this Gym</value>
+  </data>
+  <data name="ErrorFortDeployLockout" xml:space="preserve">
+    <value>There is a deploy lockout for this Gym</value>
+  </data>
+  <data name="ErrorFortIsFull" xml:space="preserve">
+    <value>This Gym is full</value>
+  </data>
+  <data name="ErrorNotInRange" xml:space="preserve">
+    <value>This Gym is too far away</value>
+  </data>
+  <data name="ErrorOpposingTeamOwnsFort" xml:space="preserve">
+    <value>This Gym is owned by an opposing team</value>
+  </data>
+  <data name="ErrorPlayerHasNoNickname" xml:space="preserve">
+    <value>You do not have a nickname set</value>
+  </data>
+  <data name="ErrorPokemonNotFullHp" xml:space="preserve">
+    <value>Your Pokemon does not have full hp</value>
+  </data>
 </root>

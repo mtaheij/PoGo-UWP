@@ -1,6 +1,7 @@
 ﻿using PokemonGo_UWP.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,11 +24,26 @@ namespace PokemonGo_UWP.Views
             this.InitializeComponent();
         }
 
-        public FortDataWrapper CurrentGym { get; set; }
+        #region Properties
 
-        public void SetCurrentGym(FortDataWrapper currentGym)
+        public static readonly DependencyProperty CurrentGymProperty =
+            DependencyProperty.Register(nameof(CurrentGym), typeof(bool), typeof(FortDataWrapper),
+                new PropertyMetadata(null));
+
+        public FortDataWrapper CurrentGym
         {
-            CurrentGym = currentGym;
+            get { return (FortDataWrapper)GetValue(CurrentGymProperty); }
+            set { SetValue(CurrentGymProperty, value); }
         }
+
+        public string PokemonName
+        {
+            get
+            {
+                BindingExpression bindingExpression = PokemonNameTextBlock.GetBindingExpression(TextBox.TextProperty);
+                return string.Empty;
+            }
+        }
+        #endregion
     }
 }

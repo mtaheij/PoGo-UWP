@@ -42,14 +42,16 @@
         <Rectangle x:Name="DarkBackgroundRect"
                     Fill="{StaticResource DarkPageBackgroundGradient}" />
         <Image x:Name="Spotlight" Source="ms-appx:///Assets/UI/Spotlight.png" Margin="0,-400,0,0" />
-        <Image Source="ms-appx:///Assets/UI/Professor.png" Margin="40,80,40,40"/>
-        <Rectangle x:Name="DialogRect" Fill="White" Height="60" Margin="20">
-            
-        </Rectangle>
+        <Image x:Name="Professor" Source="ms-appx:///Assets/UI/Professor.png" Margin="40,80,40,40"/>
+        <Rectangle x:Name="DialogRect" 
+                   Fill="White" 
+                   Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}" 
+                   Margin="20" />
         <TextBlock x:Name="DialogText" 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="{Binding CurrentMessage, Mode=OneWay}" TextWrapping="WrapWholeWords"
+                    Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
+                    TextWrapping="WrapWholeWords"
                     Margin="30"/>
     </Grid>
 </UserControl>

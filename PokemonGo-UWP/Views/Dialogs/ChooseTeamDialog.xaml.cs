@@ -43,8 +43,7 @@ namespace PokemonGo_UWP.Views
 
             TeamLogo.Visibility = 
                 PanelTeamChoice.Visibility = 
-                ConfirmationButton.Visibility = 
-                OkButton.Visibility = Visibility.Collapsed;
+                ConfirmationButton.Visibility = Visibility.Collapsed;
         }
 
         public MessageEntry CurrentMessage { get; set; }
@@ -80,9 +79,9 @@ namespace PokemonGo_UWP.Views
             PanelTeamChoice.Visibility = Visibility.Visible;
             SelectTeam.Visibility = YellowText.Visibility = BlueText.Visibility = RedText.Visibility = Visibility.Visible;
 
-            RenderImage(YellowBack, new Uri("ms-appx:///Assets/Teams/team_leader_yellow.png"), new Vector2(240, 320), new Vector3(-60, -60, 0), Colors.Yellow);
-            RenderImage(BlueBack, new Uri("ms-appx:///Assets/Teams/team_leader_blue.png"), new Vector2(240, 320), new Vector3(-60, -60, 0), Colors.Blue);
-            RenderImage(RedBack, new Uri("ms-appx:///Assets/Teams/team_leader_red.png"), new Vector2(240, 320), new Vector3(-60, -60, 0), Colors.Red);
+            RenderImage(YellowBack, new Uri("ms-appx:///Assets/Teams/team_leader_yellow.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Yellow);
+            RenderImage(BlueBack, new Uri("ms-appx:///Assets/Teams/team_leader_blue.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Blue);
+            RenderImage(RedBack, new Uri("ms-appx:///Assets/Teams/team_leader_red.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Red);
 
             TeamYellowButton.IsEnabled =
                 TeamBlueButton.IsEnabled =
@@ -100,12 +99,24 @@ namespace PokemonGo_UWP.Views
             {
                 case TeamColor.Yellow:
                     TeamLogo.Source = new BitmapImage(new Uri("ms-appx:///Assets/Teams/instinct.png"));
+                    TeamLogo.HorizontalAlignment = HorizontalAlignment.Left;
+                    RenderImage(YellowBack, new Uri("ms-appx:///Assets/Teams/team_leader_yellow.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Yellow);
+                    RenderImage(BlueBack, new Uri("ms-appx:///Assets/Teams/team_leader_blue.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.LightBlue);
+                    RenderImage(RedBack, new Uri("ms-appx:///Assets/Teams/team_leader_red.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Salmon);
                     break;
                 case TeamColor.Blue:
+                    TeamLogo.HorizontalAlignment = HorizontalAlignment.Center;
                     TeamLogo.Source = new BitmapImage(new Uri("ms-appx:///Assets/Teams/mystic.png"));
+                    RenderImage(YellowBack, new Uri("ms-appx:///Assets/Teams/team_leader_yellow.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.LightYellow);
+                    RenderImage(BlueBack, new Uri("ms-appx:///Assets/Teams/team_leader_blue.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Blue);
+                    RenderImage(RedBack, new Uri("ms-appx:///Assets/Teams/team_leader_red.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Salmon);
                     break;
                 case TeamColor.Red:
                     TeamLogo.Source = new BitmapImage(new Uri("ms-appx:///Assets/Teams/valor.png"));
+                    TeamLogo.HorizontalAlignment = HorizontalAlignment.Right;
+                    RenderImage(YellowBack, new Uri("ms-appx:///Assets/Teams/team_leader_yellow.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.LightYellow);
+                    RenderImage(BlueBack, new Uri("ms-appx:///Assets/Teams/team_leader_blue.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.LightBlue);
+                    RenderImage(RedBack, new Uri("ms-appx:///Assets/Teams/team_leader_red.png"), new Vector2(240, 320), new Vector3(-100, -60, 0), Colors.Red);
                     break;
             }
 
@@ -115,13 +126,18 @@ namespace PokemonGo_UWP.Views
 
         public void SetTeamChoiceComplete(TeamColor teamColor)
         {
+            PanelLeaders.Visibility =
+            ConfirmationButton.Visibility = 
+            DialogRect.Visibility = Visibility.Collapsed;
+
             TeamYellowButton.IsEnabled =
                 TeamBlueButton.IsEnabled =
                 TeamRedButton.IsEnabled = false;
 
-            DialogRect.Visibility = Visibility.Visible;
-            DialogText.Visibility = Visibility.Visible;
-            DialogText.Text = $"Welcome to team {teamColor}";
+            WelcomeText.Text = $"Welcome to Team {teamColor}!";
+            WelcomeGrid.Visibility =
+                PanelTeamChoice.Visibility =
+                Visibility.Visible;
         }
 
         /// <summary>
@@ -154,7 +170,7 @@ namespace PokemonGo_UWP.Views
 
         private Brush _formerModalBrush = null;
 
-        private void Hide()
+        public void Hide()
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
@@ -251,7 +267,7 @@ namespace PokemonGo_UWP.Views
         private DelegateCommand _confirmationButtonCommand;
 
         /// <summary>
-        ///     The Ok button is pressed after choosing a team
+        ///     The Confirmation button is pressed after choosing a team
         /// </summary>
         public DelegateCommand ConfirmationButtonCommand => _confirmationButtonCommand ?? (
             _confirmationButtonCommand =
@@ -260,7 +276,21 @@ namespace PokemonGo_UWP.Views
                     () => true)
             );
 
-        private void RenderImage(UIElement uiElement, Uri imageUri, Vector2 size, Vector3 offset, Color imageColor)
+        public event EventHandler OkAndClose;
+
+        private DelegateCommand _okButtonCommand;
+
+        /// <summary>
+        ///     The Confirmation button is pressed after choosing a team
+        /// </summary>
+        public DelegateCommand OkButtonCommand => _okButtonCommand ?? (
+            _okButtonCommand =
+                new DelegateCommand(
+                    () => { OkAndClose?.Invoke(this, null); },
+                    () => true)
+            );
+
+        private void RenderImage(UIElement uiElement, Uri imageUri, Vector2 size, Vector3 offset, Color imageColor, float Opacity = 1)
         {
             var compositor = ElementCompositionPreview.GetElementVisual(uiElement).Compositor;
             var visual = compositor.CreateSpriteVisual();
@@ -298,6 +328,7 @@ namespace PokemonGo_UWP.Views
             effectBrush.Properties.InsertColor("colorSource.Color", imageColor);
 
             ElementCompositionPreview.SetElementChildVisual(uiElement, visual);
+            uiElement.Opacity = Opacity;
         }
     }
 

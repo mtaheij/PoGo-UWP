@@ -4,8 +4,8 @@
   "seed1": 1189692920,
   "version_number": 5720,
   "latest_release": {
-    "version": "1.2.5",
-    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.2.5-beta/PokemonGo-UWP_1.2.5.0_{arch}.appxbundle",
+    "version": "1.2.6",
+    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.2.6-beta/PokemonGo-UWP_1.2.6.0_{arch}.appxbundle",
     "dependencies": [
     ]
   }

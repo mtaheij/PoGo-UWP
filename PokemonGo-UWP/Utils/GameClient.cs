@@ -1407,8 +1407,18 @@ namespace PokemonGo_UWP.Utils
             return await _client.Fort.GetGymDetails(gymid, latitude, longitude);
         }
 
+        /// <summary>
+        ///     Deploys a pokemong to the given Gym
+        /// </summary>
+        /// <param name="fortId"></param>
+        /// <param name="pokemonId"></param>
+        /// <returns></returns>
+        public static async Task<FortDeployPokemonResponse> FortDeployPokemon(string fortId, ulong pokemonId)
+        {
+            return await _client.Fort.FortDeployPokemon(fortId, pokemonId);
+        }
+
         /// The following _client.Fort methods need implementation:
-        /// FortDeployPokemon
         /// FortRecallPokemon
         /// StartGymBattle
         /// AttackGym

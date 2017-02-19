@@ -1,28 +1,40 @@
-﻿using PokemonGo_UWP.Utils;
+﻿using Microsoft.Graphics.Canvas.Effects;
+using POGOProtos.Enums;
+using PokemonGo_UWP.Utils;
+using PokemonGo_UWP.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Controls;
+using Template10.Mvvm;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Effects;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace PokemonGo_UWP.Views
 {
     public sealed partial class ProfessorDialog : UserControl
     {
+        private bool IgnoreGridTapped;
+
         public ProfessorDialog(BackGroundType BackGroundType, bool SpotLight)
         {
             this.InitializeComponent();
@@ -32,9 +44,9 @@ namespace PokemonGo_UWP.Views
             this.DataContext = this;
         }
 
-        public string CurrentMessage { get; set; }
+        public MessageEntry CurrentMessage { get; set; }
 
-        public ObservableCollection<String> Messages { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<MessageEntry> Messages { get; set; } = new ObservableCollection<MessageEntry>();
 
         public void SetBackground(BackGroundType backgroundType)
         {
@@ -143,5 +155,17 @@ namespace PokemonGo_UWP.Views
     {
         Light,
         Dark
+    }
+
+    public class MessageEntry
+    {
+        public string Message { get; set; }
+        public int DialogHeight { get; set; }
+
+        public MessageEntry(string message, int dialogHeight)
+        {
+            Message = message;
+            DialogHeight = dialogHeight;
+        }
     }
 }

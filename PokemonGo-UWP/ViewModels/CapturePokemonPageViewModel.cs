@@ -498,7 +498,7 @@ namespace PokemonGo_UWP.ViewModels
 
             var caughtPokemonResponse = await GameClient.CatchPokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, SelectedCaptureItem.ItemId, hitPokemon);
 
-            //await GameClient.UpdateInventory(); //TODO: Change to delta update inventory, so it doesn't take so long (and offico client does it too)
+            await GameClient.UpdateInventory(); //TODO: Change to delta update inventory, so it doesn't take so long (and offico client does it too)
             SelectedCaptureItem = SelectPokeballType(LastItemUsed) ?? SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
 
             var responseDelay = DateTime.Now - requestTime;
@@ -510,7 +510,7 @@ namespace PokemonGo_UWP.ViewModels
             {
                 case CatchPokemonResponse.Types.CatchStatus.CatchError:
                     Logger.Write("CatchError!");
-                    await GameClient.UpdateInventory();
+                    //await GameClient.UpdateInventory();
                     // TODO: what can we do?
                     break;
 
@@ -522,7 +522,7 @@ namespace PokemonGo_UWP.ViewModels
                     CatchSuccess?.Invoke(this, null);
                     _capturedPokemonId = caughtPokemonResponse.CapturedPokemonId;
                     //await GameClient.UpdatePlayerStats(); -> This will be done when we return to the game screen, to allow the LevelUp to be shown
-                    await GameClient.UpdateInventory();
+                    //await GameClient.UpdateInventory();
                     if (CurrentPokemon is MapPokemonWrapper)
                         GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
                     else if (CurrentPokemon is LuredPokemon)
@@ -536,13 +536,13 @@ namespace PokemonGo_UWP.ViewModels
                     Logger.Write($"{CurrentPokemon.PokemonId} escaped");
                     CatchEscape?.Invoke(this, null);
                     _canUseBerry = true;
-                    await GameClient.UpdateInventory();
+                    //await GameClient.UpdateInventory();
                     break;
 
                 case CatchPokemonResponse.Types.CatchStatus.CatchFlee:
                     Logger.Write($"{CurrentPokemon.PokemonId} fled");
                     CatchFlee?.Invoke(this, null);
-                    await GameClient.UpdateInventory();
+                    //await GameClient.UpdateInventory();
                     if (CurrentPokemon is MapPokemonWrapper)
                         GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
                     else if (CurrentPokemon is LuredPokemon)
@@ -556,7 +556,7 @@ namespace PokemonGo_UWP.ViewModels
 
                 case CatchPokemonResponse.Types.CatchStatus.CatchMissed:
                     Logger.Write($"We missed {CurrentPokemon.PokemonId}");
-                    await GameClient.UpdateInventory();
+                    //await GameClient.UpdateInventory();
                     break;
 
                 default:

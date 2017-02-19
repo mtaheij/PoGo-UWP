@@ -358,6 +358,38 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</source>
           <target state="new">Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</target>
         </trans-unit>
+        <trans-unit id="CannotDeployBuddy" translate="yes" xml:space="preserve">
+          <source>You can't deploy your buddy Pokémon to a gym.</source>
+          <target state="new">You can't deploy your buddy Pokémon to a gym.</target>
+        </trans-unit>
+        <trans-unit id="ErrorAlreadyHasPokemonOnFort" translate="yes" xml:space="preserve">
+          <source>You already have a Pokemon deployed to this Gym</source>
+          <target state="new">You already have a Pokemon deployed to this Gym</target>
+        </trans-unit>
+        <trans-unit id="ErrorFortDeployLockout" translate="yes" xml:space="preserve">
+          <source>There is a deploy lockout for this Gym</source>
+          <target state="new">There is a deploy lockout for this Gym</target>
+        </trans-unit>
+        <trans-unit id="ErrorFortIsFull" translate="yes" xml:space="preserve">
+          <source>This Gym is full</source>
+          <target state="new">This Gym is full</target>
+        </trans-unit>
+        <trans-unit id="ErrorNotInRange" translate="yes" xml:space="preserve">
+          <source>This Gym is too far away</source>
+          <target state="new">This Gym is too far away</target>
+        </trans-unit>
+        <trans-unit id="ErrorOpposingTeamOwnsFort" translate="yes" xml:space="preserve">
+          <source>This Gym is owned by an opposing team</source>
+          <target state="new">This Gym is owned by an opposing team</target>
+        </trans-unit>
+        <trans-unit id="ErrorPlayerHasNoNickname" translate="yes" xml:space="preserve">
+          <source>You do not have a nickname set</source>
+          <target state="new">You do not have a nickname set</target>
+        </trans-unit>
+        <trans-unit id="ErrorPokemonNotFullHp" translate="yes" xml:space="preserve">
+          <source>Your Pokemon does not have full hp</source>
+          <target state="new">Your Pokemon does not have full hp</target>
+        </trans-unit>
       </group>
     </body>
   </file>

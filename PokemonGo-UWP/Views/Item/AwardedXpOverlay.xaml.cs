@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokemonGo_UWP.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,6 +57,8 @@ namespace PokemonGo_UWP.Views
                 Storyboard sb = this.Resources["ShowAwardedXPStoryBoard"] as Storyboard;
                 sb.Completed += Sb_Completed;
                 sb.Begin();
+
+                AudioUtils.PlaySound(AudioUtils.MAIN_XP);
             });
         }
 

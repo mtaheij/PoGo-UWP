@@ -136,11 +136,13 @@
     <Content Include="Assets\Achievements\youngster_lv1.png" />
     <Content Include="Assets\Achievements\youngster_lv2.png" />
     <Content Include="Assets\Achievements\youngster_lv3.png" />
+    <Content Include="Assets\Audio\BeforeTheFight.mp3" />
     <Content Include="Assets\Audio\EncounterPokemon.mp3" />
     <Content Include="Assets\Audio\Evolution.mp3" />
     <Content Include="Assets\Audio\Gameplay.mp3" />
     <Content Include="Assets\Audio\Gotcha.mp3" />
     <Content Include="Assets\Audio\Levelup.mp3" />
+    <Content Include="Assets\Audio\Main_xp.mp3" />
     <Content Include="Assets\Audio\pokemon_found_ding.wav" />
     <Content Include="Assets\Audio\Professor.mp3" />
     <Content Include="Assets\Audio\System_Message.mp3" />
@@ -260,6 +262,8 @@
     <Content Include="Assets\Icons\spawnpoint.png" />
     <Content Include="Assets\Icons\stardust_painted.png" />
     <Content Include="Assets\Icons\stardust_vector.png" />
+    <Content Include="Assets\Items\Egg-10.png" />
+    <Content Include="Assets\Items\Egg-5.png" />
     <Content Include="Assets\Items\Egg.png" />
     <Content Include="Assets\Items\E_Item_902.png" />
     <Content Include="Assets\Items\Item_301.png" />
@@ -460,7 +464,14 @@
     <Content Include="Assets\Pokemons\249.png" />
     <Content Include="Assets\Pokemons\250.png" />
     <Content Include="Assets\Pokemons\251.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.png" />
+    <Content Include="Assets\Teams\team_leader_blue.png" />
+    <Content Include="Assets\Teams\team_leader_red.png" />
+    <Content Include="Assets\Teams\team_leader_yellow.png" />
     <Content Include="Assets\UI\ash_withincense.png" />
     <Content Include="Assets\UI\bush.png" />
     <Content Include="Assets\Teams\gym_base_blue.png" />
@@ -641,6 +652,7 @@
     <None Include="project.json" />
     <Content Include="Assets\UI\player-avatar-incense.png" />
     <Content Include="Assets\UI\player-avatar.png" />
+    <Content Include="Assets\UI\pokeballLoading.gif" />
     <Content Include="Assets\UI\Professor.png" />
     <Content Include="Assets\UI\Spotlight.png" />
     <Content Include="Assets\UI\WarningScreen_BackgroundPlate.png" />
@@ -942,6 +954,9 @@
     <Compile Include="Utils\Game\Converters.cs" />
     <Compile Include="Utils\Helpers\DispatcherHelper.cs" />
     <Compile Include="Utils\Helpers\GeoHelper.cs" />
+    <Compile Include="Utils\Helpers\ImageLoaders\CircleSurface.cs" />
+    <Compile Include="Utils\Helpers\ImageLoaders\ImageLoader.cs" />
+    <Compile Include="Utils\Helpers\ImageLoaders\ManagedSurface.cs" />
     <Compile Include="Utils\Helpers\IStorageHelper.cs" />
     <Compile Include="Utils\Helpers\LiveTileHelper.cs" />
     <Compile Include="Utils\Helpers\LocationServiceHelper.cs" />
@@ -990,6 +1005,9 @@
     <Compile Include="Views\ChallengePage.xaml.cs">
       <DependentUpon>ChallengePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\ChooseTeamDialog.xaml.cs">
+      <DependentUpon>ChooseTeamDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\ProfessorDialog.xaml.cs">
       <DependentUpon>ProfessorDialog.xaml</DependentUpon>
     </Compile>
@@ -1028,6 +1046,9 @@
     </Compile>
     <Compile Include="Views\Pokemon\EggInventoryControl.xaml.cs">
       <DependentUpon>EggInventoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pokemon\GymMemberControl.xaml.cs">
+      <DependentUpon>GymMemberControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pokemon\IncubatorSelectionOverlayControl.xaml.cs">
       <DependentUpon>IncubatorSelectionOverlayControl.xaml</DependentUpon>
@@ -1128,6 +1149,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="Views\Dialogs\ChooseTeamDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\ProfessorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1179,6 +1204,10 @@
     <Page Include="Views\Pokemon\EggInventoryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pokemon\GymMemberControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Pokemon\IncubatorSelectionOverlayControl.xaml">
       <SubType>Designer</SubType>

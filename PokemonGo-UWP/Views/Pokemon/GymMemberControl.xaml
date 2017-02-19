@@ -13,6 +13,11 @@
     d:DesignWidth="360">
 
     <Grid Width="360">
+        <!--Base-->
+<!--        <Image Source="{Binding CurrentGym.OwnedByTeam, ElementName=Root, Converter={StaticResource PlayerTeamToTeamBaseImageConverter}}" 
+                   Width="360" Margin="0,250,0,0" /> -->
+        <Image Source="ms-appx:///Assets/Teams/gym_base_empty.png" 
+                   Width="360" Margin="0,250,0,0" />
         <!--Trainer-->
         <Grid VerticalAlignment="Center" HorizontalAlignment="Right" 
                   Width="Auto" Height="320" Margin="0,0,0,120">
@@ -23,10 +28,10 @@
             <Image Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-20"
                        gif:AnimationBehavior.SourceUri="/Assets/UI/avatar.gif" Height="270"></Image>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                           Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Parent.CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
                            FontSize="80" Opacity="0.3" Text="{Binding TrainerPublicProfile.Level}" />
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"
-                           Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                           Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Parent.CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
                            FontSize="28" Text="{Binding TrainerPublicProfile.Name}" />
         </Grid>
         <!--Pokemon-->
@@ -43,13 +48,10 @@
                 <!--TODO Crown should appear only if this is ultimate pokemon-->
                 <Image Source="/Assets/Icons/crown.png" Height="36" Stretch="Uniform"></Image>
             </Grid>
-            <!--TODO Missing binding vars-->
-            <!--<TextBlock Grid.Row="1" HorizontalAlignment="Left"
+            <TextBlock x:Name="PokemonNameTextBlock" 
+                       Grid.Row="1" HorizontalAlignment="Left"
                            Foreground="#DDDDDD" FontSize="26" 
-                           Text="{Binding PokemonName}"></TextBlock>-->
-            <TextBlock Grid.Row="1" HorizontalAlignment="Left"
-                           Foreground="#DDDDDD" FontSize="26" 
-                           Text="{Binding PokemonData.Nickname}" />
+                           Text="{Binding PokemonData.PokemonId, Converter={StaticResource PokemonIdToPokemonNameConverter}}" />
             <Rectangle Grid.Row="2" Fill="#DDDDDD" Width="100" Height="3" HorizontalAlignment="Left" ></Rectangle>
             <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left">
                 <TextBlock VerticalAlignment="Bottom" Foreground="#DDDDDD" FontSize="20" 

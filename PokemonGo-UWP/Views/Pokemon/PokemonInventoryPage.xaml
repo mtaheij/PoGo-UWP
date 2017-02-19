@@ -129,8 +129,8 @@
                         <x:Int32>-1</x:Int32>
                     </DiscreteObjectKeyFrame.Value>
                 </DiscreteObjectKeyFrame>
-            </ObjectAnimationUsingKeyFrames>        </Storyboard>
-
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
     
     <!--Main UI-->

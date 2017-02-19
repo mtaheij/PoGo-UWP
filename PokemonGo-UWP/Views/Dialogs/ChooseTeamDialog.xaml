@@ -45,7 +45,7 @@
         <Image x:Name="TeamLogo" 
                Source="ms-appx:///Assets/Teams/no-team.png" 
                VerticalAlignment="Top" 
-               Margin="100"/>
+               Margin="40"/>
 
         <StackPanel x:Name="PanelLeaders" Orientation="Vertical"
                     VerticalAlignment="Center"
@@ -73,16 +73,16 @@
             </Grid>
         </StackPanel>
         <StackPanel x:Name="PanelTeamChoice" Orientation="Vertical" 
-                    VerticalAlignment="Center" 
+                    VerticalAlignment="Top" 
                     HorizontalAlignment="Center"
                     Visibility="Visible"
-                    Background="Transparent">
+                    Background="Transparent" Margin="0,20,0,0">
             <TextBlock x:Name="SelectTeam" 
                        Text="Select a team to join" 
                        HorizontalAlignment="Center"
                        Style="{StaticResource SubtitleTextBlockStyle}"
                        Foreground="Black"/>
-            <Grid>
+            <Grid Margin="0,60,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
@@ -121,7 +121,7 @@
                 <Button x:Name="TeamRedButton" 
                         Grid.Column="2" Width="100"
                         Command="{Binding TeamRedCommand}"
-                        Background="AliceBlue">
+                        Background="Transparent">
                     <StackPanel Orientation="Vertical">
                         <Canvas x:Name="RedBack" 
                                 Height="300" 
@@ -137,32 +137,49 @@
         </StackPanel>
         <Canvas x:Name="TeamLeader" 
                 Margin="0,0,0,0"/>
-        <Grid>
-            <Rectangle x:Name="DialogRect" 
-                       Fill="White" 
-                       Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}" 
-                       Margin="20" />
+        <Grid x:Name="DialogRect" HorizontalAlignment="Center" 
+              VerticalAlignment="Center" Background="White" Margin="20"
+              CornerRadius="5" BorderThickness="1" BorderBrush="Silver"
+              Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}">
             <TextBlock x:Name="DialogText" 
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Center" FontSize="12"
                         Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
                         TextWrapping="WrapWholeWords"
-                        Margin="30"/>
+                        Margin="8"/>
         </Grid>
         <Button x:Name="ConfirmationButton" 
                 Command="{Binding ConfirmationButtonCommand}"
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Right" 
-                Margin="40">
+                Margin="15" Background="Transparent">
             <Image Source="ms-appx:///Assets/Buttons/btn_ok_normal_dark.png" 
                    Height="60" 
                    Width="60"/>
         </Button>
-        <Button x:Name="OkButton"
-                Command="{Binding OkButtonCommand}"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Center" 
-                Style="{StaticResource ButtonSubmit}">
-        </Button>
+        <Grid x:Name="WelcomeGrid"
+              VerticalAlignment="Stretch"
+              HorizontalAlignment="Stretch" Visibility="Collapsed">
+            <Rectangle x:Name="WelcomeDarkBackgroundRect"
+                   Fill="{StaticResource DarkPageBackgroundGradient}" Opacity="0.7" />
+            <Grid x:Name ="WelcomeToTeamGrid" 
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center" 
+                  CornerRadius="5" BorderThickness="1" BorderBrush="Silver"
+                  Background="White">
+                <StackPanel Orientation="Vertical" Grid.Row="0">
+                    <TextBlock x:Name="WelcomeText" 
+                            HorizontalAlignment="Center"
+                            Text="Welcome to Team Yellow!" 
+                            TextWrapping="WrapWholeWords"
+                            Margin="50,30,50,30"/>
+                    <Button x:Name="OkButton"
+                        Command="{Binding OkButtonCommand}"
+                        HorizontalAlignment="Center" 
+                        Content="Ok" Width="140" 
+                        Style="{StaticResource ButtonSubmit}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
