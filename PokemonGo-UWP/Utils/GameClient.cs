@@ -665,11 +665,19 @@ namespace PokemonGo_UWP.Utils
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
             await LocationServiceHelper.Instance.InitializeAsync();
 
+            // Compare the 
+            bool ForceRefresh = false;
+            DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
+            if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
+            {
+                ForceRefresh = true;
+            }
+
             // Before starting we need game settings and templates
-            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1));
+            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1), ForceRefresh);
 
             // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
-            await UpdateItemTemplates(false);
+            await UpdateItemTemplates(ForceRefresh);
 
             // Update geolocator settings based on server
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);

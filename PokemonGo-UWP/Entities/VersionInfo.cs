@@ -40,6 +40,7 @@ namespace PokemonGo_UWP.Entities
         public uint seed1;
         public int version_number;
         public VersionRelease latest_release;
+        public DateTime settings_updated;
     }
 
     class VersionRelease

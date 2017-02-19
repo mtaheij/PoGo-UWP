@@ -3,6 +3,7 @@
   "unknown25": -816976800928766045,
   "seed1": 1189692920,
   "version_number": 5720,
+  "settings_updated": "2017-02-19T00:00:00",
   "latest_release": {
     "version": "1.2.6",
     "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.2.6-beta/PokemonGo-UWP_1.2.6.0_{arch}.appxbundle",

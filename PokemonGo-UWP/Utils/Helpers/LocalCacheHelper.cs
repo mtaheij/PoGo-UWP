@@ -237,6 +237,30 @@ namespace Q42.WinRT.Data
             }
         }
 
+        public static async Task<DateTime> GetExpiryDate<T>(string key,
+            StorageSerializer serializerType = StorageSerializer.JSON)
+        {
+            IStorageHelper<CacheObject<T>> storage = new StorageHelper<CacheObject<T>>(_storageFolder, CacheFolder, serializerType);
+
+            //Get cache value
+            try
+            {
+                var value = await storage.LoadAsync(key).ConfigureAwait(false);
+
+                if (value == null)
+                    return DateTime.MinValue;
+                if (!value.IsValid)
+                    return DateTime.MinValue;
+                if (value.ExpireDateTime == null)
+                    return DateTime.MinValue;
+                return (DateTime)value.ExpireDateTime;
+            }
+            catch
+            {
+            }
+
+            return DateTime.MinValue;
+        }
 
         /// <summary>
         ///     Clears the cache untill the total size is below the maxSize
