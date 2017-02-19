@@ -157,10 +157,10 @@
     <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
   </data>
   <data name="D_ItemNanabBerry" xml:space="preserve">
-    <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
+    <value>Feed this to a Pokémon to calm it down, making it less erratic.</value>
   </data>
   <data name="D_ItemPinapBerry" xml:space="preserve">
-    <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
+    <value>Feed this to a Pokémon to make it drop more candy.</value>
   </data>
   <data name="D_ItemWeparBerry" xml:space="preserve">
     <value>Feed this to a Pokémon, and it will be easier to catch on your next throw.</value>
@@ -275,5 +275,35 @@
   </data>
   <data name="D_ItemHyperPotion" xml:space="preserve">
     <value>A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 200 points.</value>
+  </data>
+  <data name="D_ItemDragonScale" xml:space="preserve">
+    <value>An Evolution Item that is required to evolve Seadra into Kingdra.</value>
+  </data>
+  <data name="D_ItemKingsRock" xml:space="preserve">
+    <value>An Evolution Item that is required to evolve Poliwhirl into Politoed and Slowpoke into Slowking.</value>
+  </data>
+  <data name="D_ItemMetalCoat" xml:space="preserve">
+    <value>An Evolution Item that is required to evolve Onix into Steelix and Scyther into Scizor.</value>
+  </data>
+  <data name="D_ItemSunStone" xml:space="preserve">
+    <value>An Evolution Item that is required to evolve Gloom into Bellossom and Sunkern into Sunflora.</value>
+  </data>
+  <data name="D_ItemUpGrade" xml:space="preserve">
+    <value>An Evolution Item that is required to evolve Porygon into Porygon2.</value>
+  </data>
+  <data name="ItemDragonScale" xml:space="preserve">
+    <value>Dragon Scale</value>
+  </data>
+  <data name="ItemKingsRock" xml:space="preserve">
+    <value>King's Rock</value>
+  </data>
+  <data name="ItemMetalCoat" xml:space="preserve">
+    <value>Metal Coat</value>
+  </data>
+  <data name="ItemSunStone" xml:space="preserve">
+    <value>Sun Stone</value>
+  </data>
+  <data name="ItemUpGrade" xml:space="preserve">
+    <value>Up-Grade</value>
   </data>
 </root>
