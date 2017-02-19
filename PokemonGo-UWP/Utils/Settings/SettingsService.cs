@@ -105,8 +105,7 @@ namespace PokemonGo_UWP.Utils
 
         public string PokehashAuthKey
         {
-//            get { return Get(string.Empty); }
-            get { return Get("1D6S1V0G6D2C2Q7P9U8F"); }
+            get { return Get(string.Empty); }
             set { Set(value); }
         }
         #endregion
