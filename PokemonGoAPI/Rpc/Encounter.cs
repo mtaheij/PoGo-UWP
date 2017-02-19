@@ -38,6 +38,17 @@ namespace PokemonGo.RocketAPI.Rpc
             return await PostProtoPayload<Request, UseItemCaptureResponse>(RequestType.UseItemCapture, message);
         }
 
+        public async Task<UseItemEncounterResponse> UseItemEncounter(ulong encounterId, ItemId itemId, string spawnPointId)
+        {
+            var message = new UseItemEncounterMessage
+            {
+                EncounterId = encounterId,
+                Item = itemId,
+                SpawnPointGuid = spawnPointId
+            };
+
+            return await PostProtoPayload<Request, UseItemEncounterResponse>(RequestType.UseItemEncounter, message);
+        }
         public async Task<CatchPokemonResponse> CatchPokemon(ulong encounterId, string spawnPointGuid,
             ItemId pokeballItemId, double normalizedRecticleSize = 1.950, double spinModifier = 1,
             double normalizedHitPos = 1, bool hitPokemon = true)

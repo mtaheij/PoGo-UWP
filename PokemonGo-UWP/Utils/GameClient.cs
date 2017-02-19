@@ -667,7 +667,9 @@ namespace PokemonGo_UWP.Utils
 
             // Before starting we need game settings and templates
             GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1));
-            await UpdateItemTemplates();
+
+            // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
+            await UpdateItemTemplates(false);
 
             // Update geolocator settings based on server
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);
@@ -1003,10 +1005,10 @@ namespace PokemonGo_UWP.Utils
         ///     Pokedex extra data doesn't change so we can just call this method once.
         /// </summary>
         /// <returns></returns>
-        private static async Task UpdateItemTemplates()
+        private static async Task UpdateItemTemplates(bool ForceRefresh)
         {
             // Get all the templates
-            var itemTemplates = await DataCache.GetAsync("itemTemplates", async () => (await _client.Download.GetItemTemplates()).ItemTemplates, DateTime.Now.AddMonths(1));
+            var itemTemplates = await DataCache.GetAsync("itemTemplates", async () => (await _client.Download.GetItemTemplates()).ItemTemplates, DateTime.Now.AddMonths(1), ForceRefresh);
 
             // Update Pokedex data
             PokemonSettings = await DataCache.GetAsync(nameof(PokemonSettings), async () =>
@@ -1015,13 +1017,13 @@ namespace PokemonGo_UWP.Utils
                 return itemTemplates.Where(
                     item => item.PokemonSettings != null && item.PokemonSettings.FamilyId != PokemonFamilyId.FamilyUnset)
                     .Select(item => item.PokemonSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             PokemonUpgradeSettings = await DataCache.GetAsync(nameof(PokemonUpgradeSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.First(item => item.PokemonUpgrades != null).PokemonUpgrades;
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
 
             // Update Moves data
@@ -1030,84 +1032,84 @@ namespace PokemonGo_UWP.Utils
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.MoveSettings != null)
                                     .Select(item => item.MoveSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             BadgeSettings = await DataCache.GetAsync(nameof(BadgeSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.BadgeSettings != null)
                                     .Select(item => item.BadgeSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             BattleSettings = await DataCache.GetAsync(nameof(BattleSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.BattleSettings != null)
                                     .Select(item => item.BattleSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             EncounterSettings = await DataCache.GetAsync(nameof(EncounterSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.EncounterSettings != null)
                                     .Select(item => item.EncounterSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             GymLevelSettings = await DataCache.GetAsync(nameof(GymLevelSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.GymLevel != null)
                                     .Select(item => item.GymLevel);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             IapSettings = await DataCache.GetAsync(nameof(IapSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.IapSettings != null)
                                     .Select(item => item.IapSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             ItemSettings = await DataCache.GetAsync(nameof(ItemSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.ItemSettings != null)
                                     .Select(item => item.ItemSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             PlayerLevelSettings = await DataCache.GetAsync(nameof(PlayerLevelSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.PlayerLevel != null)
                                     .Select(item => item.PlayerLevel);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             QuestSettings = await DataCache.GetAsync(nameof(QuestSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.QuestSettings != null)
                                     .Select(item => item.QuestSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             CameraSettings = await DataCache.GetAsync(nameof(CameraSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.Camera != null)
                                     .Select(item => item.Camera);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             IapItemDisplay = await DataCache.GetAsync(nameof(IapItemDisplay), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.IapItemDisplay != null)
                                     .Select(item => item.IapItemDisplay);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
 
             MoveSequenceSettings = await DataCache.GetAsync(nameof(MoveSequenceSettings), async () =>
             {
                 await Task.CompletedTask;
                 return itemTemplates.Where(item => item.MoveSequenceSettings != null)
                                     .Select(item => item.MoveSequenceSettings);
-            }, DateTime.Now.AddMonths(1));
+            }, DateTime.Now.AddMonths(1), ForceRefresh);
         }
 
         /// <summary>
@@ -1284,10 +1286,21 @@ namespace PokemonGo_UWP.Utils
         /// <param name="spawnpointId"></param>
         /// <param name="captureItem"></param>
         /// <returns></returns>
-        public static async Task<UseItemCaptureResponse> UseCaptureItem(ulong encounterId, string spawnpointId,
-            ItemId captureItem)
+        public static async Task<UseItemCaptureResponse> UseCaptureItem(ulong encounterId, string spawnpointId, ItemId captureItem)
         {
             return await _client.Encounter.UseCaptureItem(encounterId, captureItem, spawnpointId);
+        }
+
+        /// <summary>
+        ///     New method to throws an item to the Pokemon
+        /// </summary>
+        /// <param name="encounterId"></param>
+        /// <param name="spawnpointId"></param>
+        /// <param name="captureItem"></param>
+        /// <returns></returns>
+        public static async Task<UseItemEncounterResponse> UseItemEncounter(ulong encounterId, string spawnpointId, ItemId captureItem)
+        {
+            return await _client.Encounter.UseItemEncounter(encounterId, captureItem, spawnpointId);
         }
 
         #endregion

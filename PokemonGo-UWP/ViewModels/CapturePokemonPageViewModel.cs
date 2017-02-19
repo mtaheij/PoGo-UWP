@@ -575,11 +575,12 @@ namespace PokemonGo_UWP.ViewModels
             SelectedCaptureItem = SelectAvailablePokeBall(); //To set it immediatelly, because button image would be berry until responses
             Logger.Write($"Used {LastItemUsed}.");
 
-            var berryResponse = await GameClient.UseCaptureItem(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, LastItemUsed ?? ItemId.ItemRazzBerry);
+            //var berryResponse = await GameClient.UseCaptureItem(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, LastItemUsed ?? ItemId.ItemRazzBerry);
+            var berryResponse = await GameClient.UseItemEncounter(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, LastItemUsed ?? ItemId.ItemRazzBerry);
             await GameClient.UpdateInventory(); //TODO: Change to delta update inventory, so it doesn't take so long (and offico client does it too)
             SelectedCaptureItem = SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
 
-            if (berryResponse.Success)
+            if (berryResponse.Status.Equals(UseItemEncounterResponse.Types.Status.Success))
             {
                 // TODO: visual feedback
                 // TODO: do we need to handle the returned values or are they needed just to animate the 3d model?
