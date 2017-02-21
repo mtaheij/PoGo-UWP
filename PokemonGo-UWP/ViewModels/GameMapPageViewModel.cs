@@ -77,8 +77,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <param name="mode"></param>
         /// <param name="suspensionState"></param>
         /// <returns></returns>
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode,
-            IDictionary<string, object> suspensionState)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             GameClient.OnAppliedItemExpired += GameClient_OnAppliedItemExpired;
             GameClient.OnAppliedItemStarted += GameClient_OnAppliedItemStarted;
@@ -120,9 +119,17 @@ namespace PokemonGo_UWP.ViewModels
             switch (gameMapNavigationMode)
             {
                 case GameMapNavigationModes.AppStart:
+                    await UpdatePlayerData(true);
+
+                    // Check the turorial state of the player, if the first time experience has not yet been completed
+                    // Go into the Tutorial Mode until the playerprofile is in the correct state
+                    if (!CheckTutorialStateOk())
+                    {
+                        await NavigationService.NavigateAsync(typeof(TutorialPage));
+                    }
+                    
                     // App just started, so we get GPS access and eventually initialize the client
                     await StartGpsDataService();
-                    await UpdatePlayerData(true);
                     GameClient.ToggleUpdateTimer();
                     break;
                 case GameMapNavigationModes.SettingsUpdate:
@@ -401,6 +408,15 @@ namespace PokemonGo_UWP.ViewModels
 
         #endregion
 
+        #endregion
+
+        #region Tutorial
+        private bool CheckTutorialStateOk()
+        {
+            return true;
+            //var x = GameClient.PlayerData.TutorialState;
+            //return x.Contains(TutorialState.FirstTimeExperienceComplete);
+        }
         #endregion
     }
 }

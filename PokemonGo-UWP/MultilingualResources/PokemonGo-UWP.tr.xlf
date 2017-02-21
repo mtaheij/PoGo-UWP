@@ -620,6 +620,10 @@ Aynı zamanda {1} Stardust, {2} Şeker ve {3} XP kazandın.</target>
           <source>Your Pokemon does not have full hp</source>
           <target state="new">Your Pokemon does not have full hp</target>
         </trans-unit>
+        <trans-unit id="String1" translate="yes" xml:space="preserve">
+          <source>Refreshing game settings...</source>
+          <target state="new">Refreshing game settings...</target>
+        </trans-unit>
       </group>
     </body>
   </file>
