@@ -622,6 +622,10 @@ Hai ottenuto anche {1} Polvere di stella, {2} Caramelle e {3} PE.</target>
           <source>Your Pokemon does not have full hp</source>
           <target state="new">Your Pokemon does not have full hp</target>
         </trans-unit>
+        <trans-unit id="String1" translate="yes" xml:space="preserve">
+          <source>Refreshing game settings...</source>
+          <target state="new">Refreshing game settings...</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -401,4 +401,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="ErrorPokemonNotFullHp" xml:space="preserve">
     <value>Your Pokemon does not have full hp</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Refreshing game settings...</value>
+  </data>
 </root>

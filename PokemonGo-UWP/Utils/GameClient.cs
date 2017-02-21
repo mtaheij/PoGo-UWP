@@ -671,6 +671,7 @@ namespace PokemonGo_UWP.Utils
             if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
             {
                 ForceRefresh = true;
+                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
             }
 
             // Before starting we need game settings and templates
