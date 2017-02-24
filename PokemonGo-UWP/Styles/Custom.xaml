@@ -2515,6 +2515,80 @@
         </Setter>
     </Style>
 
+    <Style x:Key="CommsCheckbox" TargetType="CheckBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Transparent" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#b0ffb0" Offset="0"/>
+                    <GradientStop Color="#66eecc" Offset="0.8"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid x:Name="Grid" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Pressed" To="PointerOver">
+                                        <Storyboard />
+                                    </VisualTransition>
+                                    <VisualTransition From="PointerOver" To="Normal">
+                                        <Storyboard />
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed" To="Normal">
+                                        <Storyboard />
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="Checkmark">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="Checkmark">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border" Width="30" Height="30" HorizontalAlignment="Right" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Margin="0" Padding="5" CornerRadius="15">
+                            <Image x:Name="Checkmark" Source="../Assets/Buttons/btn_ok.png" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="ComboBox">
         <Setter Property="Padding" Value="12,5,0,7"/>
         <Setter Property="Height" Value="30" />

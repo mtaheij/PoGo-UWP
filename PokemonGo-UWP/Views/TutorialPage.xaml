@@ -5,11 +5,66 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:PokemonGo_UWP.ViewModels"
     mc:Ignorable="d">
+
     <Page.DataContext>
-        <viewModels:LoginPageViewModel x:Name="ViewModel" />
+        <viewModels:TutorialPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainUI"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch">
+        
+        <Grid x:Name="ProfessorMessageGrid"
+                Tapped="{Binding TappedCommand}">
+            <Rectangle x:Name="LightBackgroundRect"
+                        Fill="{StaticResource LightPageBackgroundGradient}" />
+            <Rectangle x:Name="DarkBackgroundRect"
+                        Fill="{StaticResource DarkPageBackgroundGradient}" />
+            <Image x:Name="Spotlight" Source="ms-appx:///Assets/UI/Spotlight.png" Margin="0,-400,0,0" />
+            <Image x:Name="ProfessorLight" Source="ms-appx:///Assets/UI/Professor.png" Margin="40,80,40,40"/>
+            <Image x:Name="ProfessorDark" Source="ms-appx:///Assets/UI/ProfessorDark.png" Margin="40,80,40,40"/>
+            <Rectangle x:Name="DialogRect" 
+                       Fill="White" 
+                       Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}" 
+                       Margin="20" />
+            <TextBlock x:Name="DialogText" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
+                        TextWrapping="WrapWholeWords"
+                        Margin="30"/>
+        </Grid>
 
+        <Grid x:Name="LegalScreenGrid">
+            <Rectangle x:Name="LegalScreenLightBackgroundRect"
+                        Fill="{StaticResource LightPageBackgroundGradient}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Uid="LegalScreenTitle" 
+                           Text="Pokémon GO Terms of Service" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Style="{StaticResource TitleTextBlockStyle}"/>
+                <WebView Grid.Row="1" 
+                         x:Uid="LegalScreenTOSContents" 
+                         DefaultBackgroundColor="Transparent"
+                         Source="https://www.nianticlabs.com/terms/pokemongo/en"/>
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="40,0,40,0">
+                            <CheckBox x:Name="CheckComms" Style="{StaticResource CommsCheckbox}" Width="30" />
+                            <TextBlock x:Uid="LegalCommsCheckboxText" Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="Send Pokémon GO-related events, promotions, offers and news updtes to my email address."/>
+                        </StackPanel>
+                        <Button x:Uid="LegalAcceptButton" Content="ACCEPT" Style="{StaticResource ButtonSubmit}" Margin="80,20,80,20"/>
+                        <Button x:Uid="LegalDeclineButton" Content="DECLINE" Style="{StaticResource ButtonSubmitInverse}" Margin="80,0,80,10" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
+
 </Page>
