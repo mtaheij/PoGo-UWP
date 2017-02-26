@@ -41,6 +41,8 @@ using System.ComponentModel;
 using PokemonGo_UWP.Views;
 using POGOLib.Official.Util.Hash;
 using PokemonGoAPI.Helpers.Hash.PokeHash;
+using PokemonGoAPI.Exceptions;
+using Google.Protobuf.Collections;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -516,11 +518,9 @@ namespace PokemonGo_UWP.Utils
                     _client.AccessToken.Expire();
                     await _client.Login.DoLogin();
                 }
-                else if (e is PokeHashException)
+                else if (e is HasherException)
                 {
-                    PokeHashException pex = e as PokeHashException;
                     Debug.WriteLine("A PokeHash Exception occurred");
-                    await new MessageDialog("A PokeHash Exception occurred, this could mean that your hashing key expired. Anyway: We are unable to sign the requests. More info on the error:" + pex.message).ShowAsyncQueue();
                     throw e;
                 }
                 else
@@ -528,6 +528,22 @@ namespace PokemonGo_UWP.Utils
                     await new MessageDialog(e.Message).ShowAsyncQueue();
                 }
             }
+
+            // Compare the cacheExpiryDateTime to the last updated settings (if new settings are needed, override the caches ones)
+            bool ForceRefresh = false;
+            DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
+            if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
+            {
+                ForceRefresh = true;
+                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
+            }
+
+            // Before starting we need game settings and templates
+            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1), ForceRefresh);
+
+            // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
+            await UpdateItemTemplates(ForceRefresh);
+
         }
 
         /// <summary>
@@ -664,21 +680,6 @@ namespace PokemonGo_UWP.Utils
             #endregion
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
             await LocationServiceHelper.Instance.InitializeAsync();
-
-            // Compare the 
-            bool ForceRefresh = false;
-            DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
-            if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
-            {
-                ForceRefresh = true;
-                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
-            }
-
-            // Before starting we need game settings and templates
-            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1), ForceRefresh);
-
-            // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
-            await UpdateItemTemplates(ForceRefresh);
 
             // Update geolocator settings based on server
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);
@@ -1211,6 +1212,11 @@ namespace PokemonGo_UWP.Utils
         public static async Task<SetPlayerTeamResponse> SetPlayerTeam(TeamColor teamColor)
         {
             return await _client.Player.SetPlayerTeam(teamColor);
+        }
+
+        public static async Task<EncounterTutorialCompleteResponse> EncounterTutorialComplete(PokemonId pokemonId)
+        {
+            return await _client.Encounter.EncounterTutorialComplete(pokemonId);
         }
 
         public static async Task<MarkTutorialCompleteResponse> MarkTutorialComplete(TutorialState[] completed_tutorials, bool send_marketing_emails, bool send_push_notifications)

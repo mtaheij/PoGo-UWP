@@ -209,7 +209,7 @@
                         </Grid>
 
                         <StackPanel VerticalAlignment="Bottom">
-                            <ProgressBar Value="{Binding Stamina, Mode=TwoWay}"
+                            <ProgressBar Value="{Binding Stamina}"
                                          Width="200"
                                          Maximum="{Binding StaminaMax}"
                                          Style="{StaticResource PokemonHPProgressBarStyle}"

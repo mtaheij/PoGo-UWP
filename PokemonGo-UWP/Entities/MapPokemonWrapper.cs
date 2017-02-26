@@ -38,8 +38,11 @@ namespace PokemonGo_UWP.Entities
             _tryCatchPokemon = new DelegateCommand(() =>
             {
                 NavigationHelper.NavigationState["CurrentPokemon"] = this;
-                // Disable map update
-                GameClient.ToggleUpdateTimer(false);
+
+                // Keep Starter pokemon in mind
+                if (this.EncounterId!=0)
+                    GameClient.ToggleUpdateTimer(false); // Disable map update
+
                 BootStrapper.Current.NavigationService.Navigate(typeof(CapturePokemonPage));
             }, () => true)
         );

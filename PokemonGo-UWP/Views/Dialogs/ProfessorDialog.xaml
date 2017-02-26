@@ -31,6 +31,16 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
+        <Storyboard x:Name="ShowPokeStopExampleStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="PokeStopExample">
+                <EasingDoubleKeyFrame KeyTime="0"
+                                      Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
     </UserControl.Resources>
 
     <Grid x:Name="CoverGrid"
@@ -43,15 +53,24 @@
                     Fill="{StaticResource DarkPageBackgroundGradient}" />
         <Image x:Name="Spotlight" Source="ms-appx:///Assets/UI/Spotlight.png" Margin="0,-400,0,0" />
         <Image x:Name="Professor" Source="ms-appx:///Assets/UI/Professor.png" Margin="40,80,40,40"/>
-        <Rectangle x:Name="DialogRect" 
-                   Fill="White" 
+        <Border x:Name="DialogRect" 
+                   Background="White" 
                    Height="{Binding CurrentMessage.DialogHeight, Mode=OneWay, FallbackValue=60}" 
-                   Margin="20" />
-        <TextBlock x:Name="DialogText" 
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
-                    TextWrapping="WrapWholeWords"
-                    Margin="30"/>
+                   BorderBrush="Silver" BorderThickness="1" CornerRadius="5"
+                   Margin="20">
+            <TextBlock x:Name="DialogText" 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" Margin="10"
+                        Text="{Binding CurrentMessage.Message, Mode=OneWay}" 
+                        TextWrapping="WrapWholeWords"/>
+        </Border>
+        <Border x:Name="PokeStopExample" 
+                Background="White"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Margin="40,120" Visibility="Collapsed"
+                Width="100" Height="100" CornerRadius="50">
+            <Image Source="ms-appx:///Assets/Icons/pokestop_far.png" Margin="10" />
+        </Border>
     </Grid>
 </UserControl>

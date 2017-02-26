@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using POGOProtos.Networking.Requests;
 using POGOProtos.Networking.Requests.Messages;
 using POGOProtos.Networking.Responses;
+using Google.Protobuf.Collections;
+using POGOProtos.Enums;
 
 namespace PokemonGo.RocketAPI.Rpc
 {

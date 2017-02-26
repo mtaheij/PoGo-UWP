@@ -19,6 +19,8 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Resources = PokemonGo_UWP.Utils.Resources;
 using POGOProtos.Settings.Master;
+using Windows.UI.Xaml;
+using PokemonGo_UWP.Utils.Game;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -46,33 +48,52 @@ namespace PokemonGo_UWP.ViewModels
         {
             if (CurrentPokemon is MapPokemonWrapper)
             {
-                CurrentEncounter = await GameClient.EncounterPokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId);
-                switch (CurrentEncounter.Status)
+                if (CurrentPokemon.EncounterId != 0)
                 {
-                    case EncounterResponse.Types.Status.PokemonInventoryFull:
-                        await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonInventoryFullText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
-                        ReturnToGameScreen.Execute();
-                        break;
-                    case EncounterResponse.Types.Status.EncounterSuccess:
-                        break;
-                    case EncounterResponse.Types.Status.EncounterError:
-                    case EncounterResponse.Types.Status.EncounterNotFound:
-                    case EncounterResponse.Types.Status.EncounterClosed:
-                        await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonEncounterErrorText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
-                        ReturnToGameScreen.Execute();
-                        break;
-                    case EncounterResponse.Types.Status.EncounterNotInRange:
-                        await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonEncounterNotInRangeText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
-                        ReturnToGameScreen.Execute();
-                        break;
-                    case EncounterResponse.Types.Status.EncounterPokemonFled:
-                    case EncounterResponse.Types.Status.EncounterAlreadyHappened:
-                        await new MessageDialog(Resources.CodeResources.GetString("PokemonRanAwayText")).ShowAsyncQueue();
-                        ReturnToGameScreen.Execute();
-                        GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    CurrentEncounter = await GameClient.EncounterPokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId);
+                    switch (CurrentEncounter.Status)
+                    {
+                        case EncounterResponse.Types.Status.PokemonInventoryFull:
+                            await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonInventoryFullText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
+                            ReturnToGameScreen.Execute();
+                            break;
+                        case EncounterResponse.Types.Status.EncounterSuccess:
+                            break;
+                        case EncounterResponse.Types.Status.EncounterError:
+                        case EncounterResponse.Types.Status.EncounterNotFound:
+                        case EncounterResponse.Types.Status.EncounterClosed:
+                            await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonEncounterErrorText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
+                            ReturnToGameScreen.Execute();
+                            break;
+                        case EncounterResponse.Types.Status.EncounterNotInRange:
+                            await new MessageDialog(string.Format(Resources.CodeResources.GetString("PokemonEncounterNotInRangeText"), Resources.Pokemon.GetString($"{CurrentPokemon.PokemonId}"))).ShowAsyncQueue();
+                            ReturnToGameScreen.Execute();
+                            break;
+                        case EncounterResponse.Types.Status.EncounterPokemonFled:
+                        case EncounterResponse.Types.Status.EncounterAlreadyHappened:
+                            await new MessageDialog(Resources.CodeResources.GetString("PokemonRanAwayText")).ShowAsyncQueue();
+                            ReturnToGameScreen.Execute();
+                            GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                else // Starter pokemon
+                {
+                    InventoryButtonVisibility = Visibility.Collapsed;
+
+                    CurrentEncounter = new EncounterResponse()
+                    {
+                        Background = EncounterResponse.Types.Background.Park,
+                        WildPokemon = new WildPokemon()
+                        {
+                            PokemonData = new POGOProtos.Data.PokemonData()
+                            {
+                                DisplayCp = -1
+                            }
+                        }
+                    };
                 }
             }
             else if (CurrentPokemon is LuredPokemon)
@@ -345,26 +366,30 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Going back to map page
         /// </summary>
-        public DelegateCommand ReturnToGameScreen => _returnToGameScreen ?? (_returnToGameScreen = new DelegateCommand(
-                                                         () =>
-                                                         {
-                                                             var currentPokemon =
-                                                                 GameClient.PokemonsInventory
-                                                                 .FirstOrDefault(item => item.Id == _capturedPokemonId);
-                                                             GameClient.ToggleUpdateTimer();
-                                                             if (currentPokemon != null)
-                                                             {
-                                                                 NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
-                                                                 {
-                                                                     SelectedPokemonId = _capturedPokemonId.ToString(),
-                                                                     ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
-                                                                 });
-                                                             }
-                                                             else
-                                                             {
-                                                                 NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.PokemonUpdate);
-                                                             }
-                                                         }, () => true));
+        public DelegateCommand ReturnToGameScreen => 
+            _returnToGameScreen ?? (_returnToGameScreen = new DelegateCommand(
+                () =>
+                {
+                    if (CurrentPokemon.EncounterId == 0) // Starter Pokemon, return to Tutorial page
+                    {
+                        NavigationService.Navigate(typeof(TutorialPage), TutorialNavigationModes.StarterPokemonCatched);
+                        return;
+                    }
+                    var currentPokemon = GameClient.PokemonsInventory.FirstOrDefault(item => item.Id == _capturedPokemonId);
+                    GameClient.ToggleUpdateTimer();
+                    if (currentPokemon != null)
+                    {
+                        NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
+                        {
+                            SelectedPokemonId = _capturedPokemonId.ToString(),
+                            ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
+                        });
+                    }
+                    else
+                    {
+                        NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.PokemonUpdate);
+                    }
+                }, () => true));
 
         private DelegateCommand _escapeEncounterCommand;
 
@@ -373,8 +398,12 @@ namespace PokemonGo_UWP.ViewModels
         /// </summary>
         public DelegateCommand EscapeEncounterCommand => _escapeEncounterCommand ?? (_escapeEncounterCommand = new DelegateCommand(() =>
         {
-            // Re-enable update timer
-            GameClient.ToggleUpdateTimer();
+            if (CurrentPokemon.EncounterId != 0)
+            {
+                // Re-enable update timer
+                GameClient.ToggleUpdateTimer();
+            }
+
             Dispatcher.Dispatch(() => NavigationService.GoBack());
         }, () => true));
 
@@ -455,6 +484,13 @@ namespace PokemonGo_UWP.ViewModels
             set { Set(ref _pokeballButtonEnabled, value); }
         }
 
+        private Visibility _inventoryButtonVisibility;
+        public Visibility InventoryButtonVisibility
+        {
+            get { return _inventoryButtonVisibility; }
+            set { Set(ref _inventoryButtonVisibility, value); }
+        }
+
         /// <summary>
         ///     We throw the selected item to the Pokemon and see what happens
         /// </summary>
@@ -496,73 +532,119 @@ namespace PokemonGo_UWP.ViewModels
             // If server takes too much to reply then we don't use the delay
             var requestTime = DateTime.Now;
 
-            var caughtPokemonResponse = await GameClient.CatchPokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, SelectedCaptureItem.ItemId, hitPokemon);
-
-            await GameClient.UpdateInventory(); //TODO: Change to delta update inventory, so it doesn't take so long (and offico client does it too)
-            SelectedCaptureItem = SelectPokeballType(LastItemUsed) ?? SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
-
-            var responseDelay = DateTime.Now - requestTime;
-            if (responseDelay.TotalSeconds < 5 && hitPokemon)
-                await Task.Delay(TimeSpan.FromSeconds(5 - (int)responseDelay.TotalSeconds));
-            var nearbyPokemon = GameClient.NearbyPokemons.FirstOrDefault(pokemon => pokemon.EncounterId == CurrentPokemon.EncounterId);
-
-            switch (caughtPokemonResponse.Status)
+            // If we have a starter pokemon, send just the pokemonid in a EncounterTutorialComplete request
+            if (CurrentPokemon.EncounterId == 0)
             {
-                case CatchPokemonResponse.Types.CatchStatus.CatchError:
-                    Logger.Write("CatchError!");
-                    //await GameClient.UpdateInventory();
-                    // TODO: what can we do?
-                    break;
+                if (!hitPokemon)
+                {
+                    SelectedCaptureItem = SelectPokeballType(LastItemUsed) ?? SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
+                    return false;
+                }
 
-                case CatchPokemonResponse.Types.CatchStatus.CatchSuccess:
-                    Logger.Write($"We caught {CurrentPokemon.PokemonId}");
-                    CurrentCaptureAward = caughtPokemonResponse.CaptureAward;
-                    CaptureXpToTotalCaptureXpConverter converter = new Utils.CaptureXpToTotalCaptureXpConverter();
-                    GameClient.AddGameXP((int)converter.Convert(CurrentCaptureAward.Xp, typeof(int), null, null));
-                    CatchSuccess?.Invoke(this, null);
-                    _capturedPokemonId = caughtPokemonResponse.CapturedPokemonId;
-                    //await GameClient.UpdatePlayerStats(); -> This will be done when we return to the game screen, to allow the LevelUp to be shown
-                    //await GameClient.UpdateInventory();
-                    if (CurrentPokemon is MapPokemonWrapper)
-                        GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
-                    else if (CurrentPokemon is LuredPokemon)
-                        GameClient.LuredPokemons.Remove((LuredPokemon)CurrentPokemon);
-                    else if (CurrentPokemon is IncensePokemon)
-                        GameClient.IncensePokemons.Remove((IncensePokemon)CurrentPokemon);
-                    GameClient.NearbyPokemons.Remove(nearbyPokemon);
-                    return true;
+                var encounterTutorialCompleteResponse = await GameClient.EncounterTutorialComplete(CurrentPokemon.PokemonId);
 
-                case CatchPokemonResponse.Types.CatchStatus.CatchEscape:
-                    Logger.Write($"{CurrentPokemon.PokemonId} escaped");
-                    CatchEscape?.Invoke(this, null);
-                    _canUseBerry = true;
-                    //await GameClient.UpdateInventory();
-                    break;
+                var responseDelay = DateTime.Now - requestTime;
+                if (responseDelay.TotalSeconds < 5 && hitPokemon)
+                    await Task.Delay(TimeSpan.FromSeconds(5 - (int)responseDelay.TotalSeconds));
 
-                case CatchPokemonResponse.Types.CatchStatus.CatchFlee:
-                    Logger.Write($"{CurrentPokemon.PokemonId} fled");
-                    CatchFlee?.Invoke(this, null);
-                    //await GameClient.UpdateInventory();
-                    if (CurrentPokemon is MapPokemonWrapper)
-                        GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
-                    else if (CurrentPokemon is LuredPokemon)
-                        GameClient.LuredPokemons.Remove((LuredPokemon)CurrentPokemon);
-                    else if (CurrentPokemon is IncensePokemon)
-                        GameClient.IncensePokemons.Remove((IncensePokemon)CurrentPokemon);
-                    GameClient.NearbyPokemons.Remove(nearbyPokemon);
-                    // We just go back because there's nothing else to do
-                    GameClient.ToggleUpdateTimer();
-                    break;
+                await GameClient.UpdateInventory();
+                SelectedCaptureItem = SelectPokeballType(LastItemUsed) ?? SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
 
-                case CatchPokemonResponse.Types.CatchStatus.CatchMissed:
-                    Logger.Write($"We missed {CurrentPokemon.PokemonId}");
-                    //await GameClient.UpdateInventory();
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (encounterTutorialCompleteResponse.Result)
+                {
+                    case EncounterTutorialCompleteResponse.Types.Result.Success:
+                        Logger.Write($"We caught {CurrentPokemon.PokemonId}");
+                        CurrentCaptureAward = encounterTutorialCompleteResponse.CaptureAward;
+                        CaptureXpToTotalCaptureXpConverter converter = new Utils.CaptureXpToTotalCaptureXpConverter();
+                        GameClient.AddGameXP((int)converter.Convert(CurrentCaptureAward.Xp, typeof(int), null, null));
+                        CatchSuccess?.Invoke(this, null);
+                        if (encounterTutorialCompleteResponse.PokemonData != null)
+                        {
+                            _capturedPokemonId = encounterTutorialCompleteResponse.PokemonData.Id;
+                        }
+                        return true;
+                    case EncounterTutorialCompleteResponse.Types.Result.Unset:
+                        Logger.Write($"We got an 'unset' response for {CurrentPokemon.PokemonId}");
+                        CurrentCaptureAward = new CaptureAward();
+                        CatchSuccess?.Invoke(this, null);
+                        _capturedPokemonId = 0;
+                        return true;
+                    default:
+                        break;
+                }
+                Logger.Write($"{CurrentPokemon.PokemonId} escaped");
+                CatchEscape?.Invoke(this, null);
+                return false;
             }
+            else
+            {
+                var caughtPokemonResponse = await GameClient.CatchPokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, SelectedCaptureItem.ItemId, hitPokemon);
 
+                await GameClient.UpdateInventory(); //TODO: Change to delta update inventory, so it doesn't take so long (and offico client does it too)
+                SelectedCaptureItem = SelectPokeballType(LastItemUsed) ?? SelectAvailablePokeBall(); //To restore it after UpdateInventory, which overrides it
+
+                var responseDelay = DateTime.Now - requestTime;
+                if (responseDelay.TotalSeconds < 5 && hitPokemon)
+                    await Task.Delay(TimeSpan.FromSeconds(5 - (int)responseDelay.TotalSeconds));
+                var nearbyPokemon = GameClient.NearbyPokemons.FirstOrDefault(pokemon => pokemon.EncounterId == CurrentPokemon.EncounterId);
+
+                switch (caughtPokemonResponse.Status)
+                {
+                    case CatchPokemonResponse.Types.CatchStatus.CatchError:
+                        Logger.Write("CatchError!");
+                        //await GameClient.UpdateInventory();
+                        // TODO: what can we do?
+                        break;
+
+                    case CatchPokemonResponse.Types.CatchStatus.CatchSuccess:
+                        Logger.Write($"We caught {CurrentPokemon.PokemonId}");
+                        CurrentCaptureAward = caughtPokemonResponse.CaptureAward;
+                        CaptureXpToTotalCaptureXpConverter converter = new Utils.CaptureXpToTotalCaptureXpConverter();
+                        GameClient.AddGameXP((int)converter.Convert(CurrentCaptureAward.Xp, typeof(int), null, null));
+                        CatchSuccess?.Invoke(this, null);
+                        _capturedPokemonId = caughtPokemonResponse.CapturedPokemonId;
+                        //await GameClient.UpdatePlayerStats(); -> This will be done when we return to the game screen, to allow the LevelUp to be shown
+                        //await GameClient.UpdateInventory();
+                        if (CurrentPokemon is MapPokemonWrapper)
+                            GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
+                        else if (CurrentPokemon is LuredPokemon)
+                            GameClient.LuredPokemons.Remove((LuredPokemon)CurrentPokemon);
+                        else if (CurrentPokemon is IncensePokemon)
+                            GameClient.IncensePokemons.Remove((IncensePokemon)CurrentPokemon);
+                        GameClient.NearbyPokemons.Remove(nearbyPokemon);
+                        return true;
+
+                    case CatchPokemonResponse.Types.CatchStatus.CatchEscape:
+                        Logger.Write($"{CurrentPokemon.PokemonId} escaped");
+                        CatchEscape?.Invoke(this, null);
+                        _canUseBerry = true;
+                        //await GameClient.UpdateInventory();
+                        break;
+
+                    case CatchPokemonResponse.Types.CatchStatus.CatchFlee:
+                        Logger.Write($"{CurrentPokemon.PokemonId} fled");
+                        CatchFlee?.Invoke(this, null);
+                        //await GameClient.UpdateInventory();
+                        if (CurrentPokemon is MapPokemonWrapper)
+                            GameClient.CatchablePokemons.Remove((MapPokemonWrapper)CurrentPokemon);
+                        else if (CurrentPokemon is LuredPokemon)
+                            GameClient.LuredPokemons.Remove((LuredPokemon)CurrentPokemon);
+                        else if (CurrentPokemon is IncensePokemon)
+                            GameClient.IncensePokemons.Remove((IncensePokemon)CurrentPokemon);
+                        GameClient.NearbyPokemons.Remove(nearbyPokemon);
+                        // We just go back because there's nothing else to do
+                        GameClient.ToggleUpdateTimer();
+                        break;
+
+                    case CatchPokemonResponse.Types.CatchStatus.CatchMissed:
+                        Logger.Write($"We missed {CurrentPokemon.PokemonId}");
+                        //await GameClient.UpdateInventory();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
             return false;
         }
 

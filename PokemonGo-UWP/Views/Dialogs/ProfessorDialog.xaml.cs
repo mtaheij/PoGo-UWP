@@ -60,12 +60,31 @@ namespace PokemonGo_UWP.Views
                     LightBackgroundRect.Visibility = Visibility.Visible;
                     DarkBackgroundRect.Visibility = Visibility.Collapsed;
                     break;
+                default:
+                    LightBackgroundRect.Visibility =
+                    DarkBackgroundRect.Visibility = Visibility.Collapsed;
+                    break;
             }
         }
 
         public void SetSpotlight(bool spotlight)
         {
             Spotlight.Visibility = spotlight ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void SetTranslucent(bool translucent)
+        {
+            DarkBackgroundRect.Opacity = LightBackgroundRect.Opacity = translucent ? 0.5 : 1;
+        }
+
+        public void SetToLowerRightCorner()
+        {
+            Professor.HorizontalAlignment = HorizontalAlignment.Right;
+            Professor.VerticalAlignment = VerticalAlignment.Bottom;
+            Professor.Margin = new Thickness(0,0,-10,-200);
+            Professor.Width = 200;
+            DialogRect.VerticalAlignment = VerticalAlignment.Bottom;
+//            DialogText.VerticalAlignment = VerticalAlignment.Bottom;
         }
 
         /// <summary>
@@ -94,6 +113,17 @@ namespace PokemonGo_UWP.Views
 
                 AudioUtils.PlaySound(AudioUtils.MESSAGE);
             });
+        }
+
+        public void ShowPokeStop()
+        {
+            PokeStopExample.Visibility = Visibility.Visible;
+            Messages.Clear();
+            CurrentMessage = null;
+
+            // animate showing PokéStop
+            Storyboard sb = this.Resources["ShowPokeStopExampleStoryboard"] as Storyboard;
+            sb.Begin();
         }
 
         private Brush _formerModalBrush = null;
@@ -153,6 +183,7 @@ namespace PokemonGo_UWP.Views
 
     public enum BackGroundType
     {
+        None,
         Light,
         Dark
     }

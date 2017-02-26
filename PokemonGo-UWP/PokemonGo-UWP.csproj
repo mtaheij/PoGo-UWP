@@ -687,6 +687,10 @@
     <Content Include="Assets\UI\pokeballLoading.gif" />
     <Content Include="Assets\UI\Professor.png" />
     <Content Include="Assets\UI\Spotlight.png" />
+    <Content Include="Assets\UI\walk.png" />
+    <Content Include="Assets\UI\walk_dgrey.png" />
+    <Content Include="Assets\UI\walk_grey.png" />
+    <Content Include="Assets\UI\walk_two.png" />
     <Content Include="Assets\UI\WarningScreen_BackgroundPlate.png" />
     <Content Include="Styles\NianticStyleLight.json" />
     <PRIResource Include="Strings\es-MX\Resources.resw" />
@@ -980,6 +984,7 @@
     <Compile Include="Utils\Game\DataTemplateSelectors.cs" />
     <Compile Include="Utils\Game\FortDataStatus.cs" />
     <Compile Include="Entities\VersionInfo.cs" />
+    <Compile Include="Utils\Game\TutorialNavigationModes.cs" />
     <Compile Include="Utils\Helpers\AsyncSynchronisationContext.cs" />
     <Compile Include="Utils\Helpers\AudioUtils.cs" />
     <Compile Include="Utils\Extensions\CollectionExtensions.cs" />

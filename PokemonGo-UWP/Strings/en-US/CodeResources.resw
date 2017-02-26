@@ -404,4 +404,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="String1" xml:space="preserve">
     <value>Refreshing game settings...</value>
   </data>
+  <data name="HashingKeyExpired" xml:space="preserve">
+    <value>You are not authorized to use the hashing service. Please check that your API key is correct.</value>
+  </data>
 </root>

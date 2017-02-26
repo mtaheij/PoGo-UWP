@@ -24,6 +24,7 @@ using POGOProtos.Map.Pokemon;
 using Google.Protobuf;
 using PokemonGo_UWP.Controls;
 using POGOProtos.Inventory;
+using PokemonGo_UWP.Utils.Game;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -125,7 +126,8 @@ namespace PokemonGo_UWP.ViewModels
                     // Go into the Tutorial Mode until the playerprofile is in the correct state
                     if (!CheckTutorialStateOk())
                     {
-                        await NavigationService.NavigateAsync(typeof(TutorialPage));
+                        await NavigationService.NavigateAsync(typeof(TutorialPage), TutorialNavigationModes.TutorialStart);
+                        return;
                     }
                     
                     // App just started, so we get GPS access and eventually initialize the client
@@ -349,6 +351,8 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                 }
             }
+            RaisePropertyChanged(nameof(PlayerProfile));
+            RaisePropertyChanged(nameof(PlayerStats));
         }
 
         #endregion
@@ -413,9 +417,14 @@ namespace PokemonGo_UWP.ViewModels
         #region Tutorial
         private bool CheckTutorialStateOk()
         {
-            return true;
-            //var x = GameClient.PlayerData.TutorialState;
-            //return x.Contains(TutorialState.FirstTimeExperienceComplete);
+            // If the user has skipped the tutorial before, don't go through it again
+            if (SettingsService.Instance.SkipTutorial)
+            {
+                return true;
+            }
+
+            var x = GameClient.PlayerData.TutorialState;
+            return x.Contains(TutorialState.FirstTimeExperienceComplete);
         }
         #endregion
     }

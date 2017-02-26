@@ -625,6 +625,10 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <source>Refreshing game settings...</source>
           <target state="new">Refreshing game settings...</target>
         </trans-unit>
+        <trans-unit id="HashingKeyExpired" translate="yes" xml:space="preserve">
+          <source>You are not authorized to use the hashing service. Please check that your API key is correct.</source>
+          <target state="new">You are not authorized to use the hashing service. Please check that your API key is correct.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -923,6 +927,82 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <source>TRANSFER </source>
           <target state="new">TRANSFER </target>
           <note from="MultilingualBuild" annotates="source" priority="2">Watch out: there is a space behind TRANSFER</note>
+        </trans-unit>
+        <trans-unit id="NicknameTextBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Nickname</source>
+          <target state="new">Nickname</target>
+        </trans-unit>
+        <trans-unit id="EnterNicknameTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Enter the nickname that other Trainers will use for you.</source>
+          <target state="new">Enter the nickname that other Trainers will use for you.</target>
+        </trans-unit>
+        <trans-unit id="NicknameConfirmationTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to be called {0}?</source>
+          <target state="new">Are you sure you want to be called {0}?</target>
+        </trans-unit>
+        <trans-unit id="SubmitNicknameCancelButton.Content" translate="yes" xml:space="preserve">
+          <source>NO</source>
+          <target state="new">NO</target>
+        </trans-unit>
+        <trans-unit id="SubmitNicknameOkButton.Content" translate="yes" xml:space="preserve">
+          <source>YES</source>
+          <target state="new">YES</target>
+        </trans-unit>
+        <trans-unit id="SubmitNicknameButtonTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="new">OK</target>
+        </trans-unit>
+        <trans-unit id="CatchPokemonTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>CATCH A POKÉMON</source>
+          <target state="new">CATCH A POKÉMON</target>
+        </trans-unit>
+        <trans-unit id="ChooseYourStyle.Text" translate="yes" xml:space="preserve">
+          <source>Please choose your style.</source>
+          <target state="new">Please choose your style.</target>
+        </trans-unit>
+        <trans-unit id="DisclaimerText.Text" translate="yes" xml:space="preserve">
+          <source>POGO-UWP is a project strictly intended for educational use. Use this app on your own risk. By clicking the 'ACCEPT' button below, you accept the Pokémon GO Terms of Service. Niantic might ban your account for using this app. If you do not want to risk your account being banned, do NOT use this app.</source>
+          <target state="new">POGO-UWP is a project strictly intended for educational use. Use this app on your own risk. By clicking the 'ACCEPT' button below, you accept the Pokémon GO Terms of Service. Niantic might ban your account for using this app. If you do not want to risk your account being banned, do NOT use this app.</target>
+        </trans-unit>
+        <trans-unit id="LegalAcceptButtonTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>ACCEPT</source>
+          <target state="new">ACCEPT</target>
+        </trans-unit>
+        <trans-unit id="LegalCommsCheckboxText.Text" translate="yes" xml:space="preserve">
+          <source>Send Pokémon GO-related events, promotions, offers and news updates to my email address.</source>
+          <target state="new">Send Pokémon GO-related events, promotions, offers and news updates to my email address.</target>
+        </trans-unit>
+        <trans-unit id="LegalDeclineButtonTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>DECLINE</source>
+          <target state="new">DECLINE</target>
+        </trans-unit>
+        <trans-unit id="LegalScreenTitle.Text" translate="yes" xml:space="preserve">
+          <source>POGO-UWP Disclaimer</source>
+          <target state="new">POGO-UWP Disclaimer</target>
+        </trans-unit>
+        <trans-unit id="CheckOutAPokestopTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>CHECK OUT A POKÉSTOP</source>
+          <target state="new">CHECK OUT A POKÉSTOP</target>
+        </trans-unit>
+        <trans-unit id="LetsGoTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>LET'S GO!</source>
+          <target state="new">LET'S GO!</target>
+        </trans-unit>
+        <trans-unit id="MoveInRealWorldTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Move in the real world to move your avatar.</source>
+          <target state="new">Move in the real world to move your avatar.</target>
+        </trans-unit>
+        <trans-unit id="TimeToWalkTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Time to walk!</source>
+          <target state="new">Time to walk!</target>
+        </trans-unit>
+        <trans-unit id="SkipTutorialTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Skip</source>
+          <target state="new">Skip</target>
+        </trans-unit>
+        <trans-unit id="ConfirmSkipTutorialTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to skip the tutorial? You will not be able to do it again!</source>
+          <target state="new">Are you sure you want to skip the tutorial? You will not be able to do it again!</target>
         </trans-unit>
       </group>
     </body>

@@ -4,12 +4,526 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:PokemonGo_UWP.ViewModels"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:entities="using:PokemonGo_UWP.Entities"
+    xmlns:utils="using:PokemonGo_UWP.Utils"
     mc:Ignorable="d">
+
     <Page.DataContext>
-        <viewModels:LoginPageViewModel x:Name="ViewModel" />
+        <viewModels:TutorialPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Grid x:Name="MainGrid">
+    <Page.Resources>
+        <Storyboard x:Name="ShowErrorMessageStoryboard">
+            <DoubleAnimation x:Name="ShowErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="0"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="HideErrorMessageStoryboard">
+            <DoubleAnimation x:Name="HideErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="-60"
+                BeginTime="0:0:5"
+                Duration="0:0:0.2" />
+        </Storyboard>
 
+        <Storyboard x:Name="ShowSelectAvatarStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="SelectAvatarGrid">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="SelectAvatarMaleSelectedStoryboard">
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarFemale"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="0.5"
+                             Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarMale"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="1"
+                             Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarOk"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1"
+                             BeginTime="0:0:0.2"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="SelectAvatarFemaleSelectedStoryboard">
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarMale"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="0.5"
+                             Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarFemale"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="1"
+                             Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetName="SelectAvatarOk"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1"
+                             BeginTime="0:0:0.2"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowPokemonCatchStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="CatchPokemonGrid">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowChooseNicknameStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ChooseNicknameGrid">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="ShowConfirmNicknameStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ConfirmNicknameBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="ChooseNicknameBorder"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="0.5"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="HideConfirmNicknameStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ConfirmNicknameBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="ChooseNicknameBorder"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.5" To="1"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="HideChooseNicknameStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ChooseNicknameBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ConfirmNicknameBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowTimeToWalkStoryboard">
+            <DoubleAnimation x:Name="ShowTimeToWalkAnimation"
+                Storyboard.TargetName="TimeToWalkBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="0"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowConfirmSkipTutorialStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ConfirmSkipTutorialBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="HideConfirmSkipTutorialStoryboard">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="ConfirmSkipTutorialBorder">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+
+    <Grid x:Name="MainUI"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch">
+
+        <Grid x:Name="LegalScreenGrid" Visibility="Collapsed">
+            <Rectangle x:Name="LegalScreenLightBackgroundRect"
+                        Fill="{StaticResource LightPageBackgroundGradient}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Uid="LegalScreenTitle" 
+                           Text="POGO-UWP Disclaimer" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Style="{StaticResource TitleTextBlockStyle}"
+                           Margin="20,0,20,0" FontSize="16"/>
+                <TextBlock Grid.Row="1"
+                           x:Uid="DisclaimerText"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Style="{StaticResource BodyTextBlockStyle}" Margin="20"
+                           Text="POGO-UWP is a project strictly intended for educational use. Use this app on your own risk. By clicking the 'ACCEPT' button below, you accept the Pokémon GO Terms of Service. Niantic might ban your account for using this app. If you do not want to risk your account being banned, do NOT use this app." />
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="20,0,20,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="7*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" x:Name="CheckComms" Style="{StaticResource LegalCheckbox}" IsChecked="{Binding LegalCommsCheck, Mode=TwoWay}" Margin="15" />
+                            <TextBlock Grid.Column="1" x:Uid="LegalCommsCheckboxText" Style="{StaticResource BaseTextBlockStyle}"
+                                       Text="Send Pokémon GO-related events, promotions, offers and news updates to my email address." TextWrapping="Wrap" />
+                        </Grid>
+                        <Button x:Uid="LegalAcceptButton" 
+                                Command="{Binding LegalAcceptCommand}"
+                                Style="{StaticResource ButtonSubmit}" 
+                                Margin="80,20,80,20">
+                            <TextBlock x:Uid="LegalAcceptButtonTextBlock" Text="ACCEPT"/>
+                        </Button>
+                        <Button x:Uid="LegalDeclineButton" 
+                                Command="{Binding LegalDeclineCommand}"
+                                Style="{StaticResource ButtonSubmitInverse}" 
+                                Margin="80,0,80,10">
+                            <TextBlock x:Uid="LegalDeclineButtonTextBlock" Text="DECLINE"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="SelectAvatarGrid" Visibility="Collapsed">
+            <Rectangle x:Name="SelectAvatarScreenDarkBackgroundRect"
+                        Fill="{StaticResource DarkPageBackgroundGradient}" />
+            <TextBlock x:Uid="ChooseYourStyle" 
+                       Text="Please choose your style." 
+                       Style="{StaticResource BaseTextBlockStyle}"
+                       Foreground="White" Margin="10"
+                       HorizontalAlignment="Center"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" 
+                        x:Name="SelectAvatarMale" 
+                        Command="{Binding SelectAvatarMaleCommand}"
+                        Background="Transparent" 
+                        Margin="20" Height="150">
+                    <Image Source="ms-appx:///Assets/Icons/gender-male.png" />
+                </Button>
+                <Button Grid.Column="1" 
+                        x:Name="SelectAvatarFemale" 
+                        Command="{Binding SelectAvatarFemaleCommand}"
+                        Background="Transparent" 
+                        Margin="20" Height="150">
+                    <Image Source="ms-appx:///Assets/Icons/gender-female.png" />
+                </Button>
+            </Grid>
+            <Button x:Name="SelectAvatarOk" Opacity="0"
+                    Command="{Binding SelectAvatarOkCommand}"
+                    Style="{StaticResource ButtonCircle}"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="40">
+                <Image Source="ms-appx:///Assets/Buttons/btn_ok.png"/>
+            </Button>
+        </Grid>
+
+        <Grid x:Name="CatchPokemonGrid" Visibility="Collapsed">
+            <maps:MapControl BusinessLandmarksVisible="False"
+                         LandmarksVisible="False"
+                         ColorScheme="{ThemeResource MapColorScheme}"
+                         DesiredPitch="50"
+                         PedestrianFeaturesVisible="False"
+                         TrafficFlowVisible="False"
+                         TransitFeaturesVisible="False"
+                         ZoomLevel="18"
+                         ZoomInteractionMode="Disabled"
+                         RelativePanel.AlignTopWithPanel="True"
+                         RelativePanel.AlignBottomWithPanel="True"
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"
+                         MapServiceToken="{x:Bind ViewModel.MapServiceToken, Mode=OneTime}"
+                         Canvas.ZIndex="1"
+                         x:Name="GameMapControl">
+
+                <Image  Source="ms-appx:///Assets/Ui/player-avatar.png" 
+                        maps:MapControl.NormalizedAnchorPoint="0.5,1"
+                        Stretch="Uniform"
+                        Height="96"
+                        Width="48"
+                        x:Name="PlayerImage" />
+                <maps:MapItemsControl x:Name="CatchableItemsControl" ItemsSource="{Binding CatchablePokemons}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:MapPokemonWrapper">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{Binding TryCatchPokemon}">
+                                <Image 
+                                    Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                                    maps:MapControl.Location="{Binding Geoposition}"
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
+                                    Stretch="Uniform"
+                                    Canvas.ZIndex="5" Height="30" Width="30"/>
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
+            </maps:MapControl>
+            <Border x:Name="CatchMessageBorder" 
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,30,0,0" 
+                    Background="#E780B6" 
+                    CornerRadius="12" 
+                    BorderBrush="#44000000" 
+                    BorderThickness="1"
+                    Visibility="Collapsed"
+                    Canvas.ZIndex="10">
+                <TextBlock x:Name="CatchPokemonTextBlock"
+                           Text="CATCH A POKÉMON"
+                           FontSize="12" Foreground="White" Margin="8,4,8,4"/>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="ChooseNicknameGrid" Visibility="Collapsed">
+            <Rectangle x:Name="ChooseNicknameScreenDarkBackgroundRect"
+                        Fill="{StaticResource DarkPageBackgroundGradient}" Opacity="0.5" />
+            <Border x:Name="ChooseNicknameBorder" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="20,0,20,0" 
+                    Background="White" 
+                    CornerRadius="5" 
+                    BorderBrush="#44000000" 
+                    BorderThickness="1"
+                    Canvas.ZIndex="10">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Uid="EnterNicknameTextBlock" 
+                               Style="{StaticResource BodyTextBlockStyle}" 
+                               Margin="20"
+                               Text="Enter the nickname that other Trainers will use for you."
+                               FontSize="14"/>
+                    <TextBox x:Uid="NicknameTextBox"
+                             x:Name="NicknameTextBox"
+                             Style="{StaticResource MessageDialogTextBox}" 
+                             PlaceholderText="Nickname"
+                             Margin="20,0,20,20"/>
+                    <Button x:Name="SubmitNicknameButton" 
+                            Command="{Binding SubmitNicknameCommand}" 
+                            Style="{StaticResource ButtonSubmit}" 
+                            Margin="20,0,20,20">
+                        <TextBlock x:Uid="SubmitNicknameButtonTextBlock"
+                               Text="OK" />
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Border x:Name="ConfirmNicknameBorder" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="40,10,40,10" 
+                    Background="White" 
+                    CornerRadius="5" 
+                    BorderBrush="#44000000" 
+                    BorderThickness="1"
+                    Visibility="Collapsed"
+                    Canvas.ZIndex="10">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Uid="NicknameConfirmationTextBlock" 
+                               x:Name="NicknameConfirmationTextBlock"
+                               Style="{StaticResource BodyTextBlockStyle}"
+                               Margin="20"
+                               Text="Are you sure you want to be called {0}?"
+                               FontSize="14"/>
+                    <Button x:Name="SubmitNicknameOkButton" 
+                            Command="{Binding SubmitNicknameOkCommand}" 
+                            Style="{StaticResource ButtonSubmit}">
+                        <TextBlock Text="YES"/>
+                    </Button>
+                    <Button x:Name="SubmitNicknameCancelButton" 
+                            Command="{Binding SubmitNicknameCancelCommand}" 
+                            Style="{StaticResource ButtonCancel}">
+                        <TextBlock Text="NO"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+
+        <Grid x:Name="TimeToWalkGrid" Visibility="Collapsed">
+            <Border x:Name="CheckOutAPokestopMessageBorder" 
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,30,0,0" 
+                    Background="#E780B6" 
+                    CornerRadius="12" 
+                    BorderBrush="#44000000" 
+                    BorderThickness="1"
+                    Canvas.ZIndex="10">
+                <TextBlock x:Name="CheckOutAPokestopTextBlock"
+                           Text="CHECK OUT A POKÉSTOP"
+                           FontSize="12" Foreground="White" Margin="8,4,8,4"/>
+            </Border>
+            <Border VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Background="White"
+                    CornerRadius="5"
+                    BorderBrush="Silver" BorderThickness="1"
+                    Margin="20,0,20,0">
+                <Border.RenderTransform>
+                    <CompositeTransform x:Name="TimeToWalkBorderTransform" TranslateY="200"/>
+                </Border.RenderTransform>
+                <StackPanel>
+                    <TextBlock x:Uid="TimeToWalkTextBlock" HorizontalAlignment="Center"
+                               Margin="20" Style="{StaticResource BaseTextBlockStyle}"
+                               Text="Time to walk!"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="ms-appx:///Assets/UI/walk_two.png" Height="60" Margin="0,0,10,0"/>
+                        <TextBlock Text="_ _ _ _ _ _" Style="{StaticResource BaseTextBlockStyle}" VerticalAlignment="Bottom" Margin="0,0,0,10" />
+                        <Image Source="ms-appx:///Assets/Icons/pokestop_far.png" Height="80" Margin="-20,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock x:Uid="MoveInRealWorldTextBlock" HorizontalAlignment="Center"
+                               Margin="20" Style="{StaticResource BodyTextBlockStyle}" FontSize="12"
+                               Text="Move in the real world to move your avatar."/>
+                    <Button x:Name="LetsGoButton" 
+                            Command="{Binding LetsGoCommand}" 
+                            Style="{StaticResource ButtonSubmit}" 
+                            Margin="40,0,40,20">
+                        <TextBlock x:Uid="LetsGoTextBlock"
+                               Text="LET'S GO!" />
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Button x:Uid="ButtonSkipTutorial"
+                x:Name="ButtonSkipTutorial"
+                Command="{Binding SkipTutorialCommand}" 
+                Style="{StaticResource ButtonSubmitRed}"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left" 
+                Margin="20,30,0,0">
+            <TextBlock x:Uid="SkipTutorialTextBlock" Text="Skip"/>
+        </Button>
+        <Border x:Name="ConfirmSkipTutorialBorder" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="40,10,40,10" 
+                    Background="White" 
+                    CornerRadius="5" 
+                    BorderBrush="#44000000" 
+                    BorderThickness="1"
+                    Visibility="Collapsed"
+                    Canvas.ZIndex="10">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="ConfirmSkipTutorialTextBlock" 
+                               x:Name="ConfirmSkiptutorialTextBlock"
+                               Style="{StaticResource BodyTextBlockStyle}"
+                               Margin="20"
+                               Text="Are you sure you want to skip the tutorial? You will not be able to do it again!"
+                               FontSize="14"/>
+                <Button x:Name="SubmitSkipTutorialOkButton" 
+                            Command="{Binding SubmitSkipTutorialOkCommand}" 
+                            Style="{StaticResource ButtonSubmit}">
+                    <TextBlock Text="YES"/>
+                </Button>
+                <Button x:Name="SubmitSkipTutorialCancelButton" 
+                            Command="{Binding SubmitSkipTutorialCancelCommand}" 
+                            Style="{StaticResource ButtonCancel}">
+                    <TextBlock Text="NO"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <Border x:Name="ErrorMessageBorder" Grid.Row="0"
+                    Visibility="Collapsed"
+                    VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#cc0000" Offset="0" />
+                    <GradientStop Color="#660000" Offset="0.8" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="ErrorMessageBorderTransform" TranslateY="-60" />
+            </Border.RenderTransform>
+            <StackPanel>
+                <TextBlock x:Name="ErrorMessageText"
+                           Style="{StaticResource TextError}"
+                           Visibility="Collapsed"
+                           Margin="15,20,15,20"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

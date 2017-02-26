@@ -27,8 +27,10 @@ namespace PokemonGo_UWP.Views
             Loaded += (s, e) =>
             {
                 ShowCatchStatsModalAnimation.From = CatchStatsTranslateTransform.Y = ActualHeight;
+
                 // HACK - somehow binding doesn't work as expected so we manually disable the item if count is 0
                 ViewModel.PokeballButtonEnabled = ViewModel.SelectAvailablePokeBall().Count > 0;
+
                 AudioUtils.PlaySound(AudioUtils.ENCOUNTER_POKEMON);
             };
         }

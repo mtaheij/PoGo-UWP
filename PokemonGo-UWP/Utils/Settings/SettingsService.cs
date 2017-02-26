@@ -103,6 +103,12 @@ namespace PokemonGo_UWP.Utils
 			}
 		}
 
+        public bool SkipTutorial
+        {
+            get { return Get(false); }
+            set { Set(value); }
+        }
+
         public string PokehashAuthKey
         {
             get { return Get(string.Empty); }

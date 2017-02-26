@@ -11,6 +11,8 @@ using PokemonGo_UWP.Views;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Newtonsoft.Json.Linq;
+using PokemonGoAPI.Helpers.Hash.PokeHash;
+using PokemonGoAPI.Exceptions;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -149,6 +151,13 @@ namespace PokemonGo_UWP.ViewModels
                     var errorMessage = e.LoginResponse ?? Resources.CodeResources.GetString("LoginFailedText");
                     await new MessageDialog(errorMessage).ShowAsyncQueue();
                 }
+                catch (HasherException e)
+                {
+                    var errorMessage = e.Message ?? Resources.CodeResources.GetString("HashingKeyExpired");
+                    await new MessageDialog(errorMessage).ShowAsyncQueue();
+
+                    await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
+                }
                 catch (Exception e)
                 {
 								await ExceptionHandler.HandleException(e);
@@ -196,6 +205,13 @@ namespace PokemonGo_UWP.ViewModels
                     await
                         new MessageDialog(Resources.CodeResources.GetString("GoogleErrorText") + e.Message)
                             .ShowAsyncQueue();
+                }
+                catch (HasherException e)
+                {
+                    var errorMessage = e.Message ?? Resources.CodeResources.GetString("HashingKeyExpired");
+                    await new MessageDialog(errorMessage).ShowAsyncQueue();
+
+                    await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
                 finally
                 {

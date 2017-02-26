@@ -519,6 +519,7 @@
                 Margin="16"
                 Height="{ThemeResource UiButtonSize}"
                 HorizontalAlignment="Center"
+                Visibility="{Binding InventoryButtonVisibility}"
                 x:Name="InventoryButton">
 
             <interactivity:Interaction.Behaviors>

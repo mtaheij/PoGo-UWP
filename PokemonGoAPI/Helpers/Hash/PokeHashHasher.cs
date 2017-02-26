@@ -51,7 +51,7 @@ namespace POGOLib.Official.Util.Hash
         private readonly List<PokeHashAuthKey> _authKeys;
 
         private readonly HttpClient _httpClient;
-        
+
         /// <summary>
         ///     Initializes the <see cref="PokeHashHasher"/>.
         /// </summary>
@@ -162,7 +162,10 @@ namespace POGOLib.Official.Util.Hash
                     // See the error message for why it is bad.
                     case HttpStatusCode.BadRequest:
                         string responseText = await response.Content.ReadAsStringAsync();
-                        if (responseText.Contains("Unauthorized")) throw new HasherException($"Your API key is incorrect or expired, please check (Pokefamer message : {responseText})");
+                        if (responseText.Contains("Unauthorized"))
+                        {
+                            throw new HasherException("You are not authorized to use this service. Please check that your API key is correct.");
+                        }
                         Console.WriteLine($"Bad request sent to the hashing server! {responseText}");
                         break;
 

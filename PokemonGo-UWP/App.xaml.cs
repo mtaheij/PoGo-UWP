@@ -29,6 +29,7 @@ using Newtonsoft.Json.Converters;
 using PokemonGo_UWP.Utils.Helpers;
 using PokemonGo_UWP.Controls;
 using PokemonGoAPI.Helpers.Hash.PokeHash;
+using PokemonGoAPI.Exceptions;
 
 namespace PokemonGo_UWP
 {
@@ -180,6 +181,7 @@ namespace PokemonGo_UWP
         {                        
             GameClient.PokemonsInventory.CollectionChanged -= PokemonsInventory_CollectionChanged;
             GameClient.CatchablePokemons.CollectionChanged -= CatchablePokemons_CollectionChanged;
+
             NetworkInformation.NetworkStatusChanged -= NetworkInformationOnNetworkStatusChanged;            
 
             if (SettingsService.Instance.IsBatterySaverEnabled)
@@ -248,10 +250,10 @@ namespace PokemonGo_UWP
 
             // Respond to changes in inventory and Pokemon in the immediate viscinity.
             GameClient.PokemonsInventory.CollectionChanged += PokemonsInventory_CollectionChanged;
-            GameClient.CatchablePokemons.CollectionChanged += CatchablePokemons_CollectionChanged;         
+            GameClient.CatchablePokemons.CollectionChanged += CatchablePokemons_CollectionChanged;
 
             await Task.CompletedTask;
-        }        
+        }
 
         /// <summary>
         ///
@@ -349,8 +351,11 @@ namespace PokemonGo_UWP
                     await GameClient.InitializeClient();
                     NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                 }
-                catch (PokeHashException ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
+                catch (HasherException ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
                 {
+                    var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("HashingKeyExpired");
+                    await new MessageDialog(errorMessage).ShowAsyncQueue();
+
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
             }

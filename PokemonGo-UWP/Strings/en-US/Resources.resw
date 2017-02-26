@@ -334,4 +334,61 @@
     <value>TRANSFER </value>
     <comment>Watch out: there is a space behind TRANSFER</comment>
   </data>
+  <data name="CatchPokemonTextBlock.Text" xml:space="preserve">
+    <value>CATCH A POKÉMON</value>
+  </data>
+  <data name="CheckOutAPokestopTextBlock.Text" xml:space="preserve">
+    <value>CHECK OUT A POKÉSTOP</value>
+  </data>
+  <data name="ChooseYourStyle.Text" xml:space="preserve">
+    <value>Please choose your style.</value>
+  </data>
+  <data name="DisclaimerText.Text" xml:space="preserve">
+    <value>POGO-UWP is a project strictly intended for educational use. Use this app on your own risk. By clicking the 'ACCEPT' button below, you accept the Pokémon GO Terms of Service. Niantic might ban your account for using this app. If you do not want to risk your account being banned, do NOT use this app.</value>
+  </data>
+  <data name="EnterNicknameTextBlock.Text" xml:space="preserve">
+    <value>Enter the nickname that other Trainers will use for you.</value>
+  </data>
+  <data name="LegalAcceptButtonTextBlock.Text" xml:space="preserve">
+    <value>ACCEPT</value>
+  </data>
+  <data name="LegalCommsCheckboxText.Text" xml:space="preserve">
+    <value>Send Pokémon GO-related events, promotions, offers and news updates to my email address.</value>
+  </data>
+  <data name="LegalDeclineButtonTextBlock.Text" xml:space="preserve">
+    <value>DECLINE</value>
+  </data>
+  <data name="LegalScreenTitle.Text" xml:space="preserve">
+    <value>POGO-UWP Disclaimer</value>
+  </data>
+  <data name="LetsGoTextBlock.Text" xml:space="preserve">
+    <value>LET'S GO!</value>
+  </data>
+  <data name="MoveInRealWorldTextBlock.Text" xml:space="preserve">
+    <value>Move in the real world to move your avatar.</value>
+  </data>
+  <data name="NicknameConfirmationTextBlock.Text" xml:space="preserve">
+    <value>Are you sure you want to be called {0}?</value>
+  </data>
+  <data name="NicknameTextBox.PlaceholderText" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="SubmitNicknameButtonTextBlock.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SubmitNicknameCancelButton.Content" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="SubmitNicknameOkButton.Content" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="TimeToWalkTextBlock.Text" xml:space="preserve">
+    <value>Time to walk!</value>
+  </data>
+  <data name="ConfirmSkipTutorialTextBlock.Text" xml:space="preserve">
+    <value>Are you sure you want to skip the tutorial? You will not be able to do it again!</value>
+  </data>
+  <data name="SkipTutorialTextBlock.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
 </root>
