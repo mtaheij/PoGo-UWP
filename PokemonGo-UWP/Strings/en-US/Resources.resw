@@ -391,4 +391,10 @@
   <data name="SkipTutorialTextBlock.Text" xml:space="preserve">
     <value>Skip</value>
   </data>
+  <data name="GymTooFarAwayTextBlock.Text" xml:space="preserve">
+    <value>This Gym is too far away.</value>
+  </data>
+  <data name="SettingsBatterySaverRestartTextBlock.Text" xml:space="preserve">
+    <value>You must restart the App to take effect.</value>
+  </data>
 </root>

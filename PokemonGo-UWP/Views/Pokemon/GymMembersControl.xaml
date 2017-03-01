@@ -1,0 +1,116 @@
+﻿<UserControl
+    x:Class="PokemonGo_UWP.Views.GymMembersControl"
+    x:Name="Root"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PokemonGo_UWP.Views"
+    xmlns:control="using:PokemonGo_UWP.Controls"
+    xmlns:gif="using:XamlAnimatedGif"
+    xmlns:protos="using:POGOProtos.Data.Gym"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="640"
+    d:DesignWidth="360">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="GymMemberDataTemplate" x:DataType="protos:GymMembership">
+            <Grid Width="360">
+                <!--Base-->
+                <Image  x:Name="BaseImage" 
+                        Source="{Binding ElementName=Root, Path=CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamBaseImageConverter}}" 
+                        Width="360" 
+                        Margin="0,250,0,0" />
+
+                <!-- Player -->
+                <Grid   VerticalAlignment="Center" 
+                        HorizontalAlignment="Right" 
+                        Width="Auto" 
+                        Height="320" 
+                        Margin="0,0,0,120">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Image  Grid.RowSpan="2" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Margin="0,0,0,-20"
+                            gif:AnimationBehavior.SourceUri="/Assets/UI/avatar.gif" 
+                            Height="270" />
+                    <TextBlock  HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="{Binding ElementName=Root, Path=CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                                FontSize="80" 
+                                Opacity="0.3" 
+                                Text="{Binding TrainerPublicProfile.Level}" />
+                    <TextBlock  HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                Margin="10"
+                                Foreground="{Binding ElementName=Root, Path=CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}" 
+                                FontSize="28" 
+                                Text="{Binding TrainerPublicProfile.Name}" />
+                </Grid>
+                <!--Pokemon-->
+                <Image  Width="200" 
+                        Height="200" 
+                        Margin="0,60,0,0" 
+                        Source="{Binding PokemonData.PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"/>
+                <Grid   HorizontalAlignment="Left" 
+                        VerticalAlignment="Center" 
+                        Margin="5,0,0,240" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid HorizontalAlignment="Left" 
+                          Width="100">
+                        <Image Source="/Assets/Icons/crown.png"
+                               Visibility="{Binding ElementName=Root, Path=IsUltimatePokemonVisibility}"
+                               Height="36" 
+                               Stretch="Uniform"/>
+                    </Grid>
+                    <TextBlock  x:Name="PokemonNameTextBlock" 
+                                Grid.Row="1" 
+                                HorizontalAlignment="Left"
+                                Foreground="#DDDDDD" 
+                                FontSize="26" 
+                                Text="{Binding PokemonData, Converter={StaticResource PokemonDataToPokemonNameConverter}}"/>
+                    <Rectangle Grid.Row="2" 
+                               Fill="#DDDDDD" 
+                               Width="100" 
+                               Height="3" 
+                               HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal" 
+                                Grid.Row="3" 
+                                HorizontalAlignment="Left">
+                        <TextBlock VerticalAlignment="Bottom" 
+                                   Foreground="#DDDDDD" 
+                                   FontSize="20" 
+                                   Text="CP"/>
+                        <TextBlock Foreground="#DDDDDD" 
+                                   FontSize="26" 
+                                   Margin="4,0,0,0" 
+                                   Text="{Binding PokemonData.Cp}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <FlipView x:Name="GymMembershipFlip"
+              x:FieldModifier="public"
+              RelativePanel.AlignTopWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              ItemsSource="{Binding GymMemberships, Mode=OneWay}"
+              SelectedItem="{Binding SelectedGymMembership, Mode=TwoWay}" 
+              ItemTemplate="{StaticResource GymMemberDataTemplate}"
+              SelectionChanged="GymMembershipFlip_SelectionChanged">
+    </FlipView>
+
+</UserControl>

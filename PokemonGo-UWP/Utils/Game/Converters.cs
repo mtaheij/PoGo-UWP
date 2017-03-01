@@ -315,10 +315,10 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return string.Empty;
+            if (value == null) return null;
 
             var buddyPokemon = (BuddyPokemon)value;
-            if (buddyPokemon.Id == 0) return string.Empty;
+            if (buddyPokemon.Id == 0) return null;
             var pokemonId = GameClient.PokemonsInventory.FirstOrDefault(item => item.Id == buddyPokemon.Id).PokemonId;
 
             return new BitmapImage(new Uri($"ms-appx:///Assets/Pokemons/{(int)pokemonId}.png"));
@@ -1157,6 +1157,27 @@ namespace PokemonGo_UWP.Utils
             var pokemonData = (PokemonDataWrapper)value;
             var pokemonLevel = PokemonInfo.GetLevel(pokemonData.WrappedData);
             return pokemonLevel > GameClient.PlayerStats.Level + 1.5 ? GameClient.PlayerStats.Level + 1.5 : pokemonLevel;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class PokemonDataToPokemonNameConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return 0;
+            var pokemonData = (PokemonData)value;
+            if (String.IsNullOrEmpty(pokemonData.Nickname))
+                return Resources.Pokemon.GetString(pokemonData.PokemonId.ToString());
+            return pokemonData.Nickname;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -2012,6 +2033,45 @@ namespace PokemonGo_UWP.Utils
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class FortDataToTeamBaseImageConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return new BitmapImage(new Uri("ms-appx:///Assets/Teams/gym_base_empty.png"));
+            FortDataWrapper data = (FortDataWrapper)value;
+            var teamColor = data.OwnedByTeam;
+            var path = "ms-appx:///Assets/Teams/";
+
+            switch (teamColor)
+            {
+                case TeamColor.Blue:
+                    path += "gym_base_blue";
+                    break;
+                case TeamColor.Red:
+                    path += "gym_base_red";
+                    break;
+                case TeamColor.Yellow:
+                    path += "gym_base_yellow";
+                    break;
+                default:
+                    path += "gym_base_empty";
+                    break;
+            }
+            path += ".png";
+
+            return new BitmapImage(new Uri(path));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -21,6 +21,7 @@ using POGOProtos.Enums;
 using PokemonGo_UWP.Utils.Extensions;
 using PokemonGo_UWP.Controls;
 using Windows.UI.Xaml;
+using PokemonGo_UWP.Utils.Helpers;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -45,22 +46,14 @@ namespace PokemonGo_UWP.ViewModels
                 CurrentGym = JsonConvert.DeserializeObject<FortDataWrapper>((string)suspensionState[nameof(CurrentGym)]);
                 CurrentGymInfo = JsonConvert.DeserializeObject<GetGymDetailsResponse>((string)suspensionState[nameof(CurrentGymInfo)]);
                 CurrentGymState = CurrentGymInfo.GymState;
-                GymMemberships.Clear();
-                foreach (GymMembership membership in CurrentGymState.Memberships)
-                {
-                    GymMemberships.Add(membership);
-                }
                 CurrentEnterResponse = JsonConvert.DeserializeObject<GetGymDetailsResponse>((string)suspensionState[nameof(CurrentEnterResponse)]);
-                RaisePropertyChanged(() => CurrentGym);
-                RaisePropertyChanged(() => CurrentGymInfo);
-                RaisePropertyChanged(() => CurrentGymState);
-                RaisePropertyChanged(() => GymMemberships);
                 RaisePropertyChanged(() => GymLevel);
                 RaisePropertyChanged(() => GymPrestigeFull);
                 RaisePropertyChanged(() => DeployPokemonCommandVisibility);
                 RaisePropertyChanged(() => TrainCommandVisibility);
                 RaisePropertyChanged(() => FightCommandVisibility);
-                RaisePropertyChanged(() => CurrentEnterResponse);
+                RaisePropertyChanged(() => CommandButtonEnabled);
+                RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
             }
             else
             {
@@ -77,17 +70,13 @@ namespace PokemonGo_UWP.ViewModels
                     Logger.Write($"Entering {CurrentGym.Id}");
                     CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                     CurrentGymState = CurrentGymInfo.GymState;
-                    GymMemberships.Clear();
-                    foreach (GymMembership membership in CurrentGymState.Memberships)
-                    {
-                        GymMemberships.Add(membership);
-                    }
                     RaisePropertyChanged(() => GymLevel);
                     RaisePropertyChanged(() => GymPrestigeFull);
                     RaisePropertyChanged(() => DeployPokemonCommandVisibility);
                     RaisePropertyChanged(() => TrainCommandVisibility);
                     RaisePropertyChanged(() => FightCommandVisibility);
-                    SelectedGymMember = GymMemberships[0];
+                    RaisePropertyChanged(() => CommandButtonEnabled);
+                    RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
                     Busy.SetBusy(false);
 
                     if (GameClient.PlayerData.Team == POGOProtos.Enums.TeamColor.Neutral)
@@ -100,6 +89,8 @@ namespace PokemonGo_UWP.ViewModels
                     }
                 }
             }
+
+            await Task.CompletedTask;
         }
 
         /// <summary>
@@ -192,18 +183,15 @@ namespace PokemonGo_UWP.ViewModels
         }
 
         /// <summary>
-        ///     Collection of Gym Memberships (Pokemons that are deployed to the gym)
-        /// </summary>
-        public ObservableCollection<GymMembership> GymMemberships { get; set; } = new ObservableCollection<GymMembership>();
-
-        public GymMembership SelectedGymMember { get; set; }
-
-        /// <summary>
         /// Amount of Memberships is the level of the gym
         /// </summary>
         public int GymLevel
         {
-            get { return GymMemberships.Count; }
+            get
+            {
+                if (CurrentGymState == null) return 0;
+                return CurrentGymState.Memberships.Count;
+            }
         }
 
         /// <summary>
@@ -211,12 +199,28 @@ namespace PokemonGo_UWP.ViewModels
         /// </summary>
         public int GymPrestigeFull
         {
-            get { return GymMemberships.Count * 2000; }
+            get
+            {
+                if (CurrentGymState == null) return 0;
+                return CurrentGymState.Memberships.Count * 2000;
+            }
+        }
+
+        private GymMembership _selectedGymMember;
+        public GymMembership SelectedGymMember
+        {
+            get { return _selectedGymMember; }
         }
 
         public Visibility DeployPokemonCommandVisibility
         {
-            get { return CurrentGym?.OwnedByTeam == GameClient.PlayerData.Team ? Visibility.Visible : Visibility.Collapsed; }
+            get
+            {
+                if (CurrentGym?.OwnedByTeam != GameClient.PlayerData.Team) return Visibility.Collapsed;
+                if (CurrentGymState.DeployLockout) return Visibility.Collapsed;
+                
+                return Visibility.Visible;
+            }
         }
 
         public Visibility TrainCommandVisibility
@@ -229,6 +233,56 @@ namespace PokemonGo_UWP.ViewModels
             get { return CurrentGym?.OwnedByTeam != GameClient.PlayerData.Team ? Visibility.Visible : Visibility.Collapsed; }
         }
 
+        public bool CommandButtonEnabled
+        {
+            get
+            {
+                var distance = GeoHelper.Distance(CurrentGym?.Geoposition, LocationServiceHelper.Instance.Geoposition.Coordinate.Point);
+
+                return (distance > GameClient.GameSetting.FortSettings.InteractionRangeMeters) ? false : true;
+            }
+        }
+
+        public Visibility OutOfRangeMessageBorderVisibility
+        {
+            get
+            {
+                var distance = GeoHelper.Distance(CurrentGym?.Geoposition, LocationServiceHelper.Instance.Geoposition.Coordinate.Point);
+
+                return (distance > GameClient.GameSetting.FortSettings.InteractionRangeMeters) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public ObservableCollection<GymMembership> GymMemberships
+        {
+            get
+            {
+                ObservableCollection<GymMembership> memberships = new ObservableCollection<GymMembership>();
+                if (CurrentGymState == null) return memberships;
+                foreach (GymMembership membership in CurrentGymState.Memberships)
+                {
+                    memberships.Add(membership);
+                }
+                return memberships;
+            }
+        }
+
+        public PokemonData UltimatePokemon
+        {
+            get
+            {
+                PokemonData ultimatePokemon = new PokemonData();
+                if (CurrentGymState != null)
+                {
+                    if (CurrentGymState.Memberships != null && CurrentGymState.Memberships.Count > 0)
+                    {
+                        GymMembership lastMembership = CurrentGymState.Memberships[CurrentGymState.Memberships.Count - 1];
+                        ultimatePokemon = lastMembership.PokemonData;
+                    }
+                }
+                return ultimatePokemon;
+            }
+        }
         #endregion
 
         #region Game Logic
@@ -433,9 +487,24 @@ namespace PokemonGo_UWP.ViewModels
                 AskForPokemonSelection?.Invoke(this, null);
             }));
 
-        /// <summary>
-        /// Set the Selected pokemon and ask for a confirmation before deploying the pokémon
-        /// </summary>
+        private DelegateCommand _trainCommand;
+
+        public DelegateCommand TrainCommand => _trainCommand ?? (
+            _trainCommand = new DelegateCommand(() =>
+            {
+                // TODO: Implement Training
+            }));
+
+        private DelegateCommand _fightCommand;
+
+        public DelegateCommand FightCommand => _fightCommand ?? (
+            _fightCommand = new DelegateCommand(() =>
+            {
+                // TODO: Implement Fight
+            }));
+
+
+        // Return to the gym
         private DelegateCommand _returnToGymCommand;
 
         public DelegateCommand ReturnToGymCommand =>

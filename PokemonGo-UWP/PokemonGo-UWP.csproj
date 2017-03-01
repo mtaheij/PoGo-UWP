@@ -1046,6 +1046,9 @@
     <Compile Include="Views\Dialogs\ChooseTeamDialog.xaml.cs">
       <DependentUpon>ChooseTeamDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\ConfirmationDialog.xaml.cs">
+      <DependentUpon>ConfirmationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\ProfessorDialog.xaml.cs">
       <DependentUpon>ProfessorDialog.xaml</DependentUpon>
     </Compile>
@@ -1085,8 +1088,8 @@
     <Compile Include="Views\Pokemon\EggInventoryControl.xaml.cs">
       <DependentUpon>EggInventoryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pokemon\GymMemberControl.xaml.cs">
-      <DependentUpon>GymMemberControl.xaml</DependentUpon>
+    <Compile Include="Views\Pokemon\GymMembersControl.xaml.cs">
+      <DependentUpon>GymMembersControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pokemon\IncubatorSelectionOverlayControl.xaml.cs">
       <DependentUpon>IncubatorSelectionOverlayControl.xaml</DependentUpon>
@@ -1194,6 +1197,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Dialogs\ConfirmationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\ProfessorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1246,7 +1253,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pokemon\GymMemberControl.xaml">
+    <Page Include="Views\Pokemon\GymMembersControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

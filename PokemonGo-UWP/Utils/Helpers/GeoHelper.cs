@@ -7,6 +7,8 @@ namespace PokemonGo_UWP.Utils.Helpers
     {
         public static double Distance(Geopoint point1, Geopoint point2)
         {
+            if (point1 == null || point2 == null) return double.MaxValue;
+
             double theta = (point1.Position.Longitude - point2.Position.Longitude) * Math.PI / 180.0;
             double lat1 = point1.Position.Latitude * Math.PI / 180.0;
             double long1 = point1.Position.Longitude * Math.PI / 180.0;

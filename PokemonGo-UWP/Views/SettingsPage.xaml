@@ -116,11 +116,16 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="135" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               x:Uid="SettingsBatterySaverTextBlock"
-                               Text="Battery Saver"
-                               Style="{StaticResource TextSettingsTitle}" />
-
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Grid.Column="0"
+                                   x:Uid="SettingsBatterySaverTextBlock"
+                                   Text="Battery Saver"
+                                   Style="{StaticResource TextSettingsTitle}" />
+                        <TextBlock x:Uid="SettingsBatterySaverRestartTextBlock"
+                                   Text="You must restart the App to take effect."
+                                   Style="{StaticResource TextSettingsTitle}"
+                                   FontSize="12" Margin="15,0,15,15" Foreground="#ddd"/>
+                    </StackPanel>
                     <CheckBox Grid.Column="1"
                               IsChecked="{Binding IsBatterySaverEnabled, Mode=TwoWay}"
                               Style="{StaticResource SettingsCheckbox}"
@@ -131,16 +136,10 @@
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="135" />
 					</Grid.ColumnDefinitions>
-					<StackPanel VerticalAlignment="Center">
-						<TextBlock x:Uid="SettingsLanguageTextBlock"
-                                   Text="Language"
-                                   Style="{StaticResource TextSettingsTitle}"
-                                   Margin="15,15,15,5" />
-						<TextBlock x:Uid="SettingsLanguageRestartTextBlock"
-                                   Text="You must restart the App to take effect."
-                                   Style="{StaticResource TextSettingsTitle}"
-                                   FontSize="12" Margin="15,0,15,15" Foreground="#ddd"/>
-					</StackPanel>
+					<TextBlock x:Uid="SettingsLanguageTextBlock"
+                                Text="Language"
+                                Style="{StaticResource TextSettingsTitle}"
+                                Margin="15,15,15,5" />
 					<ComboBox x:Name="LanguageComboBox"
                               VerticalAlignment="Center"
                               Grid.ColumnSpan="2"

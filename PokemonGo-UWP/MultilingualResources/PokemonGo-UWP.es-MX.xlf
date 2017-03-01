@@ -3158,6 +3158,14 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>Are you sure you want to skip the tutorial? You will not be able to do it again!</source>
           <target state="new">Are you sure you want to skip the tutorial? You will not be able to do it again!</target>
         </trans-unit>
+        <trans-unit id="GymTooFarAwayTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>This Gym is too far away.</source>
+          <target state="new">This Gym is too far away.</target>
+        </trans-unit>
+        <trans-unit id="SettingsBatterySaverRestartTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>You must restart the App to take effect.</source>
+          <target state="new">You must restart the App to take effect.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

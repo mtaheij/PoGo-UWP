@@ -79,7 +79,10 @@ namespace PokemonGo_UWP.Views
 
         private void GameManagerViewModelOnGymLoaded(object sender, EventArgs eventArgs)
         {
-            AudioUtils.PlaySound(AudioUtils.BEFORE_THE_FIGHT);
+            GymMembersControl.DataContext = null;
+            GymMembersControl.DataContext = ViewModel;
+
+            GymMembersControl.GymMemberships = ViewModel.GymMemberships;
         }
 
         private void GameManagerViewModelOnEnterOutOfRange(object sender, EventArgs eventArgs)
@@ -89,7 +92,6 @@ namespace PokemonGo_UWP.Views
 
         private void GameManagerViewModelOnEnterSuccess(object sender, EventArgs eventArgs)
         {
-            var x = GymMembershipFlip.SelectedItem;
         }
 
         private void GameManagerViewModelOnAskForPokemonSelection(object sender, EventArgs e)
@@ -277,9 +279,5 @@ namespace PokemonGo_UWP.Views
         }
 
         #endregion
-
-        private void GymMembershipFlip_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
     }
 }

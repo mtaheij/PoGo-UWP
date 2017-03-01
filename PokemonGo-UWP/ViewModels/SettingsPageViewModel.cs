@@ -164,6 +164,9 @@ namespace PokemonGo_UWP.ViewModels
             {
                 var mode = (LiveTileModes)int.Parse(param);
                 LiveTileMode = mode;
+
+                ConfirmationDialog dialog = new Views.ConfirmationDialog("Live tile set!");
+                dialog.Show();
             });
         }
 

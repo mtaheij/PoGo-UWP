@@ -45,21 +45,11 @@
             </Border>
         </Grid>
 
-        <!--Membership-->
-        <FlipView x:Name="GymMembershipFlip"
-                  RelativePanel.AlignTopWithPanel="True"
-                  RelativePanel.AlignLeftWithPanel="True"
-                  RelativePanel.AlignBottomWithPanel="True"
-                  RelativePanel.AlignRightWithPanel="True"
-                  ItemsSource="{Binding GymMemberships, Mode=OneWay}"
-                  SelectedItem="{Binding SelectedGymMember, Mode=TwoWay}" 
-                  SelectionChanged="GymMembershipFlip_SelectionChanged">
-            <FlipView.ItemTemplate>
-                <DataTemplate>
-                    <local:GymMemberControl x:Name="GymMemberControl"/>
-                </DataTemplate>
-            </FlipView.ItemTemplate>
-        </FlipView>
+        <!--Memberships-->
+        <local:GymMembersControl x:Name="GymMembersControl" 
+                                 GymMemberships="{Binding GymMemberships}" 
+                                 CurrentGym="{Binding CurrentGym}"
+                                 UltimatePokemon="{Binding UltimatePokemon}"/>
 
         <!--Label-->
         <Grid VerticalAlignment="Top">
@@ -129,6 +119,7 @@
                     Width="80" Height="80" Grid.Column="0" 
                     Command="{Binding DeployPokemonCommand}"
                     Visibility="{Binding DeployPokemonCommandVisibility}"
+                    IsEnabled="{Binding CommandButtonEnabled}"
                     Style="{ThemeResource ImageButtonStyle}">
                 <Image Source="/Assets/Buttons/btn_claim.png"></Image>
             </Button>
@@ -142,6 +133,7 @@
             <Button HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Width="80" Height="80" Grid.Column="2"
                     Command="{Binding TrainCommand}"
+                    IsEnabled="{Binding CommandButtonEnabled}"
                     Visibility="{Binding TrainCommandVisibility}"
                     Style="{ThemeResource ImageButtonStyle}">
                     <Image Source="/Assets/Buttons/btn_train.png"></Image>
@@ -149,12 +141,32 @@
             <Button HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Width="80" Height="80" Grid.Column="2"
                     Command="{Binding FightCommand}"
+                    IsEnabled="{Binding CommandButtonEnabled}"
                     Visibility="{Binding FightCommandVisibility}"
                     Style="{ThemeResource ImageButtonStyle}">
                 <Image Source="/Assets/Buttons/btn_attack.png"></Image>
             </Button>
         </Grid>
 
+        <Border Grid.Row="0"
+                x:Name="OutOfRangeMessageBorder"
+                Visibility="{Binding OutOfRangeMessageBorderVisibility}"
+                VerticalAlignment="Bottom"
+                CornerRadius="10" Height="20"
+                Margin="40,0,40,100">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#cc0000" Offset="0"/>
+                    <GradientStop Color="#660000" Offset="0.8"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock x:Name="GymTooFarAwayTextBlock"
+                       x:Uid="GymTooFarAwayTextBlock"
+                       Text="This Gym is too far away."
+                       Style="{StaticResource TextError}"
+                       VerticalAlignment="Center"
+                       FontSize="12"/>
+        </Border>
         <Border Grid.Row="0"
                     x:Name="ErrorMessageBorder"
                     Visibility="Collapsed"

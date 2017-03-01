@@ -64,6 +64,7 @@
             <utils:NearbyPokemonDistanceToDistanceImageConverter x:Key="NearbyPokemonDistanceToDistanceImageConverter" />
             <utils:PokestopToIconConverter x:Key="PokestopToIconConverter" />
             <utils:GymToIconConverter x:Key="GymToIconConverter" />
+            <utils:FortDataToTeamBaseImageConverter x:Key="FortDataToTeamBaseImageConverter" />
             <utils:CurrentTimeToMapColorSchemeConverter x:Key="CurrentTimeToMapColorSchemeConverter" />
             <utils:PokemonDataToPokemonStaminaConverter x:Key="PokemonDataToPokemonStaminaConverter" />
             <utils:PokemonIdToPokemonNameConverter x:Key="PokemonIdToPokemonNameConverter" />
@@ -96,6 +97,7 @@
             <utils:PokemonDataToPokemonTypeBackgroundConverter x:Key="PokemonDataToPokemonTypeBackgroundConverter"/>
             <utils:PokemonDataToMaxLevelBarConverter x:Key="PokemonDataToMaxLevelBarConverter"/>
             <utils:PokemonDataToLevelBarConverter x:Key="PokemonDataToLevelBarConverter"/>
+            <utils:PokemonDataToPokemonNameConverter x:Key="PokemonDataToPokemonNameConverter"/>
             <utils:PokemonFamilyToCandyImageConverter x:Key="PokemonFamilyToCandyImageConverter"/>
             <utils:PokemonFamilyNameToStringConverter x:Key="PokemonFamilyNameToStringConverter"/>
             <utils:PokemonMoveToMoveTypeStringConverter x:Key="PokemonMoveToMoveTypeStringConverter"/>
