@@ -407,4 +407,10 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="HashingKeyExpired" xml:space="preserve">
     <value>You are not authorized to use the hashing service. Please check that your API key is correct.</value>
   </data>
+  <data name="NewBuddySetSuccessfully" xml:space="preserve">
+    <value>New buddy set successfully.</value>
+  </data>
+  <data name="ErrorPokemonDeployed" xml:space="preserve">
+    <value>This pokémon is deployed to a Gym.</value>
+  </data>
 </root>

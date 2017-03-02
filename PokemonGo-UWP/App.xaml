@@ -54,6 +54,7 @@
             <utils:PlayerTeamToTeamColorBrushConverter x:Key="PlayerTeamToTeamColorBrushConverter" />
             <utils:EncounterBackgroundToBackgroundImageConverter x:Key="EncounterBackgroundToBackgroundImageConverter" />
             <utils:ItemToItemNameConverter x:Key="ItemToItemNameConverter" />
+            <utils:ItemToUpperCaseItemNameConverter x:Key="ItemToUpperCaseItemNameConverter" />
             <utils:ItemToItemRecycleVisibilityConverter x:Key="ItemToItemRecycleVisibilityConverter" />
             <utils:CaptureXpToTotalCaptureXpConverter x:Key="CaptureXpToTotalCaptureXpConverter" />
             <utils:ActivityTypeToActivityNameConverter x:Key="ActivityTypeToActivityNameConverter" />

@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:PokemonGo_UWP.Views"
+    xmlns:controls="using:PokemonGo_UWP.Controls"
     xmlns:viewModels="using:PokemonGo_UWP.ViewModels"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:media="using:Microsoft.Xaml.Interactions.Media"
@@ -19,64 +21,116 @@
     <Page.Resources>
         <utils:ItemUseabilityToOpacityConverter x:Key="ItemUseabilityToOpacityConverter"
                                                 CurrentViewMode="{Binding ViewMode}" />
+
+        <Storyboard x:Name="ShowUseItemStoryboard">
+            <FadeInThemeAnimation TargetName="CurrentUseItemGrid" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)"
+                                           Storyboard.TargetName="CurrentUseItemGrid">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>-1</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>10</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="HideUseItemStoryboard">
+            <FadeOutThemeAnimation TargetName="CurrentUseItemGrid" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)"
+                                           Storyboard.TargetName="CurrentUseItemGrid">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>10</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <x:Int32>-1</x:Int32>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowErrorMessageStoryboard">
+            <DoubleAnimation x:Name="ShowErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="0"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="HideErrorMessageStoryboard">
+            <DoubleAnimation x:Name="HideErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="-60"
+                BeginTime="0:0:5"
+                Duration="0:0:0.2" />
+        </Storyboard>
     </Page.Resources>
 
-    <Grid Background="{StaticResource PageBackgroundGradient}">
-        <Border Margin="8,0" Background="White" x:Name="MainUIPanel">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" 
+    <Grid Name="InventoryUI">
+        <!--Inventory Items list-->
+        <Grid Background="{StaticResource PageBackgroundGradient}">
+            <Border Margin="8,0" Background="White" x:Name="MainUIPanel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" 
                             Padding="0,15,0,2" 
                             BorderThickness="0,0,0,1" 
                             BorderBrush="#dadada">
-                    <TextBlock x:Uid="ITEMS"
+                        <TextBlock x:Uid="ITEMS"
                                Text="ITEMS"
                                Style="{StaticResource TextPageTitleDark}" />
-                    <TextBlock Style="{StaticResource TextSubTitle}"
+                        <TextBlock Style="{StaticResource TextSubTitle}"
                                HorizontalAlignment="Center">
                         <Run Text="{Binding ItemsTotalCount}" />
                         <Run Text="/" />
                         <Run Text="{Binding MaxItemStorageFieldNumber}" />
-                    </TextBlock>
-                </StackPanel>
+                        </TextBlock>
+                    </StackPanel>
 
-                <ListView ItemsSource="{Binding ItemsInventory}"
+                    <ListView ItemsSource="{Binding ItemsInventory}"
                           IsItemClickEnabled="True"
                           SelectionMode="None"
                           ScrollViewer.VerticalScrollBarVisibility="Hidden"
                           Margin="0"
                           Grid.Row="1"
                           Padding="0,0,0,60">
-                    <interactivity:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="ItemClick">
-                            <core:InvokeCommandAction Command="{Binding UseItemCommand}" InputConverter="{StaticResource ItemClickEventArgsToClickedItemConverter}" />
-                        </core:EventTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="ItemClick">
+                                <core:InvokeCommandAction Command="{Binding UseItemCommand}" InputConverter="{StaticResource ItemClickEventArgsToClickedItemConverter}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
 
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,10" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,10" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Image Grid.RowSpan="3"
+                                    <Image Grid.RowSpan="3"
                                        Grid.Column="0"
                                        Source="{Binding Converter={StaticResource ItemToItemIconConverter}, ConverterParameter=Inventory}"
                                        Stretch="Uniform"
@@ -85,7 +139,7 @@
                                        Height="84"
                                        Margin="3,0,8,0"
                                        Opacity="{Binding Converter={StaticResource ItemUseabilityToOpacityConverter}}"/>
-                                <Border Grid.Row="2" 
+                                    <Border Grid.Row="2" 
                                         Grid.Column="0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Bottom"
@@ -95,14 +149,14 @@
                                         Background="#aadddddd" 
                                         CornerRadius="8" 
                                         Padding="3,1">
-                                    <TextBlock Foreground="{StaticResource TitleTextColor}"
+                                        <TextBlock Foreground="{StaticResource TitleTextColor}"
                                                TextAlignment="Left"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center">
                                             <Run Text="x" FontFamily="{StaticResource LatoLightFont}" FontSize="13"/><Run FontFamily="{StaticResource LatoBoldFont}" Text="{Binding Count}" />
-                                    </TextBlock>
-                                </Border>
-                                <TextBlock Grid.Row="0"
+                                        </TextBlock>
+                                    </Border>
+                                    <TextBlock Grid.Row="0"
                                            Grid.Column="1"
                                            Grid.ColumnSpan="2"
                                            Margin="0,15,0,0"
@@ -112,7 +166,7 @@
                                            FontSize="17"
                                            TextTrimming="CharacterEllipsis"
                                            Opacity="{Binding Converter={StaticResource ItemUseabilityToOpacityConverter}}"/>
-                                <Button Grid.Row="0"
+                                    <Button Grid.Row="0"
                                         Grid.Column="2"
                                         Height="28" 
                                         Margin="0,5,0,0"
@@ -122,11 +176,11 @@
                                         Visibility="{Binding Converter={StaticResource ItemToItemRecycleVisibilityConverter}}"
                                         Command="{Binding ElementName=Root, Path=DataContext.RecycleItemCommand}"
                                         CommandParameter="{Binding}">
-                                    <Viewbox>
-                                        <SymbolIcon Symbol="Delete" />
-                                    </Viewbox>
-                                </Button>
-                                <TextBlock Grid.Row="1"
+                                        <Viewbox>
+                                            <SymbolIcon Symbol="Delete" />
+                                        </Viewbox>
+                                    </Button>
+                                    <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            Grid.RowSpan="2"
                                            Grid.ColumnSpan="2"
@@ -138,21 +192,147 @@
                                            FontSize="14"
                                            FontWeight="SemiLight"
                                            Opacity="{Binding Converter={StaticResource ItemUseabilityToOpacityConverter}}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
 
-        <Button Command="{Binding ReturnToGameScreen}"
+            <Button Command="{Binding ReturnToGameScreen}"
                     RelativePanel.AlignBottomWithPanel="True"
                     RelativePanel.AlignHorizontalCenterWithPanel="True"
                     Style="{StaticResource ButtonCircle}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
                     Margin="0,0,0,21">
-            <Image Source="ms-appx:///Assets/Buttons/btn_close.png" />
-        </Button>
+                <Image Source="ms-appx:///Assets/Buttons/btn_close.png" />
+            </Button>
+        </Grid>
+
+        <!--Dialog to choose pokemon for Potion or Revive-->
+        <Grid x:Name="SelectPokemonGrid" 
+              Background="{StaticResource PageBackgroundGradient}"
+              Visibility="Collapsed">
+            <Border Margin="8,0"
+                Background="{StaticResource LightPageBackgroundGradient}">
+                <!--Content-->
+                <Pivot x:Name="SelectPokemonPanel"
+                   Margin="0,10,0,0"
+                   Style="{StaticResource PokemonInventoryPivotStyle}">
+                    <PivotItem x:Name="PokemonsPivot"
+                           Margin="8,0">
+                        <local:PokemonInventoryControl x:Name="PokemonInventorySelector"
+                                                   PokemonInventory="{Binding PokemonInventory}"
+                                                   PokemonSelectedCommand="{Binding SelectPokemonCommand}"
+                                                   SelectionMode="Single"
+                                                   SortingMode="{Binding CurrentPokemonSortingMode, Mode=TwoWay}" />
+                    </PivotItem>
+                </Pivot>
+            </Border>
+
+            <!--Close Button-->
+            <Button Command="{Binding ReturnToInventoryCommand}"
+                Style="{StaticResource ButtonCircle}"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,21">
+                <Image Source="ms-appx:///Assets/Buttons/btn_close.png" />
+            </Button>
+        </Grid>
+        
+        <!--Display the current use item-->
+        <Grid x:Name="CurrentUseItemGrid"
+              Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="UseItemBorder" 
+                    Background="{StaticResource DarkPageBackgroundGradient}"
+                    VerticalAlignment="Top" 
+                    Margin="0,35,0,0">
+                <TextBlock x:Name="UsedItemText"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{Binding CurrentUseItem, Converter={StaticResource ItemToUpperCaseItemNameConverter}}"
+                           Style="{StaticResource SubtitleTextBlockStyle}"
+                           Foreground="LightGreen"
+                           Height="30"/>
+            </Border>
+            <Border x:Name="UsedItemBorder" 
+                    Background="{StaticResource PageBackgroundGradient}"
+                    VerticalAlignment="Top" HorizontalAlignment="Left"
+                    Margin="20,10,0,0"
+                    Height="80" Width="80" CornerRadius="40"
+                    BorderBrush="LightGreen"
+                    BorderThickness="3">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="3" x:Name="UsedItemImage"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Source="{Binding CurrentUseItem, Converter={StaticResource ItemToItemIconConverter}}"
+                           Height="60"/>
+                    <Border Grid.Row="2" HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,0,-10"
+                            Background="#aadddddd" 
+                            CornerRadius="8" 
+                            Padding="3,1">
+                        <TextBlock Foreground="{StaticResource TitleTextColor}"
+                                    TextAlignment="Left"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Run Text="x" FontFamily="{StaticResource LatoLightFont}" FontSize="13"/>
+                            <Run FontFamily="{StaticResource LatoBoldFont}" Text="{Binding CurrentUseItem.Count}" FontSize="13" />
+                        </TextBlock>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--Error message-->
+        <Border Grid.Row="0"
+                    x:Name="ErrorMessageBorder"
+                    Visibility="Collapsed"
+                    VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#cc0000" Offset="0" />
+                    <GradientStop Color="#660000" Offset="0.8" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="ErrorMessageBorderTransform" TranslateY="-60" />
+            </Border.RenderTransform>
+            <StackPanel>
+                <TextBlock x:Name="ErrorMessageText"
+                           Style="{StaticResource TextError}"
+                           Visibility="Collapsed"
+                           Margin="15,20,15,20"/>
+                <TextBlock x:Name="OutOfRangeTextBlock"
+                        x:Uid="OutOfRangeTextBlock"
+                        Text="You are out of range"
+                        Visibility="Collapsed"
+                        Style="{StaticResource TextError}"
+                        Margin="15,20,15,20" />
+
+                <TextBlock x:Name="CooldownTextBlock"
+                           x:Uid="CooldownTextBlock"
+                           Text="You have to wait some time"
+                           Visibility="Collapsed"
+                           Style="{StaticResource TextError}"
+                           Margin="15,20,15,20" />
+
+                <TextBlock x:Name="InventoryFullTextBlock"
+                           x:Uid="InventoryFullTextBlock"
+                           Visibility="Collapsed"
+                           Style="{StaticResource TextError}"
+                           Margin="15,20,15,20" />
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

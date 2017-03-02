@@ -241,8 +241,10 @@ namespace PokemonGo_UWP.ViewModels
           _appraisePokemonCommand = new DelegateCommand(() =>
           {
               // TODO: Implement appraise
-              var dialog = new MessageDialog("Sorry, check back later 😉", "Not yet implemented");
-              dialog.ShowAsync();
+              ConfirmationDialog dialog = new ConfirmationDialog("Appraise a Pokémon is not implemented yet");
+              dialog.Show();
+              //var dialog = new MessageDialog("Sorry, check back later 😉", "Not yet implemented");
+              //dialog.ShowAsync();
           }, () => true));
 
         #endregion
@@ -411,8 +413,11 @@ namespace PokemonGo_UWP.ViewModels
                               //var id = (PokemonDataWrapper)GameClient.PokemonsInventory.FirstOrDefault(item => item.is
                               // Set new buddy
                               //buddyPokemon.IsBuddy = true;
-                              var dlg = new MessageDialog("New Buddy set successfully", "Set Buddy");
-                              await dlg.ShowAsync();
+                              ConfirmationDialog dlg = new ConfirmationDialog(Utils.Resources.CodeResources.GetString("NewBuddySetSuccessfully"));
+                              dlg.Show();
+
+                              //var dlg = new MessageDialog("New Buddy set successfully", "Set Buddy");
+                              //await dlg.ShowAsync();
                               await GameClient.UpdateProfile();
                               await GameClient.UpdatePlayerStats(false);
                               RaisePropertyChanged(nameof(SelectedPokemon));

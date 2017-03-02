@@ -136,6 +136,11 @@ namespace PokemonGo_UWP.Entities
 
         public string Name { get { return WrappedData.Nickname == "" ? Resources.Pokemon.GetString(WrappedData.PokemonId.ToString()) : WrappedData.Nickname; } }
 
+        public void SetStamina(int Stamina)
+        {
+            WrappedData.Stamina = Stamina;
+            OnPropertyChanged(nameof(Stamina));
+        }
         #endregion
 
         #region INotifyPropertyChanged

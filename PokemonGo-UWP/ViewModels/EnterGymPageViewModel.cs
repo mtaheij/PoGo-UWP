@@ -459,7 +459,7 @@ namespace PokemonGo_UWP.ViewModels
         }
 
         /// <summary>
-        /// Player's profile, we use it just for the maximum ammount of pokemon
+        /// Player's profile, we use it just for the maximum amount of pokemon
         /// </summary>
         private PlayerData _playerProfile;
         public PlayerData PlayerProfile
@@ -493,6 +493,8 @@ namespace PokemonGo_UWP.ViewModels
             _trainCommand = new DelegateCommand(() =>
             {
                 // TODO: Implement Training
+                ConfirmationDialog dialog = new ConfirmationDialog("Training is not implemented yet.");
+                dialog.Show();
             }));
 
         private DelegateCommand _fightCommand;
@@ -501,6 +503,8 @@ namespace PokemonGo_UWP.ViewModels
             _fightCommand = new DelegateCommand(() =>
             {
                 // TODO: Implement Fight
+                ConfirmationDialog dialog = new ConfirmationDialog("Fighting is not implemented yet.");
+                dialog.Show();
             }));
 
 

@@ -19,7 +19,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>PokemonGo-UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppxBundle>Always</AppxBundle>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
@@ -262,8 +262,8 @@
     <Content Include="Assets\Icons\spawnpoint.png" />
     <Content Include="Assets\Icons\stardust_painted.png" />
     <Content Include="Assets\Icons\stardust_vector.png" />
-    <Content Include="Assets\Items\Egg-10.png" />
     <Content Include="Assets\Items\Egg-5.png" />
+    <Content Include="Assets\Items\Egg-10.png" />
     <Content Include="Assets\Items\Egg.png" />
     <Content Include="Assets\Items\E_Item_902.png" />
     <Content Include="Assets\Items\Item_1101.png" />

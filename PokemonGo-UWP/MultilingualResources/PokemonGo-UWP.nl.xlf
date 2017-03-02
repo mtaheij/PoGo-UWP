@@ -12,11 +12,11 @@
         </trans-unit>
         <trans-unit id="BadgeBattleTrainingWon" translate="yes" xml:space="preserve">
           <source>Ace Trainer</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">ACE Trainer</target>
+          <target state="translated" state-qualifier="mt-suggestion">ACE Trainer</target>
         </trans-unit>
         <trans-unit id="BadgeBigMagikarp" translate="yes" xml:space="preserve">
           <source>Fisherman</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Visser</target>
+          <target state="translated">Visser</target>
         </trans-unit>
         <trans-unit id="BadgeCaptureTotal" translate="yes" xml:space="preserve">
           <source>Collector</source>
@@ -28,23 +28,23 @@
         </trans-unit>
         <trans-unit id="BadgeHatchedTotal" translate="yes" xml:space="preserve">
           <source>Breeder</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Fokker</target>
+          <target state="translated" state-qualifier="mt-suggestion">Fokker</target>
         </trans-unit>
         <trans-unit id="BadgePikachu" translate="yes" xml:space="preserve">
           <source>Pikachu</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Pikachu</target>
+          <target state="translated" state-qualifier="mt-suggestion">Pikachu</target>
         </trans-unit>
         <trans-unit id="BadgePokedexEntries" translate="yes" xml:space="preserve">
           <source>Kanto</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Kanto</target>
+          <target state="translated" state-qualifier="mt-suggestion">Kanto</target>
         </trans-unit>
         <trans-unit id="BadgePokestopsVisited" translate="yes" xml:space="preserve">
           <source>Backpacker</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Rondreiziger</target>
+          <target state="translated" state-qualifier="mt-suggestion">Rondreiziger</target>
         </trans-unit>
         <trans-unit id="BadgeSmallRattata" translate="yes" xml:space="preserve">
           <source>Youngster</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Jongeling</target>
+          <target state="translated" state-qualifier="mt-suggestion">Jongeling</target>
         </trans-unit>
         <trans-unit id="BadgeTravelKm" translate="yes" xml:space="preserve">
           <source>Jogger</source>
@@ -52,7 +52,7 @@
         </trans-unit>
         <trans-unit id="Bug" translate="yes" xml:space="preserve">
           <source>Bug Catcher</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Insect vanger</target>
+          <target state="translated">Insectenvanger</target>
         </trans-unit>
         <trans-unit id="Dragon" translate="yes" xml:space="preserve">
           <source>Dragon Tamer</source>
@@ -60,7 +60,7 @@
         </trans-unit>
         <trans-unit id="Electric" translate="yes" xml:space="preserve">
           <source>Rocker</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Rocker</target>
+          <target state="translated" state-qualifier="mt-suggestion">Rocker</target>
         </trans-unit>
         <trans-unit id="Fairy" translate="yes" xml:space="preserve">
           <source>Fairy Tale Girl</source>
@@ -101,11 +101,11 @@
         </trans-unit>
         <trans-unit id="Poison" translate="yes" xml:space="preserve">
           <source>Punk Girl</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Punk meisje</target>
+          <target state="translated" state-qualifier="mt-suggestion">Punk meisje</target>
         </trans-unit>
         <trans-unit id="Psychic" translate="yes" xml:space="preserve">
           <source>Psychic</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychisch</target>
+          <target state="translated" state-qualifier="mt-suggestion">Psychisch</target>
         </trans-unit>
         <trans-unit id="Rock" translate="yes" xml:space="preserve">
           <source>Hiker</source>
@@ -270,7 +270,7 @@
         </trans-unit>
         <trans-unit id="LoadingEncounterText" translate="yes" xml:space="preserve">
           <source>Loading encounter with {0}</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Laden ontmoeting met {0}</target>
+          <target state="translated">Laadt ontmoeting met {0}</target>
         </trans-unit>
         <trans-unit id="LoggingInText" translate="yes" xml:space="preserve">
           <source>Logging in...</source>
@@ -577,57 +577,63 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="TransferMultiplePokemonWarningText" translate="yes" xml:space="preserve">
           <source>After you transfer, you can't undo the transfer.</source>
-          <target state="needs-review-translation">Nadat je overgebracht hebt, kan je dit niet ongedaan maken</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Nadat je deze overgebracht hebt, kan je dit niet ongedaan maken</target>
         </trans-unit>
         <trans-unit id="TransferMultiplePokemonWarningTitle" translate="yes" xml:space="preserve">
           <source>Do you want to transfer {0} Pokémon to the Professor?</source>
-          <target state="needs-review-translation">Wil je {0} Pokémon overbrengen naar de Professor</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Wil je {0} Pokémon overbrengen naar de Professor</target>
         </trans-unit>
         <trans-unit id="DeployPokemonWarningText" translate="yes" xml:space="preserve">
           <source>Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</source>
-          <target state="new">Are you sure you want to assign {0} to the Gym? It won't be returned to your collection until it's kicked out of the Gym.</target>
+          <target state="translated">Weet je zeker dat je {0} in deze Gym wilt plaatsen? Je krijgt hem pas weer terug wanneer hij uit de Gym wordt gekicked.</target>
         </trans-unit>
         <trans-unit id="CannotDeployBuddy" translate="yes" xml:space="preserve">
           <source>You can't deploy your buddy Pokémon to a gym.</source>
-          <target state="new">You can't deploy your buddy Pokémon to a gym.</target>
+          <target state="translated">Je kan je buddy Pokémon niet in een Gym plaatsen</target>
         </trans-unit>
         <trans-unit id="ErrorAlreadyHasPokemonOnFort" translate="yes" xml:space="preserve">
           <source>You already have a Pokemon deployed to this Gym</source>
-          <target state="new">You already have a Pokemon deployed to this Gym</target>
+          <target state="translated">Je hebt al een Pokémon in deze Gym geplaatst</target>
         </trans-unit>
         <trans-unit id="ErrorFortDeployLockout" translate="yes" xml:space="preserve">
           <source>There is a deploy lockout for this Gym</source>
-          <target state="new">There is a deploy lockout for this Gym</target>
+          <target state="translated">Er is een tijdelijke stop voor het plaatsen van Pokémon in deze Gym</target>
         </trans-unit>
         <trans-unit id="ErrorFortIsFull" translate="yes" xml:space="preserve">
           <source>This Gym is full</source>
-          <target state="new">This Gym is full</target>
+          <target state="translated">Deze Gym is vol</target>
         </trans-unit>
         <trans-unit id="ErrorNotInRange" translate="yes" xml:space="preserve">
           <source>This Gym is too far away</source>
-          <target state="new">This Gym is too far away</target>
+          <target state="translated">Deze Gym is te ver weg</target>
         </trans-unit>
         <trans-unit id="ErrorOpposingTeamOwnsFort" translate="yes" xml:space="preserve">
           <source>This Gym is owned by an opposing team</source>
-          <target state="new">This Gym is owned by an opposing team</target>
+          <target state="translated">Deze Gym is van een ander team</target>
         </trans-unit>
         <trans-unit id="ErrorPlayerHasNoNickname" translate="yes" xml:space="preserve">
           <source>You do not have a nickname set</source>
-          <target state="new">You do not have a nickname set</target>
+          <target state="translated">Je hebt geen nickname gezet</target>
         </trans-unit>
         <trans-unit id="ErrorPokemonNotFullHp" translate="yes" xml:space="preserve">
           <source>Your Pokemon does not have full hp</source>
-          <target state="new">Your Pokemon does not have full hp</target>
+          <target state="translated">Je Pokémon heeft niet zijn volledige gezondheid (HP)</target>
         </trans-unit>
         <trans-unit id="String1" translate="yes" xml:space="preserve">
           <source>Refreshing game settings...</source>
-          <target state="new">Refreshing game settings...</target>
+          <target state="translated">Verversen van spel instellingen...</target>
         </trans-unit>
         <trans-unit id="HashingKeyExpired" translate="yes" xml:space="preserve">
           <source>You are not authorized to use the hashing service. Please check that your API key is correct.</source>
-          <target state="new">You are not authorized to use the hashing service. Please check that your API key is correct.</target>
+          <target state="translated">Je hebt geen permissie om de hashing service te gebruiken. Controleer of je API key correct is.</target>
+        </trans-unit>
+        <trans-unit id="NewBuddySetSuccessfully" translate="yes" xml:space="preserve">
+          <source>New buddy set successfully.</source>
+          <target state="translated">Nieuwe buddy succesvol ingesteld</target>
+        </trans-unit>
+        <trans-unit id="ErrorPokemonDeployed" translate="yes" xml:space="preserve">
+          <source>This pokémon is deployed to a Gym.</source>
+          <target state="translated">Deze Pokémon is in een Gym geplaatst</target>
         </trans-unit>
       </group>
     </body>
@@ -933,23 +939,23 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="EnterNicknameTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Enter the nickname that other Trainers will use for you.</source>
-          <target state="new">Enter the nickname that other Trainers will use for you.</target>
+          <target state="translated">Kies een nickname die andere Trainers voor je zullen gebruiken.</target>
         </trans-unit>
         <trans-unit id="NicknameConfirmationTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Are you sure you want to be called {0}?</source>
-          <target state="new">Are you sure you want to be called {0}?</target>
+          <target state="translated">Weet je zeker dat je {0} genoemd wilt worden?</target>
         </trans-unit>
         <trans-unit id="SubmitNicknameCancelButton.Content" translate="yes" xml:space="preserve">
           <source>NO</source>
-          <target state="new">NO</target>
+          <target state="translated">NEE</target>
         </trans-unit>
         <trans-unit id="SubmitNicknameOkButton.Content" translate="yes" xml:space="preserve">
           <source>YES</source>
-          <target state="new">YES</target>
+          <target state="translated">JA</target>
         </trans-unit>
         <trans-unit id="SubmitNicknameButtonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>OK</source>
-          <target state="new">OK</target>
+          <target state="translated">OK</target>
         </trans-unit>
         <trans-unit id="CatchPokemonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>CATCH A POKÉMON</source>
@@ -957,7 +963,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ChooseYourStyle.Text" translate="yes" xml:space="preserve">
           <source>Please choose your style.</source>
-          <target state="new">Please choose your style.</target>
+          <target state="translated">Kies je stijl.</target>
         </trans-unit>
         <trans-unit id="DisclaimerText.Text" translate="yes" xml:space="preserve">
           <source>POGO-UWP is a project strictly intended for educational use. Use this app on your own risk. By clicking the 'ACCEPT' button below, you accept the Pokémon GO Terms of Service. Niantic might ban your account for using this app. If you do not want to risk your account being banned, do NOT use this app.</source>
@@ -965,7 +971,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="LegalAcceptButtonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>ACCEPT</source>
-          <target state="new">ACCEPT</target>
+          <target state="translated">ACCEPTEREN</target>
         </trans-unit>
         <trans-unit id="LegalCommsCheckboxText.Text" translate="yes" xml:space="preserve">
           <source>Send Pokémon GO-related events, promotions, offers and news updates to my email address.</source>
@@ -973,7 +979,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="LegalDeclineButtonTextBlock.Text" translate="yes" xml:space="preserve">
           <source>DECLINE</source>
-          <target state="new">DECLINE</target>
+          <target state="translated">AFWIJZEN</target>
         </trans-unit>
         <trans-unit id="LegalScreenTitle.Text" translate="yes" xml:space="preserve">
           <source>POGO-UWP Disclaimer</source>
@@ -989,27 +995,27 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="MoveInRealWorldTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Move in the real world to move your avatar.</source>
-          <target state="new">Move in the real world to move your avatar.</target>
+          <target state="translated">Beweeg in de echte wereld om je avatar te verplaatsen</target>
         </trans-unit>
         <trans-unit id="TimeToWalkTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Time to walk!</source>
-          <target state="new">Time to walk!</target>
+          <target state="translated">Tijd om te lopen!</target>
         </trans-unit>
         <trans-unit id="SkipTutorialTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Skip</source>
-          <target state="new">Skip</target>
+          <target state="translated">Overslaan</target>
         </trans-unit>
         <trans-unit id="ConfirmSkipTutorialTextBlock.Text" translate="yes" xml:space="preserve">
           <source>Are you sure you want to skip the tutorial? You will not be able to do it again!</source>
-          <target state="new">Are you sure you want to skip the tutorial? You will not be able to do it again!</target>
+          <target state="translated">Weet je zeker dat je de tutorial wilt overslaan? Je kan het niet nogmaals doen!</target>
         </trans-unit>
         <trans-unit id="GymTooFarAwayTextBlock.Text" translate="yes" xml:space="preserve">
           <source>This Gym is too far away.</source>
-          <target state="new">This Gym is too far away.</target>
+          <target state="translated">Deze Gym is te ver weg</target>
         </trans-unit>
         <trans-unit id="SettingsBatterySaverRestartTextBlock.Text" translate="yes" xml:space="preserve">
           <source>You must restart the App to take effect.</source>
-          <target state="new">You must restart the App to take effect.</target>
+          <target state="translated">Je moet de app opnieuw opstarten om dit effect te laten hebben</target>
         </trans-unit>
       </group>
     </body>
@@ -1030,7 +1036,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="D_ItemIncenseFloral" translate="yes" xml:space="preserve">
           <source>Incense with a mysterious fragrance that lures wild Pokémon to your location for 30 minutes</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Wierook met een mysterieuze geur die wilde Pokémon naar je locatie voor 30 minuten lokt</target>
+          <target state="translated">Incense met een mysterieuze geur die wilde Pokémon voor 30 minuten naar je locatie lokt</target>
         </trans-unit>
         <trans-unit id="D_ItemIncenseOrdinary" translate="yes" xml:space="preserve">
           <source>Incense with a mysterious fragrance that lures wild Pokémon to your location for 30 minutes</source>
@@ -1042,7 +1048,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="D_ItemIncubatorBasic" translate="yes" xml:space="preserve">
           <source>A device that incubates an Egg as you walk until it is ready to hatch. Breaks after 3 uses.</source>
-          <target state="needs-review-translation">Een apparaat waar je een ei in legt en waarmee je loopt totdat het klaar is om uit te komen. Kan drie keer gebruikt worden.</target>
+          <target state="translated">Een apparaat waar je een ei in legt en waarmee je loopt totdat het klaar is om uit te komen. Kan drie keer gebruikt worden.</target>
         </trans-unit>
         <trans-unit id="D_ItemIncubatorBasicUnlimited" translate="yes" xml:space="preserve">
           <source>A device that incubates an Egg as you walk until it is ready to hatch. Unlimited use!</source>
@@ -1059,7 +1065,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="D_ItemPotion" translate="yes" xml:space="preserve">
           <source>A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 20 points.</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Een spray-type geneesmiddel voor de behandeling van wonden. Het herstelt de HP van een Pokémon met 20 punten.</target>
+          <target state="translated" state-qualifier="mt-suggestion">Een spray-type geneesmiddel voor de behandeling van wonden. Het herstelt de HP van een Pokémon met 20 punten.</target>
         </trans-unit>
         <trans-unit id="D_ItemRevive" translate="yes" xml:space="preserve">
           <source>A medicine that can revive fainted Pokémon. It also restores half of a fainted Pokémon's maximum HP.</source>
@@ -1072,7 +1078,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemBlukBerry" translate="yes" xml:space="preserve">
           <source>Bluk Berry</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Bluk Berry</target>
+          <target state="translated" state-qualifier="mt-suggestion">Bluk Berry</target>
         </trans-unit>
         <trans-unit id="ItemGreatBall" translate="yes" xml:space="preserve">
           <source>Great Ball</source>
@@ -1080,11 +1086,11 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemHyperPotion" translate="yes" xml:space="preserve">
           <source>Hyper Potion</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hyper Potion</target>
+          <target state="translated" state-qualifier="mt-suggestion">Hyper Potion</target>
         </trans-unit>
         <trans-unit id="ItemIncenseCool" translate="yes" xml:space="preserve">
           <source>Cool Incense</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Wierook Cool</target>
+          <target state="translated">Incense Cool</target>
         </trans-unit>
         <trans-unit id="ItemIncenseFloral" translate="yes" xml:space="preserve">
           <source>Floral Incense</source>
@@ -1092,11 +1098,11 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemIncenseOrdinary" translate="yes" xml:space="preserve">
           <source>Incense</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Gewone wierook</target>
+          <target state="translated">Gewone incense</target>
         </trans-unit>
         <trans-unit id="ItemIncenseSpicy" translate="yes" xml:space="preserve">
           <source>Spicy Incense</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Kruidige wierook</target>
+          <target state="translated">Kruidige incense</target>
         </trans-unit>
         <trans-unit id="ItemIncubatorBasic" translate="yes" xml:space="preserve">
           <source>Incubator</source>
@@ -1108,19 +1114,19 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemItemStorageUpgrade" translate="yes" xml:space="preserve">
           <source>Item Storage Upgrade</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Object opslag Upgrade</target>
+          <target state="translated">Itemopslag Upgrade</target>
         </trans-unit>
         <trans-unit id="ItemLuckyEgg" translate="yes" xml:space="preserve">
           <source>Lucky Egg</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Gelukkige ei</target>
+          <target state="translated">Geluks ei</target>
         </trans-unit>
         <trans-unit id="ItemMasterBall" translate="yes" xml:space="preserve">
           <source>Master Ball</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Master bal</target>
+          <target state="translated" state-qualifier="mt-suggestion">Master bal</target>
         </trans-unit>
         <trans-unit id="ItemMaxPotion" translate="yes" xml:space="preserve">
           <source>Max Potion</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Max Potion</target>
+          <target state="translated" state-qualifier="mt-suggestion">Max Potion</target>
         </trans-unit>
         <trans-unit id="ItemMaxRevive" translate="yes" xml:space="preserve">
           <source>Max Revive</source>
@@ -1128,151 +1134,151 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="ItemNanabBerry" translate="yes" xml:space="preserve">
           <source>Nanab Berry</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Nanab Berry</target>
+          <target state="translated" state-qualifier="mt-suggestion">Nanab Berry</target>
         </trans-unit>
         <trans-unit id="ItemPinapBerry" translate="yes" xml:space="preserve">
           <source>Pinap Berry</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Pinap Berry</target>
+          <target state="translated" state-qualifier="mt-suggestion">Pinap Berry</target>
         </trans-unit>
         <trans-unit id="ItemPokeBall" translate="yes" xml:space="preserve">
           <source>Poke Ball</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Poke bal</target>
+          <target state="translated" state-qualifier="mt-suggestion">Poke bal</target>
         </trans-unit>
         <trans-unit id="ItemPokemonStorageUpgrade" translate="yes" xml:space="preserve">
           <source>Pokemon Storage Upgrade</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Pokemon opslag Upgrade</target>
+          <target state="translated" state-qualifier="mt-suggestion">Pokemon opslag Upgrade</target>
         </trans-unit>
         <trans-unit id="ItemPotion" translate="yes" xml:space="preserve">
           <source>Potion</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Potion</target>
+          <target state="translated" state-qualifier="mt-suggestion">Potion</target>
         </trans-unit>
         <trans-unit id="ItemRazzBerry" translate="yes" xml:space="preserve">
           <source>Razz Berry</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Razz Berry</target>
+          <target state="translated" state-qualifier="mt-suggestion">Razz Berry</target>
         </trans-unit>
         <trans-unit id="ItemRevive" translate="yes" xml:space="preserve">
           <source>Revive</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Doen herleven</target>
+          <target state="translated">Revive</target>
         </trans-unit>
         <trans-unit id="ItemSpecialCamera" translate="yes" xml:space="preserve">
           <source>Special Camera</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Speciale Camera</target>
+          <target state="translated" state-qualifier="mt-suggestion">Speciale Camera</target>
         </trans-unit>
         <trans-unit id="ItemSuperPotion" translate="yes" xml:space="preserve">
           <source>Super Potion</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Super Potion</target>
+          <target state="translated" state-qualifier="mt-suggestion">Super Potion</target>
         </trans-unit>
         <trans-unit id="ItemTroyDisk" translate="yes" xml:space="preserve">
           <source>Lure Module</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Troy schijf</target>
+          <target state="translated">Troy disc</target>
         </trans-unit>
         <trans-unit id="ItemUltraBall" translate="yes" xml:space="preserve">
           <source>Ultra Ball</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ultra bal</target>
+          <target state="translated" state-qualifier="mt-suggestion">Ultra bal</target>
         </trans-unit>
         <trans-unit id="ItemUnknown" translate="yes" xml:space="preserve">
           <source>Unknown</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Onbekend</target>
+          <target state="translated" state-qualifier="tm-suggestion">Onbekend</target>
         </trans-unit>
         <trans-unit id="ItemWeparBerry" translate="yes" xml:space="preserve">
           <source>Wepar Berry</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Wepar Berry</target>
+          <target state="translated" state-qualifier="mt-suggestion">Wepar Berry</target>
         </trans-unit>
         <trans-unit id="ItemXAttack" translate="yes" xml:space="preserve">
           <source>X Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">X aanval</target>
+          <target state="translated">X Attack</target>
         </trans-unit>
         <trans-unit id="ItemXDefense" translate="yes" xml:space="preserve">
           <source>X Defense</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">X Defense</target>
+          <target state="translated" state-qualifier="mt-suggestion">X Defense</target>
         </trans-unit>
         <trans-unit id="ItemXMiracle" translate="yes" xml:space="preserve">
           <source>X Miracle</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">X wonder</target>
+          <target state="translated">X Miracle</target>
         </trans-unit>
         <trans-unit id="D_ItemLuckyEgg" translate="yes" xml:space="preserve">
           <source>A Lucky Egg that's filled with happiness! Earns double XP for 30 minutes.</source>
-          <target state="new">A Lucky Egg that's filled with happiness! Earns double XP for 30 minutes.</target>
+          <target state="translated">Een geluksei dat gevuld is met blijheid! Geeft je gedurende 30 minuten dubbele XP</target>
         </trans-unit>
         <trans-unit id="D_ItemRazzBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
-          <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
+          <target state="translated">Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</target>
         </trans-unit>
         <trans-unit id="D_ItemSpecialCamera" translate="yes" xml:space="preserve">
           <source>When you encounter Pokémon in the wild, you can use your camera to photograph them.</source>
-          <target state="new">When you encounter Pokémon in the wild, you can use your camera to photograph them.</target>
+          <target state="translated">Als je een Pokémon in het wild tegenkomt, kan je deze camera gebruiken om er een foto van te maken</target>
         </trans-unit>
         <trans-unit id="D_ItemSuperPotion" translate="yes" xml:space="preserve">
           <source>A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 50 points.</source>
-          <target state="new">A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 50 points.</target>
+          <target state="translated">Een spray type geneesmiddel voor het behandelen van wonden. Het herstelt de HP van een Pokémon met 50 punten.</target>
         </trans-unit>
         <trans-unit id="D_ItemTroyDisk" translate="yes" xml:space="preserve">
           <source>A module that attracts Pokémon to a Pokéstop for 30 min. The effect benefits other people nearby.</source>
-          <target state="new">A module that attracts Pokémon to a Pokéstop for 30 min. The effect benefits other people nearby.</target>
+          <target state="translated">Een module dat Pokémon voor 30 minuten aantrekt bij een Pokéstop. Van het effect kunnen ook andere mensen genieten.</target>
         </trans-unit>
         <trans-unit id="D_ItemUnknown" translate="yes" xml:space="preserve">
           <source>This item is unknown and may be added in the future.</source>
-          <target state="new">This item is unknown and may be added in the future.</target>
+          <target state="translated">Dit item is onbekend en kan in de toekomst worden toegevoegd.</target>
         </trans-unit>
         <trans-unit id="D_ItemBlukBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
-          <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
+          <target state="translated">Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</target>
         </trans-unit>
         <trans-unit id="D_ItemNanabBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon to calm it down, making it less erratic.</source>
-          <target state="new">Feed this to a Pokémon to calm it down, making it less erratic.</target>
+          <target state="translated">Voer dit aan een Pokémon om hem te kalmeren, maakt hem minder springerig</target>
         </trans-unit>
         <trans-unit id="D_ItemPinapBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon to make it drop more candy.</source>
-          <target state="new">Feed this to a Pokémon to make it drop more candy.</target>
+          <target state="translated">Voer dit aan een Pokémon om hem meer candy te laten vallen</target>
         </trans-unit>
         <trans-unit id="D_ItemWeparBerry" translate="yes" xml:space="preserve">
           <source>Feed this to a Pokémon, and it will be easier to catch on your next throw.</source>
-          <target state="new">Feed this to a Pokémon, and it will be easier to catch on your next throw.</target>
+          <target state="translated">Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</target>
         </trans-unit>
         <trans-unit id="D_ItemHyperPotion" translate="yes" xml:space="preserve">
           <source>A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 200 points.</source>
-          <target state="new">A spray-type medicine for treating wounds. It restores the HP of one Pokémon by 200 points.</target>
+          <target state="translated">Een spray type geneesmiddel voor het behandelen van wonden. Het herstelt de HP van een Pokémon met 200 punten.</target>
         </trans-unit>
         <trans-unit id="D_ItemDragonScale" translate="yes" xml:space="preserve">
           <source>An Evolution Item that is required to evolve Seadra into Kingdra.</source>
-          <target state="new">An Evolution Item that is required to evolve Seadra into Kingdra.</target>
+          <target state="translated">Een evolutie item dat nodig is om een Seadra in een Kingdra te laten evolueren</target>
         </trans-unit>
         <trans-unit id="D_ItemKingsRock" translate="yes" xml:space="preserve">
           <source>An Evolution Item that is required to evolve Poliwhirl into Politoed and Slowpoke into Slowking.</source>
-          <target state="new">An Evolution Item that is required to evolve Poliwhirl into Politoed and Slowpoke into Slowking.</target>
+          <target state="translated">Een evolutie item dat nodig is om een Poliwhirl in een Politoed of een Slowpoke in een Slowking te laten evolueren</target>
         </trans-unit>
         <trans-unit id="D_ItemMetalCoat" translate="yes" xml:space="preserve">
           <source>An Evolution Item that is required to evolve Onix into Steelix and Scyther into Scizor.</source>
-          <target state="new">An Evolution Item that is required to evolve Onix into Steelix and Scyther into Scizor.</target>
+          <target state="translated">Een evolutie item dat nodig is om een Onix in een Steelx of een Scyther in een Scizor te laten evolueren</target>
         </trans-unit>
         <trans-unit id="D_ItemSunStone" translate="yes" xml:space="preserve">
           <source>An Evolution Item that is required to evolve Gloom into Bellossom and Sunkern into Sunflora.</source>
-          <target state="new">An Evolution Item that is required to evolve Gloom into Bellossom and Sunkern into Sunflora.</target>
+          <target state="translated">Een evolutie item dat nodig is om een Gloom in een Bellossom of een Sunkern in een Sunflora te laten evolueren</target>
         </trans-unit>
         <trans-unit id="D_ItemUpGrade" translate="yes" xml:space="preserve">
           <source>An Evolution Item that is required to evolve Porygon into Porygon2.</source>
-          <target state="new">An Evolution Item that is required to evolve Porygon into Porygon2.</target>
+          <target state="translated">Een evolutie item dat nodig is om een Porygon in een Porygon2 te laten evolueren</target>
         </trans-unit>
         <trans-unit id="ItemDragonScale" translate="yes" xml:space="preserve">
           <source>Dragon Scale</source>
-          <target state="new">Dragon Scale</target>
+          <target state="translated">Dragon Scale</target>
         </trans-unit>
         <trans-unit id="ItemKingsRock" translate="yes" xml:space="preserve">
           <source>King's Rock</source>
-          <target state="new">King's Rock</target>
+          <target state="translated">King's Rock</target>
         </trans-unit>
         <trans-unit id="ItemMetalCoat" translate="yes" xml:space="preserve">
           <source>Metal Coat</source>
-          <target state="new">Metal Coat</target>
+          <target state="translated">Metal Coat</target>
         </trans-unit>
         <trans-unit id="ItemSunStone" translate="yes" xml:space="preserve">
           <source>Sun Stone</source>
-          <target state="new">Sun Stone</target>
+          <target state="translated">Sun Stone</target>
         </trans-unit>
         <trans-unit id="ItemUpGrade" translate="yes" xml:space="preserve">
           <source>Up-Grade</source>
-          <target state="new">Up-Grade</target>
+          <target state="translated">Up-Grade</target>
         </trans-unit>
       </group>
     </body>
@@ -2302,7 +2308,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
       <group id="POKEMONGO-UWP/STRINGS/EN-US/POKEMONMOVES.RESW" datatype="resx">
         <trans-unit id="Bite" translate="yes" xml:space="preserve">
           <source>Bite</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Beet</target>
+          <target state="translated">Bite</target>
         </trans-unit>
         <trans-unit id="CrossChop" translate="yes" xml:space="preserve">
           <source>Cross Chop</source>
@@ -2310,159 +2316,159 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="DarkPulse" translate="yes" xml:space="preserve">
           <source>Dark Pulse</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donkere Pulse</target>
+          <target state="translated">Dark Pulse</target>
         </trans-unit>
         <trans-unit id="Dig" translate="yes" xml:space="preserve">
           <source>Dig</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Graven</target>
+          <target state="translated">Dig</target>
         </trans-unit>
         <trans-unit id="DoubleSlap" translate="yes" xml:space="preserve">
           <source>Double Slap</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Dubbele klap</target>
+          <target state="translated">Dubbele Slap</target>
         </trans-unit>
         <trans-unit id="Ember" translate="yes" xml:space="preserve">
           <source>Ember</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ember</target>
+          <target state="translated">Ember</target>
         </trans-unit>
         <trans-unit id="Flamethrower" translate="yes" xml:space="preserve">
           <source>Flamethrower</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vlammenwerper</target>
+          <target state="translated">Flamethrower</target>
         </trans-unit>
         <trans-unit id="FlameWheel" translate="yes" xml:space="preserve">
           <source>Flame Wheel</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vlam wiel</target>
+          <target state="translated">Flame Wheel</target>
         </trans-unit>
         <trans-unit id="HyperBeam" translate="yes" xml:space="preserve">
           <source>Hyper Beam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hyper Beam</target>
+          <target state="translated">Hyper Beam</target>
         </trans-unit>
         <trans-unit id="Lick" translate="yes" xml:space="preserve">
           <source>Lick</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Likken</target>
+          <target state="translated">Lick</target>
         </trans-unit>
         <trans-unit id="LowKick" translate="yes" xml:space="preserve">
           <source>Low Kick</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lage schop</target>
+          <target state="translated">Low Kick</target>
         </trans-unit>
         <trans-unit id="Megahorn" translate="yes" xml:space="preserve">
           <source>Megahorn</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Mega hoorn</target>
+          <target state="translated">Megahorn</target>
         </trans-unit>
         <trans-unit id="MetalClaw" translate="yes" xml:space="preserve">
           <source>Metal Claw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Metalen klauw</target>
+          <target state="translated">Metal Claw</target>
         </trans-unit>
         <trans-unit id="MoveUnset" translate="yes" xml:space="preserve">
           <source>Move Unset</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">verplaatsen</target>
+          <target state="translated">Move unset</target>
         </trans-unit>
         <trans-unit id="Pound" translate="yes" xml:space="preserve">
           <source>Pound</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Stomp</target>
+          <target state="translated">Pound</target>
         </trans-unit>
         <trans-unit id="PsychoCut" translate="yes" xml:space="preserve">
           <source>Psycho Cut</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychische snee</target>
+          <target state="translated">Psycho Cut</target>
         </trans-unit>
         <trans-unit id="QuickAttack" translate="yes" xml:space="preserve">
           <source>Quick Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle aanval</target>
+          <target state="translated">Quick Attack</target>
         </trans-unit>
         <trans-unit id="RazorLeaf" translate="yes" xml:space="preserve">
           <source>Razor Leaf</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Mes blad</target>
+          <target state="translated">Razor Leaf</target>
         </trans-unit>
         <trans-unit id="Scratch" translate="yes" xml:space="preserve">
           <source>Scratch</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Krab</target>
+          <target state="translated">Scratch</target>
         </trans-unit>
         <trans-unit id="Sludge" translate="yes" xml:space="preserve">
           <source>Sludge</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Slib</target>
+          <target state="translated">Sludge</target>
         </trans-unit>
         <trans-unit id="Smog" translate="yes" xml:space="preserve">
           <source>Smog</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Rook</target>
+          <target state="translated">Smog</target>
         </trans-unit>
         <trans-unit id="SuckerPunch" translate="yes" xml:space="preserve">
           <source>Sucker Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Sucker Punch</target>
+          <target state="translated">Sucker Punch</target>
         </trans-unit>
         <trans-unit id="Tackle" translate="yes" xml:space="preserve">
           <source>Tackle</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Tekkelen</target>
+          <target state="translated">Tackle</target>
         </trans-unit>
         <trans-unit id="TakeDown" translate="yes" xml:space="preserve">
           <source>Take Down</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Take Down</target>
+          <target state="translated">Take Down</target>
         </trans-unit>
         <trans-unit id="ThunderShock" translate="yes" xml:space="preserve">
           <source>Thunder Shock</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donderschok</target>
+          <target state="translated">Thunder Shock</target>
         </trans-unit>
         <trans-unit id="ViceGrip" translate="yes" xml:space="preserve">
           <source>Vice Grip</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vice Grip</target>
+          <target state="translated">Vice Grip</target>
         </trans-unit>
         <trans-unit id="VineWhip" translate="yes" xml:space="preserve">
           <source>Vine Whip</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Zweep</target>
+          <target state="translated">Vine Whip</target>
         </trans-unit>
         <trans-unit id="WaterGun" translate="yes" xml:space="preserve">
           <source>Water Gun</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Waterpistool</target>
+          <target state="translated">Water Gun</target>
         </trans-unit>
         <trans-unit id="WingAttack" translate="yes" xml:space="preserve">
           <source>Wing Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vleugel aanval</target>
+          <target state="translated">Wing Attack</target>
         </trans-unit>
         <trans-unit id="Wrap" translate="yes" xml:space="preserve">
           <source>Wrap</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Terugloop</target>
+          <target state="translated">Wrap</target>
         </trans-unit>
         <trans-unit id="Absorb" translate="yes" xml:space="preserve">
           <source>Absorb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Absorberen</target>
+          <target state="translated">Absorb</target>
         </trans-unit>
         <trans-unit id="Acid" translate="yes" xml:space="preserve">
           <source>Acid</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Zuur</target>
+          <target state="translated">Acid</target>
         </trans-unit>
         <trans-unit id="AcidFast" translate="yes" xml:space="preserve">
           <source>Acid Fast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelzuur</target>
+          <target state="translated">Acid Fast</target>
         </trans-unit>
         <trans-unit id="AerialAce" translate="yes" xml:space="preserve">
           <source>Aerial Ace</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Luchtaanval</target>
+          <target state="translated">Aerial Ace</target>
         </trans-unit>
         <trans-unit id="AirCutter" translate="yes" xml:space="preserve">
           <source>Air Cutter</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lucht snijder</target>
+          <target state="translated">Air Cutter</target>
         </trans-unit>
         <trans-unit id="AirSlash" translate="yes" xml:space="preserve">
           <source>Air Slash</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lucht hakker</target>
+          <target state="translated">Air Slash</target>
         </trans-unit>
         <trans-unit id="AncientPower" translate="yes" xml:space="preserve">
           <source>Ancient Power</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Oude kracht</target>
+          <target state="translated">Ancient Power</target>
         </trans-unit>
         <trans-unit id="AquaJet" translate="yes" xml:space="preserve">
           <source>Aqua Jet</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Waterstraal</target>
+          <target state="translated">Aqua Jet</target>
         </trans-unit>
         <trans-unit id="AquaTail" translate="yes" xml:space="preserve">
           <source>Aqua Tail</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Water staart</target>
+          <target state="translated">Aqua Tail</target>
         </trans-unit>
         <trans-unit id="BiteFast" translate="yes" xml:space="preserve">
           <source>Bite</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Beet</target>
+          <target state="translated">Bite</target>
         </trans-unit>
         <trans-unit id="Blizzard" translate="yes" xml:space="preserve">
           <source>Blizzard</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Ijsstorm</target>
+          <target state="translated">Blizzard</target>
         </trans-unit>
         <trans-unit id="BodySlam" translate="yes" xml:space="preserve">
           <source>Body Slam</source>
@@ -2470,559 +2476,555 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="BoneClub" translate="yes" xml:space="preserve">
           <source>Bone Club</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Botknuppel</target>
+          <target state="translated">Bone Club</target>
         </trans-unit>
         <trans-unit id="BrickBreak" translate="yes" xml:space="preserve">
           <source>Brick Break</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Steen breken</target>
+          <target state="translated">Brick Break</target>
         </trans-unit>
         <trans-unit id="Brine" translate="yes" xml:space="preserve">
           <source>Brine</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Pekel</target>
+          <target state="translated">Brine</target>
         </trans-unit>
         <trans-unit id="BubbleBeam" translate="yes" xml:space="preserve">
           <source>Bubble Beam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Bellenblaas</target>
+          <target state="translated">Bubble Beam</target>
         </trans-unit>
         <trans-unit id="BubbleFast" translate="yes" xml:space="preserve">
           <source>Bubble</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelbubbels</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Bubble</target>
         </trans-unit>
         <trans-unit id="BugBite" translate="yes" xml:space="preserve">
           <source>Bug Bite</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Insecten beet</target>
+          <target state="translated">Bug Bite</target>
         </trans-unit>
         <trans-unit id="BugBiteFast" translate="yes" xml:space="preserve">
           <source>Bug Bite</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Insecten beet</target>
+          <target state="translated">Bug Bite</target>
         </trans-unit>
         <trans-unit id="BugBuzz" translate="yes" xml:space="preserve">
           <source>Bug Buzz</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Insectentril</target>
+          <target state="translated">Bug Buzz</target>
         </trans-unit>
         <trans-unit id="Bulldoze" translate="yes" xml:space="preserve">
           <source>Bulldoze</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Bulldozer</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Bulldoze</target>
         </trans-unit>
         <trans-unit id="BulletPunch" translate="yes" xml:space="preserve">
           <source>Bullet Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Kogelklap</target>
+          <target state="translated">Bullet Punch</target>
         </trans-unit>
         <trans-unit id="BulletPunchFast" translate="yes" xml:space="preserve">
           <source>Bullet Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle kogelklap</target>
+          <target state="translated">Bullet Punch</target>
         </trans-unit>
         <trans-unit id="ConfusionFast" translate="yes" xml:space="preserve">
           <source>Confusion</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Verwarring</target>
+          <target state="translated">Confusion</target>
         </trans-unit>
         <trans-unit id="CrossPoison" translate="yes" xml:space="preserve">
           <source>Cross Poison</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Kruis van gif</target>
+          <target state="translated">Cross Poison</target>
         </trans-unit>
         <trans-unit id="Cut" translate="yes" xml:space="preserve">
           <source>Cut</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Snijden</target>
+          <target state="translated">Cut</target>
         </trans-unit>
         <trans-unit id="CutFast" translate="yes" xml:space="preserve">
           <source>Cut</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Snel snijden</target>
+          <target state="translated">Cut</target>
         </trans-unit>
         <trans-unit id="DazzlingGleam" translate="yes" xml:space="preserve">
           <source>Dazzling Gleam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schitterende glans</target>
+          <target state="translated">Dazzling Gleam</target>
         </trans-unit>
         <trans-unit id="DisarmingVoice" translate="yes" xml:space="preserve">
           <source>Disarming Voice</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ontwapenende stem</target>
+          <target state="translated">Disarming Voice</target>
         </trans-unit>
         <trans-unit id="Discharge" translate="yes" xml:space="preserve">
           <source>Discharge</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ontlading</target>
+          <target state="translated">Discharge</target>
         </trans-unit>
         <trans-unit id="DragonBreath" translate="yes" xml:space="preserve">
           <source>Dragon Breath</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Draken adem</target>
+          <target state="translated">Dragon Breath</target>
         </trans-unit>
         <trans-unit id="DragonBreathFast" translate="yes" xml:space="preserve">
           <source>Dragon Breath</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle draken adem</target>
+          <target state="translated">Dragon Breath</target>
         </trans-unit>
         <trans-unit id="DragonClaw" translate="yes" xml:space="preserve">
           <source>Dragon Claw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Draken klauw</target>
+          <target state="translated">Dragon Claw</target>
         </trans-unit>
         <trans-unit id="DragonPulse" translate="yes" xml:space="preserve">
           <source>Dragon Pulse</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Draken klap</target>
+          <target state="translated">Dragon Pulse</target>
         </trans-unit>
         <trans-unit id="DrainingKiss" translate="yes" xml:space="preserve">
           <source>Draining Kiss</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Aftappen van kus</target>
+          <target state="translated">Draining Kiss</target>
         </trans-unit>
         <trans-unit id="DrillPeck" translate="yes" xml:space="preserve">
           <source>Drill Peck</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Borende snavel</target>
+          <target state="translated">Drill Peck</target>
         </trans-unit>
         <trans-unit id="DrillRun" translate="yes" xml:space="preserve">
           <source>Drill Run</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Borende vlucht</target>
+          <target state="translated">Drill Run</target>
         </trans-unit>
         <trans-unit id="Earthquake" translate="yes" xml:space="preserve">
           <source>Earthquake</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Aardbeving</target>
+          <target state="translated">Earthquake</target>
         </trans-unit>
         <trans-unit id="EmberFast" translate="yes" xml:space="preserve">
           <source>Ember Fast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vuur snel</target>
+          <target state="translated">Ember Fast</target>
         </trans-unit>
         <trans-unit id="FeintAttackFast" translate="yes" xml:space="preserve">
           <source>Feint Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">flauwval aanval</target>
+          <target state="translated">Feint Attack</target>
         </trans-unit>
         <trans-unit id="FireBlast" translate="yes" xml:space="preserve">
           <source>Fire Blast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Brand Blast</target>
+          <target state="translated">Fire Blast</target>
         </trans-unit>
         <trans-unit id="FireFangFast" translate="yes" xml:space="preserve">
           <source>Fire Fang</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Brand beet</target>
+          <target state="translated">Fire Fang</target>
         </trans-unit>
         <trans-unit id="FirePunch" translate="yes" xml:space="preserve">
           <source>Fire Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Brand klap</target>
+          <target state="translated">Fire Punch</target>
         </trans-unit>
         <trans-unit id="FlameBurst" translate="yes" xml:space="preserve">
           <source>Flame Burst</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vlam Burst</target>
+          <target state="translated">Flame Burst</target>
         </trans-unit>
         <trans-unit id="FlameCharge" translate="yes" xml:space="preserve">
           <source>Flame Charge</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lading van de vlam</target>
+          <target state="translated">Flame Charge</target>
         </trans-unit>
         <trans-unit id="FlashCannon" translate="yes" xml:space="preserve">
           <source>Flash Cannon</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Flits kanon</target>
+          <target state="translated">Flash Cannon</target>
         </trans-unit>
         <trans-unit id="FrostBreath" translate="yes" xml:space="preserve">
           <source>Frost Breath</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vries adem</target>
+          <target state="translated">Frost Breath</target>
         </trans-unit>
         <trans-unit id="FrostBreathFast" translate="yes" xml:space="preserve">
           <source>Frost Breath</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vries adem</target>
+          <target state="translated">Frost Breath</target>
         </trans-unit>
         <trans-unit id="FuryCutter" translate="yes" xml:space="preserve">
           <source>Fury Cutter</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snel snijder</target>
+          <target state="translated">Fury Cutter</target>
         </trans-unit>
         <trans-unit id="FuryCutterFast" translate="yes" xml:space="preserve">
           <source>Fury Cutter</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snel snijder</target>
+          <target state="translated">Fury Cutter</target>
         </trans-unit>
         <trans-unit id="GigaDrain" translate="yes" xml:space="preserve">
           <source>Giga Drain</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Giga afvoer</target>
+          <target state="translated">Giga Drain</target>
         </trans-unit>
         <trans-unit id="GunkShot" translate="yes" xml:space="preserve">
           <source>Gunk Shot</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Smurrie schot</target>
+          <target state="translated">Gunk Shot</target>
         </trans-unit>
         <trans-unit id="Headbutt" translate="yes" xml:space="preserve">
           <source>Headbutt</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Headbutt</target>
+          <target state="translated">Headbutt</target>
         </trans-unit>
         <trans-unit id="HeartStamp" translate="yes" xml:space="preserve">
           <source>Heart Stamp</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hart stempel</target>
+          <target state="translated">Heart Stamp</target>
         </trans-unit>
         <trans-unit id="HeatWave" translate="yes" xml:space="preserve">
           <source>Heat Wave</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hittegolf</target>
+          <target state="translated">Heat Wave</target>
         </trans-unit>
         <trans-unit id="HornAttack" translate="yes" xml:space="preserve">
           <source>Horn Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hoorn-aanval</target>
+          <target state="translated">Horn Attack</target>
         </trans-unit>
         <trans-unit id="Hurricane" translate="yes" xml:space="preserve">
           <source>Hurricane</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Orkaan</target>
+          <target state="translated">Hurricane</target>
         </trans-unit>
         <trans-unit id="HydroPump" translate="yes" xml:space="preserve">
           <source>Hydro Pump</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hydro pomp</target>
+          <target state="translated">Hydro Pump</target>
         </trans-unit>
         <trans-unit id="HydroPumpBlastoise" translate="yes" xml:space="preserve">
           <source>Hydro Pump</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hydro pomp</target>
+          <target state="translated">Hydro Pump</target>
         </trans-unit>
         <trans-unit id="HyperFang" translate="yes" xml:space="preserve">
           <source>Hyper Fang</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Hyper beet</target>
+          <target state="translated">Hyper Fang</target>
         </trans-unit>
         <trans-unit id="IceBeam" translate="yes" xml:space="preserve">
           <source>Ice Beam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ijs straal</target>
+          <target state="translated">Ice Beam</target>
         </trans-unit>
         <trans-unit id="IcePunch" translate="yes" xml:space="preserve">
           <source>Ice Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ijs klap</target>
+          <target state="translated">Ice Punch</target>
         </trans-unit>
         <trans-unit id="IceShard" translate="yes" xml:space="preserve">
           <source>Ice Shard</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ijsscherf</target>
+          <target state="translated">Ice Shard</target>
         </trans-unit>
         <trans-unit id="IceShardFast" translate="yes" xml:space="preserve">
           <source>Ice Shard</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ijsscherf</target>
+          <target state="translated">Ice Shard</target>
         </trans-unit>
         <trans-unit id="IcyWind" translate="yes" xml:space="preserve">
           <source>Icy Wind</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ijzige Wind</target>
+          <target state="translated">Icy Wind</target>
         </trans-unit>
         <trans-unit id="IronHead" translate="yes" xml:space="preserve">
           <source>Iron Head</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">IJzeren hoofd</target>
+          <target state="translated">Iron Head</target>
         </trans-unit>
         <trans-unit id="KarateChop" translate="yes" xml:space="preserve">
           <source>Karate Chop</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Karate trap</target>
+          <target state="translated">Karate Chop</target>
         </trans-unit>
         <trans-unit id="KarateChopFast" translate="yes" xml:space="preserve">
           <source>Karate Chop</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Karate trap</target>
+          <target state="translated">Karate Chop</target>
         </trans-unit>
         <trans-unit id="LeafBlade" translate="yes" xml:space="preserve">
           <source>Leaf Blade</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Messenblad</target>
+          <target state="translated">Leaf Blade</target>
         </trans-unit>
         <trans-unit id="LickFast" translate="yes" xml:space="preserve">
           <source>Lick Fast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snel likken</target>
+          <target state="translated">Lick Fast</target>
         </trans-unit>
         <trans-unit id="LowKickFast" translate="yes" xml:space="preserve">
           <source>Low Kick</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lage trap</target>
+          <target state="translated">Low Kick</target>
         </trans-unit>
         <trans-unit id="LowSweep" translate="yes" xml:space="preserve">
           <source>Low Sweep</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Lage Sweep</target>
+          <target state="translated">Low Sweep</target>
         </trans-unit>
         <trans-unit id="MagnetBomb" translate="yes" xml:space="preserve">
           <source>Magnet Bomb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Magneet bom</target>
+          <target state="translated">Magnet Bomb</target>
         </trans-unit>
         <trans-unit id="MegaDrain" translate="yes" xml:space="preserve">
           <source>Mega Drain</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Mega afvoer</target>
+          <target state="translated">Mega Drain</target>
         </trans-unit>
         <trans-unit id="MetalClawFast" translate="yes" xml:space="preserve">
           <source>Metal Claw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Metalen klauw</target>
+          <target state="translated">Metal Claw</target>
         </trans-unit>
         <trans-unit id="Moonblast" translate="yes" xml:space="preserve">
           <source>Moonblast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Moonblast</target>
+          <target state="translated">Moonblast</target>
         </trans-unit>
         <trans-unit id="MudBomb" translate="yes" xml:space="preserve">
           <source>Mud Bomb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Modder bom</target>
+          <target state="translated">Mud Bomb</target>
         </trans-unit>
         <trans-unit id="MudShot" translate="yes" xml:space="preserve">
           <source>Mud Shot</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Modder schot</target>
+          <target state="translated">Mud Shot</target>
         </trans-unit>
         <trans-unit id="MudShotFast" translate="yes" xml:space="preserve">
           <source>Mud Shot</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle Modder schot</target>
+          <target state="translated">Mud Shot</target>
         </trans-unit>
         <trans-unit id="MudSlapFast" translate="yes" xml:space="preserve">
           <source>Mud Slap</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle Modder klap</target>
+          <target state="translated">Mud Slap</target>
         </trans-unit>
         <trans-unit id="NightSlash" translate="yes" xml:space="preserve">
           <source>Night Slash</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Nacht snij</target>
+          <target state="translated">Night Slash</target>
         </trans-unit>
         <trans-unit id="OminousWind" translate="yes" xml:space="preserve">
           <source>Ominous Wind</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Onheilspellende Wind</target>
+          <target state="translated">Ominous Wind</target>
         </trans-unit>
         <trans-unit id="ParabolicCharge" translate="yes" xml:space="preserve">
           <source>Parabolic Charge</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Parabolische lading</target>
+          <target state="translated">Parabolic Charge</target>
         </trans-unit>
         <trans-unit id="Peck" translate="yes" xml:space="preserve">
           <source>Peck</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Pik</target>
+          <target state="translated">Peck</target>
         </trans-unit>
         <trans-unit id="PeckFast" translate="yes" xml:space="preserve">
           <source>Peck</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle pik</target>
+          <target state="translated">Peck</target>
         </trans-unit>
         <trans-unit id="PetalBlizzard" translate="yes" xml:space="preserve">
           <source>Petal Blizzard</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Petal sneeuwstorm</target>
+          <target state="translated">Petal Blizzard</target>
         </trans-unit>
         <trans-unit id="PlayRough" translate="yes" xml:space="preserve">
           <source>Play Rough</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ruw spelen</target>
+          <target state="translated">Play Rough</target>
         </trans-unit>
         <trans-unit id="PoisonFang" translate="yes" xml:space="preserve">
           <source>Poison Fang</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Gifbeet</target>
+          <target state="translated">Poison Fang</target>
         </trans-unit>
         <trans-unit id="PoisonJab" translate="yes" xml:space="preserve">
           <source>Poison Jab</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vergif Jab</target>
+          <target state="translated">Poison Jab</target>
         </trans-unit>
         <trans-unit id="PoisonJabFast" translate="yes" xml:space="preserve">
           <source>Poison Jab</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle vergif Jab</target>
+          <target state="translated">Poison Jab</target>
         </trans-unit>
         <trans-unit id="PoisonStingFast" translate="yes" xml:space="preserve">
           <source>Poison Sting</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vergif steek</target>
+          <target state="translated">Poison Sting</target>
         </trans-unit>
         <trans-unit id="PoundFast" translate="yes" xml:space="preserve">
           <source>Pound</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snel stomp</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Pound</target>
         </trans-unit>
         <trans-unit id="PowerGem" translate="yes" xml:space="preserve">
           <source>Power Gem</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Krachtig juweel</target>
+          <target state="translated">Power Gem</target>
         </trans-unit>
         <trans-unit id="PowerWhip" translate="yes" xml:space="preserve">
           <source>Power Whip</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Krachtig zweep</target>
+          <target state="translated">Power Whip</target>
         </trans-unit>
         <trans-unit id="Psybeam" translate="yes" xml:space="preserve">
           <source>Psybeam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychische straal</target>
+          <target state="translated">Psybeam</target>
         </trans-unit>
         <trans-unit id="Psychic" translate="yes" xml:space="preserve">
           <source>Psychic</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychisch</target>
+          <target state="translated">Psychic</target>
         </trans-unit>
         <trans-unit id="PsychoCutFast" translate="yes" xml:space="preserve">
           <source>Psycho Cut</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychische snee</target>
+          <target state="translated">Psycho Cut</target>
         </trans-unit>
         <trans-unit id="Psyshock" translate="yes" xml:space="preserve">
           <source>Psyshock</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychische schok</target>
+          <target state="translated">Psyshock</target>
         </trans-unit>
         <trans-unit id="Psystrike" translate="yes" xml:space="preserve">
           <source>Psystrike</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychische aanval</target>
+          <target state="translated">Psystrike</target>
         </trans-unit>
         <trans-unit id="QuickAttackFast" translate="yes" xml:space="preserve">
           <source>Quick Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle aanval</target>
+          <target state="translated">Quick Attack</target>
         </trans-unit>
         <trans-unit id="RazorLeafFast" translate="yes" xml:space="preserve">
           <source>Razor Leaf</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Mesblad</target>
+          <target state="translated">Razor Leaf</target>
         </trans-unit>
         <trans-unit id="Rest" translate="yes" xml:space="preserve">
           <source>Rest</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Rust</target>
+          <target state="translated">Rest</target>
         </trans-unit>
         <trans-unit id="RockSlide" translate="yes" xml:space="preserve">
           <source>Rock Slide</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Glijdende stenen</target>
+          <target state="translated">Rock Slide</target>
         </trans-unit>
         <trans-unit id="RockSmashFast" translate="yes" xml:space="preserve">
           <source>Rock Smash</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Steen slag</target>
+          <target state="translated">Rock Smash</target>
         </trans-unit>
         <trans-unit id="RockThrow" translate="yes" xml:space="preserve">
           <source>Rock Throw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Steen gooi</target>
+          <target state="translated">Rock Throw</target>
         </trans-unit>
         <trans-unit id="RockThrowFast" translate="yes" xml:space="preserve">
           <source>Rock Throw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snelle steen gooi</target>
+          <target state="translated">Rock Throw</target>
         </trans-unit>
         <trans-unit id="RockTomb" translate="yes" xml:space="preserve">
           <source>Rock Tomb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Steengraf</target>
+          <target state="translated">Rock Tomb</target>
         </trans-unit>
         <trans-unit id="Scald" translate="yes" xml:space="preserve">
           <source>Scald</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schroeien</target>
+          <target state="translated">Scald</target>
         </trans-unit>
         <trans-unit id="ScaldBlastoise" translate="yes" xml:space="preserve">
           <source>Scald</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schroeien</target>
+          <target state="translated">Scald</target>
         </trans-unit>
         <trans-unit id="ScratchFast" translate="yes" xml:space="preserve">
           <source>Scratch</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Snelle krab</target>
+          <target state="translated">Scratch</target>
         </trans-unit>
         <trans-unit id="SeedBomb" translate="yes" xml:space="preserve">
           <source>Seed Bomb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Zaad bom</target>
+          <target state="translated">Seed Bomb</target>
         </trans-unit>
         <trans-unit id="ShadowBall" translate="yes" xml:space="preserve">
           <source>Shadow Ball</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schaduw bal</target>
+          <target state="translated">Shadow Ball</target>
         </trans-unit>
         <trans-unit id="ShadowClaw" translate="yes" xml:space="preserve">
           <source>Shadow Claw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schaduw klauw</target>
+          <target state="translated">Shadow Claw</target>
         </trans-unit>
         <trans-unit id="ShadowClawFast" translate="yes" xml:space="preserve">
           <source>Shadow Claw</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schaduw klauw</target>
+          <target state="translated">Shadow Claw</target>
         </trans-unit>
         <trans-unit id="ShadowPunch" translate="yes" xml:space="preserve">
           <source>Shadow Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Schaduw klap</target>
+          <target state="translated">Shadow Punch</target>
         </trans-unit>
         <trans-unit id="ShadowSneak" translate="yes" xml:space="preserve">
           <source>Shadow Sneak</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Geheime schaduw</target>
+          <target state="translated">Shadow Sneak</target>
         </trans-unit>
         <trans-unit id="SignalBeam" translate="yes" xml:space="preserve">
           <source>Signal Beam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Signaalstraal</target>
+          <target state="translated">Signal Beam</target>
         </trans-unit>
         <trans-unit id="Slam" translate="yes" xml:space="preserve">
           <source>Slam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Slam</target>
+          <target state="translated">Slam</target>
         </trans-unit>
         <trans-unit id="Slash" translate="yes" xml:space="preserve">
           <source>Slash</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Slash</target>
+          <target state="translated">Slash</target>
         </trans-unit>
         <trans-unit id="SludgeBomb" translate="yes" xml:space="preserve">
           <source>Sludge Bomb</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Slib bom</target>
+          <target state="translated">Sludge Bomb</target>
         </trans-unit>
         <trans-unit id="SludgeWave" translate="yes" xml:space="preserve">
           <source>Sludge Wave</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Slib golf</target>
+          <target state="translated">Sludge Wave</target>
         </trans-unit>
         <trans-unit id="SolarBeam" translate="yes" xml:space="preserve">
           <source>Solar Beam</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Zonnestraal</target>
+          <target state="translated">Solar Beam</target>
         </trans-unit>
         <trans-unit id="Spark" translate="yes" xml:space="preserve">
           <source>Spark</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vonk</target>
+          <target state="translated">Spark</target>
         </trans-unit>
         <trans-unit id="SparkFast" translate="yes" xml:space="preserve">
           <source>Spark</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Snel vonk</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Spark</target>
         </trans-unit>
         <trans-unit id="Splash" translate="yes" xml:space="preserve">
           <source>Splash</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Welkom</target>
+          <target state="translated">Splash</target>
         </trans-unit>
         <trans-unit id="SplashFast" translate="yes" xml:space="preserve">
           <source>Splash</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Welkom</target>
+          <target state="translated">Splash</target>
         </trans-unit>
         <trans-unit id="SteelWing" translate="yes" xml:space="preserve">
           <source>Steel Wing</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Stalen Wing</target>
+          <target state="translated">Steel Wing</target>
         </trans-unit>
         <trans-unit id="SteelWingFast" translate="yes" xml:space="preserve">
           <source>Steel Wing</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Stalen Wing</target>
+          <target state="translated">Steel Wing</target>
         </trans-unit>
         <trans-unit id="Stomp" translate="yes" xml:space="preserve">
           <source>Stomp</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Stomp</target>
+          <target state="translated">Stomp</target>
         </trans-unit>
         <trans-unit id="StoneEdge" translate="yes" xml:space="preserve">
           <source>Stone Edge</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Stenen rand</target>
+          <target state="translated">Stone Edge</target>
         </trans-unit>
         <trans-unit id="Struggle" translate="yes" xml:space="preserve">
           <source>Struggle</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Strijd</target>
+          <target state="translated">Struggle</target>
         </trans-unit>
         <trans-unit id="Submission" translate="yes" xml:space="preserve">
           <source>Submission</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Indienen</target>
+          <target state="translated">Submission</target>
         </trans-unit>
         <trans-unit id="SuckerPunchFast" translate="yes" xml:space="preserve">
           <source>Sucker Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Sucker Punch</target>
+          <target state="translated">Sucker Punch</target>
         </trans-unit>
         <trans-unit id="Swift" translate="yes" xml:space="preserve">
           <source>Swift</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Sterrenstraal</target>
+          <target state="translated">Swift</target>
         </trans-unit>
         <trans-unit id="TackleFast" translate="yes" xml:space="preserve">
           <source>Tackle</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Tekkelen</target>
+          <target state="translated">Tackle</target>
         </trans-unit>
         <trans-unit id="Thunder" translate="yes" xml:space="preserve">
           <source>Thunder</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donder</target>
+          <target state="translated">Thunder</target>
         </trans-unit>
         <trans-unit id="Thunderbolt" translate="yes" xml:space="preserve">
           <source>Thunderbolt</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donderstraal</target>
+          <target state="translated">Thunderbolt</target>
         </trans-unit>
         <trans-unit id="ThunderPunch" translate="yes" xml:space="preserve">
           <source>Thunder Punch</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donderslag</target>
+          <target state="translated">Thunder Punch</target>
         </trans-unit>
         <trans-unit id="ThunderShockFast" translate="yes" xml:space="preserve">
           <source>Thunder Shock</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Donderschok</target>
+          <target state="translated">Thunder Shock</target>
         </trans-unit>
         <trans-unit id="Twineedle" translate="yes" xml:space="preserve">
           <source>Twineedle</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Twineedle</target>
+          <target state="translated">Twineedle</target>
         </trans-unit>
         <trans-unit id="Twister" translate="yes" xml:space="preserve">
           <source>Twister</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Draaien</target>
+          <target state="translated">Twister</target>
         </trans-unit>
         <trans-unit id="VineWhipFast" translate="yes" xml:space="preserve">
           <source>Vine Whip</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Klimplant zweep</target>
+          <target state="translated">Vine Whip</target>
         </trans-unit>
         <trans-unit id="WaterGunFast" translate="yes" xml:space="preserve">
           <source>Water Gun</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Waterpistool</target>
+          <target state="translated">Water Gun</target>
         </trans-unit>
         <trans-unit id="WaterGunFastBlastoise" translate="yes" xml:space="preserve">
           <source>Water Gun</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Waterpistool</target>
+          <target state="translated">Water Gun</target>
         </trans-unit>
         <trans-unit id="WaterPulse" translate="yes" xml:space="preserve">
           <source>Water Pulse</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Water Pulse</target>
+          <target state="translated">Water Pulse</target>
         </trans-unit>
         <trans-unit id="WingAttackFast" translate="yes" xml:space="preserve">
           <source>Wing Attack</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Vleugel aanval</target>
+          <target state="translated">Wing Attack</target>
         </trans-unit>
         <trans-unit id="WrapGreen" translate="yes" xml:space="preserve">
           <source>Wrap Green</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Wikkel groen</target>
+          <target state="translated">Wrap Green</target>
         </trans-unit>
         <trans-unit id="WrapPink" translate="yes" xml:space="preserve">
           <source>Wrap Pink</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Wikkel roze</target>
+          <target state="translated">Wrap Pink</target>
         </trans-unit>
         <trans-unit id="XScissor" translate="yes" xml:space="preserve">
           <source>XScissor</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">XScissor</target>
+          <target state="translated">XScissor</target>
         </trans-unit>
         <trans-unit id="ZenHeadbuttFast" translate="yes" xml:space="preserve">
           <source>Zen Headbutt</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Zen hoofdslag</target>
+          <target state="translated">Zen Headbutt</target>
         </trans-unit>
         <trans-unit id="TransformFast" translate="yes" xml:space="preserve">
           <source>Transform</source>
@@ -4260,7 +4262,7 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         </trans-unit>
         <trans-unit id="Psychic" translate="yes" xml:space="preserve">
           <source>Psychic</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Psychisch</target>
+          <target state="translated">Psychic</target>
         </trans-unit>
         <trans-unit id="Rock" translate="yes" xml:space="preserve">
           <source>Rock</source>

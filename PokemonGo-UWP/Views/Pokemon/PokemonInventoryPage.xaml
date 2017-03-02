@@ -153,6 +153,7 @@
                                                    PokemonInventory="{Binding PokemonInventory}"
                                                    PokemonSelectedCommand="{Binding GotoPokemonDetailCommand}"
                                                    PokemonMultipleSelectedCommand="{Binding SelectMultiplePokemonCommand}"
+                                                   SelectionMode="Multiple"
                                                    SortingMode="{Binding CurrentPokemonSortingMode, Mode=TwoWay}" />
                 </PivotItem>
 

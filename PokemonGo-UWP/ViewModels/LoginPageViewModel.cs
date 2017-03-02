@@ -62,6 +62,7 @@ namespace PokemonGo_UWP.ViewModels
                 suspensionState[nameof(Username)] = Username;
                 suspensionState[nameof(Password)] = Password;
             }
+
             await Task.CompletedTask;
         }
 
@@ -138,6 +139,8 @@ namespace PokemonGo_UWP.ViewModels
                     }
                     else
                     {
+                        GameClient.LoggedIn = true;
+
                         // Goto game page
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
@@ -191,6 +194,8 @@ namespace PokemonGo_UWP.ViewModels
                     }
                     else
                     {
+                        GameClient.LoggedIn = true;
+
                         // Goto game page
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }

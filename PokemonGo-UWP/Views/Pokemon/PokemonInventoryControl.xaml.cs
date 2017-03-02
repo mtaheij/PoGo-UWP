@@ -33,6 +33,10 @@ namespace PokemonGo_UWP.Views
             DependencyProperty.Register(nameof(SortingMode), typeof(PokemonSortingModes), typeof(PokemonInventoryControl),
                 new PropertyMetadata(PokemonSortingModes.Combat));
 
+        public static readonly DependencyProperty SelectionModeProperty =
+            DependencyProperty.Register(nameof(SelectionMode), typeof(ListViewSelectionMode), typeof(PokemonInventoryControl),
+                new PropertyMetadata(ListViewSelectionMode.Single));
+
         public ObservableCollection<PokemonDataWrapper> PokemonInventory
         {
             get { return (ObservableCollection<PokemonDataWrapper>)GetValue(PokemonInventoryProperty); }
@@ -57,6 +61,15 @@ namespace PokemonGo_UWP.Views
             set { SetValue(SortingModeProperty, value); }
         }
 
+        public ListViewSelectionMode SelectionMode
+        {
+            get { return (ListViewSelectionMode)GetValue(SelectionModeProperty); }
+            set
+            {
+                SetValue(SelectionModeProperty, value);
+                PokemonInventoryGridView.SelectionMode = value;
+            }
+        }
         #endregion
 
         #region Internal Methods

@@ -364,6 +364,8 @@ namespace PokemonGo_UWP.Views
 
                 ViewModel.AwardedXp.RemoveAt(0);
             }
+            PlayerDataToCurrentExperienceConverter converter = new PlayerDataToCurrentExperienceConverter();
+            ExperienceProgressBar.Value = (Int64)converter.Convert(GameClient.PlayerStats, typeof(int), null, null);
         }
 
         private TimeSpan tick = new TimeSpan(DateTime.Now.Ticks);

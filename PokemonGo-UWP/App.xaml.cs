@@ -343,6 +343,7 @@ namespace PokemonGo_UWP
             if (currentAccessToken == null || forceToMainPage)
             {
                 await NavigationService.NavigateAsync(typeof(MainPage));
+                return;
             }
             else
             {
@@ -354,7 +355,9 @@ namespace PokemonGo_UWP
                 catch (HasherException ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
                 {
                     var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("HashingKeyExpired");
-                    await new MessageDialog(errorMessage).ShowAsyncQueue();
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Show();
+                    //await new MessageDialog(errorMessage).ShowAsyncQueue();
 
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }

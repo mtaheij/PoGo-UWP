@@ -56,6 +56,9 @@ namespace PokemonGo_UWP.Utils
         private static ISettings _clientSettings;
         private static Client _client;
 
+        public static bool IsInitialized { get; private set; }
+        public static bool LoggedIn { get; set; }
+
         /// <summary>
         /// Handles map updates using Niantic's logic.
         /// Ported from <seealso cref="https://github.com/AeonLucid/POGOLib"/>
@@ -525,25 +528,13 @@ namespace PokemonGo_UWP.Utils
                 }
                 else
                 {
-                    await new MessageDialog(e.Message).ShowAsyncQueue();
+                    ConfirmationDialog dialog = new ConfirmationDialog(e.Message);
+                    dialog.Show();
+                    //await new MessageDialog(e.Message).ShowAsyncQueue();
                 }
             }
 
-            // Compare the cacheExpiryDateTime to the last updated settings (if new settings are needed, override the caches ones)
-            bool ForceRefresh = false;
-            DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
-            if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
-            {
-                ForceRefresh = true;
-                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
-            }
-
-            // Before starting we need game settings and templates
-            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1), ForceRefresh);
-
-            // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
-            await UpdateItemTemplates(ForceRefresh);
-
+            IsInitialized = true;
         }
 
         /// <summary>
@@ -651,6 +642,25 @@ namespace PokemonGo_UWP.Utils
         /// </summary>
         public static async Task InitializeDataUpdate()
         {
+            #region GameSettings
+
+            // Compare the cacheExpiryDateTime to the last updated settings (if new settings are needed, override the caches ones)
+            bool ForceRefresh = false;
+            DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
+            if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
+            {
+                ForceRefresh = true;
+                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
+            }
+
+            // Before starting we need game settings and templates
+            GameSetting = await DataCache.GetAsync(nameof(GameSetting), async () => (await _client.Download.GetSettings()).Settings, DateTime.Now.AddMonths(1), ForceRefresh);
+
+            // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
+            await UpdateItemTemplates(ForceRefresh);
+
+            #endregion
+
             #region Compass management
             SettingsService.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
             {
@@ -850,11 +860,16 @@ namespace PokemonGo_UWP.Utils
                     if (currentPokemon == null)
                         continue;
 
-                    await
-                        new MessageDialog(string.Format(
-                            Resources.CodeResources.GetString("EggHatchMessage"),
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(string.Format(
+                        Resources.CodeResources.GetString("EggHatchMessage"),
                             currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
-                            hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
+                            hatchedEggResponse.ExperienceAwarded[i]));
+                    dialog.Show();
+                    //await
+                    //    new MessageDialog(string.Format(
+                    //        Resources.CodeResources.GetString("EggHatchMessage"),
+                    //        currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
+                    //        hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
 
                     BootStrapper.Current.NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
                     {
@@ -1473,6 +1488,16 @@ namespace PokemonGo_UWP.Utils
         public static async Task<UseItemXpBoostResponse> UseXpBoost(ItemId item)
         {
             return await _client.Inventory.UseItemXpBoost();
+        }
+
+        public static async Task<UseItemReviveResponse> UseItemRevive(ItemId item, ulong pokemonId)
+        {
+            return await _client.Inventory.UseItemRevive(item, pokemonId);
+        }
+
+        public static async Task<UseItemPotionResponse> UseItemPotion(ItemId item, ulong pokemonId)
+        {
+            return await _client.Inventory.UseItemPotion(item, pokemonId);
         }
 
         /// <summary>

@@ -1212,6 +1212,8 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (value == null) return null;
+
             var itemId = (value as ItemAward)?.ItemId ?? (value as ItemData)?.ItemId ?? (value as ItemDataWrapper)?.ItemId ?? (value as AppliedItemWrapper).ItemId;
 
             return new Uri($"ms-appx:///Assets/Items/Item_{(int)itemId}.png");  
@@ -1634,9 +1636,32 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (value == null) return String.Empty;
+
             var itemId = (value as ItemAward)?.ItemId ?? ((value as ItemData)?.ItemId ?? ((value as ItemDataWrapper)?.ItemId ?? ((AppliedItemWrapper)value).ItemId));
 
             return Resources.Items.GetString(itemId.ToString());
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class ItemToUpperCaseItemNameConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return String.Empty;
+
+            var itemId = (value as ItemAward)?.ItemId ?? ((value as ItemData)?.ItemId ?? ((value as ItemDataWrapper)?.ItemId ?? ((AppliedItemWrapper)value).ItemId));
+
+            return Resources.Items.GetString(itemId.ToString()).ToUpperInvariant();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -1653,6 +1678,8 @@ namespace PokemonGo_UWP.Utils
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (value == null) return string.Empty;
+
             var itemId = (value as ItemAward)?.ItemId ?? ((value as ItemData)?.ItemId ?? ((value as ItemDataWrapper)?.ItemId ?? ((AppliedItemWrapper)value).ItemId));
 
             return Resources.Items.GetString("D_" + itemId);
@@ -2131,10 +2158,28 @@ namespace PokemonGo_UWP.Utils
             {
                 var egg = (PokemonDataWrapper)value;
                 uri = string.IsNullOrEmpty(egg.EggIncubatorId)
-                    ? "ms-appx:///Assets/Items/Egg.png"
+                    ? EggDistanceImage(egg)
                     : $"ms-appx:///Assets/Items/E_Item_{(int)GameClient.GetIncubatorFromEgg(egg.WrappedData).ItemId}.png";
             }
             return new BitmapImage(new Uri(uri));
+        }
+
+        private string EggDistanceImage(PokemonDataWrapper egg)
+        {
+            string retVal = "ms-appx:///Assets/Items/Egg.png";
+            switch (egg.EggKmWalkedTarget.ToString())
+            {
+                case "2":
+                    retVal = "ms-appx:///Assets/Items/Egg.png";
+                    break;
+                case "5":
+                    retVal = "ms-appx:///Assets/Items/Egg-5.png";
+                    break;
+                case "10":
+                    retVal = "ms-appx:///Assets/Items/Egg-10.png";
+                    break;
+            }
+            return retVal;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

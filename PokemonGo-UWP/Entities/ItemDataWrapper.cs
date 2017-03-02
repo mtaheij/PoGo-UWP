@@ -45,7 +45,15 @@ namespace PokemonGo_UWP.Entities
 
         public ItemId ItemId => _wrappedData.ItemId;
 
-        public int Count => _wrappedData.Count;
+        public int Count
+        {
+            get { return _wrappedData.Count; }
+            set
+            {
+                _wrappedData.Count = value;
+                OnPropertyChanged(nameof(Count));
+            }
+        }
 
         public bool Unseen => _wrappedData.Unseen;
 
