@@ -21,7 +21,9 @@ namespace PokemonGo_UWP.Utils
 
         People = 3,
 
-        Photo = 4
+        Photo = 4,
+
+        Official = 5
 
     }
 

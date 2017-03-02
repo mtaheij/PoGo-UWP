@@ -158,7 +158,7 @@
                                Text="Live Tile Mode"
                                Style="{StaticResource TextSettingsTitle}" />
                 </Grid>
-                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" 
                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
                               Margin="15,0,15,15">
                     <StackPanel Orientation="Horizontal" Height="100">
@@ -190,6 +190,13 @@
                                 Margin="0,0,0,0"
                                 Padding="0">
                             <Image Source="../Assets/LiveTiles/People.gif" />
+                        </Button>
+                        <Button Command="{Binding LiveTileSelectionCommand}" 
+                                CommandParameter="5"
+                                Style="{StaticResource ButtonNoStyle}"
+                                Margin="0,0,10,0"
+                                Padding="0">
+                            <Image Source="/Assets/LiveTiles/Official/Square150x150Logo.scale-200.png" />
                         </Button>
                         <!-- Image cannot load GIF. Use some NUGET? -->
                         <!--
