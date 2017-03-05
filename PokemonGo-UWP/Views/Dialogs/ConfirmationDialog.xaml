@@ -50,7 +50,7 @@
                 <StackPanel Orientation="Vertical">
                     <TextBlock x:Name="MessageTextBlock" 
                            Text="{Binding MessageText, FallbackValue=MessageText}"
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Center" TextWrapping="WrapWholeWords"
                            Margin="10"/>
                     <Button x:Name="OkButton"
                             Command="{Binding OkButtonCommand}"

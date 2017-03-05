@@ -165,6 +165,11 @@ namespace PokemonGo_UWP.Views
         #region PokemonCapture
         private async void GameManagerViewModelOnShowPokemonCaptureScreen(object sender, EventArgs e)
         {
+            if (GameClient.PokemonSettings.Count() == 0)
+            {
+                await GameClient.LoadGameSettings(true);
+            }
+
             if (LocationServiceHelper.Instance.Geoposition != null)
             {
                 await UpdateMap(LocationServiceHelper.Instance.Geoposition.Coordinate.Point);

@@ -10,6 +10,9 @@ namespace PokemonGo_UWP.Views
         public Splash(SplashScreen splashScreen)
         {
             InitializeComponent();
+
+            this.DataContext = this;
+
             AudioUtils.PlaySound(AudioUtils.TITLE);
             Window.Current.SizeChanged += (s, e) => Resize(splashScreen);
             Resize(splashScreen);
@@ -30,5 +33,7 @@ namespace PokemonGo_UWP.Views
             SplashImage.SetValue(Canvas.LeftProperty, splashScreen.ImageLocation.Left);
             ProgressTransform.TranslateY = SplashImage.Height/2;
         }
+
+        public string CurrentVersion => GameClient.CurrentVersion;
     }
 }

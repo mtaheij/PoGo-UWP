@@ -147,7 +147,7 @@ namespace PokemonGo_UWP
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
-                    UpdateLiveTile(e.NewItems.Cast<PokemonData>().OrderByDescending(c => c.Cp).ToList());
+                    UpdateLiveTile(e.NewItems.Cast<PokemonData>().OrderByDescending(c => c.DisplayCp).ToList());
                     break;
 
             }
@@ -187,10 +187,6 @@ namespace PokemonGo_UWP
             if (SettingsService.Instance.IsBatterySaverEnabled)
                 _proximityHelper.EnableDisplayAutoOff(false);
 
-            if (SettingsService.Instance.LiveTileMode == LiveTileModes.Peek)
-            {
-                LiveTileUpdater.EnableNotificationQueue(false);
-            }
             return base.OnSuspendingAsync(s, e, prelaunchActivated);
         }
 
@@ -238,11 +234,6 @@ namespace PokemonGo_UWP
             if (ApiInformation.IsTypePresent("Windows.Phone.Devices.Notification.VibrationDevice"))
             {
                 _vibrationDevice = VibrationDevice.GetDefault();
-            }
-
-            if (SettingsService.Instance.LiveTileMode == LiveTileModes.Peek)
-            {
-                LiveTileUpdater.EnableNotificationQueue(true);
             }
 
             // Check for network status
@@ -402,9 +393,15 @@ namespace PokemonGo_UWP
                         images.AddRange(pokemonList.Select(c => new PokemonDataWrapper(c).ImageFileName));
                     }
 
+                    foreach (ScheduledTileNotification scheduled in LiveTileUpdater.GetScheduledTileNotifications())
+                    {
+                        LiveTileUpdater.RemoveFromSchedule(scheduled);
+                    }
+
                     if (mode != LiveTileModes.Peek)
                     {
                         LiveTileUpdater.EnableNotificationQueue(true);
+
                     }
                     else
                     {
@@ -415,6 +412,16 @@ namespace PokemonGo_UWP
                     switch (mode)
                     {
                         case LiveTileModes.Off:
+                            tile = LiveTileHelper.GetImageTile("Normal");
+                            LiveTileUpdater.Update(new TileNotification(tile.GetXml()));
+                            break;
+                        case LiveTileModes.Official:
+                            tile = LiveTileHelper.GetImageTile("Official");
+                            LiveTileUpdater.Update(new TileNotification(tile.GetXml()));
+                            break;
+                        case LiveTileModes.Transparent:
+                            tile = LiveTileHelper.GetImageTile("Transparent");
+                            LiveTileUpdater.Update(new TileNotification(tile.GetXml()));
                             break;
                         case LiveTileModes.Peek:
                             foreach (PokemonData pokemonData in pokemonList)
@@ -434,14 +441,10 @@ namespace PokemonGo_UWP
                             tile = LiveTileHelper.GetPhotosTile(images);
                             LiveTileUpdater.Update(new TileNotification(tile.GetXml()));
                             break;
-                        case LiveTileModes.Transparent:
-                            tile = LiveTileHelper.GetImageTile("LiveTiles/Transparent/Square44x44Logo.scale-400.png");
-                            LiveTileUpdater.Update(new TileNotification(tile.GetXml()));
-                            break;
                     }
                     if (tile != null)
                     {
-                        //Logger.Write(tile.GetXml().GetXml());
+                        Logger.Write(tile.GetContent());
                     }
 
                 }

@@ -319,7 +319,7 @@ namespace PokemonGo_UWP.ViewModels
             var res = await GameClient.MarkTutorialComplete(new TutorialState[] { TutorialState.PokemonCapture }, LegalCommsCheck, false);
             if (!res.Success)
             {
-                RequestError?.Invoke(this, "Error completing PokemonCapture tutorial");
+                //RequestError?.Invoke(this, "Error completing PokemonCapture tutorial");
             }
 
             PokemonCaptured?.Invoke(this, null);

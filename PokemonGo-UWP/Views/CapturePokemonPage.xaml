@@ -495,7 +495,7 @@
                 <TextBlock x:Uid="SlashSpaceCpTextBlock"
                            Margin="6,0"
                            Foreground="White" />
-                <TextBlock Text="{Binding CurrentEncounter.WildPokemon.PokemonData.Cp}"
+                <TextBlock Text="{Binding CurrentEncounter.WildPokemon.PokemonData.Cp, Converter={StaticResource PokemonCpToDisplayTextConverter}}"
                            Foreground="White" />
             </StackPanel>
         </Border>

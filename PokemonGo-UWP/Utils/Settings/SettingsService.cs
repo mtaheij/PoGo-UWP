@@ -124,7 +124,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsMusicEnabled
 		{
-			get { return Get(false); }
+			get { return Get(true); }
 		    set
 		    {
 		        Set(value);

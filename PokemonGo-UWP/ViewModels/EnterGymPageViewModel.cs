@@ -435,7 +435,7 @@ namespace PokemonGo_UWP.ViewModels
                         case SetPlayerTeamResponse.Types.Status.Failure:
                             break;
                         case SetPlayerTeamResponse.Types.Status.TeamAlreadySet:
-                            PlayerTeamSet?.Invoke(this, TeamColor.Yellow);
+                            PlayerTeamSet?.Invoke(this, GameClient.PlayerData.Team);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -566,9 +566,20 @@ namespace PokemonGo_UWP.ViewModels
                             case FortDeployPokemonResponse.Types.Result.NoResultSet:
                                 break;
                             case FortDeployPokemonResponse.Types.Result.Success:
-                                // Remove the deployed pokemon from the inventory on screen
+                                // Remove the deployed pokemon from the inventory on screen and update the Gymstate
                                 PokemonInventory.Remove(SelectedPokemon);
+                                CurrentGymState = fortDeployResponse.GymState;
+
                                 RaisePropertyChanged(() => PokemonInventory);
+                                RaisePropertyChanged(() => CurrentGymState);
+                                RaisePropertyChanged(() => GymLevel);
+                                RaisePropertyChanged(() => GymPrestigeFull);
+                                RaisePropertyChanged(() => DeployPokemonCommandVisibility);
+                                RaisePropertyChanged(() => TrainCommandVisibility);
+                                RaisePropertyChanged(() => FightCommandVisibility);
+                                RaisePropertyChanged(() => CommandButtonEnabled);
+                                RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
+                                RaisePropertyChanged(() => GymMemberships);
 
                                 // TODO: Implement message informing about success of deployment (Shell needed)
                                 await GameClient.UpdateInventory();

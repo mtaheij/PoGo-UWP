@@ -8,7 +8,7 @@
     <Page.DataContext>
         <viewModels:LoginPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
-    <Grid x:Name="MainGrid">
+   <Grid x:Name="MainGrid">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#a8e090" Offset="0" />
@@ -54,6 +54,14 @@
                     <TextBlock x:Uid="PtcLoginTextBlock"
                                Text="LOGIN WITH PTC ACCOUNT" />
                 </Button>
+                <HyperlinkButton x:Name="PtcRegisterButton"
+                                 HorizontalAlignment="Center"
+                                 Margin="0,0,0,10"
+                                 NavigateUri="https://club.pokemon.com/us/pokemon-trainer-club/sign-up/">
+                    <TextBlock x:Uid="PtcRegisterTextBlock"
+                               Text="Register a PTC account"
+                               />
+                </HyperlinkButton>
                 <Button x:Name="GoogleLoginButton"
                         Style="{StaticResource ButtonSubmitRed}"
                         Margin="15,0,15,15"

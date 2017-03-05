@@ -227,4 +227,46 @@
     <value>TRANSFER </value>
     <comment>Watch out: there is a space behind TRANSFER</comment>
   </data>
+  <data name="EnterNicknameTextBlock.Text" xml:space="preserve">
+    <value>Kies een nickname die andere Trainers voor je zullen gebruiken.</value>
+  </data>
+  <data name="NicknameConfirmationTextBlock.Text" xml:space="preserve">
+    <value>Weet je zeker dat je {0} genoemd wilt worden?</value>
+  </data>
+  <data name="SubmitNicknameCancelButton.Content" xml:space="preserve">
+    <value>NEE</value>
+  </data>
+  <data name="SubmitNicknameOkButton.Content" xml:space="preserve">
+    <value>JA</value>
+  </data>
+  <data name="SubmitNicknameButtonTextBlock.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ChooseYourStyle.Text" xml:space="preserve">
+    <value>Kies je stijl.</value>
+  </data>
+  <data name="LegalAcceptButtonTextBlock.Text" xml:space="preserve">
+    <value>ACCEPTEREN</value>
+  </data>
+  <data name="LegalDeclineButtonTextBlock.Text" xml:space="preserve">
+    <value>AFWIJZEN</value>
+  </data>
+  <data name="MoveInRealWorldTextBlock.Text" xml:space="preserve">
+    <value>Beweeg in de echte wereld om je avatar te verplaatsen</value>
+  </data>
+  <data name="TimeToWalkTextBlock.Text" xml:space="preserve">
+    <value>Tijd om te lopen!</value>
+  </data>
+  <data name="SkipTutorialTextBlock.Text" xml:space="preserve">
+    <value>Overslaan</value>
+  </data>
+  <data name="ConfirmSkipTutorialTextBlock.Text" xml:space="preserve">
+    <value>Weet je zeker dat je de tutorial wilt overslaan? Je kan het niet nogmaals doen!</value>
+  </data>
+  <data name="GymTooFarAwayTextBlock.Text" xml:space="preserve">
+    <value>Deze Gym is te ver weg</value>
+  </data>
+  <data name="SettingsBatterySaverRestartTextBlock.Text" xml:space="preserve">
+    <value>Je moet de app opnieuw opstarten om dit effect te laten hebben</value>
+  </data>
 </root>

@@ -34,7 +34,7 @@
     <value>Google reageert niet, probeer later opnieuw.</value>
   </data>
   <data name="LoadingEncounterText" xml:space="preserve">
-    <value>Laden ontmoeting met {0}</value>
+    <value>Laadt ontmoeting met {0}</value>
   </data>
   <data name="LoggingInText" xml:space="preserve">
     <value>Aanmelden...</value>
@@ -258,9 +258,48 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</value>
     <value>Je kan je buddy Pokémon niet overbrengen!</value>
   </data>
   <data name="TransferMultiplePokemonWarningText" xml:space="preserve">
-    <value>Nadat je overgebracht hebt, kan je dit niet ongedaan maken</value>
+    <value>Nadat je deze overgebracht hebt, kan je dit niet ongedaan maken</value>
   </data>
   <data name="TransferMultiplePokemonWarningTitle" xml:space="preserve">
     <value>Wil je {0} Pokémon overbrengen naar de Professor</value>
+  </data>
+  <data name="DeployPokemonWarningText" xml:space="preserve">
+    <value>Weet je zeker dat je {0} in deze Gym wilt plaatsen? Je krijgt hem pas weer terug wanneer hij uit de Gym wordt gekicked.</value>
+  </data>
+  <data name="CannotDeployBuddy" xml:space="preserve">
+    <value>Je kan je buddy Pokémon niet in een Gym plaatsen</value>
+  </data>
+  <data name="ErrorAlreadyHasPokemonOnFort" xml:space="preserve">
+    <value>Je hebt al een Pokémon in deze Gym geplaatst</value>
+  </data>
+  <data name="ErrorFortDeployLockout" xml:space="preserve">
+    <value>Er is een tijdelijke stop voor het plaatsen van Pokémon in deze Gym</value>
+  </data>
+  <data name="ErrorFortIsFull" xml:space="preserve">
+    <value>Deze Gym is vol</value>
+  </data>
+  <data name="ErrorNotInRange" xml:space="preserve">
+    <value>Deze Gym is te ver weg</value>
+  </data>
+  <data name="ErrorOpposingTeamOwnsFort" xml:space="preserve">
+    <value>Deze Gym is van een ander team</value>
+  </data>
+  <data name="ErrorPlayerHasNoNickname" xml:space="preserve">
+    <value>Je hebt geen nickname gezet</value>
+  </data>
+  <data name="ErrorPokemonNotFullHp" xml:space="preserve">
+    <value>Je Pokémon heeft niet zijn volledige gezondheid (HP)</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Verversen van spel instellingen...</value>
+  </data>
+  <data name="HashingKeyExpired" xml:space="preserve">
+    <value>Je hebt geen permissie om de hashing service te gebruiken. Controleer of je API key correct is.</value>
+  </data>
+  <data name="NewBuddySetSuccessfully" xml:space="preserve">
+    <value>Nieuwe buddy succesvol ingesteld</value>
+  </data>
+  <data name="ErrorPokemonDeployed" xml:space="preserve">
+    <value>Deze Pokémon is in een Gym geplaatst</value>
   </data>
 </root>

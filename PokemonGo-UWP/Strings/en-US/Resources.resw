@@ -397,4 +397,13 @@
   <data name="SettingsBatterySaverRestartTextBlock.Text" xml:space="preserve">
     <value>You must restart the App to take effect.</value>
   </data>
+  <data name="PtcRegisterTextBlock.Text" xml:space="preserve">
+    <value>Register a PTC account</value>
+  </data>
+  <data name="RememberToBeAlertTextBlock1.Text" xml:space="preserve">
+    <value>Remember to be alert at all times.</value>
+  </data>
+  <data name="RememberToBeAlertTextBlock2.Text" xml:space="preserve">
+    <value>Stay aware of your surroundings.</value>
+  </data>
 </root>

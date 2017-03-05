@@ -447,10 +447,6 @@ namespace PokemonGo_UWP.ViewModels
                         PokemonInventory.Remove(affectingPokemon);
                         var affectedPokemon = new PokemonDataWrapper(affectingPokemon.WrappedData);
                         affectedPokemon.SetStamina(res.Stamina);
-                        if (affectedPokemon.Stamina < affectedPokemon.StaminaMax)
-                        {
-                            PokemonInventory.Add(affectedPokemon);
-                        }
                         PokemonInventory.SortBySortingmode(CurrentPokemonSortingMode);
 
                         CurrentUseItem.Count--;

@@ -2649,4 +2649,21 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
     }
+
+    public class PokemonCpToDisplayTextConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if ((int)value == -1) return "???";
+            return value.ToString();
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

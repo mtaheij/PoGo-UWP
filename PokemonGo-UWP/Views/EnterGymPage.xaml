@@ -94,7 +94,7 @@
                 <Border Background="#88333333" CornerRadius="5" >
                     <TextBlock x:Name="GymXP" Margin="16,2,10,2" FontSize="16" Opacity="0.8"
                                Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}">
-                        <Run Text="{Binding CurrentGym.GymPoints}"></Run>
+                        <Run Text="{Binding CurrentGymState.FortData.GymPoints}"></Run>
                         <Run Text=" / "></Run>
                         <Run Text="{Binding GymPrestigeFull}"/>
                     </TextBlock>

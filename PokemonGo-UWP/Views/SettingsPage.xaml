@@ -167,7 +167,7 @@
                                 Style="{StaticResource ButtonNoStyle}"
                                 Margin="0,0,10,0"
                                 Padding="0">
-                            <Image Source="/Assets/LiveTiles/Normal/Square150x150Logo.scale-200.png" />
+                            <Image Source="/Assets/LiveTiles/Normal/Square150x150Logo.png" />
                         </Button>
                         <Button Command="{Binding LiveTileSelectionCommand}" 
                                 CommandParameter="1"
@@ -175,28 +175,28 @@
                                 Background="#11000000"
                                 Margin="0,0,10,0"
                                 Padding="0">
-                            <Image Source="/Assets/LiveTiles/Transparent/Square150x150Logo.scale-200.png" />
+                            <Image Source="/Assets/LiveTiles/Transparent/Square150x150Logo.png" />
                         </Button>
                         <Button Command="{Binding LiveTileSelectionCommand}" 
                                 CommandParameter="2"
                                 Style="{StaticResource ButtonNoStyle}"
                                 Margin="0,0,10,0"
                                 Padding="0">
-                            <Image Source="../Assets/LiveTiles/Peek.gif" />
+                            <Image x:Name="ImagePeek" Source="/Assets/LiveTiles/Peek.gif" />
                         </Button>
                         <Button Command="{Binding LiveTileSelectionCommand}" 
                                 CommandParameter="3"
                                 Style="{StaticResource ButtonNoStyle}"
-                                Margin="0,0,0,0"
+                                Margin="0,0,10,0"
                                 Padding="0">
-                            <Image Source="../Assets/LiveTiles/People.gif" />
+                            <Image x:Name="ImagePeople" Source="/Assets/LiveTiles/People.gif" />
                         </Button>
                         <Button Command="{Binding LiveTileSelectionCommand}" 
                                 CommandParameter="5"
                                 Style="{StaticResource ButtonNoStyle}"
-                                Margin="0,0,10,0"
+                                Margin="0,0,0,0"
                                 Padding="0">
-                            <Image Source="/Assets/LiveTiles/Official/Square150x150Logo.scale-200.png" />
+                            <Image Source="/Assets/LiveTiles/Official/Square150x150Logo.png" />
                         </Button>
                         <!-- Image cannot load GIF. Use some NUGET? -->
                         <!--

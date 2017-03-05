@@ -635,6 +635,10 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
           <source>This pokémon is deployed to a Gym.</source>
           <target state="translated">Deze Pokémon is in een Gym geplaatst</target>
         </trans-unit>
+        <trans-unit id="RefreshingGameSettings" translate="yes" xml:space="preserve">
+          <source>Getting game settings</source>
+          <target state="new">Getting game settings</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -1016,6 +1020,18 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
         <trans-unit id="SettingsBatterySaverRestartTextBlock.Text" translate="yes" xml:space="preserve">
           <source>You must restart the App to take effect.</source>
           <target state="translated">Je moet de app opnieuw opstarten om dit effect te laten hebben</target>
+        </trans-unit>
+        <trans-unit id="PtcRegisterTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Register a PTC account</source>
+          <target state="new">Register a PTC account</target>
+        </trans-unit>
+        <trans-unit id="RememberToBeAlertTextBlock1.Text" translate="yes" xml:space="preserve">
+          <source>Remember to be alert at all times.</source>
+          <target state="new">Remember to be alert at all times.</target>
+        </trans-unit>
+        <trans-unit id="RememberToBeAlertTextBlock2.Text" translate="yes" xml:space="preserve">
+          <source>Stay aware of your surroundings.</source>
+          <target state="new">Stay aware of your surroundings.</target>
         </trans-unit>
       </group>
     </body>

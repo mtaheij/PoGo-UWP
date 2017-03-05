@@ -563,8 +563,11 @@ namespace PokemonGo_UWP.Utils
             // Update other data if login worked
             if (_client.AccessToken == null) return false;
             SettingsService.Instance.LastLoginService = AuthType.Ptc;
-            SettingsService.Instance.UserCredentials =
-                new PasswordCredential(nameof(SettingsService.Instance.UserCredentials), username, password);
+            SettingsService.Instance.UserCredentials = new PasswordCredential(nameof(SettingsService.Instance.UserCredentials), username, password);
+
+            // Get the game settings, so we can start with the tutorial, which needs info on the starter pokemons
+            await LoadGameSettings();
+
             // Return true if login worked, meaning that we have a token
             return true;
         }
@@ -596,8 +599,11 @@ namespace PokemonGo_UWP.Utils
             // Update other data if login worked
             if (_client.AccessToken == null) return false;
             SettingsService.Instance.LastLoginService = AuthType.Google;
-            SettingsService.Instance.UserCredentials =
-                new PasswordCredential(nameof(SettingsService.Instance.UserCredentials), email, password);
+            SettingsService.Instance.UserCredentials = new PasswordCredential(nameof(SettingsService.Instance.UserCredentials), email, password);
+
+            // Get the game settings, so we can start with the tutorial, which needs info on the starter pokemons
+            await LoadGameSettings();
+
             // Return true if login worked, meaning that we have a token
             return true;
         }
@@ -627,25 +633,15 @@ namespace PokemonGo_UWP.Utils
         public static event EventHandler<AppliedItemWrapper> OnAppliedItemExpired;
         public static event EventHandler<AppliedItemWrapper> OnAppliedItemStarted;
 
-        #region Compass Stuff
-        /// <summary>
-        /// We fire this event when the current compass position changes
-        /// </summary>
-        public static event EventHandler<CompassReading> HeadingUpdated;
-        private static void compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
+        #region GameSettings
+        private static Task LoadGameSettingsAsync()
         {
-            HeadingUpdated?.Invoke(sender, args.Reading);
+            return Task.Run(() => LoadGameSettings());
         }
-        #endregion
-        /// <summary>
-        ///     Starts the timer to update map objects and the handler to update position
-        /// </summary>
-        public static async Task InitializeDataUpdate()
-        {
-            #region GameSettings
 
+        public static async Task LoadGameSettings(bool ForceRefresh = false)
+        {
             // Compare the cacheExpiryDateTime to the last updated settings (if new settings are needed, override the caches ones)
-            bool ForceRefresh = false;
             DateTime cacheExpiryDateTime = await DataCache.GetExpiryDate<GlobalSettings>(nameof(GameSetting));
             if (VersionInfo.Instance.settings_updated.AddMonths(1) > cacheExpiryDateTime)
             {
@@ -658,8 +654,27 @@ namespace PokemonGo_UWP.Utils
 
             // The itemtemplates can be upated since a new release, how can we detect this to enable a force refresh here?
             await UpdateItemTemplates(ForceRefresh);
+        }
+        #endregion
 
-            #endregion
+        #region Compass Stuff
+        /// <summary>
+        /// We fire this event when the current compass position changes
+        /// </summary>
+        public static event EventHandler<CompassReading> HeadingUpdated;
+        private static void compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
+        {
+            HeadingUpdated?.Invoke(sender, args.Reading);
+        }
+        #endregion
+
+        /// <summary>
+        ///     Starts the timer to update map objects and the handler to update position
+        /// </summary>
+        public static async Task InitializeDataUpdate()
+        {
+            // Get the game settings, they contain information about pokemons, moves, and a lot more...
+            await LoadGameSettings();
 
             #region Compass management
             SettingsService.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
@@ -759,6 +774,8 @@ namespace PokemonGo_UWP.Utils
         /// <param name="isEnabled"></param>
         public static async void ToggleUpdateTimer(bool isEnabled = true)
         {
+            if (_heartbeat == null) return;
+
             Logger.Write($"Called ToggleUpdateTimer({isEnabled})");
             if (isEnabled)
                 await _heartbeat.StartDispatcher();
@@ -1251,6 +1268,13 @@ namespace PokemonGo_UWP.Utils
         /// <returns></returns>
         public static PokemonSettings GetExtraDataForPokemon(PokemonId pokemonId)
         {
+            // In case we have not retrieved the game settings yet, do it now.
+            if (PokemonSettings.Count() == 0)
+            {
+                Busy.SetBusy(true, Resources.CodeResources.GetString("RefreshingGameSettings"));
+                LoadGameSettingsAsync().GetAwaiter().GetResult();
+                Busy.SetBusy(false);
+            }
             return PokemonSettings.First(pokemon => pokemon.PokemonId == pokemonId);
         }
 

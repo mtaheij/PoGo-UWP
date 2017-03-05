@@ -19,7 +19,7 @@
     <value>Wierook met een mysterieuze geur die wilde Pokémon voor 30 minuten naar je locatie lokt</value>
   </data>
   <data name="D_ItemIncenseFloral" xml:space="preserve">
-    <value>Wierook met een mysterieuze geur die wilde Pokémon naar je locatie voor 30 minuten lokt</value>
+    <value>Incense met een mysterieuze geur die wilde Pokémon voor 30 minuten naar je locatie lokt</value>
   </data>
   <data name="D_ItemIncenseOrdinary" xml:space="preserve">
     <value>Wierook met een mysterieuze geur die wilde Pokémon voor 30 minuten naar je locatie lokt</value>
@@ -60,16 +60,16 @@
     <value>Hyper Potion</value>
   </data>
   <data name="ItemIncenseCool" xml:space="preserve">
-    <value>Wierook Cool</value>
+    <value>Incense Cool</value>
   </data>
   <data name="ItemIncenseFloral" xml:space="preserve">
     <value>Wierook Bloem</value>
   </data>
   <data name="ItemIncenseOrdinary" xml:space="preserve">
-    <value>Gewone wierook</value>
+    <value>Gewone incense</value>
   </data>
   <data name="ItemIncenseSpicy" xml:space="preserve">
-    <value>Kruidige wierook</value>
+    <value>Kruidige incense</value>
   </data>
   <data name="ItemIncubatorBasic" xml:space="preserve">
     <value>Incubator Basic</value>
@@ -78,10 +78,10 @@
     <value>Incubator Onbeperkt</value>
   </data>
   <data name="ItemItemStorageUpgrade" xml:space="preserve">
-    <value>Object opslag Upgrade</value>
+    <value>Itemopslag Upgrade</value>
   </data>
   <data name="ItemLuckyEgg" xml:space="preserve">
-    <value>Gelukkige ei</value>
+    <value>Geluks ei</value>
   </data>
   <data name="ItemMasterBall" xml:space="preserve">
     <value>Master bal</value>
@@ -111,7 +111,7 @@
     <value>Razz Berry</value>
   </data>
   <data name="ItemRevive" xml:space="preserve">
-    <value>Doen herleven</value>
+    <value>Revive</value>
   </data>
   <data name="ItemSpecialCamera" xml:space="preserve">
     <value>Speciale Camera</value>
@@ -120,7 +120,7 @@
     <value>Super Potion</value>
   </data>
   <data name="ItemTroyDisk" xml:space="preserve">
-    <value>Troy schijf</value>
+    <value>Troy disc</value>
   </data>
   <data name="ItemUltraBall" xml:space="preserve">
     <value>Ultra bal</value>
@@ -132,12 +132,75 @@
     <value>Wepar Berry</value>
   </data>
   <data name="ItemXAttack" xml:space="preserve">
-    <value>X aanval</value>
+    <value>X Attack</value>
   </data>
   <data name="ItemXDefense" xml:space="preserve">
     <value>X Defense</value>
   </data>
   <data name="ItemXMiracle" xml:space="preserve">
-    <value>X wonder</value>
+    <value>X Miracle</value>
+  </data>
+  <data name="D_ItemLuckyEgg" xml:space="preserve">
+    <value>Een geluksei dat gevuld is met blijheid! Geeft je gedurende 30 minuten dubbele XP</value>
+  </data>
+  <data name="D_ItemRazzBerry" xml:space="preserve">
+    <value>Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</value>
+  </data>
+  <data name="D_ItemSpecialCamera" xml:space="preserve">
+    <value>Als je een Pokémon in het wild tegenkomt, kan je deze camera gebruiken om er een foto van te maken</value>
+  </data>
+  <data name="D_ItemSuperPotion" xml:space="preserve">
+    <value>Een spray type geneesmiddel voor het behandelen van wonden. Het herstelt de HP van een Pokémon met 50 punten.</value>
+  </data>
+  <data name="D_ItemTroyDisk" xml:space="preserve">
+    <value>Een module dat Pokémon voor 30 minuten aantrekt bij een Pokéstop. Van het effect kunnen ook andere mensen genieten.</value>
+  </data>
+  <data name="D_ItemUnknown" xml:space="preserve">
+    <value>Dit item is onbekend en kan in de toekomst worden toegevoegd.</value>
+  </data>
+  <data name="D_ItemBlukBerry" xml:space="preserve">
+    <value>Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</value>
+  </data>
+  <data name="D_ItemNanabBerry" xml:space="preserve">
+    <value>Voer dit aan een Pokémon om hem te kalmeren, maakt hem minder springerig</value>
+  </data>
+  <data name="D_ItemPinapBerry" xml:space="preserve">
+    <value>Voer dit aan een Pokémon om hem meer candy te laten vallen</value>
+  </data>
+  <data name="D_ItemWeparBerry" xml:space="preserve">
+    <value>Voer dit aan een Pokémon en het zal makkelijker zijn om hem te vangen bij je volgende worp</value>
+  </data>
+  <data name="D_ItemHyperPotion" xml:space="preserve">
+    <value>Een spray type geneesmiddel voor het behandelen van wonden. Het herstelt de HP van een Pokémon met 200 punten.</value>
+  </data>
+  <data name="D_ItemDragonScale" xml:space="preserve">
+    <value>Een evolutie item dat nodig is om een Seadra in een Kingdra te laten evolueren</value>
+  </data>
+  <data name="D_ItemKingsRock" xml:space="preserve">
+    <value>Een evolutie item dat nodig is om een Poliwhirl in een Politoed of een Slowpoke in een Slowking te laten evolueren</value>
+  </data>
+  <data name="D_ItemMetalCoat" xml:space="preserve">
+    <value>Een evolutie item dat nodig is om een Onix in een Steelx of een Scyther in een Scizor te laten evolueren</value>
+  </data>
+  <data name="D_ItemSunStone" xml:space="preserve">
+    <value>Een evolutie item dat nodig is om een Gloom in een Bellossom of een Sunkern in een Sunflora te laten evolueren</value>
+  </data>
+  <data name="D_ItemUpGrade" xml:space="preserve">
+    <value>Een evolutie item dat nodig is om een Porygon in een Porygon2 te laten evolueren</value>
+  </data>
+  <data name="ItemDragonScale" xml:space="preserve">
+    <value>Dragon Scale</value>
+  </data>
+  <data name="ItemKingsRock" xml:space="preserve">
+    <value>King's Rock</value>
+  </data>
+  <data name="ItemMetalCoat" xml:space="preserve">
+    <value>Metal Coat</value>
+  </data>
+  <data name="ItemSunStone" xml:space="preserve">
+    <value>Sun Stone</value>
+  </data>
+  <data name="ItemUpGrade" xml:space="preserve">
+    <value>Up-Grade</value>
   </data>
 </root>

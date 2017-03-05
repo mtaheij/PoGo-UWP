@@ -638,6 +638,10 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>This pokémon is deployed to a Gym.</source>
           <target state="new">This pokémon is deployed to a Gym.</target>
         </trans-unit>
+        <trans-unit id="RefreshingGameSettings" translate="yes" xml:space="preserve">
+          <source>Getting game settings</source>
+          <target state="new">Getting game settings</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -1022,6 +1026,18 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
         <trans-unit id="SettingsBatterySaverRestartTextBlock.Text" translate="yes" xml:space="preserve">
           <source>You must restart the App to take effect.</source>
           <target state="new">You must restart the App to take effect.</target>
+        </trans-unit>
+        <trans-unit id="PtcRegisterTextBlock.Text" translate="yes" xml:space="preserve">
+          <source>Register a PTC account</source>
+          <target state="new">Register a PTC account</target>
+        </trans-unit>
+        <trans-unit id="RememberToBeAlertTextBlock1.Text" translate="yes" xml:space="preserve">
+          <source>Remember to be alert at all times.</source>
+          <target state="new">Remember to be alert at all times.</target>
+        </trans-unit>
+        <trans-unit id="RememberToBeAlertTextBlock2.Text" translate="yes" xml:space="preserve">
+          <source>Stay aware of your surroundings.</source>
+          <target state="new">Stay aware of your surroundings.</target>
         </trans-unit>
       </group>
     </body>

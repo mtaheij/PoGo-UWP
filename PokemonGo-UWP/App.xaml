@@ -112,6 +112,7 @@
             <utils:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <utils:PokemonLastHoursVisibiltyConverter x:Key="PokemonLastHoursVisibiltyConverter" />
             <utils:IsIncenseActiveToPlayerIconConverter x:Key="IsIncenseActiveToPlayerIconConverter" />
+            <utils:PokemonCpToDisplayTextConverter x:Key="PokemonCpToDisplayTextConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>

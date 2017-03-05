@@ -90,7 +90,7 @@ namespace PokemonGo_UWP.ViewModels
                         {
                             PokemonData = new POGOProtos.Data.PokemonData()
                             {
-                                DisplayCp = -1
+                                Cp = -1
                             }
                         }
                     };

@@ -413,4 +413,7 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="ErrorPokemonDeployed" xml:space="preserve">
     <value>This pokémon is deployed to a Gym.</value>
   </data>
+  <data name="RefreshingGameSettings" xml:space="preserve">
+    <value>Getting game settings</value>
+  </data>
 </root>

@@ -104,7 +104,7 @@ namespace PokemonGo_UWP.ViewModels
             set
             {
                 SettingsService.Instance.LiveTileMode = value;
-                App.UpdateLiveTile(GameClient.PokemonsInventory.OrderByDescending(c => c.Cp).ToList());
+                App.UpdateLiveTile(GameClient.PokemonsInventory.OrderByDescending(c => c.DisplayCp).ToList());
             }
         }
         
