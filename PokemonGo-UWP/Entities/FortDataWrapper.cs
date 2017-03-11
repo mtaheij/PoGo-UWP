@@ -2,9 +2,6 @@
 using System.ComponentModel;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.Storage;
-using Google.Protobuf;
-using PokemonGo.RocketAPI.Extensions;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Utils.Game;
 using PokemonGo_UWP.Utils.Helpers;
@@ -16,6 +13,7 @@ using Template10.Mvvm;
 using Google.Protobuf.Collections;
 using Newtonsoft.Json;
 using POGOProtos.Inventory.Item;
+using PokemonGo_UWP.Utils.Extensions;
 
 namespace PokemonGo_UWP.Entities
 {    

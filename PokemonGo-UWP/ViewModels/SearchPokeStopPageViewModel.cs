@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
-using PokemonGo.RocketAPI;
-using PokemonGo.RocketAPI.Extensions;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
@@ -15,6 +13,8 @@ using POGOProtos.Networking.Responses;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Google.Protobuf;
+using POGOLib.Official.Logging;
+using PokemonGo_UWP.Utils.Extensions;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -63,7 +63,7 @@ namespace PokemonGo_UWP.ViewModels
                 Busy.SetBusy(true, "Loading Pokestop");
                 CurrentPokestop = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentPokestop)];
                 NavigationHelper.NavigationState.Remove(nameof(CurrentPokestop));
-                Logger.Write($"Searching {CurrentPokestop.Id}");
+                Logger.Info($"Searching {CurrentPokestop.Id}");
                 CurrentPokestopInfo =
                     await GameClient.GetFort(CurrentPokestop.Id, CurrentPokestop.Latitude, CurrentPokestop.Longitude);
                 Busy.SetBusy(false);
@@ -333,7 +333,7 @@ namespace PokemonGo_UWP.ViewModels
             _searchCurrentPokestop = new DelegateCommand(async () =>
             {
                 Busy.SetBusy(true, "Searching PokeStop");
-                Logger.Write($"Searching {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
+                Logger.Info($"Searching {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
                 CurrentSearchResponse =
                     await GameClient.SearchFort(CurrentPokestop.Id, CurrentPokestop.Latitude, CurrentPokestop.Longitude);
                 Busy.SetBusy(false);
@@ -343,7 +343,7 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                     case FortSearchResponse.Types.Result.Success:
                         // Success, we play the animation and update inventory
-                        Logger.Write("Searching Pokestop success");
+                        Logger.Info("Searching Pokestop success");
                         AwardedItems.Clear();                        
                         foreach (var tmpAwardedItem in AggregateItems(CurrentSearchResponse.ItemsAwarded))
                         {                            
@@ -351,17 +351,17 @@ namespace PokemonGo_UWP.ViewModels
                         }
                         CurrentPokestop.UpdateCooldown(CurrentSearchResponse.CooldownCompleteTimestampMs);
                         SearchSuccess?.Invoke(this, null);
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
                         GameClient.AddGameXP(CurrentSearchResponse.ExperienceAwarded);
                         break;
                     case FortSearchResponse.Types.Result.OutOfRange:
                         // PokeStop can't be used because it's out of range, there's nothing that we can do
-                        Logger.Write("Searching Pokestop out of range");
+                        Logger.Info("Searching Pokestop out of range");
                         SearchOutOfRange?.Invoke(this, null);
                         break;
                     case FortSearchResponse.Types.Result.InCooldownPeriod:
                         // PokeStop can't be used because it's on cooldown, there's nothing that we can do
-                        Logger.Write("Searching Pokestop in cooldown");
+                        Logger.Info("Searching Pokestop in cooldown");
                         SearchInCooldown?.Invoke(this, null);
                         break;
                     case FortSearchResponse.Types.Result.InventoryFull:
@@ -419,7 +419,7 @@ namespace PokemonGo_UWP.ViewModels
             _showFortModifierDetails = new DelegateCommand(async() =>
             {
                 Busy.SetBusy(true, "Getting Pokestop module details");
-                Logger.Write($"showing modifier details for {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
+                Logger.Info($"showing modifier details for {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
                 CurrentPokestopInfo =
                     await GameClient.GetFort(CurrentPokestop.Id, CurrentPokestop.Latitude, CurrentPokestop.Longitude);
                 ShowModifierDetails?.Invoke(this, null);
@@ -432,7 +432,7 @@ namespace PokemonGo_UWP.ViewModels
             _hideFortModifierDetails = new DelegateCommand(async () =>
             {
                 Busy.SetBusy(true, String.Empty);
-                Logger.Write($"hiding modifier details for {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
+                Logger.Info($"hiding modifier details for {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
 				CurrentPokestopInfo =
 					await GameClient.GetFort(CurrentPokestop.Id, CurrentPokestop.Latitude, CurrentPokestop.Longitude);
 				HideModifierDetails?.Invoke(this, null);
@@ -448,7 +448,7 @@ namespace PokemonGo_UWP.ViewModels
             _addFortModifier = new DelegateCommand(async () =>
             {
                 Busy.SetBusy(true, "Adding module to PokeStop");
-                Logger.Write($"Adding modifier {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
+                Logger.Info($"Adding modifier {CurrentPokestopInfo.Name} [ID = {CurrentPokestop.Id}]");
                 CurrentAddModifierResponse =
                     await GameClient.AddFortModifier(CurrentPokestop.Id, SelectedModifierItem.ItemId);
                 Busy.SetBusy(false);
@@ -458,24 +458,24 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                     case AddFortModifierResponse.Types.Result.Success:
                         // Success, we play the animation
-                        Logger.Write("Adding Pokestop modifier success");
+                        Logger.Info("Adding Pokestop modifier success");
                         AddModifierSuccess?.Invoke(this, null);
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
 						RaisePropertyChanged(() => IsPokestopLured);
                         break;
                     case AddFortModifierResponse.Types.Result.TooFarAway:
                         // PokeStop can't be modified because it's too far away, there's nothing that we can do
-                        Logger.Write("Adding Pokestop modifier too far away");
+                        Logger.Info("Adding Pokestop modifier too far away");
                         AddModifierTooFarAway?.Invoke(this, null);
                         break;
                     case AddFortModifierResponse.Types.Result.FortAlreadyHasModifier:
                         // PokeStop can't be modified because it already has a modifier, there's nothing that we can do
-                        Logger.Write("Adding Pokestop already has modifier");
+                        Logger.Info("Adding Pokestop already has modifier");
                         AddModifierAlreadyHasModifier?.Invoke(this, null);
                         break;
                     case AddFortModifierResponse.Types.Result.NoItemInInventory:
                         // PokeStop can't be modified because there is no suitable Items in the player's inventory, there's nothing that we can do
-                        Logger.Write("Adding Pokestop modifier, but there is no item in the player's inventory");
+                        Logger.Info("Adding Pokestop modifier, but there is no item in the player's inventory");
                         AddModifierNoItemInInventory?.Invoke(this, null);
                         break;
                     default:

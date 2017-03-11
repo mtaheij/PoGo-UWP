@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PokemonGo.RocketAPI;
 using PokemonGo_UWP.Utils;
 using Template10.Common;
 using PokemonGo_UWP.Utils.Helpers;

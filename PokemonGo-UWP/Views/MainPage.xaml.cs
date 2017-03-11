@@ -19,7 +19,10 @@ namespace PokemonGo_UWP.Views
             // Handlers for virtual keyboard on or off
             InputPane.GetForCurrentView().Showing += _virtualKeyboardOn;
             InputPane.GetForCurrentView().Hiding += _virtualKeyboardOff;
+
+            ViewModel.InvalidLogin += ViewModelOnInvalidLogin;
         }
+
         private void _virtualKeyboardOn(object sender, object e)
         {
             MainGrid.RowDefinitions[0].Height = new GridLength(0.0);
@@ -36,6 +39,16 @@ namespace PokemonGo_UWP.Views
                 GoogleLoginButton.Focus(FocusState.Programmatic);
             else
                 PtcLoginButton.Focus(FocusState.Programmatic);
+        }
+
+        private void ViewModelOnInvalidLogin(object sender, string e)
+        {
+            LoginPasswordPasswordBox.Password = String.Empty;
+            ErrorMessageText.Text = e;
+            ErrorMessageText.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
+
+            ShowErrorMessageStoryboard.Completed += (ss, ee) => { HideErrorMessageStoryboard.Begin(); };
+            ShowErrorMessageStoryboard.Begin();
         }
     }
 }

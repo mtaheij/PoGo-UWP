@@ -13,7 +13,6 @@ using PokemonGo_UWP.Controls;
 using POGOProtos.Networking.Responses;
 using System;
 using POGOProtos.Inventory;
-using PokemonGo.RocketAPI.Extensions;
 using POGOProtos.Data;
 using PokemonGo_UWP.Utils.Extensions;
 using POGOProtos.Inventory.Item;
@@ -410,7 +409,7 @@ namespace PokemonGo_UWP.ViewModels
                             RaisePropertyChanged(nameof(SelectedPokemon));
                             RaisePropertyChanged(nameof(CurrentUseItem));
                         }
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
                         await GameClient.UpdateProfile();
                         break;
                     case UseItemPotionResponse.Types.Result.ErrorDeployedToFort:
@@ -458,7 +457,7 @@ namespace PokemonGo_UWP.ViewModels
                             RaisePropertyChanged(nameof(SelectedPokemon));
                             RaisePropertyChanged(nameof(CurrentUseItem));
                         }
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
                         await GameClient.UpdateProfile();
                         break;
                     case UseItemReviveResponse.Types.Result.ErrorDeployedToFort:

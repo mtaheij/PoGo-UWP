@@ -8,7 +8,7 @@ using Template10.Mvvm;
 using System.ComponentModel;
 using POGOProtos.Inventory;
 using System;
-using PokemonGo.RocketAPI.Extensions;
+using PokemonGo_UWP.Utils.Extensions;
 
 namespace PokemonGo_UWP.Entities
 {

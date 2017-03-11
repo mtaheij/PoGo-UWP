@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using POGOProtos.Networking.Responses;
-using PokemonGo.RocketAPI;
 using PokemonGo_UWP.Utils;
 using System;
 using System.Collections.Generic;

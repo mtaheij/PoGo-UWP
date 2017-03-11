@@ -1,6 +1,6 @@
-﻿using System;
+﻿using POGOLib.Official.Logging;
+using System;
 using System.Threading;
-using PokemonGo.RocketAPI;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -72,7 +72,7 @@ namespace PokemonGo_UWP.Utils
                 }
 
                 if (exception != null)
-                    Logger.Write(exception.Message);
+                    Logger.Error(exception.Message);
             };
         }
     }

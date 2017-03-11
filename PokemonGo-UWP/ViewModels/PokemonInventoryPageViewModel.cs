@@ -401,7 +401,7 @@ namespace PokemonGo_UWP.ViewModels
                             RaisePropertyChanged(() => PokemonInventory);
 
                             // TODO: Implement message informing about success of transfer (Shell needed)
-                            await GameClient.UpdateInventory();
+                            GameClient.UpdateInventory();
                             await GameClient.UpdatePlayerStats();
 
                             // Reset to default screen

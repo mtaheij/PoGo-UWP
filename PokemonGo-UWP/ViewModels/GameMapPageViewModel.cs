@@ -9,7 +9,6 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
-using PokemonGo.RocketAPI;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
@@ -25,6 +24,7 @@ using Google.Protobuf;
 using PokemonGo_UWP.Controls;
 using POGOProtos.Inventory;
 using PokemonGo_UWP.Utils.Game;
+using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -110,7 +110,7 @@ namespace PokemonGo_UWP.ViewModels
                 RaisePropertyChanged(() => PlayerProfile);
                 RaisePropertyChanged(() => PlayerStats);
                 // Restarting update service
-                await GameClient.InitializeClient();
+                //await GameClient.InitializeSession();
                 await StartGpsDataService();
                 GameClient.ToggleUpdateTimer();
                 return;
@@ -321,7 +321,7 @@ namespace PokemonGo_UWP.ViewModels
                         await GameClient.InitializeDataUpdate();
                         break;
                     default:
-                        Logger.Write("Error during GPS activation");
+                        Logger.Error("Error during GPS activation");
                         await
                             new MessageDialog(Resources.CodeResources.GetString("NoGpsPermissionsText")).ShowAsyncQueue();
                         BootStrapper.Current.Exit();

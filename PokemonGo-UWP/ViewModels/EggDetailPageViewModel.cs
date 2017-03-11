@@ -4,13 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
-using PokemonGo.RocketAPI;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using POGOProtos.Inventory;
 using POGOProtos.Networking.Responses;
 using Template10.Mvvm;
+using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -111,11 +111,11 @@ namespace PokemonGo_UWP.ViewModels
                 switch (response.Result)
                 {
                     case UseItemEggIncubatorResponse.Types.Result.Success:
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
                         Load(SelectedEgg.Id);
                         break;
                     default:
-                        Logger.Write($"Error using {incubator.Id} on {SelectedEgg.Id}");
+                        Logger.Info($"Error using {incubator.Id} on {SelectedEgg.Id}");
                         break;
                 }
             }, incubator => true));

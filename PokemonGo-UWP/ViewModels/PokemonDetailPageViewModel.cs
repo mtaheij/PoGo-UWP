@@ -307,7 +307,7 @@ namespace PokemonGo_UWP.ViewModels
                               break;
                           case ReleasePokemonResponse.Types.Result.Success:
                               // TODO: Implement message informing about success of transfer (Shell needed)
-                              await GameClient.UpdateInventory();
+                              //GameClient.UpdateInventory();
                               await GameClient.UpdatePlayerStats();
                               NavigationService.GoBack();
                               break;
@@ -547,7 +547,7 @@ namespace PokemonGo_UWP.ViewModels
                                 RaisePropertyChanged(nameof(SelectedPokemon));
                                 RaisePropertyChanged(nameof(StardustAmount));
                             }
-                            await GameClient.UpdateInventory();
+                            //GameClient.UpdateInventory();
                             await GameClient.UpdateProfile();
                             break;
                         case UpgradePokemonResponse.Types.Result.ErrorPokemonNotFound:
@@ -620,7 +620,7 @@ namespace PokemonGo_UWP.ViewModels
                         case EvolvePokemonResponse.Types.Result.Success:
                             EvolvedPokemon = new PokemonDataWrapper(res.EvolvedPokemonData);
                             PokemonEvolved?.Invoke(this, null);
-                            await GameClient.UpdateInventory();
+                            //GameClient.UpdateInventory();
                             await GameClient.UpdateProfile();
                             GameClient.AddGameXP(res.ExperienceAwarded);
                             break;

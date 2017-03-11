@@ -53,7 +53,6 @@ namespace PokemonGo.RocketAPI
         internal AuthTicket AuthTicket => AccessToken?.AuthTicket;
         public AccessToken AccessToken { get; set; }
 
-        public static IHasher Hasher = new PokeHashHasher(string.Empty);
 
         internal Platform Platform { get; set; }
         public long StartTime { get; set; }

@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.HockeyApp;
-using PokemonGo.RocketAPI.Exceptions;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Newtonsoft.Json.Linq;
-using PokemonGoAPI.Helpers.Hash.PokeHash;
-using PokemonGoAPI.Exceptions;
+using POGOLib.Official.LoginProviders;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -118,6 +116,8 @@ namespace PokemonGo_UWP.ViewModels
 
         #region Game Logic
 
+        public event EventHandler<string> InvalidLogin;
+
         private DelegateCommand _doPtcLoginCommand;
 
         public DelegateCommand DoPtcLoginCommand => _doPtcLoginCommand ?? (
@@ -145,26 +145,14 @@ namespace PokemonGo_UWP.ViewModels
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
                 }
-                catch (PtcOfflineException)
+                catch (PtcLoginException ex)
                 {
-                    await new MessageDialog(Resources.CodeResources.GetString("PtcDownText")).ShowAsyncQueue();
-                }
-                catch (LoginFailedException e)
-                {
-                    var errorMessage = e.LoginResponse ?? Resources.CodeResources.GetString("LoginFailedText");
-                    await new MessageDialog(errorMessage).ShowAsyncQueue();
-                }
-                catch (HasherException e)
-                {
-                    var errorMessage = e.Message ?? Resources.CodeResources.GetString("HashingKeyExpired");
-                    await new MessageDialog(errorMessage).ShowAsyncQueue();
-
-                    await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
+                    InvalidLogin?.Invoke(this, ex.Message);
                 }
                 catch (Exception e)
                 {
-								await ExceptionHandler.HandleException(e);
-								HockeyClient.Current.TrackEvent(e.Message);
+				    await ExceptionHandler.HandleException(e);
+				    HockeyClient.Current.TrackEvent(e.Message);
                 }
                 finally
                 {
@@ -199,24 +187,6 @@ namespace PokemonGo_UWP.ViewModels
                         // Goto game page
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
-                }
-                catch (GoogleOfflineException)
-                {
-                    await
-                        new MessageDialog(Resources.CodeResources.GetString("GoogleNotRespondingText")).ShowAsyncQueue();
-                }
-                catch (GoogleException e)
-                {
-                    await
-                        new MessageDialog(Resources.CodeResources.GetString("GoogleErrorText") + e.Message)
-                            .ShowAsyncQueue();
-                }
-                catch (HasherException e)
-                {
-                    var errorMessage = e.Message ?? Resources.CodeResources.GetString("HashingKeyExpired");
-                    await new MessageDialog(errorMessage).ShowAsyncQueue();
-
-                    await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
                 finally
                 {

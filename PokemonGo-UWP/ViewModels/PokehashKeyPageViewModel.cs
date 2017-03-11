@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
+using POGOLib.Official.LoginProviders;
+using POGOLib.Official.Net.Authentication.Data;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
-using PokemonGoAPI.Helpers.Hash.PokeHash;
-using PokemonGoAPI.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,10 +108,18 @@ namespace PokemonGo_UWP.ViewModels
                         GameClient.SetCredentialsFromSettings();
                         try
                         {
-                            await GameClient.InitializeClient();
+                            await GameClient.InitializeSession();
                             await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                         }
-                        catch (PokeHashException ex)
+                        catch (PtcLoginException ex)
+                        {
+                            var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("PtcLoginFailed");
+                            ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                            dialog.Show();
+
+                            await NavigationService.NavigateAsync(typeof(MainPage));
+                        }
+                        catch (Exception ex)
                         {
                             await new MessageDialog("It seems that is not a valid hashing key").ShowAsyncQueue();
                         }

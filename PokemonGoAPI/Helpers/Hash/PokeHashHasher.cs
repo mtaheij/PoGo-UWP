@@ -30,7 +30,7 @@ namespace POGOLib.Official.Util.Hash
     ///     Android version: 0.57.2
     ///     IOS version: 1.27.2
     /// </summary>
-    public class PokeHashHasher : IHasher
+    public class PokeHashHasher_ : IHasher
     {
         public class Stat
         {
@@ -56,7 +56,7 @@ namespace POGOLib.Official.Util.Hash
         ///     Initializes the <see cref="PokeHashHasher"/>.
         /// </summary>
         /// <param name="authKey">The PokeHash authkey obtained from https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer. </param>
-        public PokeHashHasher(string authKey) : this(new []{ authKey })
+        public PokeHashHasher_(string authKey) : this(new []{ authKey })
         {
 
         }
@@ -65,7 +65,7 @@ namespace POGOLib.Official.Util.Hash
         ///     Initializes the <see cref="PokeHashHasher"/>.
         /// </summary>
         /// <param name="authKeys">The PokeHash authkeys obtained from https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer. </param>
-        public PokeHashHasher(IEnumerable<string> authKeys)
+        public PokeHashHasher_(IEnumerable<string> authKeys)
         {
             _keySelectorMutex = new Semaphore(1, 1);
             _authKeys = new List<PokeHashAuthKey>();

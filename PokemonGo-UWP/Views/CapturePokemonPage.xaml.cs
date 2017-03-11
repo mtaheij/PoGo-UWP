@@ -9,9 +9,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using PokemonGo_UWP.Utils;
 using Windows.UI.Xaml.Navigation;
-using PokemonGo.RocketAPI;
 using POGOProtos.Inventory.Item;
 using Template10.Common;
+using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP.Views
 {
@@ -74,7 +74,7 @@ namespace PokemonGo_UWP.Views
                     pokeballStopped = true;
                     pokemonHit = true;
                     timer.Cancel();
-                    Logger.Write("Hit Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
+                    Logger.Info("Hit Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
                                  ThrowItemPosition.Z);
                 }
                 else if (ThrowItemPosition.Y > 50)
@@ -82,7 +82,7 @@ namespace PokemonGo_UWP.Views
                     // We missed the pokemon...
                     timer.Cancel();
                     pokeballStopped = true;
-                    Logger.Write("Missed Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
+                    Logger.Info("Missed Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
                                  ThrowItemPosition.Z);
                 }
 
@@ -274,7 +274,7 @@ namespace PokemonGo_UWP.Views
 
         private void LaunchPokeballButton_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            Logger.Write("Manipulation Started...");
+            Logger.Debug("Manipulation Started...");
 
             // Show the ball a little bigger when held
             PokeballTransform.ScaleX *= 1.05f;
@@ -312,7 +312,7 @@ namespace PokemonGo_UWP.Views
 
         private void LaunchPokeballButton_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            Logger.Write("Manipulation Completed...");
+            Logger.Debug("Manipulation Completed...");
 
             // Disable the pokeball so that we can't try and throw it again
             ViewModel.PokeballButtonEnabled = false;

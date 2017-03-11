@@ -198,13 +198,6 @@ namespace PokemonGo_UWP.ViewModels
         private async void ReadActionLog()
         {
             ActionLog.Clear();
-
-            var ActionLogResponse = await GameClient.GetSfidaActionLog();
-
-            foreach(ActionLogEntry logEntry in ActionLogResponse.LogEntries)
-            {
-                ActionLog.Add(logEntry);
-            }
         }
 
         #endregion

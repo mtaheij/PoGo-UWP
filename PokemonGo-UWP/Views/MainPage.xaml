@@ -8,7 +8,26 @@
     <Page.DataContext>
         <viewModels:LoginPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
-   <Grid x:Name="MainGrid">
+
+    <Page.Resources>
+        <Storyboard x:Name="ShowErrorMessageStoryboard">
+            <DoubleAnimation x:Name="ShowErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="0"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="HideErrorMessageStoryboard">
+            <DoubleAnimation x:Name="HideErrorMessageAnimation"
+                Storyboard.TargetName="ErrorMessageBorderTransform"
+                Storyboard.TargetProperty="TranslateY"
+                To="-60"
+                BeginTime="0:0:5"
+                Duration="0:0:0.2" />
+        </Storyboard>
+    </Page.Resources>
+    
+    <Grid x:Name="MainGrid">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#a8e090" Offset="0" />
@@ -80,5 +99,26 @@
                    Style="{StaticResource TextNormal}"
                    Margin="20,15,20,15"
                    Text="{Binding CurrentVersion}" />
+
+        <Border Grid.Row="0"
+                    x:Name="ErrorMessageBorder"
+                    Visibility="Collapsed"
+                    VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#cc0000" Offset="0" />
+                    <GradientStop Color="#660000" Offset="0.8" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="ErrorMessageBorderTransform" TranslateY="-60" />
+            </Border.RenderTransform>
+            <StackPanel>
+                <TextBlock x:Name="ErrorMessageText"
+                           Style="{StaticResource TextError}"
+                           Visibility="Collapsed"
+                           Margin="15,20,15,20"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

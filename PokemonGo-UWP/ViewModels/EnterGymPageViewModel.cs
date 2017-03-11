@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
-using PokemonGo.RocketAPI;
-using PokemonGo.RocketAPI.Extensions;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
@@ -22,6 +20,7 @@ using PokemonGo_UWP.Utils.Extensions;
 using PokemonGo_UWP.Controls;
 using Windows.UI.Xaml;
 using PokemonGo_UWP.Utils.Helpers;
+using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -67,7 +66,7 @@ namespace PokemonGo_UWP.ViewModels
                     Busy.SetBusy(true, "Loading Gym");
                     CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
                     NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
-                    Logger.Write($"Entering {CurrentGym.Id}");
+                    Logger.Info($"Entering {CurrentGym.Id}");
                     CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                     CurrentGymState = CurrentGymInfo.GymState;
                     RaisePropertyChanged(() => GymLevel);
@@ -387,7 +386,7 @@ namespace PokemonGo_UWP.ViewModels
             _enterCurrentGym = new DelegateCommand(async () =>
             {
                 Busy.SetBusy(true, "Entering Gym");
-                Logger.Write($"Entering {CurrentGymInfo.Name} [ID = {CurrentGym.Id}]");
+                Logger.Info($"Entering {CurrentGymInfo.Name} [ID = {CurrentGym.Id}]");
                 CurrentEnterResponse =
                     await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                 Busy.SetBusy(false);
@@ -397,15 +396,15 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                     case GetGymDetailsResponse.Types.Result.Success:
                         // Success, we play the animation and update inventory
-                        Logger.Write("Entering Gym success");
+                        Logger.Info("Entering Gym success");
 
                         // What to do when we are in the Gym?
                         EnterSuccess?.Invoke(this, null);
-                        await GameClient.UpdateInventory();
+                        //GameClient.UpdateInventory();
                         break;
                     case GetGymDetailsResponse.Types.Result.ErrorNotInRange:
                         // Gym can't be used because it's out of range, there's nothing that we can do
-                        Logger.Write("Entering Gym out of range");
+                        Logger.Info("Entering Gym out of range");
                         EnterOutOfRange?.Invoke(this, null);
                         break;
                     default:
@@ -422,7 +421,7 @@ namespace PokemonGo_UWP.ViewModels
             _setPlayerTeam = new DelegateCommand(async () =>
                 {
                     Busy.SetBusy(true, "Setting player team");
-                    Logger.Write($"Setting player team to { ChosenTeam }");
+                    Logger.Info($"Setting player team to { ChosenTeam }");
                     var response = await GameClient.SetPlayerTeam(ChosenTeam);
                     Busy.SetBusy(false);
                     switch (response.Status)
@@ -582,7 +581,7 @@ namespace PokemonGo_UWP.ViewModels
                                 RaisePropertyChanged(() => GymMemberships);
 
                                 // TODO: Implement message informing about success of deployment (Shell needed)
-                                await GameClient.UpdateInventory();
+                                //GameClient.UpdateInventory();
                                 await GameClient.UpdatePlayerStats();
 
                                 // Reset to gym screen

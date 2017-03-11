@@ -1,8 +1,6 @@
 using Microsoft.HockeyApp;
 using NotificationsExtensions.Tiles;
 using POGOProtos.Data;
-using PokemonGo.RocketAPI;
-using PokemonGo.RocketAPI.Logging;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
@@ -28,8 +26,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PokemonGo_UWP.Utils.Helpers;
 using PokemonGo_UWP.Controls;
-using PokemonGoAPI.Helpers.Hash.PokeHash;
-using PokemonGoAPI.Exceptions;
+using POGOLib.Official.Logging;
+using POGOLib.Official.LoginProviders;
 
 namespace PokemonGo_UWP
 {
@@ -108,7 +106,7 @@ namespace PokemonGo_UWP
         private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             e.SetObserved();
-            Logger.Write(e.Exception.Message);
+            Logger.Error(e.Exception.Message);
             if (!string.IsNullOrEmpty(ApplicationKeys.HockeyAppToken))
                 HockeyClient.Current.TrackException(e.Exception);
         }
@@ -122,12 +120,12 @@ namespace PokemonGo_UWP
             await WindowWrapper.Current().Dispatcher.DispatchAsync(() => {
                 if (tmpNetworkStatus)
                 {
-                    Logger.Write("Network is online");
+                    Logger.Notice("Network is online");
                     Busy.SetBusy(false);
                 }
                 else
                 {
-                    Logger.Write("Network is offline");
+                    Logger.Notice("Network is offline");
                     Busy.SetBusy(true, Utils.Resources.CodeResources.GetString("WaitingForNetworkText"));
                 }
             });
@@ -203,10 +201,6 @@ namespace PokemonGo_UWP
         /// <returns></returns>
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
-#if DEBUG
-            // Init logger
-            Logger.SetLogger(new ConsoleLogger(LogLevel.Info));
-#endif            
             // If we have a phone contract, hide the status bar
             if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
@@ -330,7 +324,7 @@ namespace PokemonGo_UWP
                 return;
             }
 
-            var currentAccessToken = GameClient.LoadAccessToken();
+            var currentAccessToken = GameClient.GetAccessToken();
             if (currentAccessToken == null || forceToMainPage)
             {
                 await NavigationService.NavigateAsync(typeof(MainPage));
@@ -340,15 +334,22 @@ namespace PokemonGo_UWP
             {
                 try
                 {
-                    await GameClient.InitializeClient();
+                    await GameClient.InitializeSession();
                     NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                 }
-                catch (HasherException ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
+                catch (PtcLoginException ex)
+                {
+                    var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("PtcLoginFailed");
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Show();
+
+                    await NavigationService.NavigateAsync(typeof(MainPage));
+                }
+                catch (Exception ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
                 {
                     var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("HashingKeyExpired");
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                     dialog.Show();
-                    //await new MessageDialog(errorMessage).ShowAsyncQueue();
 
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
@@ -444,13 +445,13 @@ namespace PokemonGo_UWP
                     }
                     if (tile != null)
                     {
-                        Logger.Write(tile.GetContent());
+                        Logger.Debug(tile.GetContent());
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex.Message);
+                    Logger.Debug(ex.Message);
                     if (!string.IsNullOrEmpty(ApplicationKeys.HockeyAppToken))
                         HockeyClient.Current.TrackException(ex);
                 }
