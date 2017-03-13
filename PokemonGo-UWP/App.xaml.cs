@@ -26,8 +26,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PokemonGo_UWP.Utils.Helpers;
 using PokemonGo_UWP.Controls;
-using POGOLib.Official.Logging;
 using POGOLib.Official.LoginProviders;
+using System.Diagnostics;
+using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP
 {
@@ -88,6 +89,11 @@ namespace PokemonGo_UWP
             // Init the proximity helper to turn the screen off when it's in your pocket
             _proximityHelper = new ProximityHelper();
             _proximityHelper.EnableDisplayAutoOff(false);
+
+            POGOLib.Official.Logging.Logger.RegisterLogOutput((level, message) =>
+            {
+                Debug.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{level}] {message}");
+            });
         }
 
         #endregion

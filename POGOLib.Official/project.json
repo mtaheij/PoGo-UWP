@@ -1,0 +1,13 @@
+{
+  "supports": {},
+  "dependencies": {
+    "GeoCoordinate.NetStandard1": "1.0.0",
+    "Google.Protobuf": "3.2.0",
+    "Newtonsoft.Json": "9.0.1",
+    "POGOProtos.NetStandard1": "2.7.0",
+    "S2Geometry": "1.0.3"
+  },
+  "frameworks": {
+    ".NETPortable,Version=v4.5,Profile=Profile111": {}
+  }
+}

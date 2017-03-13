@@ -384,6 +384,9 @@ namespace PokemonGo_UWP.Utils
                 _session.AccessTokenUpdated -= SessionOnAccessTokenUpdated;
                 _session.Player.Inventory.Update -= InventoryOnUpdate;
                 _session.Map.Update -= MapOnUpdate;
+                _session.RpcClient.CheckChallengeReceived -= SessionOnCheckChallengeReceived;
+                _session.RpcClient.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
+                _session.RpcClient.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
             }
 
             Configuration.IgnoreHashVersion = false;
@@ -430,6 +433,11 @@ namespace PokemonGo_UWP.Utils
             }
 
             _session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
+            _session.Player.Inventory.Update += InventoryOnUpdate;
+            _session.Map.Update += MapOnUpdate;
+            _session.RpcClient.CheckChallengeReceived += SessionOnCheckChallengeReceived;
+            _session.RpcClient.HatchedEggsReceived += SessionOnHatchedEggsReceived;
+            _session.RpcClient.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
 
             await Task.CompletedTask;
         }
@@ -475,6 +483,63 @@ namespace PokemonGo_UWP.Utils
             SaveAccessToken();
 
             Logger.Info("Saved access token to file.");
+        }
+
+        private static async void SessionOnCheckChallengeReceived(object sender, CheckChallengeResponse e)
+        {
+            if (e.ShowChallenge && !String.IsNullOrWhiteSpace(e.ChallengeUrl) && e.ChallengeUrl.Length > 5)
+            {
+                // Captcha is shown in checkChallengeResponse.ChallengeUrl
+                Logger.Warn($"ChallengeURL: {e.ChallengeUrl}");
+                // breakpoint here to manually resolve Captcha in a browser
+                // after that set token to str variable from browser (see screenshot)
+                Logger.Warn("Pause");
+
+                //GOTO THE REQUIRED PAGE
+                if (BootStrapper.Current.NavigationService.CurrentPageType != typeof(ChallengePage))
+                {
+                    await DispatcherHelper.RunInDispatcherAndAwait(() =>
+                    {
+                        // We are not in UI thread probably, so run this via dispatcher
+                        BootStrapper.Current.NavigationService.Navigate(typeof(ChallengePage), e.ChallengeUrl);
+                    });
+                }
+            }
+        }
+
+        private static async void SessionOnHatchedEggsReceived(object sender, GetHatchedEggsResponse hatchedEggResponse)
+        {
+            //OnEggHatched?.Invoke(null, hatchedEggResponse);
+
+            for (var i = 0; i < hatchedEggResponse.PokemonId.Count; i++)
+            {
+                Logger.Info("Egg Hatched");
+                //await UpdateInventory(true);
+
+                //TODO: Fix hatching of more than one pokemon at a time
+                var currentPokemon = PokemonsInventory
+                    .FirstOrDefault(item => item.Id == hatchedEggResponse.PokemonId[i]);
+
+                if (currentPokemon == null)
+                    continue;
+
+                await
+                    new MessageDialog(string.Format(
+                        Resources.CodeResources.GetString("EggHatchMessage"),
+                        currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
+                        hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
+
+                BootStrapper.Current.NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
+                {
+                    SelectedPokemonId = currentPokemon.Id.ToString(),
+                    ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
+                });
+            }
+        }
+
+        private static void SessionOnCheckAwardedBadgesReceived(object sender, CheckAwardedBadgesResponse e)
+        {
+            OnAwardedBadgesReceived?.Invoke(sender, e);
         }
 
         private static void InventoryOnUpdate(object sender, EventArgs eventArgs)
@@ -594,6 +659,7 @@ namespace PokemonGo_UWP.Utils
         private static AppliedItemsHeartbeat _heartbeat;
 
         public static event EventHandler<GetHatchedEggsResponse> OnEggHatched;
+        public static event EventHandler<CheckAwardedBadgesResponse> OnAwardedBadgesReceived;
         public static event EventHandler<AppliedItemWrapper> OnAppliedItemExpired;
         public static event EventHandler<AppliedItemWrapper> OnAppliedItemStarted;
 
@@ -601,6 +667,8 @@ namespace PokemonGo_UWP.Utils
 
         public static async Task GetGameSettings()
         {
+            Busy.SetBusy(true, "Getting game settings");
+
             // Momentarily start the session, to retrieve game settings, inventory and player
             if (!await _session.StartupAsync())
             {
@@ -613,8 +681,10 @@ namespace PokemonGo_UWP.Utils
             PokemonsInventory.AddRange(_session.Player.Inventory.InventoryItems.Select(item => item.InventoryItemData.PokemonData)
                 .Where(item => item != null && item.PokemonId > 0), true);
 
-            // As soon as we have copied the game settings, shutdown the session again. It will be started on the game map page
-            _session.Shutdown();
+            // As soon as we have copied the required information, pause the session. It will be restarted on the game map page
+            //_session.Pause();
+
+            Busy.SetBusy(false);
 
             await Task.CompletedTask;
         }
@@ -692,6 +762,16 @@ namespace PokemonGo_UWP.Utils
                 Busy.SetBusy(false);
         }
 
+        /// <summary>
+        /// Initially, we need map objects to show, otherwise we have to wait for POGOLib to provide it, but that takes 30 seconds
+        /// </summary>
+        /// <returns></returns>
+        public static async Task GetMapObjects()
+        {
+            await _session.RpcClient.RefreshMapObjectsAsync();
+            await UpdateMapObjects(_session.Map);
+        }
+
         private static async void _client_CheckChallengeReceived(object sender, CheckChallengeResponse e)
         {
 
@@ -736,11 +816,6 @@ namespace PokemonGo_UWP.Utils
         private static DateTime _lastPlayerLocationUpdate;
 
         /// <summary>
-        ///     DateTime for the last map update
-        /// </summary>
-        private static DateTime _lastUpdate;
-
-        /// <summary>
         ///     Toggles the update timer based on the isEnabled value
         /// </summary>
         /// <param name="isEnabled"></param>
@@ -752,16 +827,11 @@ namespace PokemonGo_UWP.Utils
             if (isEnabled)
             {
                 _session.Player.Inventory.Update += InventoryOnUpdate;
-                _session.Map.Update += MapOnUpdate;
-                if (!await _session.StartupAsync())
-                {
-                    throw new Exception("Session couldn't start up.");
-                }
+                //_session.Resume();
             }
             else
             {
-                _session.Shutdown();
-                _session.Map.Update -= MapOnUpdate;
+                //_session.Pause();
                 _session.Player.Inventory.Update -= InventoryOnUpdate;
             }
         }
@@ -801,7 +871,6 @@ namespace PokemonGo_UWP.Utils
                     .Where(x => x.Type == FortType.Gym)
                     .ToArray();
                 Logger.Info($"Found {newGyms.Length} nearby Gyms");
-                // For now, we do not show the gyms on the map, as they are not complete yet. Code remains, so we can still work on it.
                 NearbyGyms.UpdateWith(newGyms, x => new FortDataWrapper(x), (x, y) => x.Id == y.Id);
 
                 // Update LuredPokemon
@@ -833,46 +902,6 @@ namespace PokemonGo_UWP.Utils
                         Logger.Info($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
                     };
                 }
-
-                // Update TimeOfDay
-                //var ToD = mapObjects.Item1.Types.TimeOfDay.
-
-                //// Update Hatched Eggs
-                //var hatchedEggResponse = mapObjects.Item3;
-                //if (hatchedEggResponse.Success)
-                //{
-                //    //OnEggHatched?.Invoke(null, hatchedEggResponse);
-
-                //    for (var i = 0; i < hatchedEggResponse.PokemonId.Count; i++)
-                //    {
-                //        Logger.Write("Egg Hatched");
-                //        await UpdateInventory();
-
-                //        //TODO: Fix hatching of more than one pokemon at a time
-                //        var currentPokemon = PokemonsInventory
-                //            .FirstOrDefault(item => item.Id == hatchedEggResponse.PokemonId[i]);
-
-                //        if (currentPokemon == null)
-                //            continue;
-
-                //        ConfirmationDialog dialog = new Views.ConfirmationDialog(string.Format(
-                //            Resources.CodeResources.GetString("EggHatchMessage"),
-                //                currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
-                //                hatchedEggResponse.ExperienceAwarded[i]));
-                //        dialog.Show();
-                //        //await
-                //        //    new MessageDialog(string.Format(
-                //        //        Resources.CodeResources.GetString("EggHatchMessage"),
-                //        //        currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
-                //        //        hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
-
-                //        BootStrapper.Current.NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
-                //        {
-                //            SelectedPokemonId = currentPokemon.Id.ToString(),
-                //            ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
-                //        });
-                //    }
-                //}
             });
         }
 
@@ -1232,10 +1261,24 @@ namespace PokemonGo_UWP.Utils
         /// <summary>
         ///     Updates inventory data
         /// </summary>
-        public static void UpdateInventory()
+        public static async void UpdateInventory(bool ForceUpdate = false)
         {
-            // Get ALL the items
             var fullInventory = _session.Player.Inventory.InventoryItems;
+
+            // Get ALL the items again
+            if (ForceUpdate)
+            {
+                var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+                {
+                    RequestType = RequestType.GetInventory,
+                    RequestMessage = new GetInventoryMessage
+                    {
+
+                    }.ToByteString()
+                });
+                var getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
+                fullInventory = getInventoryResponse.InventoryDelta.InventoryItems;
+            }
 
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
