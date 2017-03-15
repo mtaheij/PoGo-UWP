@@ -370,8 +370,17 @@ namespace PokemonGo_UWP.Utils
         /// <returns></returns>
         public static AccessToken GetAccessToken()
         {
-            var tokenString = SettingsService.Instance.AccessTokenString;
-            return tokenString == null ? null : JsonConvert.DeserializeObject<AccessToken>(SettingsService.Instance.AccessTokenString);
+            try // If the current Accesstoken is in an old format (pre-POGOLib version), invalidate it and let the user start over by logging in
+            {
+                var tokenString = SettingsService.Instance.AccessTokenString;
+                return tokenString == null ? null : JsonConvert.DeserializeObject<AccessToken>(SettingsService.Instance.AccessTokenString);
+            }
+            catch (Exception)
+            {
+                SettingsService.Instance.AccessTokenString = null;
+                SettingsService.Instance.UserCredentials = null;
+                return null;
+            }
         }
 
         /// <summary>
@@ -1489,6 +1498,16 @@ namespace PokemonGo_UWP.Utils
                 LoadGameSettings().Wait();
             }
             return PokemonSettings.First(pokemon => pokemon.PokemonId == pokemonId);
+        }
+
+        public static IEnumerable<PokemonData> GetFavoritePokemons()
+        {
+            return PokemonsInventory.Where(i => i.Favorite == 1);
+        }
+
+        public static IEnumerable<PokemonData> GetDeployedPokemons()
+        {
+            return PokemonsInventory.Where(i => !string.IsNullOrEmpty(i.DeployedFortId));
         }
 
         #endregion

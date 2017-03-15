@@ -97,11 +97,11 @@ namespace PokemonGo_UWP.ViewModels
                 // Store Pokehash auth key
                 SettingsService.Instance.PokehashAuthKey = PokehashKey;
 
-                // Check if token is available and still valid
+                // Check if accesstoken is available and still valid
                 var tokenString = SettingsService.Instance.AccessTokenString;
                 if (tokenString != null && tokenString.Length > 0)
                 {
-                    var accessToken = JsonConvert.DeserializeObject<AccessToken>(tokenString);
+                    AccessToken accessToken = GameClient.GetAccessToken();
 
                     if (accessToken != null)
                     {
