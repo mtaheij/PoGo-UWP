@@ -5,8 +5,8 @@
   "version_number": 5720,
   "settings_updated": "2017-02-19T00:00:00",
   "latest_release": {
-    "version": "1.2.10",
-    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.2.10-beta/PokemonGo-UWP_1.2.10.0_{arch}.appxbundle",
+    "version": "1.2.11",
+    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.2.11-beta/PokemonGo-UWP_1.2.11.0_{arch}.appxbundle",
     "dependencies": [
     ]
   }

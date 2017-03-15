@@ -118,6 +118,10 @@ namespace POGOLib.Official.Util.Hash
                                 .ToArray()
                         };
 
+                    case HttpStatusCode.NotFound:
+                        message = $"Hashing endpoint not found!";
+                        break;
+
                     case HttpStatusCode.BadRequest:
                         message = $"Bad request sent to the hashing server! {responseContent}";
                         break;

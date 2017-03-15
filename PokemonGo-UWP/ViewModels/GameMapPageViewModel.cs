@@ -132,7 +132,7 @@ namespace PokemonGo_UWP.ViewModels
                     
                     // App just started, so we get GPS access and eventually initialize the client
                     await StartGpsDataService();
-                    //GameClient.ToggleUpdateTimer();
+                    GameClient.ToggleUpdateTimer();
                     //await GameClient.GetMapObjects();
                     break;
                 case GameMapNavigationModes.SettingsUpdate:

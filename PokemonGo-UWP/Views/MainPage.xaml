@@ -100,7 +100,7 @@
                    Margin="20,15,20,15"
                    Text="{Binding CurrentVersion}" />
 
-        <Border Grid.Row="0"
+        <Border Grid.Row="0" Grid.RowSpan="3"
                     x:Name="ErrorMessageBorder"
                     Visibility="Collapsed"
                     VerticalAlignment="Top">

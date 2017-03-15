@@ -31,6 +31,10 @@ namespace PokemonGo_UWP.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            // Hide panels
+            HideSelectAttackTeamGridStoryboard.Begin();
+
             SubscribeToEnterEvents();
         }
 
@@ -58,6 +62,9 @@ namespace PokemonGo_UWP.Views
             ViewModel.PokemonDeployed += GameManagerViewModelOnPokemonDeployed;
             ViewModel.DeployPokemonError += GameManagerViewModelOnDeployPokemonError;
             ViewModel.PokemonSelectionCancelled += GameManagerViewModelOnPokemonSelectionCancelled;
+            ViewModel.AskForTrainingAttackTeam += GameManagerViewModelOnAskForTrainingAttackTeam;
+            ViewModel.AttackTeamSelectionClosed += GameManagerViewModelOnAttackTeamSelectionClosed;
+            ViewModel.TrainError += GameManagerViewModelOnTrainError;
         }
 
         private void UnsubscribeToEnterEvents()
@@ -75,6 +82,9 @@ namespace PokemonGo_UWP.Views
             ViewModel.PokemonDeployed -= GameManagerViewModelOnPokemonDeployed;
             ViewModel.DeployPokemonError -= GameManagerViewModelOnDeployPokemonError;
             ViewModel.PokemonSelectionCancelled -= GameManagerViewModelOnPokemonSelectionCancelled;
+            ViewModel.AskForTrainingAttackTeam -= GameManagerViewModelOnAskForTrainingAttackTeam;
+            ViewModel.AttackTeamSelectionClosed -= GameManagerViewModelOnAttackTeamSelectionClosed;
+            ViewModel.TrainError -= GameManagerViewModelOnTrainError;
         }
 
         private void GameManagerViewModelOnGymLoaded(object sender, EventArgs eventArgs)
@@ -165,6 +175,38 @@ namespace PokemonGo_UWP.Views
 
             dialog.Closed += Dialog_Closed;
             dialog.Show();
+        }
+
+
+        private void GameManagerViewModelOnAskForTrainingAttackTeam(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                SelectAttackTeamGrid.Visibility = Visibility.Visible;
+                ShowSelectAttackTeamGridStoryboard.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnAttackTeamSelectionClosed(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                HideSelectAttackTeamGridStoryboard.Completed += (ss, ee) => { SelectAttackTeamGrid.Visibility = Visibility.Collapsed; };
+                HideSelectAttackTeamGridStoryboard.Begin();
+            });
+        }
+        private void GameManagerViewModelOnTrainError(object sender, string message)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                ErrorMessageText.Text = Utils.Resources.CodeResources.GetString(message);
+                ErrorMessageText.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
+
+                SelectAttackTeamGrid.Visibility = Visibility.Collapsed;
+
+                ShowErrorMessageStoryboard.Completed += (ss, ee) => { HideErrorMessageStoryboard.Begin(); };
+                ShowErrorMessageStoryboard.Begin();
+            });
         }
 
         private void Dialog_Closed(object sender, EventArgs e)

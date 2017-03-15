@@ -438,6 +438,11 @@ namespace PokemonGo_UWP.ViewModels
         #endregion
 
         /// <summary>
+        ///     Event fired when the Selection of the attacking team has been cancelled
+        /// </summary>
+        public event EventHandler AttackTeamSelectionClosed;
+
+        /// <summary>
         ///     Event fired when the Selected pokemon is deployed to the gym
         /// </summary>
         public event EventHandler PokemonDeployed;
@@ -606,8 +611,16 @@ namespace PokemonGo_UWP.ViewModels
                 dialog.Show();
             }));
 
+        // Close the attack team selection panel
+        private DelegateCommand _closeAttackTeamSelectionCommand;
+        public DelegateCommand CloseAttackTeamSelectionCommand =>
+            _closeAttackTeamSelectionCommand ?? (
+            _closeAttackTeamSelectionCommand = new DelegateCommand(() =>
+            {
+                AttackTeamSelectionClosed?.Invoke(this, null);
+            }));
 
-        // Return to the gym
+        // Return to the gym from the pokemon selection page
         private DelegateCommand _returnToGymCommand;
 
         public DelegateCommand ReturnToGymCommand =>

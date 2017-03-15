@@ -49,6 +49,7 @@ using PokemonGo_UWP.Enums;
 using POGOLib.Official.Net.Authentication;
 using POGOLib.Official.Net.Authentication.Data;
 using Template10.Services.NavigationService;
+using POGOProtos.Data.Battle;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -560,9 +561,12 @@ namespace PokemonGo_UWP.Utils
 
         private async static void MapOnUpdate(object sender, EventArgs eventArgs)
         {
-            Map map = sender as Map;
-            await UpdateMapObjects(map);
-            Logger.Info("Map was updated.");
+            if (_isSessionEnabled)
+            {
+                Map map = sender as Map;
+                await UpdateMapObjects(map);
+                Logger.Info("Map was updated.");
+            }
         }
 
         /// <summary>
@@ -692,6 +696,7 @@ namespace PokemonGo_UWP.Utils
 
             // As soon as we have copied the required information, pause the session. It will be restarted on the game map page
             //_session.Pause();
+            _isSessionEnabled = true;
 
             Busy.SetBusy(false);
 
@@ -771,40 +776,6 @@ namespace PokemonGo_UWP.Utils
                 Busy.SetBusy(false);
         }
 
-        /// <summary>
-        /// Initially, we need map objects to show, otherwise we have to wait for POGOLib to provide it, but that takes 30 seconds
-        /// </summary>
-        /// <returns></returns>
-        public static async Task GetMapObjects()
-        {
-            await _session.RpcClient.RefreshMapObjectsAsync();
-            await UpdateMapObjects(_session.Map);
-        }
-
-        private static async void _client_CheckChallengeReceived(object sender, CheckChallengeResponse e)
-        {
-
-            if (e.ShowChallenge && !String.IsNullOrWhiteSpace(e.ChallengeUrl) && e.ChallengeUrl.Length > 5)
-            {
-                // Captcha is shown in checkChallengeResponse.ChallengeUrl
-                Logger.Info($"ChallengeURL: {e.ChallengeUrl}");
-                // breakpoint here to manually resolve Captcha in a browser
-                // after that set token to str variable from browser (see screenshot)
-                Logger.Info("Pause");
-
-                //GOTO THE REQUIRED PAGE
-                if (BootStrapper.Current.NavigationService.CurrentPageType != typeof(ChallengePage))
-                {
-                     await DispatcherHelper.RunInDispatcherAndAwait(() =>
-                     {
-                         // We are not in UI thread probably, so run this via dispatcher
-                         BootStrapper.Current.NavigationService.Navigate(typeof(ChallengePage), e.ChallengeUrl);
-                     });
-                }
-            }
-
-        }
-
         private static void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if(e.PropertyName==nameof(LocationServiceHelper.Instance.Geoposition))
@@ -823,6 +794,7 @@ namespace PokemonGo_UWP.Utils
 		}
 
         private static DateTime _lastPlayerLocationUpdate;
+        private static bool _isSessionEnabled = true;
 
         /// <summary>
         ///     Toggles the update timer based on the isEnabled value
@@ -835,13 +807,13 @@ namespace PokemonGo_UWP.Utils
             Logger.Info($"Called ToggleUpdateTimer({isEnabled})");
             if (isEnabled)
             {
-                _session.Player.Inventory.Update += InventoryOnUpdate;
+                _isSessionEnabled = true;
                 //_session.Resume();
             }
             else
             {
+                _isSessionEnabled = false;
                 //_session.Pause();
-                _session.Player.Inventory.Update -= InventoryOnUpdate;
             }
         }
 
@@ -1906,7 +1878,7 @@ namespace PokemonGo_UWP.Utils
         }
 
         /// <summary>
-        ///     Deploys a pokemong to the given Gym
+        ///     Deploys a pokemon to the given Gym
         /// </summary>
         /// <param name="fortId"></param>
         /// <param name="pokemonId"></param>
@@ -1929,10 +1901,54 @@ namespace PokemonGo_UWP.Utils
             return fortDeployPokemonResponse;
         }
 
+        /// <summary>
+        ///     Start a gym battle using a set of pokemons
+        /// </summary>
+        /// <param name="gymId"></param>
+        /// <param name="defendingPokemonId"></param>
+        /// <param name="attackingPokemonIds"></param>
+        /// <returns></returns>
+        public static async Task<StartGymBattleResponse> StartGymBattle(string gymId, ulong defendingPokemonId, IEnumerable<ulong>attackingPokemonIds)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.StartGymBattle,
+                RequestMessage = new StartGymBattleMessage
+                {
+                    GymId = gymId,
+                    DefendingPokemonId = defendingPokemonId,
+                    AttackingPokemonIds = {attackingPokemonIds},
+                    PlayerLatitude = _session.Player.Latitude,
+                    PlayerLongitude = _session.Player.Longitude
+                }.ToByteString()
+            });
+            var startGymBattleResponse = StartGymBattleResponse.Parser.ParseFrom(response);
+
+            return startGymBattleResponse;
+        }
+
+        public static async Task<AttackGymResponse> AttackGym(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.AttackGym,
+                RequestMessage = new AttackGymMessage
+                {
+                    GymId = gymId,
+                    BattleId = battleId,
+                    AttackActions = {battleActions},
+                    LastRetrievedAction = lastRetrievedAction,
+                    PlayerLatitude = _session.Player.Latitude,
+                    PlayerLongitude = _session.Player.Longitude
+                }.ToByteString()
+            });
+            var attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
+
+            return attackGymResponse;
+        }
+
         /// The following _client.Fort methods need implementation:
-        /// FortRecallPokemon
-        /// StartGymBattle
-        /// AttackGym
+        /// FortRecallPokemon -> Do we need to implement this? Pokemons can't be recalled by the player, do they?
 
         #endregion
 
