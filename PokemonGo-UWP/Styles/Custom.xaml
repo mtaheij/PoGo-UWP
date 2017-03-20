@@ -45,8 +45,10 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="TitleTextColor" Color="#44696c" />
+    <SolidColorBrush x:Key="LightTitleTextColor" Color="#eeffeb" />
     <SolidColorBrush x:Key="TitleTextColorInactive" Color="#a1b4b5" />
     <SolidColorBrush x:Key="GrayTextColor" Color="#96abac" />
+    <SolidColorBrush x:Key="LightGrayTextColor" Color="#e0e8e8" />
     <SolidColorBrush x:Key="EggProgressColor" Color="#3f9eff" />
 
     <!-- STYLE - FONTS -->

@@ -21,6 +21,10 @@ using PokemonGo_UWP.Controls;
 using Windows.UI.Xaml;
 using PokemonGo_UWP.Utils.Helpers;
 using POGOLib.Official.Logging;
+using POGOProtos.Data.Battle;
+using System.Threading;
+using POGOLib.Official.Net;
+using System.Diagnostics;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -424,7 +428,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Event fired when the EnterGymPage has to show the Pokemon selection control
         /// </summary>
-        public event EventHandler AskForPokemonSelection;
+        public event EventHandler<SelectionTarget> AskForPokemonSelection;
 
         /// <summary>
         ///     Event fired when the player wants to train in a Gym
@@ -456,6 +460,17 @@ namespace PokemonGo_UWP.ViewModels
         ///     Event fired when the train command failed
         /// </summary>
         public event EventHandler<string> TrainError;
+
+        /// <summary>
+        ///     Event fired when a battle has started
+        /// </summary>
+        public event EventHandler BattleStarted;
+
+        /// <summary>
+        ///     Event fired when a battle has ended
+        /// </summary>
+        public event EventHandler BattleEnded;
+
 
         private DelegateCommand _enterCurrentGym;
 
@@ -529,6 +544,9 @@ namespace PokemonGo_UWP.ViewModels
         public ObservableCollection<PokemonDataWrapper> PokemonInventory { get; private set; } =
             new ObservableCollection<PokemonDataWrapper>();
 
+        public ObservableCollection<PokemonDataWrapper> AttackTeamMembers { get; private set; } =
+            new ObservableCollection<PokemonDataWrapper>();
+
         /// <summary>
         /// Total amount of Pokemon in players inventory
         /// </summary>
@@ -563,7 +581,9 @@ namespace PokemonGo_UWP.ViewModels
                 RaisePropertyChanged(() => PokemonInventory);
                 RaisePropertyChanged(() => PlayerProfile);
 
-                AskForPokemonSelection?.Invoke(this, null);
+                selectionTarget = SelectionTarget.SelectForDeploy;
+
+                AskForPokemonSelection?.Invoke(this, selectionTarget);
             }));
 
         #endregion
@@ -581,23 +601,201 @@ namespace PokemonGo_UWP.ViewModels
 
                 if (CurrentGymState.FortData.IsInBattle)
                 {
-                    TrainError?.Invoke(this, "This gym is under attack");
+                    TrainError?.Invoke(this, "GymUnderAttack");
                     return;
                 }
+
+                // If no team was selected before take 6 pokemons from the inventory with the highest CP value
+                if (AttackTeamMembers.Count == 0)
+                {
+                    AttackTeamMembers = new ObservableCollection<PokemonDataWrapper>(GameClient.PokemonsInventory
+                        .Select(pokemonData => new PokemonDataWrapper(pokemonData))
+                        .SortByCp()
+                        .Take(6));
+                }
+
+                RaisePropertyChanged(() => AttackTeamMembers);
 
                 AskForTrainingAttackTeam?.Invoke(this, null);
             }));
 
-        // ServerRequestRunning = true;
-        // StartGymBattleResponse startGymBattleResponse = await GameClient.StartGymBattle(CurrentGym.Id, CurrentGymState.Memberships[0].TrainingPokemon.Id, new List<ulong> { SelectedPokemon.Id });
+        private PokemonDataWrapper _attackTeamMemberToRemove;
+        private DelegateCommand<PokemonDataWrapper> _teamSelectorSwitchCommand;
 
-        // switch (startGymBattleResponse.Result)
-        //{
-        //      case StartGymBattleResponse.Types.Result.Unset:
-        //          break;
-        //      case StartGymBattleResponse.Types.Result.Success:
-        //          break;
-        //} 
+        public DelegateCommand<PokemonDataWrapper> TeamSelectorSwitchCommand => _teamSelectorSwitchCommand ?? (
+            _teamSelectorSwitchCommand = new DelegateCommand<PokemonDataWrapper>((pokemonToRemoveFromTeam) =>
+            {
+                // Select all available Pokemons, without the current team setup
+                PokemonInventory = new ObservableCollection<PokemonDataWrapper>(GameClient.PokemonsInventory
+                    .Select(pokemonData => new PokemonDataWrapper(pokemonData))
+                    .SortByCp()
+                    .Except(AttackTeamMembers));
+
+                foreach (PokemonDataWrapper attackMember in AttackTeamMembers)
+                {
+                    foreach (PokemonDataWrapper availablePokemon in PokemonInventory)
+                    {
+                        if (availablePokemon.Id == attackMember.Id)
+                        {
+                            PokemonInventory.Remove(availablePokemon);
+                            break;
+                        }
+                    }
+                }
+
+                PlayerProfile = GameClient.PlayerData;
+
+                RaisePropertyChanged(() => PokemonInventory);
+                RaisePropertyChanged(() => PlayerProfile);
+
+                _attackTeamMemberToRemove = pokemonToRemoveFromTeam;
+
+                selectionTarget = SelectionTarget.SelectForTeamChange;
+
+                AskForPokemonSelection?.Invoke(this, selectionTarget);
+
+            }));
+
+
+        private Stopwatch _battleStopwatch;
+        private string _currentBattleId;
+        private long _currentBattleStart;
+        private long _currentBattleEnd;
+
+        private BattleParticipant _currentAttacker;
+        public BattleParticipant CurrentAttacker
+        {
+            get { return _currentAttacker; }
+            set { Set(ref _currentAttacker, value); }
+        }
+        private BattlePokemonInfo _currentAttackerBattlePokemon;
+        public BattlePokemonInfo CurrentAttackerBattlePokemon
+        {
+            get { return _currentAttackerBattlePokemon; }
+            set { Set(ref _currentAttackerBattlePokemon, value); }
+        }
+        private PokemonDataWrapper _currentAttackerPokemon;
+        public PokemonDataWrapper CurrentAttackerPokemon
+        {
+            get { return _currentAttackerPokemon; }
+            set { Set(ref _currentAttackerPokemon, value); }
+        }
+
+        private BattleParticipant _currentDefender;
+        public BattleParticipant CurrentDefender
+        {
+            get { return _currentDefender; }
+            set { Set(ref _currentDefender, value); }
+        }
+        private BattlePokemonInfo _currentDefenderBattlePokemon;
+        public BattlePokemonInfo CurrentDefenderBattlePokemon
+        {
+            get { return _currentDefenderBattlePokemon; }
+            set { Set(ref _currentDefenderBattlePokemon, value); }
+        }
+        private PokemonDataWrapper _currentDefenderPokemon;
+        public PokemonDataWrapper CurrentDefenderPokemon
+        {
+            get { return _currentDefenderPokemon; }
+            set { Set(ref _currentDefenderPokemon, value); }
+        }
+
+        private BattleLog _battleLogEntries;
+        public BattleLog BattleLogEntries
+        {
+            get { return _battleLogEntries; }
+            set { Set(ref _battleLogEntries, value); }
+        }
+
+        private string _currentDefendType;
+        public string CurrentDefendType
+        {
+            get { return _currentDefendType; }
+            set { Set(ref _currentDefendType, value); }
+        }
+
+        private string _currentAttackType;
+        public string CurrentAttackType
+        {
+            get { return _currentAttackType; }
+            set { Set(ref _currentAttackType, value); }
+        }
+
+        public long RemainingBattleTime
+        {
+            get
+            {
+                if (_battleStopwatch != null)
+                    return (_currentBattleEnd - _currentBattleStart - _battleStopwatch.ElapsedMilliseconds) / 1000;
+                else
+                    return 0;
+            }
+        }
+
+        private BattleLog _currentBattleLog;
+
+        private DelegateCommand _goCommand;
+
+        public DelegateCommand GoCommand => _goCommand ?? (
+            _goCommand = new DelegateCommand(async() =>
+            {
+                try
+                {
+                    ServerRequestRunning = true;
+
+                    List<ulong> attackingPokemonIds = new List<ulong>();
+                    foreach (PokemonDataWrapper attackMember in AttackTeamMembers)
+                    {
+                        attackingPokemonIds.Add(attackMember.Id);
+                    }
+
+                    StartGymBattleResponse startGymBattleResponse = await GameClient.StartGymBattle(CurrentGym.Id, CurrentGymState.Memberships[0].TrainingPokemon.Id, attackingPokemonIds);
+
+                    switch (startGymBattleResponse.Result)
+                    {
+                        case StartGymBattleResponse.Types.Result.Unset:
+                            break;
+                        case StartGymBattleResponse.Types.Result.Success:
+                            _currentBattleId = startGymBattleResponse.BattleId;
+                            CurrentAttacker = startGymBattleResponse.Attacker;
+                            CurrentAttackerBattlePokemon = CurrentAttacker.ActivePokemon;
+                            CurrentAttackerPokemon = new PokemonDataWrapper(CurrentAttackerBattlePokemon.PokemonData);
+                            CurrentDefender = startGymBattleResponse.Defender;
+                            CurrentDefenderBattlePokemon = CurrentDefender.ActivePokemon;
+                            CurrentDefenderPokemon = new PokemonDataWrapper(CurrentDefenderBattlePokemon.PokemonData);
+                            _currentBattleStart = startGymBattleResponse.BattleStartTimestampMs;
+                            _currentBattleEnd = startGymBattleResponse.BattleEndTimestampMs;
+                            BattleLogEntries = new BattleLog();
+                            var actions = startGymBattleResponse.BattleLog.BattleActions.OrderBy(b => b.ActionStartMs);
+                            foreach (BattleAction action in actions)
+                            {
+                                BattleLogEntries.BattleActions.Add(action);
+                            }
+
+                            _battleStopwatch = new Stopwatch();
+                            _battleStopwatch.Start();
+                            BattleStarted?.Invoke(this, null);
+                            AudioUtils.PlaySound(AudioUtils.BATTLE);
+
+                            _battleTrackerCancellation = new CancellationTokenSource();
+                            await RunBattle();
+                            break;
+                    }
+                }
+                finally
+                {
+                    ServerRequestRunning = false;
+                }
+            }));
+
+        private DelegateCommand _abandonAttackCommand;
+
+        public DelegateCommand AbandonAttackCommand => _abandonAttackCommand ?? (
+            _abandonAttackCommand = new DelegateCommand(() =>
+            {
+                _battleTrackerCancellation?.Cancel();
+            }));
+
         #endregion
 
         #region Fight
@@ -620,15 +818,24 @@ namespace PokemonGo_UWP.ViewModels
                 AttackTeamSelectionClosed?.Invoke(this, null);
             }));
 
-        // Return to the gym from the pokemon selection page
-        private DelegateCommand _returnToGymCommand;
+        // Close the pokemon selection page, return to gym or to the team selection dialog
+        private DelegateCommand _closePokemonSelectCommand;
 
-        public DelegateCommand ReturnToGymCommand =>
-            _returnToGymCommand ?? (
-            _returnToGymCommand = new DelegateCommand(() =>
+        public DelegateCommand ClosePokemonSelectCommand =>
+            _closePokemonSelectCommand ?? (
+            _closePokemonSelectCommand = new DelegateCommand(() =>
             {
                 PokemonSelectionCancelled?.Invoke(this, null);
+                RaisePropertyChanged(() => SelectedPokemon);
             }));
+
+        public enum SelectionTarget
+        {
+            SelectForDeploy,
+            SelectForTeamChange
+        }
+
+        private SelectionTarget selectionTarget;
 
         /// <summary>
         /// Set the Selected pokemon and ask for a confirmation before deploying the pokémon
@@ -639,92 +846,105 @@ namespace PokemonGo_UWP.ViewModels
             _selectPokemonCommand ?? (
             _selectPokemonCommand = new DelegateCommand<PokemonDataWrapper>((selectedPokemon) =>
             {
-                // Catch if the Pokémon is a Buddy, deploying is not permitted in this case
-                // TODO: This isn't a MessageDialog in the original apps, implement error style (Shell needed)
-                if (Convert.ToBoolean(selectedPokemon.IsBuddy))
+                if (selectionTarget == SelectionTarget.SelectForDeploy)
                 {
-                    var cannotDeployDialog = new PoGoMessageDialog(Utils.Resources.CodeResources.GetString("CannotDeployBuddy"), "")
+                    // Catch if the Pokémon is a Buddy, deploying is not permitted in this case
+                    // TODO: This isn't a MessageDialog in the original apps, implement error style (Shell needed)
+                    if (Convert.ToBoolean(selectedPokemon.IsBuddy))
                     {
-                        CoverBackground = true,
-                        AnimationType = PoGoMessageDialogAnimation.Bottom
-                    };
-                    cannotDeployDialog.Show();
-                    return;
-                }
-
-                SelectPokemon(selectedPokemon);
-
-                // Ask for confirmation before deploying the Pokemons
-                var dialog =
-                    new PoGoMessageDialog("",
-                        string.Format(Utils.Resources.CodeResources.GetString("DeployPokemonWarningText"), SelectedPokemon.Name))
-                    {
-                        AcceptText = Utils.Resources.CodeResources.GetString("YesText"),
-                        CancelText = Utils.Resources.CodeResources.GetString("NoText"),
-                        CoverBackground = true,
-                        AnimationType = PoGoMessageDialogAnimation.Bottom
-                    };
-
-                dialog.AcceptInvoked += async (sender, e) =>
-                {
-                    // User confirmed deployment
-                    try
-                    {
-                        ServerRequestRunning = true;
-                        var fortDeployResponse = await GameClient.FortDeployPokemon(CurrentGym.Id, SelectedPokemon.Id);
-
-                        switch (fortDeployResponse.Result)
+                        var cannotDeployDialog = new PoGoMessageDialog(Utils.Resources.CodeResources.GetString("CannotDeployBuddy"), "")
                         {
-                            case FortDeployPokemonResponse.Types.Result.NoResultSet:
-                                break;
-                            case FortDeployPokemonResponse.Types.Result.Success:
-                                // Remove the deployed pokemon from the inventory on screen and update the Gymstate
-                                PokemonInventory.Remove(SelectedPokemon);
-                                CurrentGymState = fortDeployResponse.GymState;
-
-                                RaisePropertyChanged(() => PokemonInventory);
-                                RaisePropertyChanged(() => CurrentGymState);
-                                RaisePropertyChanged(() => GymLevel);
-                                RaisePropertyChanged(() => GymPrestigeFull);
-                                RaisePropertyChanged(() => DeployPokemonCommandVisibility);
-                                RaisePropertyChanged(() => TrainCommandVisibility);
-                                RaisePropertyChanged(() => FightCommandVisibility);
-                                RaisePropertyChanged(() => DeployCommandButtonEnabled);
-                                RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
-                                RaisePropertyChanged(() => GymMemberships);
-
-                                // TODO: Implement message informing about success of deployment (Shell needed)
-                                //GameClient.UpdateInventory();
-                                await GameClient.UpdatePlayerStats();
-
-                                // Reset to gym screen
-                                PokemonDeployed?.Invoke(this, null);
-                                break;
-
-                            case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
-                            case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
-                            case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
-                            case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
-                            case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
-                            case FortDeployPokemonResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
-                            case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
-                            case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoTeam:
-                            case FortDeployPokemonResponse.Types.Result.ErrorPokemonIsBuddy:
-                            case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
-                                DeployPokemonError?.Invoke(this, fortDeployResponse.Result);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                            CoverBackground = true,
+                            AnimationType = PoGoMessageDialogAnimation.Bottom
+                        };
+                        cannotDeployDialog.Show();
+                        return;
                     }
-                    finally
+
+                    SelectPokemon(selectedPokemon);
+
+                    // Ask for confirmation before deploying the Pokemons
+                    var dialog =
+                        new PoGoMessageDialog("",
+                            string.Format(Utils.Resources.CodeResources.GetString("DeployPokemonWarningText"), SelectedPokemon.Name))
+                        {
+                            AcceptText = Utils.Resources.CodeResources.GetString("YesText"),
+                            CancelText = Utils.Resources.CodeResources.GetString("NoText"),
+                            CoverBackground = true,
+                            AnimationType = PoGoMessageDialogAnimation.Bottom
+                        };
+
+                    dialog.AcceptInvoked += async (sender, e) =>
                     {
-                        ServerRequestRunning = false;
-                    }
+                        // User confirmed deployment
+                        try
+                        {
+                            ServerRequestRunning = true;
+                            var fortDeployResponse = await GameClient.FortDeployPokemon(CurrentGym.Id, SelectedPokemon.Id);
 
-                };
+                            switch (fortDeployResponse.Result)
+                            {
+                                case FortDeployPokemonResponse.Types.Result.NoResultSet:
+                                    break;
+                                case FortDeployPokemonResponse.Types.Result.Success:
+                                    // Remove the deployed pokemon from the inventory on screen and update the Gymstate
+                                    PokemonInventory.Remove(SelectedPokemon);
+                                    CurrentGymState = fortDeployResponse.GymState;
 
-                dialog.Show();
+                                    RaisePropertyChanged(() => PokemonInventory);
+                                    RaisePropertyChanged(() => CurrentGymState);
+                                    RaisePropertyChanged(() => GymLevel);
+                                    RaisePropertyChanged(() => GymPrestigeFull);
+                                    RaisePropertyChanged(() => DeployPokemonCommandVisibility);
+                                    RaisePropertyChanged(() => TrainCommandVisibility);
+                                    RaisePropertyChanged(() => FightCommandVisibility);
+                                    RaisePropertyChanged(() => DeployCommandButtonEnabled);
+                                    RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
+                                    RaisePropertyChanged(() => GymMemberships);
+
+                                    // TODO: Implement message informing about success of deployment (Shell needed)
+                                    //GameClient.UpdateInventory();
+                                    await GameClient.UpdatePlayerStats();
+
+                                    // Reset to gym screen
+                                    PokemonDeployed?.Invoke(this, null);
+                                    break;
+
+                                case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
+                                case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
+                                case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
+                                case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
+                                case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
+                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
+                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
+                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoTeam:
+                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonIsBuddy:
+                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
+                                    DeployPokemonError?.Invoke(this, fortDeployResponse.Result);
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        finally
+                        {
+                            ServerRequestRunning = false;
+                        }
+
+                    };
+
+                    dialog.Show();
+                }
+                else if (selectionTarget == SelectionTarget.SelectForTeamChange)
+                {
+                    var newSelected = selectedPokemon;
+
+                    AttackTeamMembers.Remove(_attackTeamMemberToRemove);
+                    AttackTeamMembers.Add(selectedPokemon);
+                    AttackTeamMembers.SortByCp();
+                    RaisePropertyChanged(() => AttackTeamMembers);
+                    ClosePokemonSelectCommand.Execute();
+                }
 
             }));
 
@@ -787,6 +1007,68 @@ namespace PokemonGo_UWP.ViewModels
             }
         }
 
+        public event EventHandler ActionAttack;
+        public event EventHandler ActionSpecialAttack;
+
+        /// <summary>
+        ///     Determines whether we can keep battling.
+        /// </summary>
+        private CancellationTokenSource _battleTrackerCancellation;
+
+        private async Task RunBattle()
+        {
+            while (!_battleTrackerCancellation.IsCancellationRequested && RemainingBattleTime >=0)
+            {
+                RaisePropertyChanged(() => RemainingBattleTime);
+
+
+                if (BattleLogEntries.BattleActions.Count() > 0)
+                {
+                    BattleAction action = BattleLogEntries.BattleActions[0];
+
+                    Logger.Debug("Found action: " + action.Type.ToString());
+                    BattleLogEntries.BattleActions.RemoveAt(0);
+
+                    switch (action.Type)
+                    {
+                        case BattleActionType.ActionAttack:
+                            CurrentDefendType = "Attack!";
+                            ActionAttack?.Invoke(this, null);
+                            break;
+                        case BattleActionType.ActionSpecialAttack:
+                            CurrentDefendType = "Special Attack!";
+                            ActionSpecialAttack?.Invoke(this, null);
+                            break;
+                        case BattleActionType.ActionDodge:
+                            break;
+                        case BattleActionType.ActionFaint:
+                            break;
+                        case BattleActionType.ActionDefeat:
+                            break;
+                        case BattleActionType.ActionVictory:
+                            break;
+                    }
+                }
+
+                try
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000), _battleTrackerCancellation.Token);
+                }
+                // cancelled
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+
+            }
+
+            await Task.CompletedTask;
+
+            AttackTeamSelectionClosed?.Invoke(this, null);
+            BattleEnded?.Invoke(this, null);
+            AudioUtils.StopSounds();
+            AudioUtils.PlaySound(AudioUtils.BEFORE_THE_FIGHT);
+        }
         #endregion
     }
 }

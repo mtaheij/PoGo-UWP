@@ -29,6 +29,8 @@ using PokemonGo_UWP.Controls;
 using POGOLib.Official.LoginProviders;
 using System.Diagnostics;
 using POGOLib.Official.Logging;
+using PokemonGo_UWP.Exceptions;
+using POGOProtos.Networking.Responses;
 
 namespace PokemonGo_UWP
 {
@@ -170,6 +172,45 @@ namespace PokemonGo_UWP
             AudioUtils.PlaySound(AudioUtils.POKEMON_FOUND_DING);
         }
 
+        /// <summary>
+        ///     And egg has hatched. This can be called from any page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="hatchedEggResponse"></param>
+        /// <returns></returns>
+        private void GameClient_OnEggHatched(object sender, GetHatchedEggsResponse hatchedEggResponse)
+        {
+            Task.Run(new Action(async () =>
+            {
+                for (var i = 0; i < hatchedEggResponse.PokemonId.Count; i++)
+                {
+                    Logger.Info("Egg Hatched");
+
+                    var currentPokemon = hatchedEggResponse.HatchedPokemon[i];
+
+                    if (currentPokemon == null)
+                        continue;
+
+                    await
+                        new MessageDialog(string.Format(
+                            Utils.Resources.CodeResources.GetString("EggHatchMessage"),
+                            currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
+                            hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
+
+                    if (i == 0)
+                    {
+                        WindowWrapper.Current().Dispatcher.Dispatch(() =>
+                        {
+                            BootStrapper.Current.NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
+                            {
+                                SelectedPokemonId = currentPokemon.Id.ToString(),
+                                ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
+                            });
+                        });
+                    }
+                }
+            }));
+        }
         #endregion
 
         #region Application Lifecycle
@@ -185,6 +226,7 @@ namespace PokemonGo_UWP
         {                        
             GameClient.PokemonsInventory.CollectionChanged -= PokemonsInventory_CollectionChanged;
             GameClient.CatchablePokemons.CollectionChanged -= CatchablePokemons_CollectionChanged;
+            GameClient.OnEggHatched -= GameClient_OnEggHatched;
 
             NetworkInformation.NetworkStatusChanged -= NetworkInformationOnNetworkStatusChanged;            
 
@@ -242,6 +284,7 @@ namespace PokemonGo_UWP
             // Respond to changes in inventory and Pokemon in the immediate viscinity.
             GameClient.PokemonsInventory.CollectionChanged += PokemonsInventory_CollectionChanged;
             GameClient.CatchablePokemons.CollectionChanged += CatchablePokemons_CollectionChanged;
+            GameClient.OnEggHatched += GameClient_OnEggHatched;
 
             await Task.CompletedTask;
         }
@@ -341,7 +384,10 @@ namespace PokemonGo_UWP
                 try
                 {
                     await GameClient.InitializeSession();
-                    NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                    if (GameClient.IsInitialized)
+                    {
+                        NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                    }
                 }
                 catch (PtcLoginException ex)
                 {
@@ -350,6 +396,12 @@ namespace PokemonGo_UWP
                     dialog.Show();
 
                     await NavigationService.NavigateAsync(typeof(MainPage));
+                }
+                catch (LocationException)
+                {
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(Utils.Resources.CodeResources.GetString("CouldNotGetLocation"));
+                    dialog.Closed += (ss, ee) => { App.Current.Exit(); };
+                    dialog.Show();
                 }
                 catch (Exception ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
                 {
@@ -360,7 +412,6 @@ namespace PokemonGo_UWP
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
             }
-
 
             await Task.CompletedTask;
         }

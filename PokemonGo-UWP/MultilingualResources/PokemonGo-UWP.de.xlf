@@ -641,6 +641,18 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <source>Getting game settings</source>
           <target state="new">Getting game settings</target>
         </trans-unit>
+        <trans-unit id="CouldNotGetLocation" translate="yes" xml:space="preserve">
+          <source>We we unable to get your location. Try restarting your device.</source>
+          <target state="new">We we unable to get your location. Try restarting your device.</target>
+        </trans-unit>
+        <trans-unit id="NoValidHashKey" translate="yes" xml:space="preserve">
+          <source>It seems that is not a valid hashing key</source>
+          <target state="new">It seems that is not a valid hashing key</target>
+        </trans-unit>
+        <trans-unit id="GymUnderAttack" translate="yes" xml:space="preserve">
+          <source>This gym is currently under attack</source>
+          <target state="new">This gym is currently under attack</target>
+        </trans-unit>
       </group>
     </body>
   </file>

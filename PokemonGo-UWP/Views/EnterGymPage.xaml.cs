@@ -7,6 +7,7 @@ using Template10.Common;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using static PokemonGo_UWP.ViewModels.EnterGymPageViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -65,6 +66,11 @@ namespace PokemonGo_UWP.Views
             ViewModel.AskForTrainingAttackTeam += GameManagerViewModelOnAskForTrainingAttackTeam;
             ViewModel.AttackTeamSelectionClosed += GameManagerViewModelOnAttackTeamSelectionClosed;
             ViewModel.TrainError += GameManagerViewModelOnTrainError;
+            ViewModel.BattleStarted += GameManagerViewModelOnBattleStarted;
+            ViewModel.BattleEnded += GameManagerViewModelOnBattleEnded;
+
+            ViewModel.ActionAttack += GameManagerViewModelOnActionAttack;
+            ViewModel.ActionSpecialAttack += GameManagerViewModelOnActionSpecialAttack;
         }
 
         private void UnsubscribeToEnterEvents()
@@ -85,6 +91,11 @@ namespace PokemonGo_UWP.Views
             ViewModel.AskForTrainingAttackTeam -= GameManagerViewModelOnAskForTrainingAttackTeam;
             ViewModel.AttackTeamSelectionClosed -= GameManagerViewModelOnAttackTeamSelectionClosed;
             ViewModel.TrainError -= GameManagerViewModelOnTrainError;
+            ViewModel.BattleStarted -= GameManagerViewModelOnBattleStarted;
+            ViewModel.BattleEnded -= GameManagerViewModelOnBattleEnded;
+
+            ViewModel.ActionAttack -= GameManagerViewModelOnActionAttack;
+            ViewModel.ActionSpecialAttack -= GameManagerViewModelOnActionSpecialAttack;
         }
 
         private void GameManagerViewModelOnGymLoaded(object sender, EventArgs eventArgs)
@@ -104,10 +115,19 @@ namespace PokemonGo_UWP.Views
         {
         }
 
-        private void GameManagerViewModelOnAskForPokemonSelection(object sender, EventArgs e)
+        private void GameManagerViewModelOnAskForPokemonSelection(object sender, SelectionTarget selectionTarget)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
+                switch (selectionTarget)
+                {
+                    case SelectionTarget.SelectForDeploy:
+                        PokemonInventorySelector.SelectionMode = ListViewSelectionMode.Single;
+                        break;
+                    case SelectionTarget.SelectForTeamChange:
+                        PokemonInventorySelector.SelectionMode = ListViewSelectionMode.Single;
+                        break;
+                }
                 SelectPokemonGrid.Visibility = Visibility.Visible;
             });
         }
@@ -161,7 +181,7 @@ namespace PokemonGo_UWP.Views
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
-                PokemonInventorySelector.ClearSelectedPokemons();
+                //PokemonInventorySelector.ClearSelectedPokemons();
                 SelectPokemonGrid.Visibility = Visibility.Collapsed;
             });
         }
@@ -182,6 +202,7 @@ namespace PokemonGo_UWP.Views
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
+                ButtonBar.Visibility = Visibility.Collapsed;
                 SelectAttackTeamGrid.Visibility = Visibility.Visible;
                 ShowSelectAttackTeamGridStoryboard.Begin();
             });
@@ -191,10 +212,48 @@ namespace PokemonGo_UWP.Views
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
+                ButtonBar.Visibility = Visibility.Visible;
                 HideSelectAttackTeamGridStoryboard.Completed += (ss, ee) => { SelectAttackTeamGrid.Visibility = Visibility.Collapsed; };
                 HideSelectAttackTeamGridStoryboard.Begin();
             });
         }
+
+        private void GameManagerViewModelOnBattleStarted(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                BattleUIGrid.Visibility = Visibility.Visible;
+                ShowBattleUIGridStoryboard.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnActionAttack(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateDefendingStoryboardUp.Completed += (ee, ss) => { AnimateDefendingStoryboardDown.Begin(); };
+                AnimateDefendingStoryboardUp.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnActionSpecialAttack(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateDefendingStoryboardUp.Completed += (ee, ss) => { AnimateDefendingStoryboardDown.Begin(); };
+                AnimateDefendingStoryboardUp.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnBattleEnded(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                HideBattleUIGridStoryboard.Completed += (ss, ee) => { BattleUIGrid.Visibility = Visibility.Collapsed; };
+                HideBattleUIGridStoryboard.Begin();
+            });
+        }
+
         private void GameManagerViewModelOnTrainError(object sender, string message)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>

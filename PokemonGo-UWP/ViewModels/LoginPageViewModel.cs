@@ -11,6 +11,7 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Newtonsoft.Json.Linq;
 using POGOLib.Official.LoginProviders;
+using PokemonGo_UWP.Exceptions;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -149,6 +150,12 @@ namespace PokemonGo_UWP.ViewModels
                 {
                     InvalidLogin?.Invoke(this, ex.Message);
                 }
+                catch (LocationException)
+                {
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(Utils.Resources.CodeResources.GetString("CouldNotGetLocation"));
+                    dialog.Closed += (ss, ee) => { App.Current.Exit(); };
+                    dialog.Show();
+                }
                 catch (Exception e)
                 {
 				    await ExceptionHandler.HandleException(e);
@@ -187,6 +194,12 @@ namespace PokemonGo_UWP.ViewModels
                         // Goto game page
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
+                }
+                catch (LocationException)
+                {
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(Utils.Resources.CodeResources.GetString("CouldNotGetLocation"));
+                    dialog.Closed += (ss, ee) => { App.Current.Exit(); };
+                    dialog.Show();
                 }
                 finally
                 {

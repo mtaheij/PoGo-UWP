@@ -22,6 +22,7 @@ namespace PokemonGo_UWP.Utils
         public const string PROFESSOR = "Professor.mp3";
         public const string TITLE = "Title.mp3";
         public const string BEFORE_THE_FIGHT = "BeforeTheFight.mp3";
+        public const string BATTLE = "Battle.mp3";
 
         public const string MESSAGE = "System_Message.mp3";
         public const string MAIN_XP = "Main_xp.mp3";
@@ -39,6 +40,7 @@ namespace PokemonGo_UWP.Utils
         private static readonly MediaPlayer ProfessorSound = new MediaPlayer();
         private static readonly MediaPlayer TitleSound = new MediaPlayer();
         private static readonly MediaPlayer BeforeTheFightSound = new MediaPlayer();
+        private static readonly MediaPlayer BattleSound = new MediaPlayer();
 
         private static readonly MediaPlayer SingleSound = new MediaPlayer();
 
@@ -60,6 +62,7 @@ namespace PokemonGo_UWP.Utils
             ProfessorSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{PROFESSOR}"));
             TitleSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{TITLE}"));
             BeforeTheFightSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{BEFORE_THE_FIGHT}"));
+            BattleSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{BATTLE}"));
 
             SingleSound.Source = MediaSource.CreateFromUri(new Uri($"ms-appx:///Assets/Audio/{MESSAGE}"));
 
@@ -77,6 +80,7 @@ namespace PokemonGo_UWP.Utils
                                             ProfessorSound.AudioCategory =
                                             TitleSound.AudioCategory =
                                             BeforeTheFightSound.AudioCategory =
+                                            BattleSound.AudioCategory =
                                             SingleSound.AudioCategory = 
                                             MediaPlayerAudioCategory.GameMedia;
 
@@ -84,6 +88,7 @@ namespace PokemonGo_UWP.Utils
             GameplaySound.IsLoopingEnabled = true;
             ProfessorSound.IsLoopingEnabled = true;
             BeforeTheFightSound.IsLoopingEnabled = true;
+            BattleSound.IsLoopingEnabled = true;
 
             ToggleSounds();
         }
@@ -109,6 +114,7 @@ namespace PokemonGo_UWP.Utils
                 ProfessorSound.IsMuted =
                 TitleSound.IsMuted =
                 BeforeTheFightSound.IsMuted =
+                BattleSound.IsMuted = 
                 SingleSound.IsMuted =
                 !SettingsService.Instance.IsMusicEnabled;
 
@@ -154,6 +160,11 @@ namespace PokemonGo_UWP.Utils
                 case BEFORE_THE_FIGHT:
                     GameplaySound.Pause();
                     BeforeTheFightSound.Play();
+                    break;
+                case BATTLE:
+                    GameplaySound.Pause();
+                    BeforeTheFightSound.Pause();
+                    BattleSound.Play();
                     break;
                 case TITLE:
                     TitleSound.Play();
@@ -206,6 +217,10 @@ namespace PokemonGo_UWP.Utils
                     BeforeTheFightSound.Pause();
                     BeforeTheFightSound.PlaybackSession.Position = TimeSpan.Zero;
                     break;
+                case BATTLE:
+                    BattleSound.Pause();
+                    BattleSound.PlaybackSession.Position = TimeSpan.Zero;
+                    break;
                 case TITLE:
                     TitleSound.Pause();
                     TitleSound.PlaybackSession.Position = TimeSpan.Zero;
@@ -234,6 +249,8 @@ namespace PokemonGo_UWP.Utils
             ProfessorSound.PlaybackSession.Position = TimeSpan.Zero;
             BeforeTheFightSound.Pause();
             BeforeTheFightSound.PlaybackSession.Position = TimeSpan.Zero;
+            BattleSound.Pause();
+            BattleSound.PlaybackSession.Position = TimeSpan.Zero;
             TitleSound.Pause();
             TitleSound.PlaybackSession.Position = TimeSpan.Zero;
             SingleSound.Pause();

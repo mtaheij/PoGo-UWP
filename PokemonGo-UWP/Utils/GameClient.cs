@@ -50,6 +50,7 @@ using POGOLib.Official.Net.Authentication;
 using POGOLib.Official.Net.Authentication.Data;
 using Template10.Services.NavigationService;
 using POGOProtos.Data.Battle;
+using PokemonGo_UWP.Exceptions;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -472,6 +473,10 @@ namespace PokemonGo_UWP.Utils
             };
 
             Geoposition pos = await GetInitialLocation();
+            if (pos == null)
+            {
+                return;
+            }
 
             try
             {
@@ -484,7 +489,7 @@ namespace PokemonGo_UWP.Utils
 
             // Get the game settings from the session
             await GetGameSettings();
-            
+
             IsInitialized = true;
         }
 
@@ -517,34 +522,9 @@ namespace PokemonGo_UWP.Utils
             }
         }
 
-        private static async void SessionOnHatchedEggsReceived(object sender, GetHatchedEggsResponse hatchedEggResponse)
+        private static void SessionOnHatchedEggsReceived(object sender, GetHatchedEggsResponse hatchedEggResponse)
         {
-            //OnEggHatched?.Invoke(null, hatchedEggResponse);
-
-            for (var i = 0; i < hatchedEggResponse.PokemonId.Count; i++)
-            {
-                Logger.Info("Egg Hatched");
-                //await UpdateInventory(true);
-
-                //TODO: Fix hatching of more than one pokemon at a time
-                var currentPokemon = PokemonsInventory
-                    .FirstOrDefault(item => item.Id == hatchedEggResponse.PokemonId[i]);
-
-                if (currentPokemon == null)
-                    continue;
-
-                await
-                    new MessageDialog(string.Format(
-                        Resources.CodeResources.GetString("EggHatchMessage"),
-                        currentPokemon.PokemonId, hatchedEggResponse.StardustAwarded[i], hatchedEggResponse.CandyAwarded[i],
-                        hatchedEggResponse.ExperienceAwarded[i])).ShowAsyncQueue();
-
-                BootStrapper.Current.NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
-                {
-                    SelectedPokemonId = currentPokemon.Id.ToString(),
-                    ViewMode = PokemonDetailPageViewMode.ReceivedPokemon
-                });
-            }
+            OnEggHatched?.Invoke(sender, hatchedEggResponse);
         }
 
         private static void SessionOnCheckAwardedBadgesReceived(object sender, CheckAwardedBadgesResponse e)
@@ -585,6 +565,10 @@ namespace PokemonGo_UWP.Utils
             };
 
             Geoposition pos = await GetInitialLocation();
+            if (pos == null)
+            {
+                return false;
+            }
 
             try
             {
@@ -607,6 +591,7 @@ namespace PokemonGo_UWP.Utils
 
             // Return true if login worked, meaning that we have a token
             return true;
+
         }
 
         /// <summary>
@@ -625,6 +610,10 @@ namespace PokemonGo_UWP.Utils
             };
 
             Geoposition pos = await GetInitialLocation();
+            if (pos == null)
+            {
+                return false;
+            }
 
             try
             {
@@ -659,8 +648,7 @@ namespace PokemonGo_UWP.Utils
 
             // Clear stored token
             SettingsService.Instance.AccessTokenString = null;
-            if (!SettingsService.Instance.RememberLoginData)
-                SettingsService.Instance.UserCredentials = null;
+            SettingsService.Instance.UserCredentials = null;
             LocationServiceHelper.Instance.PropertyChanged -= LocationHelperPropertyChanged;
         }
 
@@ -888,17 +876,18 @@ namespace PokemonGo_UWP.Utils
 
         private static async Task<Geoposition> GetInitialLocation()
         {
-            var accessStatus = await Geolocator.RequestAccessAsync();
-            Geolocator _geolocator;
+            Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
 
-            switch (accessStatus)
+            try
             {
-                case GeolocationAccessStatus.Allowed:
-                    _geolocator = new Geolocator { DesiredAccuracy = PositionAccuracy.Default };
-                    return await _geolocator.GetGeopositionAsync();
-                default:
-                    return null;
+                await LocationServiceHelper.Instance.InitializeAsync();
             }
+            catch (Exception)
+            {
+                throw new LocationException();
+            }
+
+            return LocationServiceHelper.Instance.Geoposition;
         }
 
         #endregion
@@ -1202,7 +1191,7 @@ namespace PokemonGo_UWP.Utils
                 ItemsInventory.AddRange(fullInventory.Where(item => item.InventoryItemData?.Item != null)
                     .GroupBy(item => item.InventoryItemData.Item)
                     .Select(item => item.First().InventoryItemData.Item), true);
-                CatchItemsInventory.AddRange(fullInventory.Where(item => item.InventoryItemData?.Item != null && 
+                CatchItemsInventory.AddRange(fullInventory.Where(item => item.InventoryItemData?.Item != null &&
                                                                  CatchItemIds.Contains(item.InventoryItemData.Item.ItemId))
                         .GroupBy(item => item.InventoryItemData.Item)
                         .Select(item => item.First().InventoryItemData.Item), true);
@@ -1222,6 +1211,26 @@ namespace PokemonGo_UWP.Utils
                 // Update Pokemons
                 PokemonsInventory.AddRange(fullInventory.Select(item => item.InventoryItemData?.PokemonData)
                     .Where(item => item != null && item.PokemonId > 0), true);
+
+                // Any pokemons removed?
+                var removedPokemons = fullInventory.Select(item => item.DeletedItem?.PokemonId)
+                    .Where(item => item != null);
+
+                if (removedPokemons.Count() > 0)
+                {
+                    foreach (var removedPokemon in removedPokemons)
+                    {
+                        foreach (PokemonData pokemon in PokemonsInventory)
+                        {
+                            if (pokemon.Id == removedPokemon)
+                            {
+                                PokemonsInventory.Remove(pokemon);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 EggsInventory.AddRange(fullInventory.Select(item => item.InventoryItemData?.PokemonData)
                     .Where(item => item != null && item.IsEgg), true);
 
@@ -1286,6 +1295,26 @@ namespace PokemonGo_UWP.Utils
                 // Update Pokemons
                 PokemonsInventory.AddRange(fullInventory.Select(item => item.InventoryItemData?.PokemonData)
                     .Where(item => item != null && item.PokemonId > 0), true);
+
+                // Any pokemons removed?
+                var removedPokemons = fullInventory.Select(item => item.DeletedItem?.PokemonId)
+                    .Where(item => item != null);
+
+                if (removedPokemons.Count() > 0)
+                {
+                    foreach (var removedPokemon in removedPokemons)
+                    {
+                        foreach (PokemonData pokemon in PokemonsInventory)
+                        {
+                            if (pokemon.Id == removedPokemon)
+                            {
+                                PokemonsInventory.Remove(pokemon);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 EggsInventory.AddRange(fullInventory.Select(item => item.InventoryItemData?.PokemonData)
                     .Where(item => item != null && item.IsEgg), true);
 

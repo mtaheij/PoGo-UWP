@@ -416,4 +416,13 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="RefreshingGameSettings" xml:space="preserve">
     <value>Getting game settings</value>
   </data>
+  <data name="CouldNotGetLocation" xml:space="preserve">
+    <value>We we unable to get your location. Try restarting your device.</value>
+  </data>
+  <data name="NoValidHashKey" xml:space="preserve">
+    <value>It seems that is not a valid hashing key</value>
+  </data>
+  <data name="GymUnderAttack" xml:space="preserve">
+    <value>This gym is currently under attack</value>
+  </data>
 </root>

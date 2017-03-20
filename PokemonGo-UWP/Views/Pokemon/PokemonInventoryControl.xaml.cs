@@ -1,6 +1,7 @@
 ﻿using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using System.Collections.ObjectModel;
+using Template10.Common;
 using Template10.Mvvm;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -85,7 +86,13 @@ namespace PokemonGo_UWP.Views
 
         public void ClearSelectedPokemons()
         {
-            PokemonInventoryGridView.SelectedItems.Clear();
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                if (PokemonInventoryGridView.SelectedItems.Count > 0)
+                {
+                    PokemonInventoryGridView.SelectedItems.Clear();
+                }
+            });
         }
 
         public void SelectPokemon(PokemonDataWrapper selectedPokemon)

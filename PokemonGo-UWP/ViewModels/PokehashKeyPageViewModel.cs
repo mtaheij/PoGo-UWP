@@ -1,6 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Google.Protobuf;
+using Newtonsoft.Json;
 using POGOLib.Official.LoginProviders;
 using POGOLib.Official.Net.Authentication.Data;
+using POGOLib.Official.Util.Hash;
+using POGOProtos.Networking.Envelopes;
+using POGOProtos.Networking.Requests;
+using POGOProtos.Networking.Requests.Messages;
+using PokemonGo_UWP.Exceptions;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using System;
@@ -11,6 +17,7 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace PokemonGo_UWP.ViewModels
@@ -25,8 +32,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <param name="mode"></param>
         /// <param name="suspensionState"></param>
         /// <returns></returns>
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode,
-            IDictionary<string, object> suspensionState)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             // Prevent from going back to other pages
             NavigationService.ClearHistory();
@@ -39,6 +45,7 @@ namespace PokemonGo_UWP.ViewModels
             {
                 PokehashKey = SettingsService.Instance.PokehashAuthKey;
             }
+
             await Task.CompletedTask;
         }
 
@@ -84,7 +91,6 @@ namespace PokemonGo_UWP.ViewModels
                 DoStoreCommand.RaiseCanExecuteChanged();
             }
         }
-
         #endregion
 
         #region Game Logic
@@ -109,7 +115,10 @@ namespace PokemonGo_UWP.ViewModels
                         try
                         {
                             await GameClient.InitializeSession();
-                            await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                            if (GameClient.IsInitialized)
+                            {
+                                await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
+                            }
                         }
                         catch (PtcLoginException ex)
                         {
@@ -119,9 +128,15 @@ namespace PokemonGo_UWP.ViewModels
 
                             await NavigationService.NavigateAsync(typeof(MainPage));
                         }
+                        catch (LocationException)
+                        {
+
+                        }
                         catch (Exception ex)
                         {
-                            await new MessageDialog("It seems that is not a valid hashing key").ShowAsyncQueue();
+                            var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("NoValidHashKey");
+                            ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                            dialog.Show();
                         }
                     }
                     else
@@ -136,7 +151,6 @@ namespace PokemonGo_UWP.ViewModels
 
             }, () => !string.IsNullOrEmpty(PokehashKey))
             );
-
         #endregion
     }
 }
