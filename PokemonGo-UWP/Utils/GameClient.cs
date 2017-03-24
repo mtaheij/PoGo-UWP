@@ -1255,19 +1255,19 @@ namespace PokemonGo_UWP.Utils
         {
             var fullInventory = _session.Player.Inventory.InventoryItems;
 
-            // Get ALL the items again
+            // By sending an Echo request, GetInventory will also be send. This will update the inventory by itself
             if (ForceUpdate)
             {
                 var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
                 {
-                    RequestType = RequestType.GetInventory,
-                    RequestMessage = new GetInventoryMessage
+                    RequestType = RequestType.Echo,
+                    RequestMessage = new EchoMessage
                     {
-
+                        
                     }.ToByteString()
                 });
-                var getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
-                fullInventory = getInventoryResponse.InventoryDelta.InventoryItems;
+                var echoResponse = EchoResponse.Parser.ParseFrom(response);
+                return;
             }
 
             WindowWrapper.Current().Dispatcher.Dispatch(() =>

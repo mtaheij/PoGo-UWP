@@ -1357,10 +1357,6 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>Your Pokemon does not have full hp</source>
           <target state="new">Your Pokemon does not have full hp</target>
         </trans-unit>
-        <trans-unit id="String1" translate="yes" xml:space="preserve">
-          <source>Refreshing game settings...</source>
-          <target state="new">Refreshing game settings...</target>
-        </trans-unit>
         <trans-unit id="HashingKeyExpired" translate="yes" xml:space="preserve">
           <source>You are not authorized to use the hashing service. Please check that your API key is correct.</source>
           <target state="new">You are not authorized to use the hashing service. Please check that your API key is correct.</target>
@@ -1388,6 +1384,18 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
         <trans-unit id="GymUnderAttack" translate="yes" xml:space="preserve">
           <source>This gym is currently under attack</source>
           <target state="new">This gym is currently under attack</target>
+        </trans-unit>
+        <trans-unit id="PokeHashException" translate="yes" xml:space="preserve">
+          <source>There seems to be something wrong with the hashing server. Application will quit, try again later.</source>
+          <target state="new">There seems to be something wrong with the hashing server. Application will quit, try again later.</target>
+        </trans-unit>
+        <trans-unit id="RefreshGameSettings" translate="yes" xml:space="preserve">
+          <source>Refreshing game settings...</source>
+          <target state="new">Refreshing game settings...</target>
+        </trans-unit>
+        <trans-unit id="StartingBattle" translate="yes" xml:space="preserve">
+          <source>Starting battle...</source>
+          <target state="new">Starting battle...</target>
         </trans-unit>
       </group>
     </body>

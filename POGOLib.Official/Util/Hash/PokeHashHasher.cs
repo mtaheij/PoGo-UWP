@@ -159,7 +159,7 @@ namespace POGOLib.Official.Util.Hash
                 {
                     _keySelection.WaitOne();
 
-                    Logger.Warn(">>> Entering key selection.");
+                    //Logger.Warn(">>> Entering key selection.");
 
                     var availableKeys = _authKeys.Where(x => x.Requests < x.MaxRequestCount).ToArray();
                     if (availableKeys.Length > 0)
@@ -167,7 +167,7 @@ namespace POGOLib.Official.Util.Hash
                         authKey = availableKeys.First();
                         authKey.Requests += 1;
 
-                        Logger.Warn("Found available auth key.");
+                        //Logger.Warn("Found available auth key.");
 
                         // If the auth key has not been initialized yet, we need to have control a bit longer
                         // to configure it properly.
@@ -200,7 +200,7 @@ namespace POGOLib.Official.Util.Hash
                 {
                     if (!extendedSelection)
                     {
-                        Logger.Warn("<<< Exiting key selection.");
+                        //Logger.Warn("<<< Exiting key selection.");
 
                         _keySelection.Release();
                     }
@@ -212,7 +212,15 @@ namespace POGOLib.Official.Util.Hash
 
                 requestContent.Headers.Add("X-AuthToken", authKey.AuthKey);
 
-                var response = await _httpClient.PostAsync(PokeHashEndpoint, requestContent);
+                HttpResponseMessage response = null;
+                try
+                {
+                    response = await _httpClient.PostAsync(PokeHashEndpoint, requestContent);
+                }
+                catch (Exception ex)
+                {
+                    throw new PokeHashException(ex.Message);
+                }
 
                 // Handle response
                 try
@@ -232,7 +240,7 @@ namespace POGOLib.Official.Util.Hash
                     {
                         int.TryParse(ratePeriodEndHeader.FirstOrDefault() ?? "1", out secs);
 
-                        Logger.Warn($"Resets: {TimeUtil.GetDateTimeFromSeconds(secs)}");
+                        //Logger.Warn($"Resets: {TimeUtil.GetDateTimeFromSeconds(secs)}");
                     }
 
                     IEnumerable<string> rateRequestsRemainingHeader;
@@ -240,8 +248,8 @@ namespace POGOLib.Official.Util.Hash
                     {
                         int.TryParse(rateRequestsRemainingHeader.FirstOrDefault() ?? "1", out remaining);
 
-                        Logger.Warn($"Remaining / Max: {remaining} / {authKey.MaxRequestCount}");
-                        Logger.Warn($"Requests / ShouldBe: {authKey.Requests} / {authKey.MaxRequestCount - remaining}");
+                        //Logger.Warn($"Remaining / Max: {remaining} / {authKey.MaxRequestCount}");
+                        //Logger.Warn($"Requests / ShouldBe: {authKey.Requests} / {authKey.MaxRequestCount - remaining}");
                     }
 
                     // Use parsed headers
@@ -255,7 +263,7 @@ namespace POGOLib.Official.Util.Hash
                     var ratePeriodEnd = TimeUtil.GetDateTimeFromSeconds(secs);
                     if (ratePeriodEnd > authKey.RatePeriodEnd)
                     {
-                        Logger.Warn($"[AuthKey: {authKey.AuthKey}] {authKey.RatePeriodEnd} increased to {ratePeriodEnd}.");
+                        //Logger.Warn($"[AuthKey: {authKey.AuthKey}] {authKey.RatePeriodEnd} increased to {ratePeriodEnd}.");
 
                         authKey.RatePeriodEnd = ratePeriodEnd;
                     }
@@ -266,7 +274,7 @@ namespace POGOLib.Official.Util.Hash
                 {
                     if (extendedSelection)
                     {
-                        Logger.Warn("<<< Exiting extended key selection.");
+                        //Logger.Warn("<<< Exiting extended key selection.");
 
                         _keySelection.Release();
                     }

@@ -69,8 +69,13 @@ namespace PokemonGo_UWP.Views
             ViewModel.BattleStarted += GameManagerViewModelOnBattleStarted;
             ViewModel.BattleEnded += GameManagerViewModelOnBattleEnded;
 
-            ViewModel.ActionAttack += GameManagerViewModelOnActionAttack;
-            ViewModel.ActionSpecialAttack += GameManagerViewModelOnActionSpecialAttack;
+            ViewModel.DefendingActionAttack += GameManagerViewModelOnDefendingActionAttack;
+            ViewModel.DefendingActionSpecialAttack += GameManagerViewModelOnDefendingActionSpecialAttack;
+            ViewModel.DefendingActionDodge += GameManagerViewModelOnDefendingActionDodge;
+
+            ViewModel.AttackingActionAttack += GameManagerViewModelOnAttackingActionAttack;
+            ViewModel.AttackingActionSpecialAttack += GameManagerViewModelOnAttackingActionSpecialAttack;
+            ViewModel.AttackingActionDodge += GameManagerViewModelOnAttackingActionDodge;
         }
 
         private void UnsubscribeToEnterEvents()
@@ -94,8 +99,9 @@ namespace PokemonGo_UWP.Views
             ViewModel.BattleStarted -= GameManagerViewModelOnBattleStarted;
             ViewModel.BattleEnded -= GameManagerViewModelOnBattleEnded;
 
-            ViewModel.ActionAttack -= GameManagerViewModelOnActionAttack;
-            ViewModel.ActionSpecialAttack -= GameManagerViewModelOnActionSpecialAttack;
+            ViewModel.DefendingActionAttack -= GameManagerViewModelOnDefendingActionAttack;
+            ViewModel.DefendingActionSpecialAttack -= GameManagerViewModelOnDefendingActionSpecialAttack;
+            ViewModel.DefendingActionDodge -= GameManagerViewModelOnDefendingActionDodge;
         }
 
         private void GameManagerViewModelOnGymLoaded(object sender, EventArgs eventArgs)
@@ -108,7 +114,10 @@ namespace PokemonGo_UWP.Views
 
         private void GameManagerViewModelOnEnterOutOfRange(object sender, EventArgs eventArgs)
         {
-            OutOfRangeTextBlock.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
+            ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorNotInRange");
+            ErrorMessageText.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
+            ShowErrorMessageStoryboard.Completed += (ss, ee) => { HideErrorMessageStoryboard.Begin(); };
+            ShowErrorMessageStoryboard.Begin();
         }
 
         private void GameManagerViewModelOnEnterSuccess(object sender, EventArgs eventArgs)
@@ -227,7 +236,7 @@ namespace PokemonGo_UWP.Views
             });
         }
 
-        private void GameManagerViewModelOnActionAttack(object sender, EventArgs e)
+        private void GameManagerViewModelOnDefendingActionAttack(object sender, EventArgs e)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
@@ -236,12 +245,48 @@ namespace PokemonGo_UWP.Views
             });
         }
 
-        private void GameManagerViewModelOnActionSpecialAttack(object sender, EventArgs e)
+        private void GameManagerViewModelOnDefendingActionSpecialAttack(object sender, EventArgs e)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 AnimateDefendingStoryboardUp.Completed += (ee, ss) => { AnimateDefendingStoryboardDown.Begin(); };
                 AnimateDefendingStoryboardUp.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnDefendingActionDodge(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateDefendingStoryboardRight.Completed += (ee, ss) => { AnimateDefendingStoryboardLeft.Begin(); };
+                AnimateDefendingStoryboardRight.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnAttackingActionAttack(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateAttackingStoryboardUp.Completed += (ee, ss) => { AnimateAttackingStoryboardDown.Begin(); };
+                AnimateAttackingStoryboardUp.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnAttackingActionSpecialAttack(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateAttackingStoryboardUp.Completed += (ee, ss) => { AnimateAttackingStoryboardDown.Begin(); };
+                AnimateAttackingStoryboardUp.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnAttackingActionDodge(object sender, EventArgs e)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                AnimateAttackingStoryboardRight.Completed += (ee, ss) => { AnimateAttackingStoryboardLeft.Begin(); };
+                AnimateAttackingStoryboardRight.Begin();
             });
         }
 

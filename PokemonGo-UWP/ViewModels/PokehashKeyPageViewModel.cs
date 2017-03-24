@@ -19,6 +19,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+using POGOLib.Official.Util.Hash.PokeHash;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -131,6 +132,13 @@ namespace PokemonGo_UWP.ViewModels
                         catch (LocationException)
                         {
 
+                        }
+                        catch (PokeHashException)
+                        {
+                            var errorMessage = Utils.Resources.CodeResources.GetString("PokeHashException");
+                            ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                            dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                            dialog.Show();
                         }
                         catch (Exception ex)
                         {

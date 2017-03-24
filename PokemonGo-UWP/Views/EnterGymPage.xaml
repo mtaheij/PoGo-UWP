@@ -33,7 +33,6 @@
                 Duration="0:0:0.2" />
         </Storyboard>
 
-
         <Storyboard x:Name="ShowSelectAttackTeamGridStoryboard">
             <FadeInThemeAnimation Storyboard.TargetName="SelectAttackTeamGrid"/>
             <DoubleAnimation x:Name="ShowAttackTeamGridAnimation"
@@ -81,6 +80,85 @@
                              Duration="0:0:0.2"/>
             <FadeOutThemeAnimation Storyboard.TargetName="CurrentDefendTypeText"/>
             <DoubleAnimation Storyboard.TargetName="DefenderTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-80"
+                             To="-100"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="AnimateDefendingStoryboardLeft">
+            <DoubleAnimation x:Name="DefenderPokemonAnimationLeft"
+                             Storyboard.TargetName="DefenderPokemonTransform"
+                             Storyboard.TargetProperty="TranslateX"
+                             To="-20"
+                             Duration="0:0:0.2"/>
+            <FadeInThemeAnimation Storyboard.TargetName="CurrentDefendTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="DefenderTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-40"
+                             To="-80"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="AnimateDefendingStoryboardRight">
+            <DoubleAnimation x:Name="DefenderPokemonAnimationRight"
+                             Storyboard.TargetName="DefenderPokemonTransform"
+                             Storyboard.TargetProperty="TranslateX"
+                             To="0"
+                             Duration="0:0:0.2"/>
+            <FadeOutThemeAnimation Storyboard.TargetName="CurrentDefendTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="DefenderTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-80"
+                             To="-100"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+
+        <Storyboard x:Name="AnimateAttackingStoryboardUp">
+            <DoubleAnimation x:Name="AttackerPokemonAnimationUp"
+                             Storyboard.TargetName="AttackerPokemonTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             To="-20"
+                             Duration="0:0:0.2"/>
+            <FadeInThemeAnimation Storyboard.TargetName="CurrentAttackTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="AttackerTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-40"
+                             To="-80"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="AnimateAttackingStoryboardDown">
+            <DoubleAnimation x:Name="AttackerPokemonAnimationDown"
+                             Storyboard.TargetName="AttackerPokemonTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             To="0"
+                             Duration="0:0:0.2"/>
+            <FadeOutThemeAnimation Storyboard.TargetName="CurrentAttackTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="AttackerTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-80"
+                             To="-100"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="AnimateAttackingStoryboardLeft">
+            <DoubleAnimation x:Name="AttackerPokemonAnimationLeft"
+                             Storyboard.TargetName="AttackerPokemonTransform"
+                             Storyboard.TargetProperty="TranslateX"
+                             To="-20"
+                             Duration="0:0:0.2"/>
+            <FadeInThemeAnimation Storyboard.TargetName="CurrentAttackTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="AttackerTypeTransform"
+                             Storyboard.TargetProperty="TranslateY"
+                             From="-40"
+                             To="-80"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="AnimateAttackingStoryboardRight">
+            <DoubleAnimation x:Name="AttackerPokemonAnimationRight"
+                             Storyboard.TargetName="AttackerPokemonTransform"
+                             Storyboard.TargetProperty="TranslateX"
+                             To="0"
+                             Duration="0:0:0.2"/>
+            <FadeOutThemeAnimation Storyboard.TargetName="CurrentAttackTypeText"/>
+            <DoubleAnimation Storyboard.TargetName="AttackerTypeTransform"
                              Storyboard.TargetProperty="TranslateY"
                              From="-80"
                              To="-100"
@@ -415,7 +493,7 @@
                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="5">
                     <TextBlock Text="{Binding CurrentAttackerPokemon.WrappedData, Converter={StaticResource PokemonDataToPokemonNameConverter}}"
                                Foreground="White"/>
-                    <ProgressBar Maximum="{Binding CurrentAttackerPokemon.StaminaMax}" Value="{Binding CurrentAttackerPokemon.Stamina}"/>
+                    <ProgressBar x:Name="AttackerStaminaProgressBar" Maximum="{Binding CurrentAttackerBattlePokemon.PokemonData.StaminaMax}" Value="{Binding CurrentAttackerBattlePokemon.CurrentHealth}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <TextBlock Text="CP " Foreground="White" FontSize="12" VerticalAlignment="Bottom"/>
                         <TextBlock Text="{Binding CurrentAttackerPokemon.Cp}" Foreground="White" FontSize="16" VerticalAlignment="Bottom"/>
@@ -429,7 +507,7 @@
                 <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="5">
                     <TextBlock Text="{Binding CurrentDefenderPokemon.WrappedData, Converter={StaticResource PokemonDataToPokemonNameConverter}}"
                                Foreground="White"/>
-                    <ProgressBar Maximum="{Binding CurrentDefenderPokemon.StaminaMax}" Value="{Binding CurrentDefenderPokemon.Stamina}"/>
+                    <ProgressBar x:Name="DefenderStaminaProgressBar" Maximum="{Binding CurrentDefenderBattlePokemon.PokemonData.StaminaMax}" Value="{Binding CurrentDefenderBattlePokemon.CurrentHealth}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <TextBlock Text="CP " Foreground="White" FontSize="12" VerticalAlignment="Bottom"/>
                         <TextBlock Text="{Binding CurrentDefenderPokemon.Cp}" Foreground="White" FontSize="16" VerticalAlignment="Bottom"/>
@@ -437,8 +515,9 @@
                 </StackPanel>
 
                 <!-- The two currently fighting Pokemons -->
-                <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="5">
+                <Grid Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="5">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
@@ -469,10 +548,14 @@
                     <TextBlock x:Name="CurrentAttackTypeText" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
                                Text="{Binding CurrentAttackType}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold">
                         <TextBlock.RenderTransform>
-                            <CompositeTransform x:Name="AttackTypeTransform"/>
+                            <CompositeTransform x:Name="AttackerTypeTransform"/>
                         </TextBlock.RenderTransform>
                     </TextBlock>
-
+                    <StackPanel Grid.Row="3" Orientation="Vertical">
+                        <Button Command="{Binding DodgeCommand}" Content="Dodge" Margin="5"/>
+                        <Button Command="{Binding AttackCommand}" Content="Attack" Margin="5"/>
+                        <Button Command="{Binding SpecialAttackCommand}" Content="Special" Margin="5"/>
+                    </StackPanel>
                 </Grid>
                       
                 <!-- Buttons to abandon the fight and to change the current pokemon -->

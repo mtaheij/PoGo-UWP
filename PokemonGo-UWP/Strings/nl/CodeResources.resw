@@ -290,9 +290,6 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</value>
   <data name="ErrorPokemonNotFullHp" xml:space="preserve">
     <value>Je Pokémon heeft niet zijn volledige gezondheid (HP)</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>Verversen van spel instellingen...</value>
-  </data>
   <data name="HashingKeyExpired" xml:space="preserve">
     <value>Je hebt geen permissie om de hashing service te gebruiken. Controleer of je API key correct is.</value>
   </data>

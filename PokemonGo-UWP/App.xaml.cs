@@ -31,6 +31,7 @@ using System.Diagnostics;
 using POGOLib.Official.Logging;
 using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
+using POGOLib.Official.Util.Hash.PokeHash;
 
 namespace PokemonGo_UWP
 {
@@ -401,6 +402,13 @@ namespace PokemonGo_UWP
                 {
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(Utils.Resources.CodeResources.GetString("CouldNotGetLocation"));
                     dialog.Closed += (ss, ee) => { App.Current.Exit(); };
+                    dialog.Show();
+                }
+                catch (PokeHashException)
+                {
+                    var errorMessage = Utils.Resources.CodeResources.GetString("PokeHashException");
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
                     dialog.Show();
                 }
                 catch (Exception ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key

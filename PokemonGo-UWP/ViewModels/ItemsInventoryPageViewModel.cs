@@ -409,8 +409,14 @@ namespace PokemonGo_UWP.ViewModels
                             RaisePropertyChanged(nameof(SelectedPokemon));
                             RaisePropertyChanged(nameof(CurrentUseItem));
                         }
-                        //GameClient.UpdateInventory();
                         await GameClient.UpdateProfile();
+
+                        // If nothing of this item is left, remove from inventory manually and return to the inventory overview page
+                        if (CurrentUseItem?.Count == 0)
+                        {
+                            ItemsInventory.Remove(CurrentUseItem);
+                            ReturnToInventoryCommand.Execute();
+                        }
                         break;
                     case UseItemPotionResponse.Types.Result.ErrorDeployedToFort:
                         ErrorDeployedToFort?.Invoke(this, null);
@@ -457,8 +463,14 @@ namespace PokemonGo_UWP.ViewModels
                             RaisePropertyChanged(nameof(SelectedPokemon));
                             RaisePropertyChanged(nameof(CurrentUseItem));
                         }
-                        //GameClient.UpdateInventory();
                         await GameClient.UpdateProfile();
+
+                        // If nothing of this item is left, remove from inventory manually and return to the inventory overview page
+                        if (CurrentUseItem?.Count == 0)
+                        {
+                            ItemsInventory.Remove(CurrentUseItem);
+                            ReturnToInventoryCommand.Execute();
+                        }
                         break;
                     case UseItemReviveResponse.Types.Result.ErrorDeployedToFort:
                         ErrorDeployedToFort?.Invoke(this, null);

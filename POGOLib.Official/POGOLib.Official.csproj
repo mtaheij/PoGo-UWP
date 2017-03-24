@@ -71,6 +71,7 @@
     <Compile Include="Util\Hash\LegacyHasher.cs" />
     <Compile Include="Util\Hash\PokeHashHasher.cs" />
     <Compile Include="Util\Hash\PokeHash\PokeHashAuthKey.cs" />
+    <Compile Include="Util\Hash\PokeHash\PokeHashException.cs" />
     <Compile Include="Util\Hash\PokeHash\PokeHashRequest.cs" />
     <Compile Include="Util\Hash\PokeHash\PokeHashResponse.cs" />
     <Compile Include="Util\LocationUtil.cs" />
