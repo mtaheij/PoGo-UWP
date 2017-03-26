@@ -59,6 +59,14 @@
             <FadeOutThemeAnimation Storyboard.TargetName="BattleUIGrid"/>
         </Storyboard>
 
+        <Storyboard x:Name="ShowBattleResultStoryboard">
+            <FadeInThemeAnimation Storyboard.TargetName="BattleResult"/>
+        </Storyboard>
+
+        <Storyboard x:Name="HideBattleResultStoryboard">
+            <FadeOutThemeAnimation Storyboard.TargetName="BattleResult"/>
+        </Storyboard>
+
         <Storyboard x:Name="AnimateDefendingStoryboardUp">
             <DoubleAnimation x:Name="DefenderPokemonAnimationUp"
                              Storyboard.TargetName="DefenderPokemonTransform"
@@ -576,6 +584,11 @@
             </Grid>
         </Grid>
 
+        <Grid x:Name="BattleResult"
+              Visibility="Collapsed">
+            <TextBlock x:Name="BattleOutcome" />
+        </Grid>
+        
         <!--Dialog to choose pokemon-->
         <Grid x:Name="SelectPokemonGrid" 
               Background="{StaticResource PageBackgroundGradient}"

@@ -1,4 +1,5 @@
-﻿using POGOProtos.Enums;
+﻿using POGOProtos.Data.Battle;
+using POGOProtos.Enums;
 using POGOProtos.Networking.Responses;
 using PokemonGo_UWP.Utils;
 using System;
@@ -35,6 +36,7 @@ namespace PokemonGo_UWP.Views
 
             // Hide panels
             HideSelectAttackTeamGridStoryboard.Begin();
+            HideBattleResultStoryboard.Begin();
 
             SubscribeToEnterEvents();
         }
@@ -76,6 +78,10 @@ namespace PokemonGo_UWP.Views
             ViewModel.AttackingActionAttack += GameManagerViewModelOnAttackingActionAttack;
             ViewModel.AttackingActionSpecialAttack += GameManagerViewModelOnAttackingActionSpecialAttack;
             ViewModel.AttackingActionDodge += GameManagerViewModelOnAttackingActionDodge;
+
+            ViewModel.Victory += GameManagerViewModelOnVictory;
+            ViewModel.Defeat += GameManagerViewModelOnDefeat;
+            ViewModel.TimedOut += GameManagerViewModelOnTimedOut;
         }
 
         private void UnsubscribeToEnterEvents()
@@ -102,6 +108,14 @@ namespace PokemonGo_UWP.Views
             ViewModel.DefendingActionAttack -= GameManagerViewModelOnDefendingActionAttack;
             ViewModel.DefendingActionSpecialAttack -= GameManagerViewModelOnDefendingActionSpecialAttack;
             ViewModel.DefendingActionDodge -= GameManagerViewModelOnDefendingActionDodge;
+
+            ViewModel.AttackingActionAttack -= GameManagerViewModelOnAttackingActionAttack;
+            ViewModel.AttackingActionSpecialAttack -= GameManagerViewModelOnAttackingActionSpecialAttack;
+            ViewModel.AttackingActionDodge -= GameManagerViewModelOnAttackingActionDodge;
+
+            ViewModel.Victory -= GameManagerViewModelOnVictory;
+            ViewModel.Defeat -= GameManagerViewModelOnDefeat;
+            ViewModel.TimedOut -= GameManagerViewModelOnTimedOut;
         }
 
         private void GameManagerViewModelOnGymLoaded(object sender, EventArgs eventArgs)
@@ -290,12 +304,42 @@ namespace PokemonGo_UWP.Views
             });
         }
 
-        private void GameManagerViewModelOnBattleEnded(object sender, EventArgs e)
+        private void GameManagerViewModelOnBattleEnded(object sender, AttackGymResponse lastResponse)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 HideBattleUIGridStoryboard.Completed += (ss, ee) => { BattleUIGrid.Visibility = Visibility.Collapsed; };
                 HideBattleUIGridStoryboard.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnVictory(object sender, BattleAction action)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                BattleOutcome.Text = "YOU WIN!";
+                BattleResult.Visibility = Visibility.Visible;
+                ShowBattleResultStoryboard.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnDefeat(object sender, BattleAction action)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                BattleOutcome.Text = "YOU LOSE!";
+                BattleResult.Visibility = Visibility.Visible;
+                ShowBattleResultStoryboard.Begin();
+            });
+        }
+
+        private void GameManagerViewModelOnTimedOut(object sender, BattleAction action)
+        {
+            WindowWrapper.Current().Dispatcher.Dispatch(() =>
+            {
+                BattleOutcome.Text = "TIMED OUT!";
+                BattleResult.Visibility = Visibility.Visible;
+                ShowBattleResultStoryboard.Begin();
             });
         }
 

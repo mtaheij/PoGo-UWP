@@ -60,6 +60,11 @@ namespace PokemonGo_UWP.Entities
                 new Geopoint(new BasicGeoposition {Latitude = _fortData.Latitude, Longitude = _fortData.Longitude});
         }
 
+        public FortData FortData
+        {
+            get { return _fortData; }
+        }
+
         /// <summary>
         ///     HACK - this should fix Pokestop floating on map
         /// </summary>
@@ -117,6 +122,12 @@ namespace PokemonGo_UWP.Entities
             OnPropertyChanged(nameof(Longitude));
         }
 
+        public void AddGymPoints(long Points)
+        {
+            this.GymPoints += Points;
+            OnPropertyChanged(nameof(GymPoints));
+        }
+
         public void UpdateCooldown(long newCooldownTimestampMs)
         {
             this._fortData.CooldownCompleteTimestampMs = newCooldownTimestampMs;
@@ -136,7 +147,14 @@ namespace PokemonGo_UWP.Entities
 
         public PokemonId GuardPokemonId => _fortData.GuardPokemonId;
 
-        public long GymPoints => _fortData.GymPoints;
+        public long GymPoints
+        {
+            get { return _fortData.GymPoints; }
+            set
+            {
+                _fortData.GymPoints = value;
+            }
+        }
 
         public string Id => _fortData.Id;
 
