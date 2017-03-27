@@ -26,7 +26,7 @@ namespace POGOLib.Official.Util.Hash
     /// </summary>
     public class PokeHashHasher : IHasher
     {
-        private const string PokeHashUrl = "https://pokehash.buddyauth.com/";
+        private const string PokeHashUrl = "http://pokehash.buddyauth.com/";
 
         private const string PokeHashEndpoint = "api/v131_0/hash";
 
