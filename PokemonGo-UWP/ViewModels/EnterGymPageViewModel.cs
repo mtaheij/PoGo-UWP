@@ -743,10 +743,6 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand GoCommand => _goCommand ?? (
             _goCommand = new DelegateCommand(async() =>
             {
-                ConfirmationDialog dialog = new ConfirmationDialog("Training is not completed yet.");
-                dialog.Show();
-                return;
-
                 try
                 {
                     _battleTrackerCancellation = new CancellationTokenSource();
@@ -799,12 +795,16 @@ namespace PokemonGo_UWP.ViewModels
                                     ServerBattleStartTimestampMs = result.BattleLog.BattleStartTimestampMs;
 
                                     CurrentAttacker = result.Attacker;
-                                    CurrentAttackerBattlePokemon = CurrentAttacker.ActivePokemon;
-                                    CurrentAttackerPokemon = new PokemonDataWrapper(CurrentAttackerBattlePokemon.PokemonData);
+                                    if (CurrentAttacker != null)
+                                        CurrentAttackerBattlePokemon = CurrentAttacker.ActivePokemon;
+                                    if (CurrentAttackerBattlePokemon != null)
+                                        CurrentAttackerPokemon = new PokemonDataWrapper(CurrentAttackerBattlePokemon.PokemonData);
 
                                     CurrentDefender = result.Defender;
-                                    CurrentDefenderBattlePokemon = CurrentDefender.ActivePokemon;
-                                    CurrentDefenderPokemon = new PokemonDataWrapper(CurrentDefenderBattlePokemon.PokemonData);
+                                    if (CurrentDefender != null)
+                                        CurrentDefenderBattlePokemon = CurrentDefender.ActivePokemon;
+                                    if (CurrentDefenderBattlePokemon != null)
+                                        CurrentDefenderPokemon = new PokemonDataWrapper(CurrentDefenderBattlePokemon.PokemonData);
 
                                     _battleStopwatch = new Stopwatch();
                                     _battleStopwatch.Start();
@@ -1085,10 +1085,12 @@ namespace PokemonGo_UWP.ViewModels
                                 if (attackResult != null && attackResult.ActiveAttacker != null)
                                 {
                                     CurrentAttackerBattlePokemon.CurrentHealth = attackResult.ActiveAttacker.CurrentHealth;
+                                    RaisePropertyChanged(nameof(CurrentAttackerBattlePokemon));
                                 }
                                 if (attackResult != null && attackResult.ActiveDefender != null)
                                 {
                                     CurrentDefenderBattlePokemon.CurrentHealth = attackResult.ActiveDefender.CurrentHealth;
+                                    RaisePropertyChanged(nameof(CurrentDefenderBattlePokemon));
                                 }
                                 break;
                             case BattleState.Defeated:
