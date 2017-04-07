@@ -202,8 +202,10 @@ namespace PokemonGo_UWP.Views
             try
             {
                 base.OnNavigatedTo(e);
-                // Hide PokeMenu panel just in case
+                // Hide panels just in case
                 HidePokeMenuStoryboard.Begin();
+                CoverGrid.Opacity = 0;
+                
                 // See if we need to update the map
                 if ((e.Parameter != null) && (e.NavigationMode != NavigationMode.Back))
                 {
@@ -356,15 +358,23 @@ namespace PokemonGo_UWP.Views
         {
             while (ViewModel.AwardedXp.Count > 0)
             {
-                AwardedXpOverlay XPoverlay = new Views.AwardedXpOverlay();
-                XPoverlay.XpCount = ViewModel.AwardedXp[0];
+                AwardedXpCount.Text = $"+{ViewModel.AwardedXp[0]} XP";
 
-                XPoverlay.Show();
+                ShowAwardedXPStoryBoard.Completed += XPShown;
+                ShowAwardedXPStoryBoard.Begin();
 
                 ViewModel.AwardedXp.RemoveAt(0);
+
+                AudioUtils.PlaySound(AudioUtils.MAIN_XP);
             }
             PlayerDataToCurrentExperienceConverter converter = new PlayerDataToCurrentExperienceConverter();
             ExperienceProgressBar.Value = (Int64)converter.Convert(GameClient.PlayerStats, typeof(int), null, null);
+        }
+
+        private void XPShown(object sender, object e)
+        {
+            MoveAwardedXPStoryBoard.Begin();
+            HideAwardedXPStoryBoard.Begin();
         }
 
         private TimeSpan tick = new TimeSpan(DateTime.Now.Ticks);

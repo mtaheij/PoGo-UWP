@@ -59,12 +59,50 @@
             <FadeOutThemeAnimation Storyboard.TargetName="BattleUIGrid"/>
         </Storyboard>
 
-        <Storyboard x:Name="ShowBattleResultStoryboard">
-            <FadeInThemeAnimation Storyboard.TargetName="BattleResult"/>
+        <Storyboard x:Name="ShowBattleRoundStoryboard">
+            <DoubleAnimation x:Name="ShowBattleRoundAnimationX"
+                             Storyboard.TargetName="BattleRoundTextBoxTransform"
+                             Storyboard.TargetProperty="ScaleX"
+                             From="1"
+                             To="3"
+                             Duration="0:0:0.5"/>
+            <DoubleAnimation x:Name="ShowBattleRoundAnimationY"
+                             Storyboard.TargetName="BattleRoundTextBoxTransform"
+                             Storyboard.TargetProperty="ScaleY"
+                             From="1"
+                             To="3"
+                             Duration="0:0:0.5"/>
+            <FadeOutThemeAnimation x:Name="FadeBattleRoundAnimation"
+                                   Storyboard.TargetName="BattleRoundTextBox"
+                                   BeginTime="0:0:0.2"
+                                   Duration="0:0:0.5"/>
         </Storyboard>
 
-        <Storyboard x:Name="HideBattleResultStoryboard">
-            <FadeOutThemeAnimation Storyboard.TargetName="BattleResult"/>
+        <Storyboard x:Name="ShowBattleRoundResultStoryboard">
+            <DoubleAnimation x:Name="ShowBattleRoundResultAnimationX"
+                             Storyboard.TargetName="BattleRoundResultTextBoxTransform"
+                             Storyboard.TargetProperty="ScaleX"
+                             From="1"
+                             To="3"
+                             Duration="0:0:0.5"/>
+            <DoubleAnimation x:Name="ShowBattleRoundResultAnimationY"
+                             Storyboard.TargetName="BattleRoundResultTextBoxTransform"
+                             Storyboard.TargetProperty="ScaleY"
+                             From="1"
+                             To="3"
+                             Duration="0:0:0.5"/>
+            <FadeOutThemeAnimation x:Name="FadeBattleRoundResultAnimation"
+                                   Storyboard.TargetName="BattleRoundResultTextBox"
+                                   BeginTime="0:0:0.2"
+                                   Duration="0:0:0.5"/>
+        </Storyboard>
+
+        <Storyboard x:Name="ShowBattleOutcomeStoryboard">
+            <FadeInThemeAnimation Storyboard.TargetName="BattleOutcomeGrid"/>
+        </Storyboard>
+
+        <Storyboard x:Name="HideBattleOutcomeStoryboard">
+            <FadeOutThemeAnimation Storyboard.TargetName="BattleOutcomeGrid"/>
         </Storyboard>
 
         <Storyboard x:Name="AnimateDefendingStoryboardUp">
@@ -461,16 +499,22 @@
 
 
             <Grid Name="SelectAttackTeamButtonBar" Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,8">
+                <Button HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Width="60" Height="60" Margin="8,0,0,0"
+                        Command="{Binding AutoSelectCommand}"
+                        Style="{ThemeResource ImageButtonStyle}">
+                    <Image Source="/Assets/Buttons/btn_pokemon.png"/>
+                </Button>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Width="60" Height="60" 
-                    Command="{Binding CloseAttackTeamSelectionCommand}"
-                    Style="{ThemeResource ImageButtonStyle}">
+                        Width="60" Height="60" 
+                        Command="{Binding CloseAttackTeamSelectionCommand}"
+                        Style="{ThemeResource ImageButtonStyle}">
                     <Image Source="/Assets/Buttons/btn_close_normal.png" />
                 </Button>
                 <Button HorizontalAlignment="Right" VerticalAlignment="Center" 
-                    Width="60" Height="60" Margin="0,0,8,0"
-                    Command="{Binding GoCommand}"
-                    Style="{ThemeResource ImageButtonStyle}">
+                        Width="60" Height="60" Margin="0,0,8,0"
+                        Command="{Binding GoCommand}"
+                        Style="{ThemeResource ImageButtonStyle}">
                     <Image Source="/Assets/Buttons/btn_go.png" />
                 </Button>
 
@@ -559,11 +603,13 @@
                             <CompositeTransform x:Name="AttackerTypeTransform"/>
                         </TextBlock.RenderTransform>
                     </TextBlock>
+                    <!-- Out of order: We are botting the attacks for now
                     <StackPanel Grid.Row="3" Orientation="Vertical">
                         <Button Command="{Binding DodgeCommand}" Content="Dodge" Margin="5"/>
                         <Button Command="{Binding AttackCommand}" Content="Attack" Margin="5"/>
                         <Button Command="{Binding SpecialAttackCommand}" Content="Special" Margin="5"/>
                     </StackPanel>
+                    -->
                 </Grid>
                       
                 <!-- Buttons to abandon the fight and to change the current pokemon -->
@@ -575,21 +621,127 @@
                         <Image Source="/Assets/Buttons/btn_run_away.png"></Image>
                     </Button>
                     <Button HorizontalAlignment="Right" VerticalAlignment="Center" 
-                        Width="60" Height="60"
+                        Width="60" Height="60" IsEnabled="False"
                         Command="{Binding SwitchTeamMembersCommand}"
-                        Style="{ThemeResource ImageButtonStyle}">
+                        Style="{ThemeResource ImageButtonStyle}"
+                        Opacity="0.5">
                         <Image Source="/Assets/Buttons/btn_swap.png"></Image>
                     </Button>
                 </StackPanel>
+
+                <TextBlock x:Name="BattleRoundTextBox" Grid.Row="1" Grid.ColumnSpan="3"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="24" Foreground="White">
+                    <TextBlock.RenderTransform >
+                        <ScaleTransform x:Name="BattleRoundTextBoxTransform" 
+                                        ScaleX="1" CenterX="0.5" 
+                                        ScaleY="1" CenterY="0.5"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <TextBlock x:Name="BattleRoundResultTextBox" Grid.Row="1" Grid.ColumnSpan="3"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="24" Foreground="White">
+                    <TextBlock.RenderTransform >
+                        <ScaleTransform x:Name="BattleRoundResultTextBoxTransform" 
+                                        ScaleX="1" CenterX="0.5" 
+                                        ScaleY="1" CenterY="0.5"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
             </Grid>
         </Grid>
 
-        <Grid x:Name="BattleResult"
+        <!-- BattleOutcomeGrid -->
+        <Grid x:Name="BattleOutcomeGrid"
+              Background="{StaticResource PageBackgroundGradient}"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
               Visibility="Collapsed">
-            <TextBlock x:Name="BattleOutcome" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="BattleOutcome" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" Margin="20"/>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="20,10">
+                <TextBlock Foreground="#444444" FontSize="16" HorizontalAlignment="Center" 
+                           Text="{Binding CurrentGymInfo.Name}" />
+                <TextBlock Foreground="#444444" FontSize="16"  HorizontalAlignment="Center">
+                        <Run Text="Gym level"/>
+                        <Run Text="{Binding GymLevel}"/>
+                </TextBlock>
+            </StackPanel>
+
+            <Grid Grid.Row="2" HorizontalAlignment="Center" Margin="20">
+                <Grid HorizontalAlignment="Left" Width="120" Height="120" Margin="4,0,0,0">
+                    <Ellipse Fill="White" Stroke="#66000000" StrokeThickness="3">
+                    </Ellipse>
+                    <Ellipse Width="110" Height="110">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding CurrentGymInfo.Urls[0]}"
+                                    Stretch="UniformToFill" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Grid x:Name="PointsGrid"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          Width="60"
+                          Height="20"
+                          CornerRadius="8"
+                          BorderThickness="2"
+                          BorderBrush="White">
+                        <Rectangle x:Name="BackgroundRect"
+                                    Fill="White">
+                        </Rectangle>
+                        <TextBlock x:Name="TotalGymPrestigeDelta"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,0">
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <StackPanel Grid.Row="3" HorizontalAlignment="Center" Margin="20,10">
+                <TextBlock Foreground="#444444" Text="Gym Prestige"/>
+                <TextBlock Foreground="#444444" FontSize="16">
+                    <Run Text="{Binding NewGymPoints}"/>
+                    <Run Text=" / "/>
+                    <Run Text="{Binding GymPrestigeFull}"/>
+                </TextBlock>
+            </StackPanel>
+
+            <Grid Grid.Row="4" HorizontalAlignment="Center" Margin="0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" MinWidth="100"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="XP" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="1" x:Name="TotalPlayerXpEarned" HorizontalAlignment="Right" Foreground="Red"/>
+
+                <TextBlock Grid.Row="1" Text="Pokémon Defeated:" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="PokemonDefeated" HorizontalAlignment="Right" Foreground="Red"/>
+            </Grid>
+
+            <Button Grid.Row="5" Command="{Binding CloseBattleOutcomeCommand}"
+                Style="{StaticResource ButtonCircle}"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,21">
+                <Image Source="ms-appx:///Assets/Buttons/btn_close.png" />
+            </Button>
         </Grid>
         
-        <!--Dialog to choose pokemon-->
+        <!--Dialog to select a pokemon to replace a team member -->
         <Grid x:Name="SelectPokemonGrid" 
               Background="{StaticResource PageBackgroundGradient}"
               Visibility="Collapsed">
@@ -615,7 +767,7 @@
                 </Pivot>
             </Border>
 
-            <!--Close Button-->
+            <!--Close Button -->
             <Button Command="{Binding ClosePokemonSelectCommand}"
                 Style="{StaticResource ButtonCircle}"
                 VerticalAlignment="Bottom"

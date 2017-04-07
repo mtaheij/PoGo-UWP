@@ -280,7 +280,42 @@
 
         </Storyboard>
 
-        <utils:NearbyPokemonInPokedexToVisibilityConverter x:Key="NearbyPokemonInPokedexToVisibilityConverter" />
+        <Storyboard x:Name="ShowAwardedXPStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CoverGridTrans"
+                                           Storyboard.TargetProperty="TranslateY">
+                <DiscreteDoubleKeyFrame KeyTime="0"
+                                        Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="CoverGrid">
+                <EasingDoubleKeyFrame KeyTime="0"
+                                      Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="MoveAwardedXPStoryBoard">
+            <DoubleAnimation
+                Storyboard.TargetName="CoverGridTrans"
+                Storyboard.TargetProperty="TranslateY"
+                From="0"
+                To="-50"
+                Duration="0:0:0.5" />
+        </Storyboard>
+
+        <Storyboard x:Name="HideAwardedXPStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="CoverGrid">
+                <EasingDoubleKeyFrame KeyTime="0:0:0"
+                                      Value="1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <utils:NearbyPokemonInPokedexToVisibilityConverter 
+            x:Key="NearbyPokemonInPokedexToVisibilityConverter" />
         <utils:InverseNearbyPokemonInPokedexToVisibilityConverter
             x:Key="InverseNearbyPokemonInPokedexToVisibilityConverter" />
 
@@ -334,463 +369,463 @@
                         Width="48"
                         x:Name="PlayerImage" />
 
-            <maps:MapItemsControl ItemsSource="{Binding NearbyPokestops}">
-                <maps:MapItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="entities:FortDataWrapper">
-                        <Button Style="{ThemeResource ImageButtonStyle}"
-                                Command="{x:Bind TrySearchPokestop}">
-                            <Image
-                                Source="{Binding FortDataStatus, Converter={StaticResource PokestopToIconConverter}}"
-                                maps:MapControl.Location="{Binding Geoposition}"
-                                maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
-                                Stretch="Uniform"
-                                Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=2}"
-                                Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=2}" />
-                        </Button>
-                    </DataTemplate>
-                </maps:MapItemsControl.ItemTemplate>
-            </maps:MapItemsControl>
+                <maps:MapItemsControl ItemsSource="{Binding NearbyPokestops}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:FortDataWrapper">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{x:Bind TrySearchPokestop}">
+                                <Image
+                                    Source="{Binding FortDataStatus, Converter={StaticResource PokestopToIconConverter}}"
+                                    maps:MapControl.Location="{Binding Geoposition}"
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
+                                    Stretch="Uniform"
+                                    Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=2}"
+                                    Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=2}" />
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
 
-            <maps:MapItemsControl ItemsSource="{Binding NearbyGyms}">
-                <maps:MapItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="entities:FortDataWrapper">
-                        <Button Style="{ThemeResource ImageButtonStyle}"
-                                Command="{x:Bind TryEnterGym}">
-                            <Image
-                                Source="{Binding OwnedByTeam, Converter={StaticResource GymToIconConverter}}"
-                                maps:MapControl.Location="{Binding Geoposition}"
-                                maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
-                                Stretch="Uniform"
-                                Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=4}"
-                                Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=4}" />
-                        </Button>
-                    </DataTemplate>
-                </maps:MapItemsControl.ItemTemplate>
-            </maps:MapItemsControl>
+                <maps:MapItemsControl ItemsSource="{Binding NearbyGyms}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:FortDataWrapper">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{x:Bind TryEnterGym}">
+                                <Image
+                                    Source="{Binding OwnedByTeam, Converter={StaticResource GymToIconConverter}}"
+                                    maps:MapControl.Location="{Binding Geoposition}"
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
+                                    Stretch="Uniform"
+                                    Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=4}"
+                                    Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=4}" />
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
 
-            <maps:MapItemsControl ItemsSource="{Binding CatchablePokemons}">
-                <maps:MapItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="entities:MapPokemonWrapper">
-                        <Button Style="{ThemeResource ImageButtonStyle}"
-                                Command="{x:Bind TryCatchPokemon}">
-                            <Image
-                                Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                                maps:MapControl.Location="{Binding Geoposition}"
-                                maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
-                                Stretch="Uniform"
-                                Canvas.ZIndex="5"
-                                Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}"
-                                Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
-                        </Button>
-                    </DataTemplate>
-                </maps:MapItemsControl.ItemTemplate>
-            </maps:MapItemsControl>
+                <maps:MapItemsControl ItemsSource="{Binding CatchablePokemons}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:MapPokemonWrapper">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{x:Bind TryCatchPokemon}">
+                                <Image
+                                    Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                                    maps:MapControl.Location="{Binding Geoposition}"
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
+                                    Stretch="Uniform"
+                                    Canvas.ZIndex="5"
+                                    Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}"
+                                    Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
 
-            <maps:MapItemsControl ItemsSource="{Binding LuredPokemon}">
-                <maps:MapItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="entities:LuredPokemon">
-                        <Button Style="{ThemeResource ImageButtonStyle}"
-                                Command="{x:Bind TryCatchPokemon}">
-                            <Image
-                                Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                                maps:MapControl.Location="{Binding Geoposition}"
-                                maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
-                                Stretch="Uniform"
-                                Canvas.ZIndex="4"
-                                Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}"
-                                Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
-                        </Button>
-                    </DataTemplate>
-                </maps:MapItemsControl.ItemTemplate>
-            </maps:MapItemsControl>
+                <maps:MapItemsControl ItemsSource="{Binding LuredPokemon}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:LuredPokemon">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{x:Bind TryCatchPokemon}">
+                                <Image
+                                    Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                                    maps:MapControl.Location="{Binding Geoposition}"
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}"
+                                    Stretch="Uniform"
+                                    Canvas.ZIndex="4"
+                                    Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}"
+                                    Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
 
-            <maps:MapItemsControl ItemsSource="{Binding IncensePokemon}">
-                <maps:MapItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="entities:IncensePokemon">
-                        <Button Style="{ThemeResource ImageButtonStyle}"
-                                Command="{x:Bind TryCatchPokemon}">
-                            <Image
-                                Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}" 
-                                maps:MapControl.Location="{Binding Geoposition}" 
-                                maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}" 
-                                Stretch="Uniform" 
-                                Canvas.ZIndex="4" 
-                                Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" 
-                                Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
-                        </Button>
-                    </DataTemplate>
-                </maps:MapItemsControl.ItemTemplate>
-            </maps:MapItemsControl>
-        </maps:MapControl>
+                <maps:MapItemsControl ItemsSource="{Binding IncensePokemon}">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entities:IncensePokemon">
+                            <Button Style="{ThemeResource ImageButtonStyle}"
+                                    Command="{x:Bind TryCatchPokemon}">
+                                <Image
+                                    Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}" 
+                                    maps:MapControl.Location="{Binding Geoposition}" 
+                                    maps:MapControl.NormalizedAnchorPoint="{Binding Anchor}" 
+                                    Stretch="Uniform" 
+                                    Canvas.ZIndex="4" 
+                                    Height="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" 
+                                    Width="{Binding ZoomLevel, ElementName=GameMapControl, Converter={StaticResource MapZoomLevelToIconSizeConverter}, ConverterParameter=1}" />
+                            </Button>
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
+            </maps:MapControl>
 
-        <Grid x:Name="NearbyPokemonContainer"
-              RelativePanel.AlignLeftWithPanel="True"
-              RelativePanel.AlignRightWithPanel="True"
-              RelativePanel.AlignBottomWithPanel="True"
-              RelativePanel.AlignTopWithPanel="True"
-              Canvas.ZIndex="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="3*" />
-            </Grid.RowDefinitions>
+            <Grid x:Name="NearbyPokemonContainer"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.AlignTopWithPanel="True"
+                  Canvas.ZIndex="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
 
-            <Grid.RenderTransform>
-                <TranslateTransform x:Name="NearbyGridTranslateTransform" />
-            </Grid.RenderTransform>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="NearbyGridTranslateTransform" />
+                </Grid.RenderTransform>
 
-            <controls:ModalDialog x:Name="NearbyPokemonModal"
-                                  Grid.Row="1"
-                                  CanBackButtonDismiss="True"
-                                  DisableBackButtonWhenModal="True"
-                                  ModalBackground="Transparent">
-                <controls:ModalDialog.ModalContent>
+                <controls:ModalDialog x:Name="NearbyPokemonModal"
+                                      Grid.Row="1"
+                                      CanBackButtonDismiss="True"
+                                      DisableBackButtonWhenModal="True"
+                                      ModalBackground="Transparent">
+                    <controls:ModalDialog.ModalContent>
 
-                    <Border CornerRadius="8,8,0,0"
-                            Margin="16,0"
-                            Background="White">
-                        <Border Padding="8">
-                            <Grid>
+                        <Border CornerRadius="8,8,0,0"
+                                Margin="16,0"
+                                Background="White">
+                            <Border Padding="8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock x:Uid="NearbyPokemonTextBlock"
+                                               Grid.Row="0"
+                                               FontSize="25"
+                                               Foreground="Black"
+                                               FontFamily="../Assets/Fonts/Generica.otf#Generica"
+                                               TextAlignment="Center"
+                                               Margin="0,0,0,8" />
+
+                                    <GridView ItemsSource="{Binding NearbyPokemons}"
+                                              HorizontalAlignment="Stretch"
+                                              HorizontalContentAlignment="Stretch"
+                                              SelectionMode="None"
+                                              Grid.Row="1">
+
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapGrid Orientation="Horizontal"
+                                                          VerticalChildrenAlignment="Top"
+                                                          HorizontalAlignment="Center"
+                                                          MaximumRowsOrColumns="3" />
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                        <Ellipse
+                                                                 Width="80"
+                                                                 Height="80"
+                                                                 Stroke="LightCyan"
+                                                                 StrokeThickness="4">
+                                                                 <Ellipse.Projection>
+                                                                     <PlaneProjection />
+                                                                 </Ellipse.Projection>
+                                                                 <Ellipse.Fill>
+                                                                     <ImageBrush ImageSource="{Binding Converter={StaticResource PokemonIdToNearbyPokestopConverter}}"
+                                                                            Stretch="UniformToFill" />
+                                                                 </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <Image
+                                                           Canvas.ZIndex="100"
+                                                           Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                                                           Visibility="{Binding PokemonId, Converter={StaticResource NearbyPokemonInPokedexToVisibilityConverter}}"
+                                                           Height="60"
+                                                           Width="60"
+                                                           VerticalAlignment="Bottom"
+                                                           HorizontalAlignment="Right"
+                                                           Stretch="Uniform"
+                                                           Margin="6,0" />
+
+                                                        <BitmapIcon
+                                                            UriSource="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}, ConverterParameter=uri}"
+                                                            Style="{ThemeResource NearbyPokemonNotInPokedexBitmapIconStyle}"
+                                                            Visibility="{Binding PokemonId, Converter={StaticResource InverseNearbyPokemonInPokedexToVisibilityConverter}}"
+                                                            Height="60"
+                                                            Width="60"
+                                                            VerticalAlignment="Bottom"
+                                                            HorizontalAlignment="Right"
+                                                            Margin="6,0" />
+                                                    </Grid>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+
+                                    <Button Style="{ThemeResource ImageButtonStyle}"
+                                            Height="{ThemeResource UiButtonSize}"
+                                            Grid.Row="2"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,8,0,0"
+                                            Tapped="ToggleNearbyPokemonModal"
+                                            x:Name="CloseNearbyGridViewButton">
+
+                                        <Image Source="../Assets/Buttons/btn_close_normal_dark.png"
+                                               Stretch="Uniform"
+                                               HorizontalAlignment="Stretch" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Border>
+
+                    </controls:ModalDialog.ModalContent>
+                </controls:ModalDialog>
+
+            </Grid>
+
+            <RelativePanel x:Name="PokeMenuPanel"
+                           x:DeferLoadStrategy="Lazy"
+                           RelativePanel.AlignTopWithPanel="True"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignBottomWithPanel="True"
+                           RelativePanel.AlignRightWithPanel="True"
+                           Background="{ThemeResource PokeballMenuBackgroundGradient}"
+                           Opacity="0"
+                           Canvas.ZIndex="0">
+
+                <Button RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignTopWithPanel="True"
+                        Style="{ThemeResource ImageButtonStyle}"
+                        Height="80" Command="{Binding SettingsCommand}"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
+                        x:Name="SettingsButton">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="SettingsHeaderTextBlock"
+                                   Style="{StaticResource TextMenuItemHorizontal}" />
+                        <Image Source="../Assets/Buttons/btn_settings.png"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{ThemeResource ImageButtonStyle}"
+                        x:Name="PokedexButton"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        Margin="0,0,0,24" 
+                        RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                        Command="{Binding GotoPokedexPageCommand}"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <CompositeTransform x:Name="PokedexButtonTrans" />
+                    </Button.RenderTransform>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Uid="PokedexTextBlock"
+                                   Style="{StaticResource TextMenuItemVertical}" />
+                        <Image Source="../Assets/Buttons/btn_pokedex.png"
+                               Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
+                               HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{ThemeResource ImageButtonStyle}"
+                        Command="{Binding GotoPokemonInventoryPageCommand}"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        Margin="0,0,0,24"
+                        RenderTransformOrigin="0.5,0.5"
+                        x:Name="PokemonButton">
+                    <Button.RenderTransform>
+                        <CompositeTransform x:Name="PokemonButtonTrans" />
+                    </Button.RenderTransform>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Uid="PokemonTextBlock"
+                                   Style="{StaticResource TextMenuItemVertical}" />
+                        <Image Source="../Assets/Buttons/btn_pokemon.png"
+                               Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
+                               HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{ThemeResource ImageButtonStyle}"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        Margin="0,0,0,24"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        Command="{Binding GotoItemsInventoryPageCommand}"
+                        RenderTransformOrigin="0.5,0.5"
+                        x:Name="ToolsButton">
+                    <Button.RenderTransform>
+                        <CompositeTransform x:Name="ToolsButtonTrans" />
+                    </Button.RenderTransform>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Uid="ItemsTextBlock"
+                                   Style="{StaticResource TextMenuItemVertical}" />
+                        <Image Source="../Assets/Buttons/btn_items.png"
+                               Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
+                               HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{ThemeResource ImageButtonStyle}"
+                        Height="{ThemeResource UiButtonSize}"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        Margin="0,0,0,24">
+
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <media:ControlStoryboardAction Storyboard="{StaticResource HidePokeMenuStoryboard}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+
+                    <Image Source="../Assets/Buttons/btn_close_normal.png"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Stretch" />
+                </Button>
+
+            </RelativePanel>
+
+            <RelativePanel x:Name="LevelUpPanel"
+                           x:DeferLoadStrategy="Lazy"
+                           RelativePanel.AlignTopWithPanel="True"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignBottomWithPanel="True"
+                           RelativePanel.AlignRightWithPanel="True"
+                           Opacity="0"
+                           Canvas.ZIndex="0">
+
+                <RelativePanel.Background>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="1,1"
+                                         Opacity="0.7">
+                        <GradientStop Color="#4ab583" Offset="0" />
+                        <GradientStop Color="#266378" Offset="0.8" />
+                    </LinearGradientBrush>
+                </RelativePanel.Background>
+
+                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True"
+                            RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <TextBlock x:Uid="LevelUpTextBlock"
+                               FontSize="48"
+                               TextWrapping="WrapWholeWords"
+                               Foreground="White" />
+                    <TextBlock Text="{Binding PlayerStats.Level}"
+                               HorizontalAlignment="Center"
+                               Foreground="Cyan"
+                               FontSize="60" />
+                </StackPanel>
+
+                <ListView ItemsSource="{Binding LevelUpResponse.ItemsAwarded}"
+                          RelativePanel.AlignRightWithPanel="True"
+                          RelativePanel.AlignTopWithPanel="True"
+                          Margin="0,24,24,0">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="8"
+                                  Height="64">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock x:Uid="NearbyPokemonTextBlock"
-                                           Grid.Row="0"
-                                           FontSize="25"
-                                           Foreground="Black"
-                                           FontFamily="../Assets/Fonts/Generica.otf#Generica"
-                                           TextAlignment="Center"
-                                           Margin="0,0,0,8" />
+                                <TextBlock
+                                    Text="{Binding Converter={StaticResource ItemToItemNameConverter}}"
+                                    FontFamily="../Assets/Fonts/Lato-Bold.ttf#Lato"
+                                    Foreground="White"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="8"
+                                    FontSize="18"
+                                    FontWeight="SemiBold" />
 
-                                <GridView ItemsSource="{Binding NearbyPokemons}"
-                                          HorizontalAlignment="Stretch"
-                                          HorizontalContentAlignment="Stretch"
-                                          SelectionMode="None"
-                                          Grid.Row="1">
+                                <Ellipse Grid.Row="0"
+                                         Grid.RowSpan="2"
+                                         Grid.Column="1"
+                                         Height="64"
+                                         Width="64"
+                                         Stroke="White"
+                                         StrokeThickness="3">
+                                    <Ellipse.Fill>
+                                        <SolidColorBrush Color="White"
+                                                         Opacity="0.5" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
 
-                                    <GridView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapGrid Orientation="Horizontal"
-                                                      VerticalChildrenAlignment="Top"
-                                                      HorizontalAlignment="Center"
-                                                      MaximumRowsOrColumns="3" />
-                                        </ItemsPanelTemplate>
-                                    </GridView.ItemsPanel>
-
-                                    <GridView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                    <Ellipse
-                                                             Width="80"
-                                                             Height="80"
-                                                             Stroke="LightCyan"
-                                                             StrokeThickness="4">
-                                                             <Ellipse.Projection>
-                                                                 <PlaneProjection />
-                                                             </Ellipse.Projection>
-                                                             <Ellipse.Fill>
-                                                                 <ImageBrush ImageSource="{Binding Converter={StaticResource PokemonIdToNearbyPokestopConverter}}"
-                                                                        Stretch="UniformToFill" />
-                                                             </Ellipse.Fill>
-                                                    </Ellipse>
-                                                    <Image
-                                                       Canvas.ZIndex="100"
-                                                       Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                                                       Visibility="{Binding PokemonId, Converter={StaticResource NearbyPokemonInPokedexToVisibilityConverter}}"
-                                                       Height="60"
-                                                       Width="60"
-                                                       VerticalAlignment="Bottom"
-                                                       HorizontalAlignment="Right"
-                                                       Stretch="Uniform"
-                                                       Margin="6,0" />
-
-                                                    <BitmapIcon
-                                                        UriSource="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}, ConverterParameter=uri}"
-                                                        Style="{ThemeResource NearbyPokemonNotInPokedexBitmapIconStyle}"
-                                                        Visibility="{Binding PokemonId, Converter={StaticResource InverseNearbyPokemonInPokedexToVisibilityConverter}}"
-                                                        Height="60"
-                                                        Width="60"
-                                                        VerticalAlignment="Bottom"
-                                                        HorizontalAlignment="Right"
-                                                        Margin="6,0" />
-                                                </Grid>
-                                        </DataTemplate>
-                                    </GridView.ItemTemplate>
-                                </GridView>
-
-                                <Button Style="{ThemeResource ImageButtonStyle}"
-                                        Height="{ThemeResource UiButtonSize}"
-                                        Grid.Row="2"
-                                        HorizontalAlignment="Center"
-                                        Margin="0,8,0,0"
-                                        Tapped="ToggleNearbyPokemonModal"
-                                        x:Name="CloseNearbyGridViewButton">
-
-                                    <Image Source="../Assets/Buttons/btn_close_normal_dark.png"
-                                           Stretch="Uniform"
-                                           HorizontalAlignment="Stretch" />
-                                </Button>
+                                <Image Grid.Row="0"
+                                       Grid.Column="1"
+                                       Source="{Binding Converter={StaticResource ItemToItemIconConverter}, ConverterParameter=Inventory}"
+                                       Stretch="Uniform"
+                                       VerticalAlignment="Center"
+                                       Width="48"
+                                       Height="48"
+                                       Margin="3,0"
+                                       Grid.RowSpan="2" />
+                                <Border Grid.Row="1"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Background="#CCD3D3D3"
+                                        CornerRadius="8"
+                                        Padding="3,1">
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                               TextAlignment="Center"
+                                               Foreground="Red">
+                                        <Run Text="+" />
+                                        <Run Text="{Binding ItemCount}" />
+                                    </TextBlock>
+                                </Border>
                             </Grid>
-                        </Border>
-                    </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                </controls:ModalDialog.ModalContent>
-            </controls:ModalDialog>
+                </ListView>
 
-        </Grid>
+                <Button Style="{ThemeResource ImageButtonStyle}"
+                        Height="{ThemeResource UiButtonSize}"
+                        RelativePanel.AlignBottomWithPanel="True"
+                        RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        Margin="0,0,0,24">
 
-        <RelativePanel x:Name="PokeMenuPanel"
-                       x:DeferLoadStrategy="Lazy"
-                       RelativePanel.AlignTopWithPanel="True"
-                       RelativePanel.AlignLeftWithPanel="True"
-                       RelativePanel.AlignBottomWithPanel="True"
-                       RelativePanel.AlignRightWithPanel="True"
-                       Background="{ThemeResource PokeballMenuBackgroundGradient}"
-                       Opacity="0"
-                       Canvas.ZIndex="0">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <media:ControlStoryboardAction Storyboard="{StaticResource HideLevelUpPanelStoryboard}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
 
-            <Button RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignTopWithPanel="True"
-                    Style="{ThemeResource ImageButtonStyle}"
-                    Height="80" Command="{Binding SettingsCommand}"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    RelativePanel.AlignVerticalCenterWithPanel="True"
-                    x:Name="SettingsButton">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Uid="SettingsHeaderTextBlock"
-                               Style="{StaticResource TextMenuItemHorizontal}" />
-                    <Image Source="../Assets/Buttons/btn_settings.png"
+                    <Image Source="../Assets/Buttons/btn_close_normal_dark.png"
                            Stretch="Uniform"
                            HorizontalAlignment="Stretch" />
-                </StackPanel>
-            </Button>
+                </Button>
 
-            <Button Style="{ThemeResource ImageButtonStyle}"
-                    x:Name="PokedexButton"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    Margin="0,0,0,24" 
-                    RelativePanel.AlignHorizontalCenterWithPanel="True" 
-                    Command="{Binding GotoPokedexPageCommand}"
-                    RenderTransformOrigin="0.5,0.5">
-                <Button.RenderTransform>
-                    <CompositeTransform x:Name="PokedexButtonTrans" />
-                </Button.RenderTransform>
+            </RelativePanel>
 
-                <StackPanel Orientation="Vertical">
-                    <TextBlock x:Uid="PokedexTextBlock"
-                               Style="{StaticResource TextMenuItemVertical}" />
-                    <Image Source="../Assets/Buttons/btn_pokedex.png"
-                           Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
-                           HorizontalAlignment="Stretch" />
-                </StackPanel>
-            </Button>
-
-            <Button Style="{ThemeResource ImageButtonStyle}"
-                    Command="{Binding GotoPokemonInventoryPageCommand}"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    Margin="0,0,0,24"
-                    RenderTransformOrigin="0.5,0.5"
-                    x:Name="PokemonButton">
-                <Button.RenderTransform>
-                    <CompositeTransform x:Name="PokemonButtonTrans" />
-                </Button.RenderTransform>
-
-                <StackPanel Orientation="Vertical">
-                    <TextBlock x:Uid="PokemonTextBlock"
-                               Style="{StaticResource TextMenuItemVertical}" />
-                    <Image Source="../Assets/Buttons/btn_pokemon.png"
-                           Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
-                           HorizontalAlignment="Stretch" />
-                </StackPanel>
-            </Button>
-
-            <Button Style="{ThemeResource ImageButtonStyle}"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    Margin="0,0,0,24"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    Command="{Binding GotoItemsInventoryPageCommand}"
-                    RenderTransformOrigin="0.5,0.5"
-                    x:Name="ToolsButton">
-                <Button.RenderTransform>
-                    <CompositeTransform x:Name="ToolsButtonTrans" />
-                </Button.RenderTransform>
-
-                <StackPanel Orientation="Vertical">
-                    <TextBlock x:Uid="ItemsTextBlock"
-                               Style="{StaticResource TextMenuItemVertical}" />
-                    <Image Source="../Assets/Buttons/btn_items.png"
-                           Stretch="Uniform" Height="{ThemeResource UiButtonSize}"
-                           HorizontalAlignment="Stretch" />
-                </StackPanel>
-            </Button>
-
-            <Button Style="{ThemeResource ImageButtonStyle}"
-                    Height="{ThemeResource UiButtonSize}"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    Margin="0,0,0,24">
-
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <media:ControlStoryboardAction Storyboard="{StaticResource HidePokeMenuStoryboard}" />
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
-
-                <Image Source="../Assets/Buttons/btn_close_normal.png"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Stretch" />
-            </Button>
-
-        </RelativePanel>
-
-        <RelativePanel x:Name="LevelUpPanel"
-                       x:DeferLoadStrategy="Lazy"
-                       RelativePanel.AlignTopWithPanel="True"
-                       RelativePanel.AlignLeftWithPanel="True"
-                       RelativePanel.AlignBottomWithPanel="True"
-                       RelativePanel.AlignRightWithPanel="True"
-                       Opacity="0"
-                       Canvas.ZIndex="0">
-
-            <RelativePanel.Background>
-                <LinearGradientBrush StartPoint="0,0"
-                                     EndPoint="1,1"
-                                     Opacity="0.7">
-                    <GradientStop Color="#4ab583" Offset="0" />
-                    <GradientStop Color="#266378" Offset="0.8" />
-                </LinearGradientBrush>
-            </RelativePanel.Background>
-
-            <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True"
-                        RelativePanel.AlignVerticalCenterWithPanel="True">
-                <TextBlock x:Uid="LevelUpTextBlock"
-                           FontSize="48"
-                           TextWrapping="WrapWholeWords"
-                           Foreground="White" />
-                <TextBlock Text="{Binding PlayerStats.Level}"
-                           HorizontalAlignment="Center"
-                           Foreground="Cyan"
-                           FontSize="60" />
-            </StackPanel>
-
-            <ListView ItemsSource="{Binding LevelUpResponse.ItemsAwarded}"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.AlignTopWithPanel="True"
-                      Margin="0,24,24,0">
-
+            <ListView   x:Name="AppliedItemsList"
+                        ItemsSource="{Binding AppliedItems}"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignTopWithPanel="True"
+                        Margin="0,12,0,0"
+                        Canvas.ZIndex="10"
+                        IsItemClickEnabled="False"
+                        SelectionMode="None">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment"
                                 Value="Stretch" />
                     </Style>
                 </ListView.ItemContainerStyle>
-
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="8"
-                              Height="64">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Text="{Binding Converter={StaticResource ItemToItemNameConverter}}"
-                                FontFamily="../Assets/Fonts/Lato-Bold.ttf#Lato"
-                                Foreground="White"
-                                Grid.Column="0"
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Margin="8"
-                                FontSize="18"
-                                FontWeight="SemiBold" />
-
-                            <Ellipse Grid.Row="0"
-                                     Grid.RowSpan="2"
-                                     Grid.Column="1"
-                                     Height="64"
-                                     Width="64"
-                                     Stroke="White"
-                                     StrokeThickness="3">
-                                <Ellipse.Fill>
-                                    <SolidColorBrush Color="White"
-                                                     Opacity="0.5" />
-                                </Ellipse.Fill>
-                            </Ellipse>
-
-                            <Image Grid.Row="0"
-                                   Grid.Column="1"
-                                   Source="{Binding Converter={StaticResource ItemToItemIconConverter}, ConverterParameter=Inventory}"
-                                   Stretch="Uniform"
-                                   VerticalAlignment="Center"
-                                   Width="48"
-                                   Height="48"
-                                   Margin="3,0"
-                                   Grid.RowSpan="2" />
-                            <Border Grid.Row="1"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Background="#CCD3D3D3"
-                                    CornerRadius="8"
-                                    Padding="3,1">
-                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
-                                           TextAlignment="Center"
-                                           Foreground="Red">
-                                    <Run Text="+" />
-                                    <Run Text="{Binding ItemCount}" />
-                                </TextBlock>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-
-            </ListView>
-
-            <Button Style="{ThemeResource ImageButtonStyle}"
-                    Height="{ThemeResource UiButtonSize}"
-                    RelativePanel.AlignBottomWithPanel="True"
-                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                    Margin="0,0,0,24">
-
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <media:ControlStoryboardAction Storyboard="{StaticResource HideLevelUpPanelStoryboard}" />
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
-
-                <Image Source="../Assets/Buttons/btn_close_normal_dark.png"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Stretch" />
-            </Button>
-
-        </RelativePanel>
-
-        <ListView   x:Name="AppliedItemsList"
-                    ItemsSource="{Binding AppliedItems}"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignTopWithPanel="True"
-                    Margin="0,12,0,0"
-                    Canvas.ZIndex="10"
-                    IsItemClickEnabled="False"
-                    SelectionMode="None">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment"
-                            Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -807,208 +842,230 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="{Binding Converter={StaticResource ItemToItemNameConverter}}"
-                                       Style="{ThemeResource AppliedItemNameTextBlock}"
-                                       Visibility="Collapsed" />
+                                        Style="{ThemeResource AppliedItemNameTextBlock}"
+                                        Visibility="Collapsed" />
 
                             <Viewbox Style="{ThemeResource AppliedItemRemainingSecondsViewbox}">
                                 <POGOcontrols:CircularProgressBar Style="{ThemeResource AppliedItemRemainingSecondsProgressBar}"
-                                                                  ImageSourcePath="{Binding Converter={StaticResource ItemToItemIconConverter}}"
-                                                                  Maximum="{Binding MaxSeconds}"
-                                                                  Value="{Binding RemainingSeconds}" />
+                                                                    ImageSourcePath="{Binding Converter={StaticResource ItemToItemIconConverter}}"
+                                                                    Maximum="{Binding MaxSeconds}"
+                                                                    Value="{Binding RemainingSeconds}" />
                             </Viewbox>
 
                             <Border Style="{ThemeResource RemainingTimeBorder}">
                                 <TextBlock Style="{ThemeResource RemainingTimeTextStyle}"
-                                           Text="{Binding RemainingTime}" />
+                                            Text="{Binding RemainingTime}" />
                             </Border>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-        <Grid x:Name="UIBottomPanel"
-              RelativePanel.AlignBottomWithPanel="True"
-              RelativePanel.AlignLeftWithPanel="True"
-              RelativePanel.AlignRightWithPanel="True"
-              Canvas.ZIndex="2"
-              Height="100">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="35*" />
-                <ColumnDefinition Width="30*" />
-                <ColumnDefinition Width="35*" />
-            </Grid.ColumnDefinitions>
+            <Grid x:Name="UIBottomPanel"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  Canvas.ZIndex="2"
+                  Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35*" />
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="35*" />
+                </Grid.ColumnDefinitions>
 
-            <RelativePanel x:Name="UserDetailsPanel"
-                           Padding="10,0,0,0"
-                           Grid.Column="0"
-                           VerticalAlignment="Center">
-                <Button x:Name="AvatarButton" 
-                        RelativePanel.AlignLeftWithPanel="True"
-                        Style="{ThemeResource ImageButtonStyle}"
-                        RelativePanel.AlignTopWithPanel="true"
-                        Command="{Binding GotoPlayerProfilePageCommand}">
-                    <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <RelativePanel x:Name="UserDetailsPanel"
+                               Padding="10,0,0,0"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                    <Button x:Name="AvatarButton" 
+                            RelativePanel.AlignLeftWithPanel="True"
+                            Style="{ThemeResource ImageButtonStyle}"
+                            RelativePanel.AlignTopWithPanel="true"
+                            Command="{Binding GotoPlayerProfilePageCommand}">
+                        <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Ellipse Grid.Column="0" Width="64"
-                             Height="64"
-                             Stroke="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
-                             StrokeThickness="2"
-                             x:Name="AvatarEllipse">
-                            <Ellipse.Fill>
-                                <SolidColorBrush Opacity="0.4" Color="Black" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <Ellipse Grid.Column="0" Width="64"
-                             Height="64"
-                             x:Name="AvatarImageEllipse">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="../Assets/UI/avatar.png" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                            <Ellipse Grid.Column="1"
-                             VerticalAlignment="Top"
-                             Width="48"
-                             Height="48"
-                             Visibility="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyIsDeployedVisibilityConverter}}"
-                             Stroke="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
-                             StrokeThickness="2"
-                             x:Name="BuddyEllipse">
+                                <Ellipse Grid.Column="0" Width="64"
+                                 Height="64"
+                                 Stroke="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
+                                 StrokeThickness="2"
+                                 x:Name="AvatarEllipse">
                                 <Ellipse.Fill>
                                     <SolidColorBrush Opacity="0.4" Color="Black" />
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <Ellipse Grid.Column="1"
-                             VerticalAlignment="Top"
-                             Width="48"
-                             Height="48"
-                             Visibility="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyIsDeployedVisibilityConverter}}"
-                             x:Name="BuddyImageEllipse">
+                            <Ellipse Grid.Column="0" Width="64"
+                                 Height="64"
+                                 x:Name="AvatarImageEllipse">
                                 <Ellipse.Fill>
-                                    <ImageBrush Stretch="Uniform" ImageSource="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToPokemonIconConverter}}" />
+                                    <ImageBrush ImageSource="../Assets/UI/avatar.png" />
                                 </Ellipse.Fill>
                             </Ellipse>
-                        </Grid>
+                                <Ellipse Grid.Column="1"
+                                 VerticalAlignment="Top"
+                                 Width="48"
+                                 Height="48"
+                                 Visibility="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyIsDeployedVisibilityConverter}}"
+                                 Stroke="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
+                                 StrokeThickness="2"
+                                 x:Name="BuddyEllipse">
+                                    <Ellipse.Fill>
+                                        <SolidColorBrush Opacity="0.4" Color="Black" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <Ellipse Grid.Column="1"
+                                 VerticalAlignment="Top"
+                                 Width="48"
+                                 Height="48"
+                                 Visibility="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyIsDeployedVisibilityConverter}}"
+                                 x:Name="BuddyImageEllipse">
+                                    <Ellipse.Fill>
+                                        <ImageBrush Stretch="Uniform" ImageSource="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToPokemonIconConverter}}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </Grid>
+                    </Button>
+
+                    <ProgressBar x:Name="ExperienceProgressBar" 
+                                 Value="{Binding PlayerStats, Converter={StaticResource PlayerDataToCurrentExperienceConverter}}"
+                                 Maximum="{Binding PlayerStats, Converter={StaticResource PlayerDataToTotalLevelExperienceConverter}}"
+                                 Foreground="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
+                                 Background="Black"
+                                 Height="5"
+                                 Margin="0,-5,0,0"
+                                 RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.AlignRightWithPanel="True"
+                                 RelativePanel.Below="AvatarButton"
+                                 Style="{StaticResource ExperienceProgressbarStyle}"
+                                 BorderBrush="Black"
+                                 BorderThickness="1" />
+
+                    <TextBlock Text="{Binding PlayerStats.Level}"
+                               FontSize="34"
+                               Foreground="{ThemeResource ContrastColorBrush}"
+                               Style="{ThemeResource BodyTextBlockStyle}"
+                               FontWeight="SemiBold"
+                               TextAlignment="Left"
+                               RelativePanel.AlignLeftWith="AvatarButton"
+                               RelativePanel.Above="ExperienceProgressBar"
+                               Margin="54,0,0,0" />
+
+                    <TextBlock Text="{Binding PlayerProfile.Username}"
+                               FontSize="15"
+                               Foreground="{ThemeResource ContrastColorBrush}"
+                               RelativePanel.Below="ExperienceProgressBar" />
+
+                </RelativePanel>
+
+                <!-- Pokeball main button -->
+                <Button Grid.Column="1"
+                        Style="{ThemeResource ImageButtonStyle}"
+                        Height="{ThemeResource UiButtonSize}"
+                        HorizontalAlignment="Center"
+                        x:Name="PokeMenuMainButton">
+
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <media:ControlStoryboardAction Storyboard="{StaticResource ShowPokeMenuStoryboard}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+
+                    <Image Source="../Assets/Buttons/btn_action_menu.png"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Stretch" />
                 </Button>
 
-                <ProgressBar x:Name="ExperienceProgressBar" 
-                             Value="{Binding PlayerStats, Converter={StaticResource PlayerDataToCurrentExperienceConverter}}"
-                             Maximum="{Binding PlayerStats, Converter={StaticResource PlayerDataToTotalLevelExperienceConverter}}"
-                             Foreground="{Binding PlayerProfile.Team, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}"
-                             Background="Black"
-                             Height="5"
-                             Margin="0,-5,0,0"
-                             RelativePanel.AlignLeftWithPanel="True"
-                             RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.Below="AvatarButton"
-                             Style="{StaticResource ExperienceProgressbarStyle}"
-                             BorderBrush="Black"
-                             BorderThickness="1" />
+                <Border CornerRadius="8,0,0,8"
+                        x:Name="NearbyPokemonBorder"
+                        BorderThickness="2,2,0,2"
+                        BorderBrush="#abefca"
+                        VerticalAlignment="Center"
+                        Grid.Column="2"
+                        Tapped="ToggleNearbyPokemonModal"
+                        Padding="0"
+                        Height="55">
 
-                <TextBlock Text="{Binding PlayerStats.Level}"
-                           FontSize="34"
-                           Foreground="{ThemeResource ContrastColorBrush}"
-                           Style="{ThemeResource BodyTextBlockStyle}"
-                           FontWeight="SemiBold"
-                           TextAlignment="Left"
-                           RelativePanel.AlignLeftWith="AvatarButton"
-                           RelativePanel.Above="ExperienceProgressBar"
-                           Margin="54,0,0,0" />
+                    <Border.Background>
+                        <SolidColorBrush Color="White"
+                                         Opacity="0.7" />
+                    </Border.Background>
 
-                <TextBlock Text="{Binding PlayerProfile.Username}"
-                           FontSize="15"
-                           Foreground="{ThemeResource ContrastColorBrush}"
-                           RelativePanel.Below="ExperienceProgressBar" />
+                    <GridView ItemsSource="{Binding NearbyPokemons}"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch"
+                              SelectionMode="None"
+                              ScrollViewer.VerticalScrollMode="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              ShowsScrollingPlaceholders="False"
+                              IsMultiSelectCheckBoxEnabled="False">
 
-            </RelativePanel>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapGrid Orientation="Horizontal"
+                                          VerticalChildrenAlignment="Top"
+                                          MaximumRowsOrColumns="10"
+                                          ItemHeight="52"
+                                          ItemWidth="40"
+                                          ScrollViewer.VerticalScrollMode="Disabled"
+                                          ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
 
-            <!-- Pokeball main button -->
-            <Button Grid.Column="1"
-                    Style="{ThemeResource ImageButtonStyle}"
-                    Height="{ThemeResource UiButtonSize}"
-                    HorizontalAlignment="Center"
-                    x:Name="PokeMenuMainButton">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Image Canvas.ZIndex="100"
+                                           Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                                           Visibility="{Binding PokemonId, Converter={StaticResource NearbyPokemonInPokedexToVisibilityConverter}}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Stretch="Uniform"                                        
+                                           Height="36"
+                                           Width="28"
+                                           Margin="1,0" />
 
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <media:ControlStoryboardAction Storyboard="{StaticResource ShowPokeMenuStoryboard}" />
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
+                                    <BitmapIcon
+                                        UriSource="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}, ConverterParameter=uri}"
+                                        Style="{ThemeResource NearbyPokemonNotInPokedexBitmapIconStyle}"
+                                        Visibility="{Binding PokemonId, Converter={StaticResource InverseNearbyPokemonInPokedexToVisibilityConverter}}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"                                    
+                                        Height="36"
+                                        Width="28"
+                                        Margin="1,0" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
 
-                <Image Source="../Assets/Buttons/btn_action_menu.png"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Stretch" />
-            </Button>
+                </Border>
 
-            <Border CornerRadius="8,0,0,8"
-                    x:Name="NearbyPokemonBorder"
-                    BorderThickness="2,2,0,2"
-                    BorderBrush="#abefca"
-                    VerticalAlignment="Center"
-                    Grid.Column="2"
-                    Tapped="ToggleNearbyPokemonModal"
-                    Padding="0"
-                    Height="55">
+            </Grid>
+        </RelativePanel>
 
-                <Border.Background>
-                    <SolidColorBrush Color="White"
-                                     Opacity="0.7" />
-                </Border.Background>
-
-                <GridView ItemsSource="{Binding NearbyPokemons}"
-                          HorizontalAlignment="Stretch"
-                          HorizontalContentAlignment="Stretch"
-                          SelectionMode="None"
-                          ScrollViewer.VerticalScrollMode="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                          ShowsScrollingPlaceholders="False"
-                          IsMultiSelectCheckBoxEnabled="False">
-
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapGrid Orientation="Horizontal"
-                                      VerticalChildrenAlignment="Top"
-                                      MaximumRowsOrColumns="10"
-                                      ItemHeight="52"
-                                      ItemWidth="40"
-                                      ScrollViewer.VerticalScrollMode="Disabled"
-                                      ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Image Canvas.ZIndex="100"
-                                       Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                                       Visibility="{Binding PokemonId, Converter={StaticResource NearbyPokemonInPokedexToVisibilityConverter}}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Stretch="Uniform"                                        
-                                       Height="36"
-                                       Width="28"
-                                       Margin="1,0" />
-
-                                <BitmapIcon
-                                    UriSource="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}, ConverterParameter=uri}"
-                                    Style="{ThemeResource NearbyPokemonNotInPokedexBitmapIconStyle}"
-                                    Visibility="{Binding PokemonId, Converter={StaticResource InverseNearbyPokemonInPokedexToVisibilityConverter}}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"                                    
-                                    Height="36"
-                                    Width="28"
-                                    Margin="1,0" />
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-
-            </Border>
-
+        <Grid x:Name="CoverGrid"
+          VerticalAlignment="Bottom"
+          HorizontalAlignment="Left"
+          Width="100"
+          Height="34"
+          Margin="40,0,0,95"
+          CornerRadius="8"
+          BorderThickness="2"
+          BorderBrush="Red">
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="CoverGridTrans" />
+            </Grid.RenderTransform>
+            <Rectangle x:Name="BackgroundRect"
+                   Fill="Red">
+            </Rectangle>
+            <TextBlock x:Name="AwardedXpCount"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="0,0,20,0">
+            </TextBlock>
         </Grid>
-    </RelativePanel>
     </Grid>
 </Page>

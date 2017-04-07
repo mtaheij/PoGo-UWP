@@ -402,6 +402,7 @@ namespace PokemonGo_UWP.Utils
 
             Configuration.IgnoreHashVersion = false;
             Configuration.Hasher = new PokeHashHasher(SettingsService.Instance.PokehashAuthKey);
+            ((PokeHashHasher)Configuration.Hasher).PokehashSleeping += GameClient_PokehashSleeping;
 
             // Login
             ILoginProvider loginProvider;
@@ -453,6 +454,13 @@ namespace PokemonGo_UWP.Utils
             await Task.CompletedTask;
         }
 
+        public static event EventHandler<int> PokehashSleeping;
+
+        private static void GameClient_PokehashSleeping(object sender, int sleepTime)
+        {
+            PokehashSleeping?.Invoke(sender, sleepTime);
+        }
+
         /// <summary>
         ///     Sets things up if we didn't come from the login page
         /// </summary>
@@ -488,7 +496,21 @@ namespace PokemonGo_UWP.Utils
             }
 
             // Get the game settings from the session
-            await GetGameSettings();
+            try
+            {
+                await GetGameSettings();
+            }
+            catch (HashVersionMismatchException ex)
+            {
+                var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");
+                ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                dialog.Show();
+
+                await Task.CompletedTask;
+
+                return;
+            }
 
             IsInitialized = true;
         }
@@ -1692,14 +1714,15 @@ namespace PokemonGo_UWP.Utils
         /// </summary>
         /// <param name="pokemon"></param>
         /// <returns></returns>
-        public static async Task<EvolvePokemonResponse> EvolvePokemon(PokemonData pokemon)
+        public static async Task<EvolvePokemonResponse> EvolvePokemon(PokemonData pokemon, ItemId evolutionItem)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
                 RequestType = RequestType.EvolvePokemon,
                 RequestMessage = new EvolvePokemonMessage
                 {
-                    PokemonId = pokemon.Id
+                    PokemonId = pokemon.Id,
+                    EvolutionItemRequirement = evolutionItem
                 }.ToByteString()
             });
             var evolvePokemonResponse = EvolvePokemonResponse.Parser.ParseFrom(response);
@@ -1970,7 +1993,7 @@ namespace PokemonGo_UWP.Utils
                     PlayerLatitude = _session.Player.Latitude,
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
-            });
+            }, false);
             var attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
 
             return attackGymResponse;
@@ -2194,6 +2217,21 @@ namespace PokemonGo_UWP.Utils
             var echoResponse = EchoResponse.Parser.ParseFrom(response);
 
             return echoResponse;
+        }
+
+        public static async Task<SfidaActionLogResponse> GetSfidaActionLog()
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.SfidaActionLog,
+                RequestMessage = new SfidaActionLogMessage
+                {
+
+                }.ToByteString()
+            });
+            var sfidaActionLogResponse = SfidaActionLogResponse.Parser.ParseFrom(response);
+
+            return sfidaActionLogResponse;
         }
         #endregion
 

@@ -186,6 +186,8 @@ namespace POGOLib.Official.Util.Hash
 
                         Logger.Warn($"Key selection is sleeping for {sleepTime}ms.");
 
+                        PokehashSleeping?.Invoke(this, sleepTime);
+
                         await Task.Delay(sleepTime);
 
                         // Rate limit is over, so reset requests.
@@ -193,7 +195,7 @@ namespace POGOLib.Official.Util.Hash
                         // We have to receive the new rate period end.
                         extendedSelection = true;
 
-                        Logger.Warn("Key selection is done with sleeping.");
+                        Logger.Warn("Key selection is done sleeping.");
                     }
                 }
                 finally
@@ -286,5 +288,7 @@ namespace POGOLib.Official.Util.Hash
         {
             return PCryptPokeHash.Encrypt(signatureBytes, timestampSinceStartMs);
         }
+
+        public event EventHandler<int> PokehashSleeping;
     }
 }

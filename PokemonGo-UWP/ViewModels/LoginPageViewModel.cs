@@ -12,6 +12,8 @@ using Template10.Services.NavigationService;
 using Newtonsoft.Json.Linq;
 using POGOLib.Official.LoginProviders;
 using PokemonGo_UWP.Exceptions;
+using POGOLib.Official.Util.Hash;
+using Windows.UI.Xaml;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -156,6 +158,13 @@ namespace PokemonGo_UWP.ViewModels
                     dialog.Closed += (ss, ee) => { App.Current.Exit(); };
                     dialog.Show();
                 }
+                catch (HashVersionMismatchException ex)
+                {
+                    var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                    dialog.Show();
+                }
                 catch (Exception e)
                 {
 				    await ExceptionHandler.HandleException(e);
@@ -199,6 +208,13 @@ namespace PokemonGo_UWP.ViewModels
                 {
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(Utils.Resources.CodeResources.GetString("CouldNotGetLocation"));
                     dialog.Closed += (ss, ee) => { App.Current.Exit(); };
+                    dialog.Show();
+                }
+                catch (HashVersionMismatchException ex)
+                {
+                    var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
                     dialog.Show();
                 }
                 finally

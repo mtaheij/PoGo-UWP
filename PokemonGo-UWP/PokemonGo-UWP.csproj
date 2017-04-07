@@ -247,6 +247,8 @@
     <Content Include="Assets\Icons\ic_fav.png" />
     <Content Include="Assets\Icons\ic_health.png" />
     <Content Include="Assets\Icons\ic_incubator.png" />
+    <Content Include="Assets\Icons\ic_ivpercentage.png" />
+    <Content Include="Assets\Icons\ic_level.png" />
     <Content Include="Assets\Icons\ic_name.png" />
     <Content Include="Assets\Icons\ic_number.png" />
     <Content Include="Assets\Icons\ic_store.png" />
@@ -757,6 +759,7 @@
     <Content Include="Assets\UI\pokeballLoading.gif" />
     <Content Include="Assets\UI\Professor.png" />
     <Content Include="Assets\UI\Spotlight.png" />
+    <Content Include="Assets\UI\steelix_loading_screen.png" />
     <Content Include="Assets\UI\walk.png" />
     <Content Include="Assets\UI\walk_dgrey.png" />
     <Content Include="Assets\UI\walk_grey.png" />
@@ -1034,6 +1037,7 @@
     <Compile Include="Entities\IncensePokemon.cs" />
     <Compile Include="Entities\IUpdatable.cs" />
     <Compile Include="Entities\Language.cs" />
+    <Compile Include="Entities\PokemonStat.cs" />
     <Compile Include="Entities\SpawnPointWrapper.cs" />
     <Compile Include="Entities\LuredPokemon.cs" />
     <Compile Include="Entities\MapPokemonWrapper.cs" />
@@ -1091,6 +1095,7 @@
     <Compile Include="Utils\Settings\SettingsService.cs" />
     <Compile Include="Utils\Game\SortingModes.cs" />
     <Compile Include="Utils\Game\UpdateManager.cs" />
+    <Compile Include="ViewModels\ActionLogPageViewModel.cs" />
     <Compile Include="ViewModels\CapturePokemonPageViewModel.cs" />
     <Compile Include="ViewModels\EggDetailPageViewModel.cs" />
     <Compile Include="ViewModels\EnterGymPageViewModel.cs" />
@@ -1107,6 +1112,9 @@
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPokeStopPageViewModel.cs" />
     <Compile Include="ViewModels\TutorialPageViewModel.cs" />
+    <Compile Include="Views\ActionLogPage.xaml.cs">
+      <DependentUpon>ActionLogPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChallengePage.xaml.cs">
       <DependentUpon>ChallengePage.xaml</DependentUpon>
     </Compile>
@@ -1259,6 +1267,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\ActionLogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ChooseTeamDialog.xaml">
       <SubType>Designer</SubType>

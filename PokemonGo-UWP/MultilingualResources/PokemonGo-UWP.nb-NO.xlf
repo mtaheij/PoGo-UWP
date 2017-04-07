@@ -1403,6 +1403,18 @@ Du fikk også {1} Stjernestøv, {2} Candy og {3} XP.</target>
           <source>Starting battle...</source>
           <target state="new">Starting battle...</target>
         </trans-unit>
+        <trans-unit id="IVPercentage" translate="yes" xml:space="preserve">
+          <source>IV Percentage</source>
+          <target state="new">IV Percentage</target>
+        </trans-unit>
+        <trans-unit id="Level" translate="yes" xml:space="preserve">
+          <source>Level</source>
+          <target state="new">Level</target>
+        </trans-unit>
+        <trans-unit id="PokeHashVersionMismatch" translate="yes" xml:space="preserve">
+          <source>To protect your trainer account, we will NOT send any request to the game servers, but the app will close now. </source>
+          <target state="new">To protect your trainer account, we will NOT send any request to the game servers, but the app will close now. </target>
+        </trans-unit>
       </group>
     </body>
   </file>

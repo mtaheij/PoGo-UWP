@@ -32,6 +32,7 @@ using POGOLib.Official.Logging;
 using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
 using POGOLib.Official.Util.Hash.PokeHash;
+using POGOLib.Official.Util.Hash;
 
 namespace PokemonGo_UWP
 {
@@ -366,6 +367,9 @@ namespace PokemonGo_UWP
 
             AsyncSynchronizationContext.Register();
 
+            // Let the user know when there is no available PokehashKey, it will look like the game 'hangs'
+            GameClient.PokehashSleeping += GameClient_PokehashSleeping;
+
             // See if there is a key for the PokeHash server, ask one from the user if there isn't
             if (String.IsNullOrEmpty(SettingsService.Instance.PokehashAuthKey))
             {
@@ -411,6 +415,13 @@ namespace PokemonGo_UWP
                     dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
                     dialog.Show();
                 }
+                catch (HashVersionMismatchException ex)
+                {
+                    var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");
+                    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                    dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                    dialog.Show();
+                }
                 catch (Exception ex)    // When the PokeHash server returns an error, it is not safe to continue. Ask for another PokeHash Key
                 {
                     var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("HashingKeyExpired");
@@ -422,6 +433,15 @@ namespace PokemonGo_UWP
             }
 
             await Task.CompletedTask;
+        }
+
+        private void GameClient_PokehashSleeping(object sender, int sleepTime)
+        {
+            var dialog = new MessageDialog($"There is no available Pokehash key found, the game will pause for {sleepTime} milliseconds");
+            dialog.Commands.Add(new UICommand("OK"));
+            dialog.DefaultCommandIndex = 0;
+
+            var result = dialog.ShowAsyncQueue().Result;
         }
 
         private void WindowOnVisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)

@@ -113,7 +113,10 @@
             <utils:PokemonLastHoursVisibiltyConverter x:Key="PokemonLastHoursVisibiltyConverter" />
             <utils:IsIncenseActiveToPlayerIconConverter x:Key="IsIncenseActiveToPlayerIconConverter" />
             <utils:PokemonCpToDisplayTextConverter x:Key="PokemonCpToDisplayTextConverter"/>
-
+            <utils:LogActionToIconConverter x:Key="LogActionToIconConverter"/>
+            <utils:LogActionToActionCaseConverter x:Key="LogActionToActionCaseConverter"/>
+            <utils:LogActionToActionItemConverter x:Key="LogActionToActionItemConverter"/>
+            <utils:LogActionToTimestampConverter x:Key="LogActionToTimestampConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 

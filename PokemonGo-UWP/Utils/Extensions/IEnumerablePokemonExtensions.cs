@@ -34,6 +34,10 @@ namespace PokemonGo_UWP.Utils.Extensions
                     return container.SortByName();
                 case PokemonSortingModes.Combat:
                     return container.SortByCp();
+                case PokemonSortingModes.IVPercentage:
+                    return container.SortByIVPercentage();
+                case PokemonSortingModes.Level:
+                    return container.SortByLevel();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sortingMode), sortingMode, null);
             }
@@ -97,6 +101,26 @@ namespace PokemonGo_UWP.Utils.Extensions
         public static IEnumerable<PokemonDataWrapper> SortByCp(this IEnumerable<PokemonDataWrapper> container)
         {
             return container.OrderByDescending(pokemon => pokemon.Cp).ThenBy(pokemon => pokemon.Name).ThenBy(pokemon => Resources.Pokemon.GetString(pokemon.PokemonId.ToString()));
+        }
+
+        /// <summary>
+        /// Sorts the IENumerable by IVPercentage of the Pokémon, then by Level, then by ID
+        /// </summary>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        public static IEnumerable<PokemonDataWrapper> SortByIVPercentage(this IEnumerable<PokemonDataWrapper> container)
+        {
+            return container.OrderByDescending(pokemon => pokemon.IVPercentage).ThenBy(pokemon => pokemon.Level).ThenBy(pokemon => Resources.Pokemon.GetString(pokemon.PokemonId.ToString()));
+        }
+
+        /// <summary>
+        /// Sorts the IENumerable by Level of the Pokémon, then by IVPercentage, then by ID
+        /// </summary>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        public static IEnumerable<PokemonDataWrapper> SortByLevel(this IEnumerable<PokemonDataWrapper> container)
+        {
+            return container.OrderByDescending(pokemon => pokemon.Level).ThenBy(pokemon => pokemon.IVPercentage).ThenBy(pokemon => Resources.Pokemon.GetString(pokemon.PokemonId.ToString()));
         }
     }
 }

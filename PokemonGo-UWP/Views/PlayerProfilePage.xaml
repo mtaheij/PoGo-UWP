@@ -204,26 +204,18 @@
                                     <StackPanel Grid.Row="1">
                                         <Grid>
                                             <Image Stretch="Uniform"
-                                               Height="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = height}"
-                                               Width="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = width}"
-                                               Margin="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = margin}"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = valign}"
-                                               Source="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToPokemonIconConverter}}"
-                                               x:Name="BuddyImage" />
-
-<!--                                            <Image Stretch="Uniform"
-                                               Height="100"
-                                               Margin="40,30"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Bottom"
-                                               Source="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToPokemonIconConverter}}"
-                                               x:Name="BuddyImage" />
--->
-                                            <Image Stretch="Uniform"
                                                Height="300"
                                                gif:AnimationBehavior.SourceUri="/Assets/UI/avatar.gif"
                                                x:Name="AvatarImage" />
+
+                                            <Image Stretch="Uniform"
+                                               Height="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = height}"
+                                               Width="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = width}"
+                                               Margin="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = margin}"
+                                               HorizontalAlignment="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = halign}"
+                                               VerticalAlignment="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToBuddyPlacementConverter}, ConverterParameter = valign}"
+                                               Source="{Binding PlayerProfile.BuddyPokemon, Converter={StaticResource BuddyPokemonToPokemonIconConverter}}"
+                                               x:Name="BuddyImage" />
                                         </Grid>
                                     </StackPanel>
 
@@ -289,6 +281,10 @@
                                                        FontWeight="SemiLight" />
                                         </StackPanel>
 
+                                        <Button Command="{Binding GoToActionLogPage}" Width="150"
+                                                Style="{StaticResource ButtonSubmit}"
+                                                Content="Journal"/>
+                                        
                                         <Rectangle Fill="LightGray" Margin="0,20" Height="2"/>
                                         
                                         <Grid x:Name="InformationGrid">

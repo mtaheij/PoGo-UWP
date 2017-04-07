@@ -16,6 +16,7 @@ using Template10.Common;
 using Google.Protobuf;
 using POGOProtos.Networking.Responses;
 using POGOProtos.Data.Logs;
+using Template10.Utils;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -112,9 +113,6 @@ namespace PokemonGo_UWP.ViewModels
 
         public ObservableCollection<KeyValuePair<AchievementType, object>> Achievements { get; } =
             new ObservableCollection<KeyValuePair<AchievementType, object>>();
-
-        public ObservableCollection<ActionLogEntry> ActionLog { get; } =
-            new ObservableCollection<ActionLogEntry>();
         #endregion
 
         #region Game Logic
@@ -194,14 +192,6 @@ namespace PokemonGo_UWP.ViewModels
 
         #endregion
 
-        #region Read Action Log
-        private async void ReadActionLog()
-        {
-            ActionLog.Clear();
-        }
-
-        #endregion
-
         #region Navigate to detail page
 
         private DelegateCommand<object> m_GoToAchievementDetailPage;
@@ -211,6 +201,16 @@ namespace PokemonGo_UWP.ViewModels
             BootStrapper.Current.NavigationService.Navigate(typeof(AchievementDetailPage), x);
         }));
 
+        #endregion
+
+        #region Navigate to Action log page
+
+        private DelegateCommand _gotoActionLogPage;
+
+        public DelegateCommand GoToActionLogPage => _gotoActionLogPage ?? (_gotoActionLogPage = new DelegateCommand(() =>
+        {
+            BootStrapper.Current.NavigationService.Navigate(typeof(ActionLogPage));
+        }));
         #endregion
 
         #endregion

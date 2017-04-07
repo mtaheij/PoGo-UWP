@@ -77,6 +77,22 @@ namespace PokemonGo_UWP.Entities
 
         public int IndividualStamina => WrappedData.IndividualStamina;
 
+        public double IVPercentage
+        {
+            get
+            {
+                var ivAttack = IndividualAttack;
+                var ivDefense = IndividualDefense;
+                var ivStamina = IndividualStamina;
+                var ivTotal = ivAttack + ivDefense + ivStamina;
+                var ivPercent = (double)ivTotal / 45;
+
+                return ivPercent;
+            }
+        }
+
+        public double Level => PokemonInfo.GetLevel(WrappedData);
+
         public float CpMultiplier => WrappedData.CpMultiplier;
 
         public ItemId Pokeball => WrappedData.Pokeball;

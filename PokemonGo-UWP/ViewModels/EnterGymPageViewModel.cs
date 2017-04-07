@@ -216,6 +216,8 @@ namespace PokemonGo_UWP.ViewModels
             }
         }
 
+        public long NewGymPoints { get;set; }
+
         /// <summary>
         /// The maximum prestige is determined from the number of memberships
         /// </summary>
@@ -435,9 +437,9 @@ namespace PokemonGo_UWP.ViewModels
         public event EventHandler<SelectionTarget> AskForPokemonSelection;
 
         /// <summary>
-        ///     Event fired when the player wants to train in a Gym
+        ///     Event fired when the player wants to train/battle in a Gym
         /// </summary>
-        public event EventHandler AskForTrainingAttackTeam;
+        public event EventHandler AskForAttackTeam;
 
         /// <summary>
         ///     Event fired when the Selection of a pokemon (to deploy) has been cancelled
@@ -461,20 +463,39 @@ namespace PokemonGo_UWP.ViewModels
         public event EventHandler<FortDeployPokemonResponse.Types.Result> DeployPokemonError;
 
         /// <summary>
-        ///     Event fired when the train command failed
+        ///     Event fired when the train or battle command failed
         /// </summary>
-        public event EventHandler<string> TrainError;
+        public event EventHandler<string> BattleError;
+
+        /// <summary>
+        ///     Event fired when the battle arena must be shown
+        /// </summary>
+        public event EventHandler ShowBattleArena;
 
         /// <summary>
         ///     Event fired when a battle has started
         /// </summary>
-        public event EventHandler BattleStarted;
+        public event EventHandler<int> BattleStarted;
+
+        /// <summary>
+        ///     Event fired when we have won a round in a battle
+        /// </summary>
+        public event EventHandler BattleRoundResultVictory;
 
         /// <summary>
         ///     Event fired when a battle has ended
         /// </summary>
-        public event EventHandler<AttackGymResponse> BattleEnded;
+        public event EventHandler BattleEnded;
 
+        /// <summary>
+        ///     Event fired when the Battle outcome can be shown
+        /// </summary>
+        public event EventHandler<BattleOutcomeResultEventArgs> ShowBattleOutcome;
+
+        /// <summary>
+        ///     Event fired when the close button on the Battle outcome has been clicked
+        /// </summary>
+        public event EventHandler CloseBattleOutcome;
 
         private DelegateCommand _enterCurrentGym;
 
@@ -605,7 +626,7 @@ namespace PokemonGo_UWP.ViewModels
 
                 if (CurrentGymState.FortData.IsInBattle)
                 {
-                    TrainError?.Invoke(this, "GymUnderAttack");
+                    BattleError?.Invoke(this, "GymUnderAttack");
                     return;
                 }
 
@@ -620,7 +641,7 @@ namespace PokemonGo_UWP.ViewModels
 
                 RaisePropertyChanged(() => AttackTeamMembers);
 
-                AskForTrainingAttackTeam?.Invoke(this, null);
+                AskForAttackTeam?.Invoke(this, null);
             }));
 
         private PokemonDataWrapper _attackTeamMemberToRemove;
@@ -737,6 +758,9 @@ namespace PokemonGo_UWP.ViewModels
         }
 
         private BattleLog _currentBattleLog;
+        private int _totalPlayerXpEarned;
+        private int _totalGymPrestigeDelta;
+        private int _pokemonDefeated;
 
         private DelegateCommand _goCommand;
 
@@ -746,6 +770,7 @@ namespace PokemonGo_UWP.ViewModels
                 try
                 {
                     _battleTrackerCancellation = new CancellationTokenSource();
+                    _isAbandoned = false;
 
                     Busy.SetBusy(true, Utils.Resources.CodeResources.GetString("StartingBattle"));
 
@@ -757,7 +782,7 @@ namespace PokemonGo_UWP.ViewModels
 
                     if (CurrentGymState.FortData.IsInBattle)
                     {
-                        TrainError?.Invoke(this, Utils.Resources.CodeResources.GetString("GymUnderAttack"));
+                        BattleError?.Invoke(this, Utils.Resources.CodeResources.GetString("GymUnderAttack"));
                         return;
                     }
 
@@ -771,6 +796,10 @@ namespace PokemonGo_UWP.ViewModels
                     var index = 0;
                     bool isVictory = true;
                     bool isFailedToStart = false;
+
+                    _totalPlayerXpEarned = 0;
+                    _totalGymPrestigeDelta = 0;
+
                     List<BattleAction> battleActions = new List<BattleAction>();
                     ulong defenderPokemonId = defenders.First().Id;
 
@@ -808,7 +837,7 @@ namespace PokemonGo_UWP.ViewModels
 
                                     _battleStopwatch = new Stopwatch();
                                     _battleStopwatch.Start();
-                                    BattleStarted?.Invoke(this, null);
+                                    ShowBattleArena?.Invoke(this, null);
                                     AudioUtils.PlaySound(AudioUtils.BATTLE);
 
                                     break;
@@ -838,6 +867,12 @@ namespace PokemonGo_UWP.ViewModels
                         }
                         Busy.SetBusy(false);
 
+                        await Dispatcher.DispatchAsync(async() =>
+                        {
+                            BattleStarted?.Invoke(this, index);
+                            await Task.CompletedTask;
+                        });
+
                         if (result != null && result.Result == StartGymBattleResponse.Types.Result.Success)
                         {
                         }
@@ -859,6 +894,7 @@ namespace PokemonGo_UWP.ViewModels
                                 isVictory = false;
                                 break;
                             case BattleState.Victory:
+                                isVictory = true;
                                 break;
                             default:
                                 Logger.Debug($"Unhandled result starting gym battle: {result}");
@@ -886,9 +922,19 @@ namespace PokemonGo_UWP.ViewModels
                             if (lastAction.BattleResults != null)
                             {
                                 var exp = lastAction.BattleResults.PlayerExperienceAwarded;
+                                foreach (int xp in exp)
+                                {
+                                    _totalPlayerXpEarned += xp;
+                                }
                                 var point = lastAction.BattleResults.GymPointsDelta;
-                                CurrentGym.AddGymPoints(point);
+                                CurrentGym.GymPoints += point;
+                                _totalGymPrestigeDelta += point;
+                                _pokemonDefeated += 1;
+
                                 defenderPokemonId = unchecked((ulong)lastAction.BattleResults.NextDefenderPokemonId);
+
+                                BattleRoundResultVictory?.Invoke(this, null);
+                                await Task.CompletedTask;
 
                                 await Task.Delay(2000).ConfigureAwait(false);
 
@@ -898,24 +944,32 @@ namespace PokemonGo_UWP.ViewModels
                         }
                     }
 
+                    BattleOutcomeResultEventArgs ea = new BattleOutcomeResultEventArgs("", _totalPlayerXpEarned, _totalGymPrestigeDelta, _pokemonDefeated, _lastAttackGymResponse);
+                    NewGymPoints = CurrentGymInfo.GymState.FortData.GymPoints + _totalGymPrestigeDelta;
+                    RaisePropertyChanged(() => NewGymPoints);
+
+                    if (!isVictory || _isAbandoned)
+                    {
+                        ea.BattleOutcome = "YOU LOSE!";
+                        ShowBattleOutcome?.Invoke(this, ea);
+                    }
+                    else
+                    {
+                        if (isVictory)
+                        {
+                            ea.BattleOutcome = "YOU WIN!";
+
+                            ShowBattleOutcome?.Invoke(this, ea);
+                        }
+                    }
+
+                    // We have been victorious on all defenders, or we have been defeated ourselves
                     Logger.Debug(string.Join(Environment.NewLine, battleActions.OrderBy(o => o.ActionStartMs).Select(s => s).Distinct()));
 
                     AttackTeamSelectionClosed?.Invoke(this, null);
-                    BattleEnded?.Invoke(this, _lastAttackGymResponse);
+                    BattleEnded?.Invoke(this, null);
                     AudioUtils.StopSounds();
                     AudioUtils.PlaySound(AudioUtils.BEFORE_THE_FIGHT);
-
-                    if (isVictory)
-                    {
-                        if (CurrentGym.GymPoints < 0)
-                        {
-                            CurrentGym.GymPoints = 0;
-                        }
-                        return;
-                    }
-
-                    if (isFailedToStart)
-                        return;
                 }
                 finally
                 {
@@ -1010,7 +1064,8 @@ namespace PokemonGo_UWP.ViewModels
                     var last = lastActions.Where(w => !AttackTeamMembers.Any(a => a.Id.Equals(w.ActivePokemonId))).LastOrDefault();
                     BattleAction lastSpecialAttack = lastActions.Where(w => !AttackTeamMembers.Any(a => a.Id.Equals(w.ActivePokemonId)) && w.Type == BattleActionType.ActionSpecialAttack).LastOrDefault();
 
-                    var attackActionz = last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyActions : AttackActions;
+                    //var attackActionz = last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyActions : AttackActions;
+                    var attackActionz = last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyActions : GetActions(serverMs, attacker, defender, _currentAttackerEnergy, last, lastSpecialAttack);
                     Logger.Info(string.Format("Going to make attacks : {0}", string.Join(", ", attackActionz.Select(s => string.Format("{0} -> {1}", s.Type, s.DurationMs)))));
 
                     BattleAction a2 = (last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyAction : last);
@@ -1025,6 +1080,7 @@ namespace PokemonGo_UWP.ViewModels
 
                         long timeBefore = DateTime.UtcNow.ToUnixTime();
                         attackResult = await GameClient.AttackGym(gym.Id, startResponse.BattleId, attackActionz, a2).ConfigureAwait(false);
+                        _lastAttackGymResponse = attackResult;
                         long timeAfter = DateTime.UtcNow.ToUnixTime();
                         Logger.Debug(string.Format("Finished making attack call: {0}", timeAfter - timeBefore));
                         AttackActions.Clear();
@@ -1061,8 +1117,11 @@ namespace PokemonGo_UWP.ViewModels
                     {
                         Logger.Info("Attack success");
                         defender = attackResult.ActiveDefender?.PokemonData;
-                        CurrentDefenderBattlePokemon = attackResult.ActiveDefender;
-                        CurrentDefenderPokemon = new PokemonDataWrapper(defender);
+                        if (defender != null)
+                        {
+                            CurrentDefenderBattlePokemon = attackResult.ActiveDefender;
+                            CurrentDefenderPokemon = new PokemonDataWrapper(defender);
+                        }
 
                         if (attackResult.BattleLog != null && attackResult.BattleLog.BattleActions.Count > 0)
                         {
@@ -1131,6 +1190,95 @@ namespace PokemonGo_UWP.ViewModels
             return lastActions;
         }
 
+        long timeToDodge = 0;
+        long lastWentDodge = DateTime.Now.ToUnixTime();
+
+        public List<BattleAction> GetActions(long serverMs, PokemonData attacker, PokemonData defender, int energy, BattleAction lastAction, BattleAction lastSpecialAttack)
+        {
+            List<BattleAction> actions = new List<BattleAction>();
+            DateTime now = DateTimeFromUnixTimestampMillis(serverMs);
+            const int beforeDodge = 200;
+
+            if (lastSpecialAttack != null && lastSpecialAttack.DamageWindowsStartTimestampMs > serverMs)
+            {
+                long dodgeTime = lastSpecialAttack.DamageWindowsStartTimestampMs - beforeDodge;
+                if (timeToDodge < dodgeTime)
+                    timeToDodge = dodgeTime;
+            }
+
+            if (attacker != null && defender != null)
+            {
+                var normalMove = GameClient.MoveSettings.FirstOrDefault(m => m.MovementId == CurrentAttackerPokemon.Move1);
+                var specialMove = GameClient.MoveSettings.FirstOrDefault(m => m.MovementId == CurrentAttackerPokemon.Move2);
+
+                bool skipDodge = ((lastSpecialAttack?.DurationMs ?? 0) < normalMove.DurationMs + 550); //if our normal attack is too slow and defender special is too fast so we should to only do dodge all the time then we totally skip dodge
+
+                bool canDoSpecialAttack = Math.Abs(specialMove.EnergyDelta) <= energy && (!(timeToDodge > now.ToUnixTime() && timeToDodge < now.ToUnixTime() + specialMove.DurationMs) || skipDodge);
+
+                bool canDoAttack = !canDoSpecialAttack && (!(timeToDodge > now.ToUnixTime() && timeToDodge < now.ToUnixTime() + normalMove.DurationMs) || skipDodge);
+
+                if (timeToDodge > now.ToUnixTime() && !canDoAttack && !canDoSpecialAttack && !skipDodge)
+                {
+                    lastWentDodge = now.ToUnixTime();
+
+                    BattleAction dodge = new BattleAction()
+                    {
+                        Type = BattleActionType.ActionDodge,
+                        ActionStartMs = now.ToUnixTime(),
+                        DurationMs = 500,
+                        TargetIndex = -1,
+                        ActivePokemonId = attacker.Id,
+                    };
+
+                    Logger.Info(string.Format("Trying to dodge an attack {0}, lastSpecialAttack.DamageWindowsStartTimestampMs: {1}, serverMs: {2}", dodge, lastSpecialAttack.DamageWindowsStartTimestampMs, serverMs));
+                    actions.Add(dodge);
+                }
+                else
+                {
+                    BattleAction action2 = new BattleAction();
+                    if (canDoSpecialAttack)
+                    {
+                        action2.Type = BattleActionType.ActionSpecialAttack;
+                        action2.DurationMs = specialMove.DurationMs;
+                        action2.DamageWindowsStartTimestampMs = specialMove.DamageWindowStartMs;
+                        action2.DamageWindowsEndTimestampMs = specialMove.DamageWindowEndMs;
+                        Logger.Info(string.Format("Trying to make an special attack {0}, on: {1}, duration: {2}", specialMove.MovementId, serverMs, specialMove.DurationMs));
+                    }
+                    else if (canDoAttack)
+                    {
+                        action2.Type = BattleActionType.ActionAttack;
+                        action2.DurationMs = normalMove.DurationMs;
+                        action2.DamageWindowsStartTimestampMs = normalMove.DamageWindowStartMs;
+                        action2.DamageWindowsEndTimestampMs = normalMove.DamageWindowEndMs;
+                        Logger.Info(string.Format("Trying to make an normal attack {0}, on: {1}, duration: {2}", normalMove.MovementId, serverMs, normalMove.DurationMs));
+                    }
+                    else
+                    {
+                        Logger.Info("SHIT, no action available");
+                    }
+                    action2.ActionStartMs = now.ToUnixTime();
+                    action2.TargetIndex = -1;
+                    if (attacker.Stamina > 0)
+                        action2.ActivePokemonId = attacker.Id;
+                    action2.TargetPokemonId = defender.Id;
+                    actions.Add(action2);
+                }
+                return actions;
+            }
+            BattleAction action1 = new BattleAction()
+            {
+                Type = BattleActionType.ActionDodge,
+                DurationMs = 500,
+                ActionStartMs = now.ToUnixTime(),
+                TargetIndex = -1
+            };
+            if (defender != null && attacker != null)
+                action1.ActivePokemonId = attacker.Id;
+
+            actions.Add(action1);
+            return actions;
+        }
+
         private void ShowActions(IEnumerable<BattleAction> actions)
         {
             Task.Run(() =>
@@ -1179,11 +1327,14 @@ namespace PokemonGo_UWP.ViewModels
             });
         }
 
+        private bool _isAbandoned;
+
         private DelegateCommand _abandonAttackCommand;
 
         public DelegateCommand AbandonAttackCommand => _abandonAttackCommand ?? (
             _abandonAttackCommand = new DelegateCommand(() =>
             {
+                _isAbandoned = true;
                 _battleTrackerCancellation.Cancel();
             }));
 
@@ -1195,9 +1346,29 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand FightCommand => _fightCommand ?? (
             _fightCommand = new DelegateCommand(() =>
             {
-                // TODO: Implement Fight
-                ConfirmationDialog dialog = new ConfirmationDialog("Fighting is not implemented yet.");
-                dialog.Show();
+                var defenders = CurrentGymState.Memberships.Select(x => x.PokemonData).ToList();
+
+                if (defenders.Count < 1)
+                    return;
+
+                if (CurrentGymState.FortData.IsInBattle)
+                {
+                    BattleError?.Invoke(this, "GymUnderAttack");
+                    return;
+                }
+
+                // If no team was selected before take 6 pokemons from the inventory with the highest CP value
+                if (AttackTeamMembers.Count == 0)
+                {
+                    AttackTeamMembers = new ObservableCollection<PokemonDataWrapper>(GameClient.PokemonsInventory
+                        .Select(pokemonData => new PokemonDataWrapper(pokemonData))
+                        .SortByCp()
+                        .Take(6));
+                }
+
+                RaisePropertyChanged(() => AttackTeamMembers);
+
+                AskForAttackTeam?.Invoke(this, null);
             }));
 
         // Close the attack team selection panel
@@ -1361,6 +1532,126 @@ namespace PokemonGo_UWP.ViewModels
             }
         }
 
+        private DelegateCommand _closeBattleOutcomeCommand;
+        public DelegateCommand CloseBattleOutcomeCommand =>
+            _closeBattleOutcomeCommand ?? (
+            _closeBattleOutcomeCommand = new DelegateCommand(async() =>
+            {
+                // Get new GymInfo, because it might have been changed
+                CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                CurrentGymState = CurrentGymInfo.GymState;
+                RaisePropertyChanged(() => GymLevel);
+                RaisePropertyChanged(() => GymPrestigeFull);
+                RaisePropertyChanged(() => DeployPokemonCommandVisibility);
+                RaisePropertyChanged(() => TrainCommandVisibility);
+                RaisePropertyChanged(() => FightCommandVisibility);
+                RaisePropertyChanged(() => DeployCommandButtonEnabled);
+                RaisePropertyChanged(() => TrainCommandButtonEnabled);
+                RaisePropertyChanged(() => BattleCommandButtonEnabled);
+                RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
+                GymLoaded?.Invoke(this, null);
+
+                CloseBattleOutcome?.Invoke(this, null);
+            }));
+
+        private DelegateCommand _autoSelectCommand;
+
+        public DelegateCommand AutoSelectCommand =>
+            _autoSelectCommand ?? (
+            _autoSelectCommand = new DelegateCommand(() =>
+            {
+                bool isTraining = (GameClient.PlayerData.Team == CurrentGymState.FortData.OwnedByTeam);
+
+                var attackTeam = CompleteAttackTeam(isTraining);
+                if (attackTeam != null && attackTeam.Count() == 6)
+                {
+                    AttackTeamMembers.Clear();
+                    foreach (PokemonDataWrapper attackerPokemon in attackTeam)
+                    {
+                        AttackTeamMembers.Add(attackerPokemon);
+                    }
+                    RaisePropertyChanged(() => AttackTeamMembers);
+                }
+                else
+                {
+                    BattleError?.Invoke(this, "Could not complete team");
+                }
+            }));
+
+        private IEnumerable<PokemonDataWrapper> CompleteAttackTeam(bool isTraining)
+        {
+            List<PokemonDataWrapper> attackers = new List<PokemonDataWrapper>();
+
+            while (attackers.Count < 6)
+            {
+                foreach (var defenderPokemon in GymMemberships)
+                {
+                    var defender = new PokemonDataWrapper(defenderPokemon.PokemonData);
+                    var attacker = GetBestAgainst(attackers, defender, isTraining);
+                    if (attacker != null)
+                    {
+                        attackers.Add(attacker);
+                        if (attackers.Count == 6)
+                            break;
+                    }
+                    else return null;
+                }
+            }
+
+            return attackers;
+        }
+
+        private PokemonDataWrapper GetBestAgainst(List<PokemonDataWrapper> myTeam, PokemonDataWrapper defender, bool isTraining)
+        {
+            Logger.Info(string.Format("Checking pokemon for {0} ({1} CP). Already collected team has: {2}", defender.PokemonId, defender.Cp, string.Join(", ", myTeam.Select(s => string.Format("{0} ({1} CP)", s.PokemonId, s.Cp)))));
+
+            GymMembership defenderMembership = GymMemberships.FirstOrDefault(f => f.PokemonData.Id == defender.Id);
+            AnyPokemonStat defenderStat = new AnyPokemonStat(new PokemonDataWrapper(defenderMembership.PokemonData));
+
+            var allPokemonStats = new List<MyPokemonStat>();
+            foreach (PokemonData pokemonData in GameClient.PokemonsInventory)
+            {
+                allPokemonStats.Add(new MyPokemonStat(new PokemonDataWrapper(pokemonData)));
+            }
+
+            MyPokemonStat myAttacker = allPokemonStats
+                .Where(w =>
+                        !myTeam.Any(a => a.Id == w.Data.Id) && // not already in team
+                        string.IsNullOrEmpty(w.Data.DeployedFortId) && // not deployed
+                        GameClient.PlayerData.BuddyPokemon?.Id != w.Data.Id // not a buddy
+                        )
+                .OrderByDescending(o => o.TypeFactor[defenderStat.MainType] + o.TypeFactor[defenderStat.ExtraType] + o.GetFactorAgainst(defender.Cp, isTraining))
+                .ThenByDescending(o => o.Data.Cp)
+                .FirstOrDefault();
+
+            if (myAttacker == null)
+            {
+                var other = GetBestToTeam(myTeam).FirstOrDefault();
+                return other;
+            }
+            else
+            {
+
+            }
+            return myAttacker.Data;
+        }
+
+        private IEnumerable<PokemonDataWrapper> GetBestToTeam(List<PokemonDataWrapper> myTeam)
+        {
+            var allPokemons = GameClient.PokemonsInventory;
+
+            var data = allPokemons.Where(w =>
+                        !myTeam.Any(a => a.Id == w.Id) && // not already in team
+                        string.IsNullOrEmpty(w.DeployedFortId) && // not deployed
+                        GameClient.PlayerData.BuddyPokemon.Id != w.Id // not a buddy
+                    )
+                    .OrderByDescending(o => o.Cp)
+                    .Take(6 - myTeam.Count());
+
+            Logger.Info("Best others are: " + string.Join(", ", data.Select(s => s.PokemonId)));
+            return data.Select(s => new PokemonDataWrapper(s));
+        }
+
         #region Pokemon Inventory Handling
 
         /// <summary>
@@ -1405,10 +1696,6 @@ namespace PokemonGo_UWP.ViewModels
         public event EventHandler AttackingActionAttack;
         public event EventHandler AttackingActionSpecialAttack;
         public event EventHandler AttackingActionDodge;
-
-        public event EventHandler<BattleAction> Victory;
-        public event EventHandler<BattleAction> Defeat;
-        public event EventHandler<BattleAction> TimedOut;
 
         /// <summary>
         ///     Determines whether we can keep battling.
@@ -1650,5 +1937,23 @@ namespace PokemonGo_UWP.ViewModels
         {
             return UnixEpoch.AddMilliseconds(millis);
         }
+    }
+
+    public class BattleOutcomeResultEventArgs
+    {
+        public BattleOutcomeResultEventArgs(string battleOutcome, int totalPlayerXpEarned, int totalGymPrestigeDelta, int pokemonDefeated, AttackGymResponse lastAttackGymResponse)
+        {
+            BattleOutcome = battleOutcome;
+            TotalPlayerXpEarned = totalPlayerXpEarned;
+            TotalGymPrestigeDelta = totalGymPrestigeDelta;
+            PokemonDefeated = pokemonDefeated;
+            LastAttackGymResponse = lastAttackGymResponse;
+        }
+
+        public string BattleOutcome { get; set; }
+        public int TotalPlayerXpEarned { get; set; }
+        public int TotalGymPrestigeDelta { get; set; }
+        public int PokemonDefeated { get; set; }
+        public AttackGymResponse LastAttackGymResponse { get; set; }
     }
 }

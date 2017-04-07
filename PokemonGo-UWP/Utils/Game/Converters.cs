@@ -29,6 +29,8 @@ using Windows.Foundation;
 using Windows.Services.Maps;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
+using POGOProtos.Data.Logs;
+using PokemonGo_UWP.Utils.Extensions;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -348,6 +350,7 @@ namespace PokemonGo_UWP.Utils
             var height = 0;
             var width = 0;
             var margin = "";
+            var halign = "";
             var valign = "";
 
             switch (buddySize)
@@ -356,24 +359,35 @@ namespace PokemonGo_UWP.Utils
                     height = 200;
                     width = 200;
                     margin = "10,30";
+                    halign = "Left";
                     valign = "Bottom";
                     break;
                 case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyFlying:
                     height = 100;
                     width = 100;
                     margin = "10,100";
+                    halign = "Left";
                     valign = "Bottom";
                     break;
                 case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyMedium:
                     height = 100;
                     width = 100;
                     margin = "40,30";
+                    halign = "Left";
                     valign = "Bottom";
                     break;
                 case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyShoulder:
                     height = 60;
                     width = 60;
                     margin = "110,10";
+                    halign = "Left";
+                    valign = "Top";
+                    break;
+                case POGOProtos.Settings.Master.PokemonSettings.Types.BuddySize.BuddyBaby:
+                    height = 60;
+                    width = 60;
+                    margin = "110,70";
+                    halign = "Center";
                     valign = "Top";
                     break;
                 default:
@@ -383,6 +397,7 @@ namespace PokemonGo_UWP.Utils
             if (parameter as string == "height") return height;
             if (parameter as string == "width") return width;
             if (parameter as string == "margin") return margin;
+            if (parameter as string == "halign") return halign;
             if (parameter as string == "valign") return valign;
             return string.Empty;
         }
@@ -2666,4 +2681,138 @@ namespace PokemonGo_UWP.Utils
 
         #endregion
     }
+
+    public class LogActionToIconConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return null;
+
+            var actionLogEntry = value as ActionLogEntry;
+            var actionCase = (value as ActionLogEntry)?.ActionCase;
+
+            Uri returnValue = new Uri("ms-appx:///Assets/Icons/pokestop_far.png");
+
+            switch (actionCase)
+            {
+                case ActionLogEntry.ActionOneofCase.FortSearch:
+                    returnValue = new Uri($"ms-appx:///Assets/Icons/pokestop_far.png");
+                    break;
+                case ActionLogEntry.ActionOneofCase.BuddyPokemon:
+                    returnValue = new Uri($"ms-appx:///Assets/Icons/ic_buddy.png");
+                    break;
+                case ActionLogEntry.ActionOneofCase.CatchPokemon:
+                    returnValue = new Uri($"ms-appx:///Assets/Pokemons/{(int)actionLogEntry.CatchPokemon.PokemonId}.png");
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class LogActionToActionCaseConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return null;
+
+            var actionLogEntry = value as ActionLogEntry;
+            var actionCase = (value as ActionLogEntry)?.ActionCase;
+
+            string returnValue = string.Empty;
+
+            switch (actionCase)
+            {
+                case ActionLogEntry.ActionOneofCase.FortSearch:
+                    returnValue = $"Received {actionLogEntry.FortSearch.Items.Count} items from PokéStop";
+                    break;
+                case ActionLogEntry.ActionOneofCase.BuddyPokemon:
+                    returnValue = $"You received {actionLogEntry.BuddyPokemon.Amount} candy from your buddy Pokemon";
+                    break;
+                case ActionLogEntry.ActionOneofCase.CatchPokemon:
+                    returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class LogActionToActionItemConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return null;
+
+            var actionLogEntry = value as ActionLogEntry;
+            var actionCase = (value as ActionLogEntry)?.ActionCase;
+
+            string returnValue = string.Empty;
+
+            switch (actionCase)
+            {
+                case ActionLogEntry.ActionOneofCase.FortSearch:
+                    break;
+                case ActionLogEntry.ActionOneofCase.BuddyPokemon:
+                    break;
+                case ActionLogEntry.ActionOneofCase.CatchPokemon:
+                    returnValue = $"CP {actionLogEntry.CatchPokemon.CombatPoints}";
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
+    public class LogActionToTimestampConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null) return null;
+
+            var actionLogEntry = value as ActionLogEntry;
+
+            long timestamp = actionLogEntry.TimestampMs; 
+            string returnValue = $"{DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToString()}";
+
+            return returnValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
 }

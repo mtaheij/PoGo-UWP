@@ -471,9 +471,9 @@ namespace POGOLib.Official.Net
             });
         }
 
-        public async Task<ByteString> SendRemoteProcedureCallAsync(Request request)
+        public async Task<ByteString> SendRemoteProcedureCallAsync(Request request, bool sendDefaultRequests = true)
         {
-            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(new[] { request }, true));
+            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(new[] { request }, sendDefaultRequests));
         }
 
         public async Task<ByteString> SendRemoteProcedureCallAsync(Request[] request)

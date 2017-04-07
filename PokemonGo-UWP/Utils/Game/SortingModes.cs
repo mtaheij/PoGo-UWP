@@ -10,6 +10,8 @@
         Number,
         Health,
         Name,
-        Combat
+        Combat,
+        IVPercentage,
+        Level
     }
 }

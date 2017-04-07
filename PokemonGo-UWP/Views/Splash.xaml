@@ -12,7 +12,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
             <Canvas.Background>
-                <ImageBrush ImageSource="ms-appx:///Assets/UI/WarningScreen_BackgroundPlate.png"
+                <ImageBrush ImageSource="ms-appx:///Assets/UI/steelix_loading_screen.png"
                             Stretch="Fill">
                     <ImageBrush.Transform>
                         <TranslateTransform Y="0" />

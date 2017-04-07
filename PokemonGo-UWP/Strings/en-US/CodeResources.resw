@@ -431,4 +431,13 @@ You also got {1} Stardust, {2} Candy and {3} XP.</value>
   <data name="StartingBattle" xml:space="preserve">
     <value>Starting battle...</value>
   </data>
+  <data name="IVPercentage" xml:space="preserve">
+    <value>IV Percentage</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="PokeHashVersionMismatch" xml:space="preserve">
+    <value>To protect your trainer account, we will NOT send any request to the game servers, but the app will close now. </value>
+  </data>
 </root>

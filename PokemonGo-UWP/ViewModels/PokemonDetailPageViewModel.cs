@@ -611,7 +611,7 @@ namespace PokemonGo_UWP.ViewModels
                 {
                     ServerRequestRunning = true;
                     // Send evolve request
-                    EvolvePokemonResponse res = await GameClient.EvolvePokemon(SelectedPokemon.WrappedData);
+                    EvolvePokemonResponse res = await GameClient.EvolvePokemon(SelectedPokemon.WrappedData, POGOProtos.Inventory.Item.ItemId.ItemUnknown);
                     RaisePropertyChanged(() => EvolvedPokemonId);
                     switch (res.Result)
                     {

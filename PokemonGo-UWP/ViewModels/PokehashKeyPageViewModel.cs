@@ -140,6 +140,13 @@ namespace PokemonGo_UWP.ViewModels
                             dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
                             dialog.Show();
                         }
+                        catch (HashVersionMismatchException ex)
+                        {
+                            var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");
+                            ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                            dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                            dialog.Show();
+                        }
                         catch (Exception ex)
                         {
                             var errorMessage = ex.Message ?? Utils.Resources.CodeResources.GetString("NoValidHashKey");
