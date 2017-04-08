@@ -503,7 +503,7 @@
                         Width="60" Height="60" Margin="8,0,0,0"
                         Command="{Binding AutoSelectCommand}"
                         Style="{ThemeResource ImageButtonStyle}">
-                    <Image Source="/Assets/Buttons/btn_pokemon.png"/>
+                    <Image Source="/Assets/Buttons/btn_swap.png"/>
                 </Button>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" 
                         Width="60" Height="60" 

@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using POGOLib.Official.Logging;
-using POGOLib.Official.Net.Authentication.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using POGOLib.Official.Logging;
+using POGOLib.Official.Net.Authentication.Data;
 
 namespace POGOLib.Official.LoginProviders
 {
+
     /// <summary>
     /// The <see cref="ILoginProvider"/> for Pokemon Trainer Club.
     /// Use this if you want to authenticate to PokemonGo using a Pokemon Trainer Club account.

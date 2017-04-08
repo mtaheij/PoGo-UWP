@@ -1,9 +1,5 @@
 ﻿using POGOLib.Official.Extensions;
 using POGOLib.Official.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static POGOProtos.Networking.Envelopes.Signature.Types;
 
 namespace POGOLib.Official.Util.Device

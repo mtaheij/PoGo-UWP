@@ -313,7 +313,9 @@ namespace PokemonGo_UWP.ViewModels
         {
             PokemonInventory = new ObservableCollection<PokemonDataWrapper>(GameClient.PokemonsInventory
                 .Select(pokemonData => new PokemonDataWrapper(pokemonData))
-                .Where(pokemonData => pokemonData.Stamina != pokemonData.StaminaMax));
+                .Where(pokemonData =>   pokemonData.Stamina != pokemonData.StaminaMax &&    // Not completely healthy
+                                        pokemonData.Stamina != 0 &&                         // Not fainted
+                                        String.IsNullOrEmpty(pokemonData.DeployedFortId))); // Not deployed to fort
 
             CurrentUseItem = item;
 
@@ -327,7 +329,9 @@ namespace PokemonGo_UWP.ViewModels
         {
             PokemonInventory = new ObservableCollection<PokemonDataWrapper>(GameClient.PokemonsInventory
                 .Select(pokemonData => new PokemonDataWrapper(pokemonData))
-                .Where(pokemonData => pokemonData.Stamina ==0));
+                //.Where(pokemonData => pokemonData.Stamina == 0));
+                .Where(pokemonData => pokemonData.Stamina == 0 &&                           // Fainted
+                                      String.IsNullOrEmpty(pokemonData.DeployedFortId)));   // Not deployed to fort
 
             CurrentUseItem = item;
 

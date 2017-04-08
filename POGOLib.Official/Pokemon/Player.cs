@@ -1,20 +1,19 @@
-﻿using GeoCoordinatePortable;
+﻿using System;
+using System.Linq;
+using GeoCoordinatePortable;
+using POGOLib.Official.Net;
 using POGOProtos.Data;
 using POGOProtos.Data.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace POGOLib.Official.Pokemon
 {
     public class Player
     {
-        internal Player(GeoCoordinate coordinate)
+        internal Player(Session session, GeoCoordinate coordinate)
         {
             Coordinate = coordinate;
-            Inventory = new Inventory();
-            Inventory.Update += InventoryOnUpdate;
+            Inventory = new Inventory(session);
+            session.InventoryUpdate += InventoryOnUpdate;
         }
 
         /// <summary>
@@ -42,8 +41,8 @@ namespace POGOLib.Official.Pokemon
         ///     Gets the <see cref="Stats" /> of the beautiful <see cref="Inventory" /> object by PokémonGo.
         /// </summary>
         public PlayerStats Stats { get; private set; }
-
-        public PlayerData Data { get; set; }
+		
+		public PlayerData Data { get; set; }
 
         /// <summary>
         ///     Sets the <see cref="GeoCoordinate" /> of the <see cref="Player" />.
@@ -55,7 +54,7 @@ namespace POGOLib.Official.Pokemon
         {
             Coordinate = new GeoCoordinate(latitude, longitude, altitude);
         }
-
+ 
         /// <summary>
         ///     Sets the <see cref="GeoCoordinate" /> of the <see cref="Player" />.
         /// </summary>

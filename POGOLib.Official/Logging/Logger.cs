@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace POGOLib.Official.Logging
 {
@@ -43,7 +40,7 @@ namespace POGOLib.Official.Logging
 
         private static void Output(LogLevel logLevel, string message)
         {
-            foreach (var logOutput in LogOutputs)
+            foreach(var logOutput in LogOutputs)
             {
                 logOutput(logLevel, message);
             }

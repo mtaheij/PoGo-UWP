@@ -1,8 +1,5 @@
-﻿using POGOLib.Official.Net.Authentication.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using POGOLib.Official.Net.Authentication.Data;
 
 namespace POGOLib.Official.LoginProviders
 {

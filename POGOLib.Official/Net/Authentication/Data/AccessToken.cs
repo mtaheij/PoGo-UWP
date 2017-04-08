@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using POGOProtos.Networking.Envelopes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace POGOLib.Official.Net.Authentication.Data
 {

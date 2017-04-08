@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace POGOLib.Official.Util.Encryption.Legacy
-{
+{   
     /// <summary>
     ///     This is the legacy NiaHash used by POGOLib.
     /// 
@@ -81,12 +78,12 @@ namespace POGOLib.Official.Util.Encryption.Legacy
             // copy tail, pad with zeroes
             var tail = new byte[128];
             var tailSize = len % 128;
-            Buffer.BlockCopy(input, (int)(len - tailSize), tail, 0, (int)tailSize);
+            Buffer.BlockCopy(input, (int) (len - tailSize), tail, 0, (int) tailSize);
 
             UInt128 hash;
 
-            hash = numChunks != 0
-                ? hash_chunk(input, 128, 0)
+            hash = numChunks != 0 
+                ? hash_chunk(input, 128, 0) 
                 : hash_chunk(tail, tailSize, 0);
 
             hash += RoundMagic;

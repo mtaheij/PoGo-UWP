@@ -1,9 +1,6 @@
-﻿using POGOProtos.Networking.Envelopes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using POGOProtos.Networking.Envelopes;
 
 namespace POGOLib.Official.Util.Hash
 {

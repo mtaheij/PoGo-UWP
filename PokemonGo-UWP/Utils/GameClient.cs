@@ -51,6 +51,7 @@ using POGOLib.Official.Net.Authentication.Data;
 using Template10.Services.NavigationService;
 using POGOProtos.Data.Battle;
 using PokemonGo_UWP.Exceptions;
+using POGOLib.Official.Net.Captcha;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -393,9 +394,9 @@ namespace PokemonGo_UWP.Utils
             if (_session != null)
             {
                 _session.AccessTokenUpdated -= SessionOnAccessTokenUpdated;
-                _session.Player.Inventory.Update -= InventoryOnUpdate;
-                _session.Map.Update -= MapOnUpdate;
-                _session.RpcClient.CheckChallengeReceived -= SessionOnCheckChallengeReceived;
+                _session.InventoryUpdate -= InventoryOnUpdate;
+                _session.MapUpdate -= MapOnUpdate;
+                _session.CaptchaReceived -= SessionOnCaptchaReceived;
                 _session.RpcClient.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
                 _session.RpcClient.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
             }
@@ -445,9 +446,9 @@ namespace PokemonGo_UWP.Utils
             }
 
             _session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
-            _session.Player.Inventory.Update += InventoryOnUpdate;
-            _session.Map.Update += MapOnUpdate;
-            _session.RpcClient.CheckChallengeReceived += SessionOnCheckChallengeReceived;
+            _session.InventoryUpdate += InventoryOnUpdate;
+            _session.MapUpdate += MapOnUpdate;
+            _session.CaptchaReceived += SessionOnCaptchaReceived;
             _session.RpcClient.HatchedEggsReceived += SessionOnHatchedEggsReceived;
             _session.RpcClient.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
 
@@ -522,25 +523,20 @@ namespace PokemonGo_UWP.Utils
             Logger.Info("Saved access token to file.");
         }
 
-        private static async void SessionOnCheckChallengeReceived(object sender, CheckChallengeResponse e)
+        private static async void SessionOnCaptchaReceived(object sender, CaptchaEventArgs e)
         {
-            if (e.ShowChallenge && !String.IsNullOrWhiteSpace(e.ChallengeUrl) && e.ChallengeUrl.Length > 5)
-            {
-                // Captcha is shown in checkChallengeResponse.ChallengeUrl
-                Logger.Warn($"ChallengeURL: {e.ChallengeUrl}");
-                // breakpoint here to manually resolve Captcha in a browser
-                // after that set token to str variable from browser (see screenshot)
-                Logger.Warn("Pause");
+            var session = (Session)sender;
 
-                //GOTO THE REQUIRED PAGE
-                if (BootStrapper.Current.NavigationService.CurrentPageType != typeof(ChallengePage))
+            Logger.Warn($"Captcha received: {e.CaptchaUrl}");
+
+            //GOTO THE REQUIRED PAGE
+            if (BootStrapper.Current.NavigationService.CurrentPageType != typeof(ChallengePage))
+            {
+                await DispatcherHelper.RunInDispatcherAndAwait(() =>
                 {
-                    await DispatcherHelper.RunInDispatcherAndAwait(() =>
-                    {
-                        // We are not in UI thread probably, so run this via dispatcher
-                        BootStrapper.Current.NavigationService.Navigate(typeof(ChallengePage), e.ChallengeUrl);
-                    });
-                }
+                    // We are not in UI thread probably, so run this via dispatcher
+                    BootStrapper.Current.NavigationService.Navigate(typeof(ChallengePage), e.CaptchaUrl);
+                });
             }
         }
 
@@ -554,18 +550,20 @@ namespace PokemonGo_UWP.Utils
             OnAwardedBadgesReceived?.Invoke(sender, e);
         }
 
-        private static void InventoryOnUpdate(object sender, EventArgs eventArgs)
+        private static void InventoryOnUpdate(object sender, EventArgs e)
         {
-            Inventory inventory = sender as Inventory;
+            Session session = sender as Session;
+            Inventory inventory = session.Player.Inventory;
             UpdateLocalInventory(inventory);
             Logger.Info("Inventory was updated.");
         }
 
-        private async static void MapOnUpdate(object sender, EventArgs eventArgs)
+        private async static void MapOnUpdate(object sender, EventArgs e)
         {
             if (_isSessionEnabled)
             {
-                Map map = sender as Map;
+                Session session = sender as Session;
+                Map map = session.Map;
                 await UpdateMapObjects(map);
                 Logger.Info("Map was updated.");
             }
@@ -1656,9 +1654,16 @@ namespace PokemonGo_UWP.Utils
                     SpawnPointId = spawnpointId
                 }.ToByteString()
             });
-            var useItemCaptureResponse = UseItemCaptureResponse.Parser.ParseFrom(response);
 
-            return useItemCaptureResponse;
+            try
+            {
+                var useItemCaptureResponse = UseItemCaptureResponse.Parser.ParseFrom(response);
+                return useItemCaptureResponse;
+            }
+            catch (Exception)
+            {
+                return new UseItemCaptureResponse() { Success = false };
+            }
         }
 
         /// <summary>
@@ -1680,9 +1685,16 @@ namespace PokemonGo_UWP.Utils
                     SpawnPointGuid = spawnpointId
                 }.ToByteString()
             });
-            var useItemEncounterResponse = UseItemEncounterResponse.Parser.ParseFrom(response);
 
-            return useItemEncounterResponse;
+            try
+            {
+                var useItemEncounterResponse = UseItemEncounterResponse.Parser.ParseFrom(response);
+                return useItemEncounterResponse;
+            }
+            catch (Exception)
+            {
+                return new UseItemEncounterResponse() { Status = UseItemEncounterResponse.Types.Status.AlreadyCompleted };
+            }
         }
 
         #endregion
@@ -2021,9 +2033,16 @@ namespace PokemonGo_UWP.Utils
                     IncenseType = item
                 }.ToByteString()
             });
-            var useIncenseResponse = UseIncenseResponse.Parser.ParseFrom(response);
 
-            return useIncenseResponse;
+            try
+            {
+                var useIncenseResponse = UseIncenseResponse.Parser.ParseFrom(response);
+                return useIncenseResponse;
+            }
+            catch (Exception)
+            {
+                return new UseIncenseResponse() { Result = UseIncenseResponse.Types.Result.Unknown };
+            }
         }
 
         /// <summary>
@@ -2041,9 +2060,16 @@ namespace PokemonGo_UWP.Utils
                     ItemId = item
                 }.ToByteString()
             });
-            var useItemXpBoostResponse = UseItemXpBoostResponse.Parser.ParseFrom(response);
 
-            return useItemXpBoostResponse;
+            try
+            {
+                var useItemXpBoostResponse = UseItemXpBoostResponse.Parser.ParseFrom(response);
+                return useItemXpBoostResponse;
+            }
+            catch (Exception)
+            {
+                return new UseItemXpBoostResponse() { Result = UseItemXpBoostResponse.Types.Result.Unset };
+            }
         }
 
         public static async Task<UseItemReviveResponse> UseItemRevive(ItemId item, ulong pokemonId)
@@ -2057,9 +2083,16 @@ namespace PokemonGo_UWP.Utils
                     ItemId = item
                 }.ToByteString()
             });
-            var useItemReviveResponse = UseItemReviveResponse.Parser.ParseFrom(response);
 
-            return useItemReviveResponse;
+            try
+            {
+                var useItemReviveResponse = UseItemReviveResponse.Parser.ParseFrom(response);
+                return useItemReviveResponse;
+            }
+            catch (Exception)
+            {
+                return new UseItemReviveResponse() { Result = UseItemReviveResponse.Types.Result.Unset };
+            }
         }
 
         public static async Task<UseItemPotionResponse> UseItemPotion(ItemId item, ulong pokemonId)
@@ -2073,9 +2106,16 @@ namespace PokemonGo_UWP.Utils
                     ItemId = item
                 }.ToByteString()
             });
-            var useItemPotionResponse = UseItemPotionResponse.Parser.ParseFrom(response);
 
-            return useItemPotionResponse;
+            try
+            {
+                var useItemPotionResponse = UseItemPotionResponse.Parser.ParseFrom(response);
+                return useItemPotionResponse;
+            }
+            catch(Exception)
+            {
+                return new UseItemPotionResponse() { Result = UseItemPotionResponse.Types.Result.Unset };
+            }
         }
 
         /// <summary>
@@ -2121,9 +2161,16 @@ namespace PokemonGo_UWP.Utils
                     PokemonId = egg.Id
                 }.ToByteString()
             });
-            var useItemEggIncubatorResponse = UseItemEggIncubatorResponse.Parser.ParseFrom(response);
 
-            return useItemEggIncubatorResponse;
+            try
+            {
+                var useItemEggIncubatorResponse = UseItemEggIncubatorResponse.Parser.ParseFrom(response);
+                return useItemEggIncubatorResponse;
+            }
+            catch (Exception)
+            {
+                return new UseItemEggIncubatorResponse() { Result = UseItemEggIncubatorResponse.Types.Result.Unset };
+            }
         }
 
         /// <summary>

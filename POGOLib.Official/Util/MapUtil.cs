@@ -1,8 +1,5 @@
-﻿using Google.Common.Geometry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Google.Common.Geometry;
 
 namespace POGOLib.Official.Util
 {

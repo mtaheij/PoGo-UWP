@@ -1,18 +1,4 @@
-﻿using GeoCoordinatePortable;
-using Google.Protobuf;
-using Newtonsoft.Json;
-using POGOLib.Official.Logging;
-using POGOLib.Official.Util;
-using POGOProtos.Enums;
-using POGOProtos.Map;
-using POGOProtos.Networking.Envelopes;
-using POGOProtos.Networking.Platform;
-using POGOProtos.Networking.Platform.Requests;
-using POGOProtos.Networking.Platform.Responses;
-using POGOProtos.Networking.Requests;
-using POGOProtos.Networking.Requests.Messages;
-using POGOProtos.Networking.Responses;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +6,25 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using GeoCoordinatePortable;
+using Google.Protobuf;
+using Newtonsoft.Json;
+using POGOLib.Official.Logging;
+using POGOLib.Official.Util;
+using POGOProtos.Map;
+using POGOProtos.Networking.Envelopes;
+using POGOProtos.Networking.Requests;
+using POGOProtos.Networking.Requests.Messages;
+using POGOProtos.Networking.Responses;
+using POGOProtos.Enums;
+using POGOProtos.Networking.Platform;
+using POGOProtos.Networking.Platform.Requests;
+using POGOProtos.Networking.Platform.Responses;
 
 namespace POGOLib.Official.Net
 {
     public class RpcClient : IDisposable
     {
-
         /// <summary>
         ///     The authenticated <see cref="Session" />.
         /// </summary>
@@ -61,9 +60,8 @@ namespace POGOLib.Official.Net
 
         private readonly ConcurrentDictionary<RequestEnvelope, ByteString> _rpcResponses = new ConcurrentDictionary<RequestEnvelope, ByteString>();
 
-        private static readonly Semaphore RpcQueueMutex = new Semaphore(1, 1);
+        private readonly Semaphore _rpcQueueMutex = new Semaphore(1, 1);
 
-        public event EventHandler<CheckChallengeResponse> CheckChallengeReceived;
         public event EventHandler<GetHatchedEggsResponse> HatchedEggsReceived;
         public event EventHandler<CheckAwardedBadgesResponse> CheckAwardedBadgesReceived;
 
@@ -79,15 +77,10 @@ namespace POGOLib.Official.Net
         internal DateTime LastRpcMapObjectsRequest { get; private set; }
 
         internal GeoCoordinate LastGeoCoordinateMapObjectsRequest { get; private set; } = new GeoCoordinate();
-
+        
         internal Platform GetPlatform()
         {
             return _session.DeviceInfo.DeviceBrand == "Apple" ? Platform.Ios : Platform.Android;
-        }
-
-        internal void ResetLastTimestampSinceStart()
-        {
-            _rpcEncryption.ResetLastTimestampSinceStart();
         }
 
         private long PositiveRandom()
@@ -115,7 +108,7 @@ namespace POGOLib.Official.Net
                     break;
             }
         }
-
+        
         /// <summary>
         /// Sends all requests which the (ios-)client sends on startup
         /// </summary>
@@ -269,30 +262,38 @@ namespace POGOLib.Official.Net
                 }.ToByteString()
             });
 
-            var mapObjects = GetMapObjectsResponse.Parser.ParseFrom(response);
-            if (mapObjects.Status == MapObjectsStatus.Success)
+            if (response != null)
             {
-                // TODO: Cleaner?
-                var pokemonCatchable = mapObjects.MapCells.SelectMany(c => c.CatchablePokemons).Count();
-                var pokemonWild = mapObjects.MapCells.SelectMany(c => c.WildPokemons).Count();
-                var pokemonNearby = mapObjects.MapCells.SelectMany(c => c.NearbyPokemons).Count();
-                var pokemonCount = pokemonCatchable + pokemonWild + pokemonNearby;
-
-                Logger.Debug($"Received '{mapObjects.MapCells.Count}' map cells.");
-                Logger.Debug($"Received '{pokemonCount}' pokemons. Catchable({pokemonCatchable}) Wild({pokemonWild}) Nearby({pokemonNearby})");
-                Logger.Debug($"Received '{mapObjects.MapCells.SelectMany(c => c.Forts).Count()}' forts.");
-
-                if (mapObjects.MapCells.Count == 0)
+                var mapObjects = GetMapObjectsResponse.Parser.ParseFrom(response);
+                if (mapObjects.Status == MapObjectsStatus.Success)
                 {
-                    Logger.Error("We received 0 map cells, are your GPS coordinates correct?");
-                    return;
-                }
+                    // TODO: Cleaner?
+                    var pokemonCatchable = mapObjects.MapCells.SelectMany(c => c.CatchablePokemons).Count();
+                    var pokemonWild = mapObjects.MapCells.SelectMany(c => c.WildPokemons).Count();
+                    var pokemonNearby = mapObjects.MapCells.SelectMany(c => c.NearbyPokemons).Count();
+                    var pokemonCount = pokemonCatchable + pokemonWild + pokemonNearby;
 
-                _session.Map.Cells = mapObjects.MapCells;
+                    Logger.Debug($"Received '{mapObjects.MapCells.Count}' map cells.");
+                    Logger.Debug($"Received '{pokemonCount}' pokemons. Catchable({pokemonCatchable}) Wild({pokemonWild}) Nearby({pokemonNearby})");
+                    Logger.Debug($"Received '{mapObjects.MapCells.SelectMany(c => c.Forts).Count()}' forts.");
+
+                    if (mapObjects.MapCells.Count == 0)
+                    {
+                        Logger.Error("We received 0 map cells, are your GPS coordinates correct?");
+                        return;
+                    }
+
+                    _session.Map.Cells = mapObjects.MapCells;
+                }
+                else
+                {
+                    Logger.Error($"GetMapObjects status is: '{mapObjects.Status}'.");
+                }
             }
-            else
+            else if (_session.State != SessionState.Paused)
             {
-                Logger.Error($"GetMapObjects status is: '{mapObjects.Status}'.");
+                // POGOLib didn't expect this.
+                throw new NullReferenceException(nameof(response));
             }
         }
 
@@ -379,8 +380,7 @@ namespace POGOLib.Official.Net
                     }.ToByteString()
                 });
             }
-
-
+            
             //If Incense is active we add this:
             //request.Add(new Request
             //{
@@ -471,14 +471,14 @@ namespace POGOLib.Official.Net
             });
         }
 
-        public async Task<ByteString> SendRemoteProcedureCallAsync(Request request, bool sendDefaultRequests = true)
+        public async Task<ByteString> SendRemoteProcedureCallAsync(Request request, bool addDefaultRequests = true)
         {
-            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(new[] { request }, sendDefaultRequests));
+            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(new[] {request}, addDefaultRequests));
         }
 
-        public async Task<ByteString> SendRemoteProcedureCallAsync(Request[] request)
+        public async Task<ByteString> SendRemoteProcedureCallAsync(Request[] request, bool addDefaultRequests = false)
         {
-            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(request, false));
+            return await SendRemoteProcedureCall(await GetRequestEnvelopeAsync(request, addDefaultRequests));
         }
 
         private Task<ByteString> SendRemoteProcedureCall(RequestEnvelope requestEnvelope)
@@ -489,7 +489,7 @@ namespace POGOLib.Official.Net
 
                 try
                 {
-                    RpcQueueMutex.WaitOne();
+                    _rpcQueueMutex.WaitOne();
 
                     RequestEnvelope processRequestEnvelope;
                     while (_rpcQueue.TryDequeue(out processRequestEnvelope))
@@ -511,7 +511,7 @@ namespace POGOLib.Official.Net
                 }
                 finally
                 {
-                    RpcQueueMutex.Release();
+                    _rpcQueueMutex.Release();
                 }
             });
         }
@@ -520,6 +520,22 @@ namespace POGOLib.Official.Net
         {
             try
             {
+                switch (_session.State)
+                {
+                    case SessionState.Stopped:
+                        Logger.Error("We tried to send a request while the session was stopped.");
+                        return null;
+
+                    case SessionState.Paused:
+                        var requests = requestEnvelope.Requests.Select(x => x.RequestType).ToList();
+                        if (requests.Count != 1 || requests[0] != RequestType.VerifyChallenge) 
+                        {
+                            Logger.Error("We tried to send a request while the session was paused. The only request allowed is VerifyChallenge.");
+                            return null;
+                        }
+                        break;
+                }
+
                 using (var requestData = new ByteArrayContent(requestEnvelope.ToByteArray()))
                 {
                     Logger.Debug($"Sending RPC Request: '{string.Join(", ", requestEnvelope.Requests.Select(x => x.RequestType))}'");
@@ -540,10 +556,10 @@ namespace POGOLib.Official.Net
                         switch (responseEnvelope.StatusCode)
                         {
                             // Valid response.
-                            case ResponseEnvelope.Types.StatusCode.Ok:
+                            case ResponseEnvelope.Types.StatusCode.Ok: 
                                 // Success!?
                                 break;
-
+                        
                             // Valid response and new rpc url.
                             case ResponseEnvelope.Types.StatusCode.OkRpcUrlInResponse:
                                 if (Regex.IsMatch(responseEnvelope.ApiUrl, "pgorelease\\.nianticlabs\\.com\\/plfe\\/\\d+"))
@@ -557,7 +573,7 @@ namespace POGOLib.Official.Net
                                 break;
 
                             // A new rpc endpoint is available.
-                            case ResponseEnvelope.Types.StatusCode.Redirect:
+                            case ResponseEnvelope.Types.StatusCode.Redirect: 
                                 if (Regex.IsMatch(responseEnvelope.ApiUrl, "pgorelease\\.nianticlabs\\.com\\/plfe\\/\\d+"))
                                 {
                                     _requestUrl = $"https://{responseEnvelope.ApiUrl}/rpc";
@@ -622,7 +638,7 @@ namespace POGOLib.Official.Net
                             var unknownPtr8Response = UnknownPtr8Response.Parser.ParseFrom(mapPlatform.Response);
                             _mapKey = unknownPtr8Response.Message;
                         }
-
+                        
                         return HandleResponseEnvelope(requestEnvelope, responseEnvelope);
                     }
                 }
@@ -702,7 +718,7 @@ namespace POGOLib.Official.Net
         private void HandleDefaultResponses(RequestEnvelope requestEnvelope, IList<ByteString> returns)
         {
             var responseIndexes = new Dictionary<int, RequestType>();
-
+            
             for (var i = 0; i < requestEnvelope.Requests.Count; i++)
             {
                 var request = requestEnvelope.Requests[i];
@@ -773,15 +789,13 @@ namespace POGOLib.Official.Net
                             Logger.Debug($"DownloadSettingsResponse.Error: '{downloadSettings.Error}'");
                         }
                         break;
-
-                    // TODO: Let the developer know about this somehow.
+                        
                     case RequestType.CheckChallenge:
                         var checkChallenge = CheckChallengeResponse.Parser.ParseFrom(bytes);
                         if (checkChallenge.ShowChallenge)
                         {
-                            Logger.Warn($"Received Captcha on {_session.AccessToken.Username}");
-                            Logger.Warn(JsonConvert.SerializeObject(checkChallenge, Formatting.Indented));
-                            CheckChallengeReceived?.Invoke(this, checkChallenge);
+                            _session.Pause();
+                            _session.OnCaptchaReceived(checkChallenge.ChallengeUrl);
                         }
                         break;
                 }
@@ -791,15 +805,13 @@ namespace POGOLib.Official.Net
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        internal void Dispose(bool disposing)
         {
-            if (disposing)
-            {
+            if (!disposing) return;
 
-            }
+            _rpcQueueMutex?.Dispose();
         }
     }
 }

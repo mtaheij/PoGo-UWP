@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using POGOLib.Official.Util.Hash;
 
 namespace POGOLib.Official.Util.Encryption.Legacy
 {

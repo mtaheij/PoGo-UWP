@@ -1,11 +1,9 @@
-﻿using GeoCoordinatePortable;
+﻿using System;
+using System.Threading.Tasks;
+using GeoCoordinatePortable;
 using POGOLib.Official.Logging;
 using POGOLib.Official.LoginProviders;
 using POGOLib.Official.Net.Authentication.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static POGOProtos.Networking.Envelopes.Signature.Types;
 
 namespace POGOLib.Official.Net.Authentication
@@ -77,6 +75,6 @@ namespace POGOLib.Official.Net.Authentication
         {
             return new Session(loginProvider, await loginProvider.GetAccessToken(), coordinate, deviceInfo);
         }
-
+        
     }
 }

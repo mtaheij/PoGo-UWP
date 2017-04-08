@@ -1,10 +1,8 @@
-﻿using POGOLib.Official.Util.Encryption.Legacy;
-using POGOProtos.Networking.Envelopes;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using POGOLib.Official.Util.Encryption.Legacy;
+using POGOProtos.Networking.Envelopes;
 
 namespace POGOLib.Official.Util.Hash
 {

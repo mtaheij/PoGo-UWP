@@ -1,9 +1,5 @@
 ﻿using Google.Protobuf;
 using POGOProtos.Networking.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace POGOLib.Official.Util.Data
 {

@@ -1,10 +1,8 @@
-﻿using POGOLib.Official.Logging;
-using POGOLib.Official.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using POGOLib.Official.Logging;
+using POGOLib.Official.Net;
 
 namespace POGOLib.Official.Pokemon
 {
@@ -23,8 +21,6 @@ namespace POGOLib.Official.Pokemon
 
         private Task _heartbeatTask;
 
-        private bool _isActive;
-
         internal HeartbeatDispatcher(Session session)
         {
             _session = session;
@@ -35,7 +31,7 @@ namespace POGOLib.Official.Pokemon
         /// </summary>
         private async Task CheckDispatch(TaskCompletionSource<bool> firstRefreshCompleted)
         {
-            while (!_heartbeatCancellation.IsCancellationRequested)
+            while (!_heartbeatCancellation.IsCancellationRequested && (_session.State == SessionState.Started || _session.State == SessionState.Resumed))
             {
                 var canRefresh = false;
                 if (_session.GlobalSettings != null)
@@ -93,21 +89,22 @@ namespace POGOLib.Official.Pokemon
                 // cancelled
                 catch (OperationCanceledException)
                 {
-                    return;
+                    break;
                 }
             }
+
+            Logger.Debug("Heartbeat got cancelled");
         }
 
-        internal async Task StartDispatcher()
+        internal async Task StartDispatcherAsync()
         {
             if (_heartbeatTask != null)
             {
                 throw new Exception("Heartbeat task already running");
             }
+
             var firstRefreshCompleted = new TaskCompletionSource<bool>();
             _heartbeatCancellation = new CancellationTokenSource();
-
-            _isActive = true;
             _heartbeatTask = CheckDispatch(firstRefreshCompleted);
 
             // wait for first heartbeat to complete
@@ -116,26 +113,13 @@ namespace POGOLib.Official.Pokemon
 
         internal void StopDispatcher()
         {
-            _isActive = false;
-
             _heartbeatCancellation?.Cancel();
             _heartbeatTask = null;
         }
 
-        internal void PauseDispatcher()
-        {
-            //_isActive = false;
-        }
-
-        internal void ResumeDispatcher()
-        {
-            _isActive = true;
-        }
-
         private async Task Dispatch()
         {
-            if (_isActive)
-                await _session.RpcClient.RefreshMapObjectsAsync();
+            await _session.RpcClient.RefreshMapObjectsAsync();
         }
     }
 }

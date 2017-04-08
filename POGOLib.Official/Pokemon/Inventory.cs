@@ -1,9 +1,8 @@
-﻿using Google.Protobuf.Collections;
-using POGOProtos.Inventory;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Google.Protobuf.Collections;
+using POGOLib.Official.Net;
+using POGOProtos.Inventory;
 
 namespace POGOLib.Official.Pokemon
 {
@@ -12,7 +11,14 @@ namespace POGOLib.Official.Pokemon
     /// </summary>
     public class Inventory
     {
+        private readonly Session _session;
+
         internal long LastInventoryTimestampMs;
+
+        public Inventory(Session session)
+        {
+            _session = session;
+        }
 
         /// <summary>
         ///     Gets the last received <see cref="RepeatedField{T}" /> from PokémonGo.<br />
@@ -26,7 +32,8 @@ namespace POGOLib.Official.Pokemon
             {
                 InventoryItems.Remove(item);
             }
-            Update?.Invoke(this, EventArgs.Empty);
+
+            _session.OnInventoryUpdate();
         }
 
         internal void UpdateInventoryItems(InventoryDelta delta)
@@ -129,9 +136,8 @@ namespace POGOLib.Official.Pokemon
                     InventoryItems.Remove(oldItem);
                 }
             }
-            Update?.Invoke(this, EventArgs.Empty);
-        }
 
-        public event EventHandler<EventArgs> Update;
+            _session.OnInventoryUpdate();
+        }
     }
 }

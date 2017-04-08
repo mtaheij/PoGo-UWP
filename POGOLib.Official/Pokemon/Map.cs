@@ -1,12 +1,11 @@
-﻿using GeoCoordinatePortable;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeoCoordinatePortable;
 using Google.Protobuf.Collections;
 using POGOLib.Official.Net;
 using POGOProtos.Map;
 using POGOProtos.Map.Fort;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace POGOLib.Official.Pokemon
 {
@@ -40,7 +39,7 @@ namespace POGOLib.Official.Pokemon
             internal set
             {
                 _cells = value;
-                Update?.Invoke(this, EventArgs.Empty);
+                _session.OnMapUpdate();
             }
         }
 
@@ -65,7 +64,5 @@ namespace POGOLib.Official.Pokemon
 
             return sorted;
         }
-
-        public event EventHandler<EventArgs> Update;
     }
 }
