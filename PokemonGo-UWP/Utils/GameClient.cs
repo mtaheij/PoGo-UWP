@@ -427,12 +427,15 @@ namespace PokemonGo_UWP.Utils
             }
 
             var locRandom = new Random();
-            var initLat = pos.Coordinate.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
-            var initLong = pos.Coordinate.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
+//            var initLat = pos.Coordinate.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
+//            var initLong = pos.Coordinate.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLat = pos.Coordinate.Point.Position.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLong = pos.Coordinate.Point.Position.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
 
             try
             {
-                AccessToken accessToken = GetAccessToken();
+//                AccessToken accessToken = GetAccessToken();
+                AccessToken accessToken = null;
                 if (accessToken != null && !accessToken.IsExpired)
                 {
                     _session = Login.GetSession(loginProvider, accessToken, initLat, initLong);

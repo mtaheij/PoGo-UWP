@@ -3256,6 +3256,10 @@ Tu as aussi reçu {1} Poudre d'étoile, {2} Bonbon et {3} XP.</target>
           <source>Zap Cannon</source>
           <target state="new">Zap Cannon</target>
         </trans-unit>
+        <trans-unit id="HiddenPowerFast" translate="yes" xml:space="preserve">
+          <source>Hidden Power</source>
+          <target state="new">Hidden Power</target>
+        </trans-unit>
       </group>
     </body>
   </file>

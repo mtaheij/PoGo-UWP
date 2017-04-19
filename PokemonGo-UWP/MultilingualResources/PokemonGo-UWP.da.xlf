@@ -3326,6 +3326,10 @@ You also got {1} Stardust, {2} Candy and {3} XP.</target>
           <source>Zap Cannon</source>
           <target state="new">Zap Cannon</target>
         </trans-unit>
+        <trans-unit id="HiddenPowerFast" translate="yes" xml:space="preserve">
+          <source>Hidden Power</source>
+          <target state="new">Hidden Power</target>
+        </trans-unit>
       </group>
     </body>
   </file>

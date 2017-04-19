@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
 using POGOProtos.Data.Logs;
 using PokemonGo_UWP.Utils.Extensions;
+using System.Globalization;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -2071,7 +2072,7 @@ namespace PokemonGo_UWP.Utils
                 case TeamColor.Blue:
                     return new Uri(resourceUriString + "_blue.png");
                 case TeamColor.Neutral:
-                    return new Uri(resourceUriString + ".png");
+                    return new Uri(resourceUriString + "_neutral.png");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -2741,7 +2742,28 @@ namespace PokemonGo_UWP.Utils
                     returnValue = $"You received {actionLogEntry.BuddyPokemon.Amount} candy from your buddy Pokemon";
                     break;
                 case ActionLogEntry.ActionOneofCase.CatchPokemon:
-                    returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                    string pokemon = Resources.Pokemon.GetString(actionLogEntry.CatchPokemon.PokemonId.ToString());
+                    switch (actionLogEntry.CatchPokemon.Result)
+                    {
+                        case CatchPokemonLogEntry.Types.Result.PokemonCaptured:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                            returnValue = $"{pokemon} was caught!";
+                            break;
+                        case CatchPokemonLogEntry.Types.Result.PokemonFled:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} ran away.";
+                            returnValue = $"{pokemon} ran away.";
+                            break;
+                        case CatchPokemonLogEntry.Types.Result.PokemonHatched:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was hatched!";
+                            returnValue = $"{pokemon} was hatched!";
+                            break;
+                        default:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                            returnValue = $"{pokemon} was caught!";
+                            break;
+                    }
+
+//                    returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
                     break;
             }
 
@@ -2801,10 +2823,15 @@ namespace PokemonGo_UWP.Utils
 
             var actionLogEntry = value as ActionLogEntry;
 
-            long timestamp = actionLogEntry.TimestampMs; 
-            string returnValue = $"{DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToString()}";
+            long timestamp = actionLogEntry.TimestampMs;
 
-            return returnValue;
+            var ts = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp);
+            var tsloc = ts.ToLocalTime();
+            var tsstr = tsloc.ToString("g", CultureInfo.CurrentUICulture);
+            return tsstr;
+//            string returnValue = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToLocalTime().ToString("{0:g}");
+
+//            return returnValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

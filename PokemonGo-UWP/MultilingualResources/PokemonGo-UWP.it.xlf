@@ -3253,6 +3253,10 @@ Hai ottenuto anche {1} Polvere di stella, {2} Caramelle e {3} PE.</target>
           <source>Zap Cannon</source>
           <target state="new">Zap Cannon</target>
         </trans-unit>
+        <trans-unit id="HiddenPowerFast" translate="yes" xml:space="preserve">
+          <source>Hidden Power</source>
+          <target state="new">Hidden Power</target>
+        </trans-unit>
       </group>
     </body>
   </file>

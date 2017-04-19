@@ -3242,6 +3242,10 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
           <source>Zap Cannon</source>
           <target state="new">Zap Cannon</target>
         </trans-unit>
+        <trans-unit id="HiddenPowerFast" translate="yes" xml:space="preserve">
+          <source>Hidden Power</source>
+          <target state="new">Hidden Power</target>
+        </trans-unit>
       </group>
     </body>
   </file>
