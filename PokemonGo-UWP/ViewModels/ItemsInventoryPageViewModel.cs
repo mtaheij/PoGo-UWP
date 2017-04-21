@@ -16,6 +16,7 @@ using POGOProtos.Inventory;
 using POGOProtos.Data;
 using PokemonGo_UWP.Utils.Extensions;
 using POGOProtos.Inventory.Item;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -179,8 +180,11 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand ReturnToGameScreen
             =>
                 _returnToGameScreen ??
-                (_returnToGameScreen =
-                    new DelegateCommand(() => { NavigationService.Navigate(typeof(GameMapPage)); }, () => true));
+                (_returnToGameScreen = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("GameMapPage");
+                    NavigationService.Navigate(typeof(GameMapPage));
+                }, () => true));
 
         public int MaxItemStorageFieldNumber => GameClient.PlayerData.MaxItemStorage;
 

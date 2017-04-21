@@ -26,6 +26,7 @@ using System.Threading;
 using POGOLib.Official.Net;
 using System.Diagnostics;
 using POGOProtos.Map.Fort;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -370,8 +371,11 @@ namespace PokemonGo_UWP.ViewModels
         /// </summary>
         public DelegateCommand ReturnToGameScreen => _returnToGameScreen ?? (
             _returnToGameScreen =
-                new DelegateCommand(
-                    () => { NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.GymUpdate); },
+                new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("GameMapPage");
+                    NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.GymUpdate);
+                },
                     () => true)
             );
 
@@ -385,6 +389,7 @@ namespace PokemonGo_UWP.ViewModels
             {
                 // Re-enable update timer
                 GameClient.ToggleUpdateTimer();
+                HockeyClient.Current.TrackEvent("GoBack from EnterGymPage");
                 NavigationService.GoBack();
             }, () => true)
             );

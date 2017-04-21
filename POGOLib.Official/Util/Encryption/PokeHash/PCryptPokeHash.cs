@@ -17,10 +17,8 @@ namespace POGOLib.Official.Util.Encryption.PokeHash
 			(byte) 0xE9, (byte) 0x8B, (byte) 0xE8, (byte) 0x39, (byte) 0xD8, (byte) 0x89, (byte) 0x8F, (byte) 0x5A,
 			(byte) 0x3B, (byte) 0x51, (byte) 0x2E, (byte) 0xA9, (byte) 0x47, (byte) 0x38, (byte) 0xC4, (byte) 0x14
 		};
-
-        public static object _twoFish { get; private set; }
-
-        public static byte[] MakeIv(Rand rand)
+			
+		public static byte[] MakeIv(Rand rand)
 		{
 			byte[] iv = new byte[TwoFish.BLOCK_SIZE];
 			for (int i = 0; i < iv.Length; i++)

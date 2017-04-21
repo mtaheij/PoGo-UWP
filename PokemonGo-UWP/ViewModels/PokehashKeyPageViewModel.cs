@@ -20,6 +20,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using POGOLib.Official.Util.Hash.PokeHash;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -118,6 +119,7 @@ namespace PokemonGo_UWP.ViewModels
                             await GameClient.InitializeSession();
                             if (GameClient.IsInitialized)
                             {
+                                HockeyClient.Current.TrackPageView("GameMapPage");
                                 await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                             }
                         }
@@ -127,6 +129,7 @@ namespace PokemonGo_UWP.ViewModels
                             ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                             dialog.Show();
 
+                            HockeyClient.Current.TrackPageView("MainPage");
                             await NavigationService.NavigateAsync(typeof(MainPage));
                         }
                         catch (LocationException)
@@ -156,11 +159,13 @@ namespace PokemonGo_UWP.ViewModels
                     }
                     else
                     {
+                        HockeyClient.Current.TrackPageView("MainPage");
                         await NavigationService.NavigateAsync(typeof(MainPage));
                     }
                 }
                 else
                 {
+                    HockeyClient.Current.TrackPageView("MainPage");
                     await NavigationService.NavigateAsync(typeof(MainPage));
                 }
 

@@ -17,6 +17,7 @@ using Google.Protobuf;
 using POGOProtos.Networking.Responses;
 using POGOProtos.Data.Logs;
 using Template10.Utils;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -127,7 +128,11 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand ReturnToGameScreen
             =>
                 _returnToGameScreen ??
-                (_returnToGameScreen = new DelegateCommand(() => { NavigationService.GoBack(); }, () => true));
+                (_returnToGameScreen = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackEvent("GoBack from PlayerProfilePage");
+                    NavigationService.GoBack();
+                }, () => true));
 
         #endregion
 
@@ -198,6 +203,7 @@ namespace PokemonGo_UWP.ViewModels
 
         public DelegateCommand<object> GoToAchievementDetailPage => m_GoToAchievementDetailPage ?? (m_GoToAchievementDetailPage = new DelegateCommand<object>(x =>
         {
+            HockeyClient.Current.TrackPageView("AchievementDetailPage");
             BootStrapper.Current.NavigationService.Navigate(typeof(AchievementDetailPage), x);
         }));
 
@@ -209,6 +215,7 @@ namespace PokemonGo_UWP.ViewModels
 
         public DelegateCommand GoToActionLogPage => _gotoActionLogPage ?? (_gotoActionLogPage = new DelegateCommand(() =>
         {
+            HockeyClient.Current.TrackPageView("ActionLogPage");
             BootStrapper.Current.NavigationService.Navigate(typeof(ActionLogPage));
         }));
         #endregion

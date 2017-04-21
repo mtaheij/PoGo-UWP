@@ -145,6 +145,7 @@ namespace PokemonGo_UWP.ViewModels
                         GameClient.LoggedIn = true;
 
                         // Goto game page
+                        HockeyClient.Current.TrackPageView("GameMapPage");
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
                 }
@@ -201,6 +202,7 @@ namespace PokemonGo_UWP.ViewModels
                         GameClient.LoggedIn = true;
 
                         // Goto game page
+                        HockeyClient.Current.TrackPageView("GameMapPage");
                         await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
                 }

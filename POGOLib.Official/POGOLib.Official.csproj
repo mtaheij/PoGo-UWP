@@ -65,6 +65,7 @@
     <Compile Include="Util\Data\IDataCache.cs" />
     <Compile Include="Util\Data\MemoryDataCache.cs" />
     <Compile Include="Util\Device\DeviceInfoUtil.cs" />
+    <Compile Include="Util\Device\DeviceWrapper.cs" />
     <Compile Include="Util\Encryption\Legacy\NiaHashLegacy.cs" />
     <Compile Include="Util\Encryption\Legacy\PCryptLegacy.cs" />
     <Compile Include="Util\Encryption\Legacy\ShufflesLegacy.cs" />

@@ -19,6 +19,7 @@ using Google.Protobuf;
 using PokemonGo_UWP.Controls;
 using PokemonGo_UWP.Views;
 using PokemonGo_UWP.Utils.Extensions;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -227,6 +228,7 @@ namespace PokemonGo_UWP.ViewModels
             _closePokemonDetailPage = new DelegateCommand(() =>
             {
                 if (ServerRequestRunning) return;
+                HockeyClient.Current.TrackEvent("GoBack from PokemonDetailPage");
                 NavigationService.GoBack();
             }, () => true)
             );
@@ -309,6 +311,7 @@ namespace PokemonGo_UWP.ViewModels
                               // TODO: Implement message informing about success of transfer (Shell needed)
                               //GameClient.UpdateInventory();
                               await GameClient.UpdatePlayerStats();
+                              HockeyClient.Current.TrackEvent("GoBack from PokemonDetailPage");
                               NavigationService.GoBack();
                               break;
 
@@ -657,6 +660,7 @@ namespace PokemonGo_UWP.ViewModels
 
         public DelegateCommand NavigateToEvolvedPokemonCommand => _navigateToEvolvedPokemonCommand ?? (_navigateToEvolvedPokemonCommand = new DelegateCommand(() =>
         {
+            HockeyClient.Current.TrackPageView("PokemonDetailPage");
             NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
             {
                 SelectedPokemonId = EvolvedPokemon.Id.ToString(),

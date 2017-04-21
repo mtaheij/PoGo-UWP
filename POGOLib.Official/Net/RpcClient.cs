@@ -20,6 +20,7 @@ using POGOProtos.Enums;
 using POGOProtos.Networking.Platform;
 using POGOProtos.Networking.Platform.Requests;
 using POGOProtos.Networking.Platform.Responses;
+using System.Diagnostics;
 
 namespace POGOLib.Official.Net
 {
@@ -80,7 +81,7 @@ namespace POGOLib.Official.Net
         
         internal Platform GetPlatform()
         {
-            return _session.DeviceInfo.DeviceBrand == "Apple" ? Platform.Ios : Platform.Android;
+            return _session.Device.DeviceInfo.DeviceBrand == "Apple" ? Platform.Ios : Platform.Android;
         }
 
         private long PositiveRandom()
@@ -116,20 +117,27 @@ namespace POGOLib.Official.Net
         {
             // Send GetPlayer to check if we're connected and authenticated
             GetPlayerResponse playerResponse;
+
+            int loop = 0;
+
             do
             {
                 var response = await SendRemoteProcedureCallAsync(new[]
                 {
                     new Request
                     {
-                        RequestType = RequestType.GetPlayer
+                        RequestType = RequestType.GetPlayer,
+                        RequestMessage = new GetPlayerMessage
+                        {
+
+                        }.ToByteString()
                     },
                     new Request
                     {
                         RequestType = RequestType.CheckChallenge,
                         RequestMessage = new CheckChallengeMessage
                         {
-                            DebugRequest = false
+
                         }.ToByteString()
                     }
                 });
@@ -138,7 +146,8 @@ namespace POGOLib.Official.Net
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 }
-            } while (!playerResponse.Success);
+                loop++;
+            } while (!playerResponse.Success && loop < 10);
 
             _session.Player.Data = playerResponse.PlayerData;
 

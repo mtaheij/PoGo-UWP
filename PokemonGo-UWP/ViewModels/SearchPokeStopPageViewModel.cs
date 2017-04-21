@@ -15,6 +15,7 @@ using Template10.Services.NavigationService;
 using Google.Protobuf;
 using POGOLib.Official.Logging;
 using PokemonGo_UWP.Utils.Extensions;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -236,8 +237,11 @@ namespace PokemonGo_UWP.ViewModels
         /// </summary>
         public DelegateCommand ReturnToGameScreen => _returnToGameScreen ?? (
             _returnToGameScreen =
-                new DelegateCommand(
-                    () => { NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.PokestopUpdate); },
+                new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("GameMapPage");
+                    NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.PokestopUpdate);
+                },
                     () => true)
             );
 

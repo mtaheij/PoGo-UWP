@@ -52,6 +52,7 @@ using Template10.Services.NavigationService;
 using POGOProtos.Data.Battle;
 using PokemonGo_UWP.Exceptions;
 using POGOLib.Official.Net.Captcha;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -380,6 +381,8 @@ namespace PokemonGo_UWP.Utils
             }
             catch (Exception)
             {
+                HockeyClient.Current.TrackEvent("AccessToken has invalid format");
+
                 SettingsService.Instance.AccessTokenString = null;
                 SettingsService.Instance.UserCredentials = null;
                 return null;
@@ -391,6 +394,9 @@ namespace PokemonGo_UWP.Utils
         /// </summary>
         private async static Task CreateSession(Geoposition pos)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             if (_session != null)
             {
                 _session.AccessTokenUpdated -= SessionOnAccessTokenUpdated;
@@ -451,6 +457,9 @@ namespace PokemonGo_UWP.Utils
             _session.CaptchaReceived += SessionOnCaptchaReceived;
             _session.RpcClient.HatchedEggsReceived += SessionOnHatchedEggsReceived;
             _session.RpcClient.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
+
+            sw.Stop();
+            HockeyClient.Current.TrackMetric("Login time", sw.ElapsedMilliseconds);
 
             await Task.CompletedTask;
         }
@@ -690,11 +699,19 @@ namespace PokemonGo_UWP.Utils
         {
             Busy.SetBusy(true, "Getting game settings");
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             // Momentarily start the session, to retrieve game settings, inventory and player
             if (!await _session.StartupAsync())
             {
+                sw.Stop();
+                HockeyClient.Current.TrackMetric("Getting game settings failed after", sw.ElapsedMilliseconds);
                 throw new Exception("Session couldn't start up.");
             }
+
+            sw.Stop();
+            HockeyClient.Current.TrackMetric("Getting game settings took", sw.ElapsedMilliseconds);
 
             // Copy the Game Settings and Player Stats locally
             GameSetting = _session.GlobalSettings;

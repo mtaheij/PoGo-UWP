@@ -373,6 +373,7 @@ namespace PokemonGo_UWP
             // See if there is a key for the PokeHash server, ask one from the user if there isn't
             if (String.IsNullOrEmpty(SettingsService.Instance.PokehashAuthKey))
             {
+                HockeyClient.Current.TrackPageView("PokehashKeyPage");
                 await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
 
                 return;
@@ -381,6 +382,7 @@ namespace PokemonGo_UWP
             var currentAccessToken = GameClient.GetAccessToken();
             if (currentAccessToken == null || forceToMainPage)
             {
+                HockeyClient.Current.TrackPageView("MainPage");
                 await NavigationService.NavigateAsync(typeof(MainPage));
                 return;
             }
@@ -391,6 +393,7 @@ namespace PokemonGo_UWP
                     await GameClient.InitializeSession();
                     if (GameClient.IsInitialized)
                     {
+                        HockeyClient.Current.TrackPageView("GameMapPage");
                         NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
                 }
@@ -400,6 +403,7 @@ namespace PokemonGo_UWP
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                     dialog.Show();
 
+                    HockeyClient.Current.TrackPageView("MainPage");
                     await NavigationService.NavigateAsync(typeof(MainPage));
                 }
                 catch (LocationException)
@@ -428,6 +432,7 @@ namespace PokemonGo_UWP
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                     dialog.Show();
 
+                    HockeyClient.Current.TrackPageView("PokehashKeyPage");
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
             }

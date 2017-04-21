@@ -1,4 +1,5 @@
-﻿using POGOProtos.Data;
+﻿using Microsoft.HockeyApp;
+using POGOProtos.Data;
 using POGOProtos.Enums;
 using POGOProtos.Settings.Master;
 using PokemonGo_UWP.Utils;
@@ -66,6 +67,7 @@ namespace PokemonGo_UWP.ViewModels
 
             if (parameter is PokemonId)
             {
+                HockeyClient.Current.TrackPageView("PokedexDetailPage");
                 NavigationService.Navigate(typeof(PokedexDetailPage), (PokemonId)parameter);
             }
 
@@ -117,6 +119,7 @@ namespace PokemonGo_UWP.ViewModels
                 (id) =>
                 {
                     if (GameClient.PokedexInventory.All(x => x.PokemonId != id)) return;
+                    HockeyClient.Current.TrackPageView("PokedexDetailPage");
                     NavigationService.Navigate(typeof(PokedexDetailPage), id);
                 },
                     (x) => true)
@@ -128,6 +131,7 @@ namespace PokemonGo_UWP.ViewModels
             _closeCommand ??
             (_closeCommand = new DelegateCommand(() =>
             {
+                HockeyClient.Current.TrackEvent("GoBack from PokedexPage");
                 NavigationService.GoBack();
             }, () => true)
             );
