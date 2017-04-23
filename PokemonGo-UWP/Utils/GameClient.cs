@@ -394,6 +394,7 @@ namespace PokemonGo_UWP.Utils
         /// </summary>
         private async static Task CreateSession(Geoposition pos)
         {
+            Busy.SetBusy(true, Utils.Resources.CodeResources.GetString("CreatingSession"));
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
@@ -697,7 +698,7 @@ namespace PokemonGo_UWP.Utils
 
         public static async Task GetGameSettings()
         {
-            Busy.SetBusy(true, "Getting game settings");
+            Busy.SetBusy(true, Utils.Resources.CodeResources.GetString("GettingGameSettings"));
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -783,6 +784,7 @@ namespace PokemonGo_UWP.Utils
             //Trick to trigger the PropertyChanged for MapAutomaticOrientationMode ;)
             SettingsService.Instance.MapAutomaticOrientationMode = SettingsService.Instance.MapAutomaticOrientationMode;
             #endregion
+
             Busy.SetBusy(true, Resources.CodeResources.GetString("GettingGpsSignalText"));
             await LocationServiceHelper.Instance.InitializeAsync();
 
@@ -790,6 +792,7 @@ namespace PokemonGo_UWP.Utils
             LocationServiceHelper.Instance.UpdateMovementThreshold(GameSetting.MapSettings.GetMapObjectsMinDistanceMeters);
             LocationServiceHelper.Instance.PropertyChanged += LocationHelperPropertyChanged;
 
+            Busy.SetBusy(true, Resources.CodeResources.GetString("StartingAppliedItemsHeartbeat"));
             if (_heartbeat == null)
                 _heartbeat = new AppliedItemsHeartbeat();
             await _heartbeat.StartDispatcher();
@@ -947,7 +950,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = geoposition.Coordinate.Longitude
                 }.ToByteString()
             });
-            var getIncensePokemonResponse = GetIncensePokemonResponse.Parser.ParseFrom(response);
+
+            GetIncensePokemonResponse getIncensePokemonResponse = null;
+            try
+            {
+                getIncensePokemonResponse = GetIncensePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("", ex);
+
+                return new GetIncensePokemonResponse() { Result = GetIncensePokemonResponse.Types.Result.IncenseEncounterUnknown };
+            }
 
             return getIncensePokemonResponse;
         }
@@ -1003,7 +1018,19 @@ namespace PokemonGo_UWP.Utils
                 {
                 }.ToByteString()
             });
-            var getPlayerProfileResponse = GetPlayerProfileResponse.Parser.ParseFrom(response);
+
+            GetPlayerProfileResponse getPlayerProfileResponse = null;
+            try
+            {
+                getPlayerProfileResponse = GetPlayerProfileResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("PlayerProfile parsing failed because response was empty", ex);
+
+                return new GetPlayerProfileResponse() { Result = GetPlayerProfileResponse.Types.Result.Unset };
+            }
 
             return getPlayerProfileResponse;
         }
@@ -1019,7 +1046,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerName = playerName,
                 }.ToByteString()
             });
-            var getPlayerProfileResponse = GetPlayerProfileResponse.Parser.ParseFrom(response);
+
+            GetPlayerProfileResponse getPlayerProfileResponse = null;
+            try
+            {
+                getPlayerProfileResponse = GetPlayerProfileResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("PlayerProfile parsing failed because response was empty", ex);
+
+                return new GetPlayerProfileResponse() { Result = GetPlayerProfileResponse.Types.Result.Unset };
+            }
 
             return getPlayerProfileResponse;
         }
@@ -1065,7 +1104,19 @@ namespace PokemonGo_UWP.Utils
                     LastTimestampMs = 0
                 }.ToByteString()
             });
-            var getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
+
+            GetInventoryResponse getInventoryResponse = null;
+            try
+            {
+                getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GetInventory parsing failed because response was empty", ex);
+
+                return new GetInventoryResponse() { Success = false };
+            }
 
             return getInventoryResponse;
         }
@@ -1084,7 +1135,19 @@ namespace PokemonGo_UWP.Utils
                     Level = newLevel
                 }.ToByteString()
             });
-            var getLevelUpRewardsResponse = LevelUpRewardsResponse.Parser.ParseFrom(response);
+
+            LevelUpRewardsResponse getLevelUpRewardsResponse = null;
+            try
+            {
+                getLevelUpRewardsResponse = LevelUpRewardsResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("LevelUpRewards parsing failed because response was empty", ex);
+
+                return new LevelUpRewardsResponse() { Result = LevelUpRewardsResponse.Types.Result.Unset };
+            }
 
             return getLevelUpRewardsResponse;
         }
@@ -1102,7 +1165,19 @@ namespace PokemonGo_UWP.Utils
 
                 }.ToByteString()
             });
-            var downloadItemTemplatesResponse = DownloadItemTemplatesResponse.Parser.ParseFrom(response);
+
+            DownloadItemTemplatesResponse downloadItemTemplatesResponse = null;
+            try
+            {
+                downloadItemTemplatesResponse = DownloadItemTemplatesResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("DownloadItemTemplates parsing failed because response was empty", ex);
+
+                return new DownloadItemTemplatesResponse() { Result = DownloadItemTemplatesResponse.Types.Result.Unset };
+            }
 
             return downloadItemTemplatesResponse;
         }
@@ -1379,7 +1454,19 @@ namespace PokemonGo_UWP.Utils
                     
                 }.ToByteString()
             });
-            var getBuddyWalkedResponse = GetBuddyWalkedResponse.Parser.ParseFrom(response);
+
+            GetBuddyWalkedResponse getBuddyWalkedResponse = null;
+            try
+            {
+                getBuddyWalkedResponse = GetBuddyWalkedResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GetBuddyWalked parsing failed because response was empty", ex);
+
+                return new GetBuddyWalkedResponse() { Success = false };
+            }
 
             return getBuddyWalkedResponse;
         }
@@ -1393,7 +1480,19 @@ namespace PokemonGo_UWP.Utils
                 {
                 }.ToByteString()
             });
-            var checkAwardedBadgesResponse = CheckAwardedBadgesResponse.Parser.ParseFrom(response);
+
+            CheckAwardedBadgesResponse checkAwardedBadgesResponse = null;
+            try
+            {
+                checkAwardedBadgesResponse = CheckAwardedBadgesResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("CheckAwardedBadges parsing failed because response was empty", ex);
+
+                return new CheckAwardedBadgesResponse() { Success = false };
+            }
 
             return checkAwardedBadgesResponse;
         }
@@ -1407,7 +1506,19 @@ namespace PokemonGo_UWP.Utils
                 {
                 }.ToByteString()
             });
-            var collectDailyBonusResponse = CollectDailyBonusResponse.Parser.ParseFrom(response);
+
+            CollectDailyBonusResponse collectDailyBonusResponse = null;
+            try
+            {
+                collectDailyBonusResponse = CollectDailyBonusResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("CollectDailyBonus parsing failed because response was empty", ex);
+
+                return new CollectDailyBonusResponse() { Result = CollectDailyBonusResponse.Types.Result.Failure };
+            }
 
             return collectDailyBonusResponse;
         }
@@ -1421,7 +1532,19 @@ namespace PokemonGo_UWP.Utils
                 {
                 }.ToByteString()
             });
-            var collectDailyDefenderBonusResponse = CollectDailyDefenderBonusResponse.Parser.ParseFrom(response);
+
+            CollectDailyDefenderBonusResponse collectDailyDefenderBonusResponse = null;
+            try
+            {
+                collectDailyDefenderBonusResponse = CollectDailyDefenderBonusResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("CollectDailyDefenderBonus parsing failed because response was empty", ex);
+
+                return new CollectDailyDefenderBonusResponse() { Result = CollectDailyDefenderBonusResponse.Types.Result.Failure };
+            }
 
             return collectDailyDefenderBonusResponse;
         }
@@ -1436,7 +1559,19 @@ namespace PokemonGo_UWP.Utils
                     BadgeType = type
                 }.ToByteString()
             });
-            var equipBadgeResponse = EquipBadgeResponse.Parser.ParseFrom(response);
+
+            EquipBadgeResponse equipBadgeResponse = null;
+            try
+            {
+                equipBadgeResponse = EquipBadgeResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("EquipBadge parsing failed because response was empty", ex);
+
+                return new EquipBadgeResponse() { Result = EquipBadgeResponse.Types.Result.Unset };
+            }
 
             return equipBadgeResponse;
         }
@@ -1451,7 +1586,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerAvatar = playerAvatar
                 }.ToByteString()
             });
-            var setAvatarResponse = SetAvatarResponse.Parser.ParseFrom(response);
+
+            SetAvatarResponse setAvatarResponse = null;
+            try
+            {
+                setAvatarResponse = SetAvatarResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SetAvatar parsing failed because response was empty", ex);
+
+                return new SetAvatarResponse() { Status = SetAvatarResponse.Types.Status.Failure };
+            }
 
             return setAvatarResponse;
         }
@@ -1466,7 +1613,19 @@ namespace PokemonGo_UWP.Utils
                     ContactSettings = contactSettings
                 }.ToByteString()
             });
-            var setContactSettingsResponse = SetContactSettingsResponse.Parser.ParseFrom(response);
+
+            SetContactSettingsResponse setContactSettingsResponse = null;
+            try
+            {
+                setContactSettingsResponse = SetContactSettingsResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SetContactSettings parsing failed because response was empty", ex);
+
+                return new SetContactSettingsResponse() { Status = SetContactSettingsResponse.Types.Status.Failure };
+            }
 
             return setContactSettingsResponse;
         }
@@ -1481,7 +1640,19 @@ namespace PokemonGo_UWP.Utils
                     Team = teamColor
                 }.ToByteString()
             });
-            var setPlayerTeamResponse = SetPlayerTeamResponse.Parser.ParseFrom(response);
+
+            SetPlayerTeamResponse setPlayerTeamResponse = null;
+            try
+            {
+                setPlayerTeamResponse = SetPlayerTeamResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SetPlayerTeam parsing failed because response was empty", ex);
+
+                return new SetPlayerTeamResponse() { Status = SetPlayerTeamResponse.Types.Status.Failure };
+            }
 
             return setPlayerTeamResponse;
         }
@@ -1496,7 +1667,19 @@ namespace PokemonGo_UWP.Utils
                     PokemonId = pokemonId
                 }.ToByteString()
             });
-            var encounterTutorialCompleteResponse = EncounterTutorialCompleteResponse.Parser.ParseFrom(response);
+
+            EncounterTutorialCompleteResponse encounterTutorialCompleteResponse = null;
+            try
+            {
+                encounterTutorialCompleteResponse = EncounterTutorialCompleteResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("EncounterTutorialComplete parsing failed because response was empty", ex);
+
+                return new EncounterTutorialCompleteResponse() { Result = EncounterTutorialCompleteResponse.Types.Result.Unset };
+            }
 
             return encounterTutorialCompleteResponse;
         }
@@ -1513,7 +1696,19 @@ namespace PokemonGo_UWP.Utils
                     SendPushNotifications = send_push_notifications
                 }.ToByteString()
             });
-            var markTutorialCompleteResponse = MarkTutorialCompleteResponse.Parser.ParseFrom(response);
+
+            MarkTutorialCompleteResponse markTutorialCompleteResponse = null;
+            try
+            {
+                markTutorialCompleteResponse = MarkTutorialCompleteResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("MarkTutorialComplete parsing failed because response was empty", ex);
+
+                return new MarkTutorialCompleteResponse() { Success = false };
+            }
 
             return markTutorialCompleteResponse;
         }
@@ -1571,7 +1766,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var encounterResponse = EncounterResponse.Parser.ParseFrom(response);
+
+            EncounterResponse encounterResponse = null;
+            try
+            {
+                encounterResponse = EncounterResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("Encounter parsing failed because response was empty", ex);
+
+                return new EncounterResponse() { Status = EncounterResponse.Types.Status.EncounterError };
+            }
 
             return encounterResponse;
         }
@@ -1595,7 +1802,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var diskEncounterResponse = DiskEncounterResponse.Parser.ParseFrom(response);
+
+            DiskEncounterResponse diskEncounterResponse = null;
+            try
+            {
+                diskEncounterResponse = DiskEncounterResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("DiskEncounter parsing failed because response was empty", ex);
+
+                return new DiskEncounterResponse() { Result = DiskEncounterResponse.Types.Result.Unknown };
+            }
 
             return diskEncounterResponse;
         }
@@ -1617,7 +1836,19 @@ namespace PokemonGo_UWP.Utils
                     EncounterLocation = encounterLocation
                 }.ToByteString()
             });
-            var incenseEncounterResponse = IncenseEncounterResponse.Parser.ParseFrom(response);
+
+            IncenseEncounterResponse incenseEncounterResponse = null;
+            try
+            {
+                incenseEncounterResponse = IncenseEncounterResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("IncenseEncounter parsing failed because response was empty", ex);
+
+                return new IncenseEncounterResponse() { Result = IncenseEncounterResponse.Types.Result.IncenseEncounterUnknown };
+            }
 
             return incenseEncounterResponse;
         }
@@ -1647,7 +1878,18 @@ namespace PokemonGo_UWP.Utils
                     NormalizedHitPosition = 1
                 }.ToByteString()
             });
-            var catchPokemonResponse = CatchPokemonResponse.Parser.ParseFrom(response);
+            CatchPokemonResponse catchPokemonResponse = null;
+            try
+            {
+                catchPokemonResponse = CatchPokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("CatchPokemon parsing failed because response was empty", ex);
+
+                return new CatchPokemonResponse () { Status = CatchPokemonResponse.Types.CatchStatus.CatchError };
+            }
 
             return catchPokemonResponse;
         }
@@ -1677,8 +1919,11 @@ namespace PokemonGo_UWP.Utils
                 var useItemCaptureResponse = UseItemCaptureResponse.Parser.ParseFrom(response);
                 return useItemCaptureResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemCapture parsing failed because response was empty", ex);
+
                 return new UseItemCaptureResponse() { Success = false };
             }
         }
@@ -1703,15 +1948,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseItemEncounterResponse useItemEncounterResponse = null;
             try
             {
-                var useItemEncounterResponse = UseItemEncounterResponse.Parser.ParseFrom(response);
-                return useItemEncounterResponse;
+                useItemEncounterResponse = UseItemEncounterResponse.Parser.ParseFrom(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemEncounter parsing failed because response was empty", ex);
+
                 return new UseItemEncounterResponse() { Status = UseItemEncounterResponse.Types.Status.AlreadyCompleted };
             }
+            return useItemEncounterResponse;
         }
 
         #endregion
@@ -1733,8 +1982,19 @@ namespace PokemonGo_UWP.Utils
                     PokemonId = pokemon.Id
                 }.ToByteString()
             });
-            var upgradePokemonResponse = UpgradePokemonResponse.Parser.ParseFrom(response);
 
+            UpgradePokemonResponse upgradePokemonResponse = null;
+            try
+            {
+                upgradePokemonResponse = UpgradePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("UpgradePokemon parsing failed because response was empty", ex);
+
+                return new UpgradePokemonResponse() { Result = UpgradePokemonResponse.Types.Result.Unset };
+            }
             return upgradePokemonResponse;
         }
 
@@ -1754,8 +2014,19 @@ namespace PokemonGo_UWP.Utils
                     EvolutionItemRequirement = evolutionItem
                 }.ToByteString()
             });
-            var evolvePokemonResponse = EvolvePokemonResponse.Parser.ParseFrom(response);
 
+            EvolvePokemonResponse evolvePokemonResponse = null;
+            try
+            {
+                evolvePokemonResponse = EvolvePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("EvolvePokemon parsing failed because response was empty", ex);
+
+                return new EvolvePokemonResponse() { Result = EvolvePokemonResponse.Types.Result.Unset };
+            }
             return evolvePokemonResponse;
         }
 
@@ -1774,8 +2045,19 @@ namespace PokemonGo_UWP.Utils
                     PokemonId = pokemonId
                 }.ToByteString()
             });
-            var releasePokemonResponse = ReleasePokemonResponse.Parser.ParseFrom(response);
 
+            ReleasePokemonResponse releasePokemonResponse = null;
+            try
+            {
+                releasePokemonResponse = ReleasePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("ReleasePokemon parsing failed because response was empty", ex);
+
+                return new ReleasePokemonResponse() { Result = ReleasePokemonResponse.Types.Result.Unset };
+            }
             return releasePokemonResponse;
         }
 
@@ -1794,8 +2076,19 @@ namespace PokemonGo_UWP.Utils
                     PokemonIds = { pokemonIds }
                 }.ToByteString()
             });
-            var releasePokemonResponse = ReleasePokemonResponse.Parser.ParseFrom(response);
 
+            ReleasePokemonResponse releasePokemonResponse = null;
+            try
+            {
+                releasePokemonResponse = ReleasePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("ReleasePokemon parsing failed because response was empty", ex);
+
+                return new ReleasePokemonResponse() { Result = ReleasePokemonResponse.Types.Result.Unset };
+            }
             return releasePokemonResponse;
         }
 
@@ -1819,8 +2112,19 @@ namespace PokemonGo_UWP.Utils
                     IsFavorite = isFavorite
                 }.ToByteString()
             });
-            var setFavoritePokemonResponse = SetFavoritePokemonResponse.Parser.ParseFrom(response);
 
+            SetFavoritePokemonResponse setFavoritePokemonResponse = null;
+            try
+            {
+                setFavoritePokemonResponse = SetFavoritePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SetFavoritePokemon parsing failed because response was empty", ex);
+
+                return new SetFavoritePokemonResponse() { Result = SetFavoritePokemonResponse.Types.Result.Unset };
+            }
             return setFavoritePokemonResponse;
         }
 
@@ -1834,8 +2138,19 @@ namespace PokemonGo_UWP.Utils
                     PokemonId = id
                 }.ToByteString()
             });
-            var setBuddyPokemonResponse = SetBuddyPokemonResponse.Parser.ParseFrom(response);
 
+            SetBuddyPokemonResponse setBuddyPokemonResponse = null;
+            try
+            {
+                setBuddyPokemonResponse = SetBuddyPokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SetBuddyPokemon parsing failed because response was empty", ex);
+
+                return new SetBuddyPokemonResponse() { Result = SetBuddyPokemonResponse.Types.Result.Unest };
+            }
             return setBuddyPokemonResponse;
         }
 
@@ -1850,8 +2165,19 @@ namespace PokemonGo_UWP.Utils
                     Nickname = nickName
                 }.ToByteString()
             });
-            var nicknamePokemonResponse = NicknamePokemonResponse.Parser.ParseFrom(response);
 
+            NicknamePokemonResponse nicknamePokemonResponse = null;
+            try
+            {
+                nicknamePokemonResponse = NicknamePokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("NicknamePokemon parsing failed because response was empty", ex);
+
+                return new NicknamePokemonResponse() { Result = NicknamePokemonResponse.Types.Result.Unset };
+            }
             return nicknamePokemonResponse;
         }
 
@@ -1880,8 +2206,19 @@ namespace PokemonGo_UWP.Utils
                     Longitude = longitude
                 }.ToByteString()
             });
-            var fortDetailsResponse = FortDetailsResponse.Parser.ParseFrom(response);
 
+            FortDetailsResponse fortDetailsResponse = null;
+            try
+            {
+                fortDetailsResponse = FortDetailsResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("FortDetails parsing failed because response was empty", ex);
+
+                return new FortDetailsResponse() { };
+            }
             return fortDetailsResponse;
         }
 
@@ -1906,8 +2243,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var fortSearchResponse = FortSearchResponse.Parser.ParseFrom(response);
 
+            FortSearchResponse fortSearchResponse = null;
+            try
+            {
+                fortSearchResponse = FortSearchResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("FortSearch parsing failed because response was empty", ex);
+
+                return new FortSearchResponse() { Result = FortSearchResponse.Types.Result.NoResultSet };
+            }
             return fortSearchResponse;
         }
 
@@ -1924,8 +2272,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var addFortModifierResponse = AddFortModifierResponse.Parser.ParseFrom(response);
 
+            AddFortModifierResponse addFortModifierResponse = null;
+            try
+            {
+                addFortModifierResponse = AddFortModifierResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("AddFortModifier parsing failed because response was empty", ex);
+
+                return new AddFortModifierResponse() { Result = AddFortModifierResponse.Types.Result.NoResultSet };
+            }
             return addFortModifierResponse;
         }
         #endregion
@@ -1953,8 +2312,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var getGymDetailsResponse = GetGymDetailsResponse.Parser.ParseFrom(response);
 
+            GetGymDetailsResponse getGymDetailsResponse = null;
+            try
+            {
+                getGymDetailsResponse = GetGymDetailsResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GetGymDetails parsing failed because response was empty", ex);
+
+                return new GetGymDetailsResponse() { Result = GetGymDetailsResponse.Types.Result.Unset };
+            }
             return getGymDetailsResponse;
         }
 
@@ -1977,8 +2347,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var fortDeployPokemonResponse = FortDeployPokemonResponse.Parser.ParseFrom(response);
 
+            FortDeployPokemonResponse fortDeployPokemonResponse = null;
+            try
+            {
+                fortDeployPokemonResponse = FortDeployPokemonResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("FortDeployPokemon parsing failed because response was empty", ex);
+
+                return new FortDeployPokemonResponse() { Result = FortDeployPokemonResponse.Types.Result.NoResultSet };
+            }
             return fortDeployPokemonResponse;
         }
 
@@ -2003,8 +2384,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var startGymBattleResponse = StartGymBattleResponse.Parser.ParseFrom(response);
 
+            StartGymBattleResponse startGymBattleResponse = null;
+            try
+            {
+                startGymBattleResponse = StartGymBattleResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("StartGymBattle parsing failed because response was empty", ex);
+
+                return new StartGymBattleResponse() { Result = StartGymBattleResponse.Types.Result.Unset };
+            }
             return startGymBattleResponse;
         }
 
@@ -2023,8 +2415,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             }, false);
-            var attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
 
+            AttackGymResponse attackGymResponse = null;
+            try
+            {
+                attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("AttackGym parsing failed because response was empty", ex);
+
+                return new AttackGymResponse() { Result = AttackGymResponse.Types.Result.Unset };
+            }
             return attackGymResponse;
         }
 
@@ -2051,15 +2454,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseIncenseResponse useIncenseResponse = null;
             try
             {
-                var useIncenseResponse = UseIncenseResponse.Parser.ParseFrom(response);
-                return useIncenseResponse;
+                useIncenseResponse = UseIncenseResponse.Parser.ParseFrom(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseIncense parsing failed because response was empty", ex);
+
                 return new UseIncenseResponse() { Result = UseIncenseResponse.Types.Result.Unknown };
             }
+            return useIncenseResponse;
         }
 
         /// <summary>
@@ -2078,15 +2485,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseItemXpBoostResponse useItemXpBoostResponse = null;
             try
             {
-                var useItemXpBoostResponse = UseItemXpBoostResponse.Parser.ParseFrom(response);
-                return useItemXpBoostResponse;
+                useItemXpBoostResponse = UseItemXpBoostResponse.Parser.ParseFrom(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemXpBoost parsing failed because response was empty", ex);
+
                 return new UseItemXpBoostResponse() { Result = UseItemXpBoostResponse.Types.Result.Unset };
             }
+            return useItemXpBoostResponse;
         }
 
         public static async Task<UseItemReviveResponse> UseItemRevive(ItemId item, ulong pokemonId)
@@ -2101,15 +2512,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseItemReviveResponse useItemReviveResponse = null;
             try
             {
-                var useItemReviveResponse = UseItemReviveResponse.Parser.ParseFrom(response);
-                return useItemReviveResponse;
+                useItemReviveResponse = UseItemReviveResponse.Parser.ParseFrom(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemRevive parsing failed because response was empty", ex);
+
                 return new UseItemReviveResponse() { Result = UseItemReviveResponse.Types.Result.Unset };
             }
+            return useItemReviveResponse;
         }
 
         public static async Task<UseItemPotionResponse> UseItemPotion(ItemId item, ulong pokemonId)
@@ -2124,15 +2539,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseItemPotionResponse useItemPotionResponse = null;
             try
             {
-                var useItemPotionResponse = UseItemPotionResponse.Parser.ParseFrom(response);
-                return useItemPotionResponse;
+                useItemPotionResponse = UseItemPotionResponse.Parser.ParseFrom(response);
             }
-            catch(Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemPotion parsing failed because response was empty", ex);
+
                 return new UseItemPotionResponse() { Result = UseItemPotionResponse.Types.Result.Unset };
             }
+            return useItemPotionResponse;
         }
 
         /// <summary>
@@ -2152,8 +2571,19 @@ namespace PokemonGo_UWP.Utils
                     ItemId = item
                 }.ToByteString()
             });
-            var recycleInventoryItemResponse = RecycleInventoryItemResponse.Parser.ParseFrom(response);
 
+            RecycleInventoryItemResponse recycleInventoryItemResponse = null;
+            try
+            {
+                recycleInventoryItemResponse = RecycleInventoryItemResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("RecycleInventoryItem parsing failed because response was empty", ex);
+
+                return new RecycleInventoryItemResponse() { Result = RecycleInventoryItemResponse.Types.Result.Unset };
+            }
             return recycleInventoryItemResponse;
         }
 
@@ -2179,15 +2609,19 @@ namespace PokemonGo_UWP.Utils
                 }.ToByteString()
             });
 
+            UseItemEggIncubatorResponse useItemEggIncubatorResponse = null;
             try
             {
-                var useItemEggIncubatorResponse = UseItemEggIncubatorResponse.Parser.ParseFrom(response);
-                return useItemEggIncubatorResponse;
+                useItemEggIncubatorResponse = UseItemEggIncubatorResponse.Parser.ParseFrom(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (response.IsEmpty)
+                    throw new Exception("UseItemEggIncubator parsing failed because response was empty", ex);
+
                 return new UseItemEggIncubatorResponse() { Result = UseItemEggIncubatorResponse.Types.Result.Unset };
             }
+            return useItemEggIncubatorResponse;
         }
 
         /// <summary>
@@ -2216,8 +2650,19 @@ namespace PokemonGo_UWP.Utils
                     Hash = DownloadSettingsHash
                 }.ToByteString()
             });
-            var downloadSettingsResponse = DownloadSettingsResponse.Parser.ParseFrom(response);
-            DownloadSettingsHash = downloadSettingsResponse?.Hash ?? "";
+
+            DownloadSettingsResponse downloadSettingsResponse = null;
+            try
+            {
+                downloadSettingsResponse = DownloadSettingsResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("DownloadSettings parsing failed because response was empty", ex);
+
+                return new DownloadSettingsResponse() { Error = "DownloadSettings failed" };
+            }
 
             return downloadSettingsResponse;
         }
@@ -2240,8 +2685,19 @@ namespace PokemonGo_UWP.Utils
                     Token = token
                 }.ToByteString()
             });
-            var verifyChallengeResponse = VerifyChallengeResponse.Parser.ParseFrom(response);
 
+            VerifyChallengeResponse verifyChallengeResponse = null;
+            try
+            {
+                verifyChallengeResponse = VerifyChallengeResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("VerifyChallenge parsing failed because response was empty", ex);
+
+                return new VerifyChallengeResponse() { Success = false };
+            }
             return verifyChallengeResponse;
         }
 
@@ -2260,8 +2716,19 @@ namespace PokemonGo_UWP.Utils
                     Codename = codename
                 }.ToByteString()
             });
-            var claimCodenameResponse = ClaimCodenameResponse.Parser.ParseFrom(response);
 
+            ClaimCodenameResponse claimCodenameResponse = null;
+            try
+            {
+                claimCodenameResponse = ClaimCodenameResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("VerifyChallenge parsing failed because response was empty", ex);
+
+                return new ClaimCodenameResponse() { Status = ClaimCodenameResponse.Types.Status.Unset };
+            }
             return claimCodenameResponse;
         }
 
@@ -2278,8 +2745,19 @@ namespace PokemonGo_UWP.Utils
                 {
                 }.ToByteString()
             });
-            var echoResponse = EchoResponse.Parser.ParseFrom(response);
 
+            EchoResponse echoResponse = null;
+            try
+            {
+                echoResponse = EchoResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("Echo parsing failed because response was empty", ex);
+
+                return new EchoResponse() { Context = String.Empty };
+            }
             return echoResponse;
         }
 
@@ -2293,7 +2771,19 @@ namespace PokemonGo_UWP.Utils
 
                 }.ToByteString()
             });
-            var sfidaActionLogResponse = SfidaActionLogResponse.Parser.ParseFrom(response);
+
+            SfidaActionLogResponse sfidaActionLogResponse = null;
+            try
+            {
+                sfidaActionLogResponse = SfidaActionLogResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("SfidaActionLog parsing failed because response was empty", ex);
+
+                return new SfidaActionLogResponse() { Result = SfidaActionLogResponse.Types.Result.Unset };
+            }
 
             return sfidaActionLogResponse;
         }

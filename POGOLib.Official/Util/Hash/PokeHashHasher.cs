@@ -97,54 +97,63 @@ namespace POGOLib.Official.Util.Hash
             };
 
             var requestContent = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-            
-            using (var response = await PerformRequest(requestContent))
+
+            int retryCount = 0;
+            while (retryCount <= 10)
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                
-                string message;
-
-                switch (response.StatusCode)
+                using (var response = await PerformRequest(requestContent))
                 {
-                    case HttpStatusCode.OK:
-                        var responseData = JsonConvert.DeserializeObject<PokeHashResponse>(responseContent);
+                    var responseContent = await response.Content.ReadAsStringAsync();
 
-                        return new HashData
-                        {
-                            LocationAuthHash = responseData.LocationAuthHash,
-                            LocationHash = responseData.LocationHash,
-                            RequestHashes = responseData.RequestHashes
-                                .Select(x => (ulong) x)
-                                .ToArray()
-                        };
+                    string message;
 
-                    case HttpStatusCode.NotFound:
-                        message = $"Hashing endpoint not found!";
-                        break;
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.OK:
+                            var responseData = JsonConvert.DeserializeObject<PokeHashResponse>(responseContent);
 
-                    case HttpStatusCode.BadRequest:
-                        message = $"Bad request sent to the hashing server! {responseContent}";
-                        break;
-                    
-                    case HttpStatusCode.Unauthorized:
-                        message = "The auth key supplied for PokeHash was invalid.";
-                        break;
-                    
-                    case (HttpStatusCode) 429:
-                        message = $"Your request has been limited. {responseContent}";
-                        break;
+                            return new HashData
+                            {
+                                LocationAuthHash = responseData.LocationAuthHash,
+                                LocationHash = responseData.LocationHash,
+                                RequestHashes = responseData.RequestHashes
+                                    .Select(x => (ulong)x)
+                                    .ToArray()
+                            };
 
-                    default:
-                        message = $"We received an unknown HttpStatusCode ({response.StatusCode})..";
-                        break;
+                        case HttpStatusCode.NotFound:
+                            message = $"Hashing endpoint not found!";
+                            break;
+
+                        case HttpStatusCode.BadRequest:
+                            message = $"Bad request sent to the hashing server! {responseContent}";
+                            break;
+
+                        case HttpStatusCode.Unauthorized:
+                            message = "The auth key supplied for PokeHash was invalid.";
+                            break;
+
+                        case (HttpStatusCode)429:
+                            message = $"Your request has been limited. {response}";
+                            break;
+
+                        default:
+                            message = $"We received an unknown HttpStatusCode ({response.StatusCode})..";
+                            break;
+                    }
+
+                    // TODO: Find a better way to let the developer know of these issues.
+                    message = $"[PokeHash]: {message}";
+
+                    Logger.Error(message);
+
+                    if (retryCount == 10)
+                        throw new Exception(message);
+
+                    retryCount++;
                 }
-
-                // TODO: Find a better way to let the developer know of these issues.
-                message = $"[PokeHash]: {message}";
-
-                Logger.Error(message);
-                throw new Exception(message);
             }
+            return null;
         }
         
         private Task<HttpResponseMessage> PerformRequest(HttpContent requestContent)
@@ -159,15 +168,11 @@ namespace POGOLib.Official.Util.Hash
                 {
                     _keySelection.WaitOne();
 
-//                    Logger.Warn(">>> Entering key selection.");
-                    
                     var availableKeys = _authKeys.Where(x => x.Requests < x.MaxRequestCount).ToArray();
                     if (availableKeys.Length > 0)
                     {
                         authKey = availableKeys.First();
                         authKey.Requests += 1;
-
-//                        Logger.Warn("Found available auth key.");
 
                         // If the auth key has not been initialized yet, we need to have control a bit longer
                         // to configure it properly.
@@ -176,15 +181,12 @@ namespace POGOLib.Official.Util.Hash
                     }
                     else
                     {
-//                        Logger.Warn("No available auth keys found.");
-
                         authKey = _authKeys
                             .OrderBy(x => x.RatePeriodEnd)
                             .First();
 
                         var sleepTime = (int) Math.Ceiling(authKey.RatePeriodEnd.Subtract(DateTime.UtcNow).TotalMilliseconds);
 
-//                        Logger.Warn($"Key selection is sleeping for {sleepTime}ms.");
                         PokehashSleeping?.Invoke(this, sleepTime);
 
                         await Task.Delay(sleepTime);
@@ -193,21 +195,13 @@ namespace POGOLib.Official.Util.Hash
                         authKey.Requests = 0;
                         // We have to receive the new rate period end.
                         extendedSelection = true;
-
-//                        Logger.Warn("Key selection is done with sleeping.");
                     }
                 }
                 finally
                 {
                     if (!extendedSelection)
                     {
-//                        Logger.Warn("<<< Exiting key selection.");
-
                         _keySelection.Release();
-                    }
-                    else
-                    {
-//                        Logger.Warn("=== Holding key selection.");
                     }
                 }
                 
@@ -221,6 +215,11 @@ namespace POGOLib.Official.Util.Hash
                 catch (Exception ex)
                 {
                     throw new PokeHashException(ex.Message);
+                }
+
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Pokehash key seems invalid");
                 }
 
                 // Handle response
@@ -262,8 +261,6 @@ namespace POGOLib.Official.Util.Hash
                     var ratePeriodEnd = TimeUtil.GetDateTimeFromSeconds(ratePeriodEndSeconds);
                     if (ratePeriodEnd > authKey.RatePeriodEnd)
                     {
-//                        Logger.Warn($"[AuthKey: {authKey.AuthKey}] {authKey.RatePeriodEnd} increased to {ratePeriodEnd}.");
-
                         authKey.RatePeriodEnd = ratePeriodEnd;
                     }
 
@@ -273,8 +270,6 @@ namespace POGOLib.Official.Util.Hash
                 {
                     if (extendedSelection)
                     {
-//                        Logger.Warn("<<< Exiting extended key selection.");
-
                         _keySelection.Release();
                     }
                 }

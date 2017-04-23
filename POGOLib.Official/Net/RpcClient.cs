@@ -21,6 +21,7 @@ using POGOProtos.Networking.Platform;
 using POGOProtos.Networking.Platform.Requests;
 using POGOProtos.Networking.Platform.Responses;
 using System.Diagnostics;
+using static POGOProtos.Networking.Envelopes.RequestEnvelope.Types;
 
 namespace POGOLib.Official.Net
 {
@@ -453,7 +454,11 @@ namespace POGOLib.Official.Net
                 requestEnvelope.AuthTicket = _session.AccessToken.AuthTicket;
             }
 
-            requestEnvelope.PlatformRequests.Add(await _rpcEncryption.GenerateSignatureAsync(requestEnvelope));
+            PlatformRequest platformRequest = await _rpcEncryption.GenerateSignatureAsync(requestEnvelope);
+            if (platformRequest != null)
+            {
+                requestEnvelope.PlatformRequests.Add(platformRequest);
+            }
 
             if (requestEnvelope.Requests.Count > 0 && (
                     requestEnvelope.Requests[0].RequestType == RequestType.GetMapObjects ||
@@ -617,7 +622,11 @@ namespace POGOLib.Official.Net
                                     requestEnvelope.PlatformRequests.Remove(signature);
                                 }
 
-                                requestEnvelope.PlatformRequests.Insert(0, await _rpcEncryption.GenerateSignatureAsync(requestEnvelope));
+                                PlatformRequest platformRequest = await _rpcEncryption.GenerateSignatureAsync(requestEnvelope);
+                                if (platformRequest != null)
+                                {
+                                    requestEnvelope.PlatformRequests.Insert(0, platformRequest);
+                                }
 
                                 // Re-send envelope.
                                 return await PerformRemoteProcedureCallAsync(requestEnvelope);
@@ -776,7 +785,15 @@ namespace POGOLib.Official.Net
                         break;
 
                     case RequestType.DownloadSettings: // Download_Settings
-                        var downloadSettings = DownloadSettingsResponse.Parser.ParseFrom(bytes);
+                        DownloadSettingsResponse downloadSettings = null;
+                        try
+                        {
+                            downloadSettings = DownloadSettingsResponse.Parser.ParseFrom(bytes);
+                        }
+                        catch (Exception)
+                        {
+                            downloadSettings = new DownloadSettingsResponse() { Error = "Could not parse downloadSettings" };
+                        }
                         if (string.IsNullOrEmpty(downloadSettings.Error))
                         {
                             if (downloadSettings.Settings == null)
