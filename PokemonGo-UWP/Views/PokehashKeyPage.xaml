@@ -28,6 +28,11 @@
                Margin="15,20"
                MaxWidth="300"
                Source="../Assets/Ui/logoLight.png" />
+        <Button Grid.Row="0" Margin="5"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Right" 
+                Command="{Binding DoDiscardAccessKeyCommand}"
+                Content="Discard accesskey"/>
         <Grid Grid.Row="1"
               Style="{StaticResource GridContainer}">
             <StackPanel>

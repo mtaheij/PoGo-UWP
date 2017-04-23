@@ -171,6 +171,17 @@ namespace PokemonGo_UWP.ViewModels
 
             }, () => !string.IsNullOrEmpty(PokehashKey))
             );
+
+        private DelegateCommand _doDiscardAccessKeyCommand;
+
+        public DelegateCommand DoDiscardAccessKeyCommand => _doDiscardAccessKeyCommand ?? (
+            _doDiscardAccessKeyCommand = new DelegateCommand(async () =>
+            {
+                SettingsService.Instance.AccessTokenString = null;
+
+                MessageDialog dialog = new MessageDialog("Access key discarded.");
+                await dialog.ShowAsync();
+            }));
         #endregion
     }
 }
