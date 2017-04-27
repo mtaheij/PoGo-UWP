@@ -256,6 +256,37 @@ namespace PokemonGo_UWP.Utils
             //check if display features not yet implemented
             if (pokemon.WrappedData.PokemonDisplay == null) return "n/a";
 
+            if (parameter as string == "bitmap" || parameter as string == "uri")
+            {
+                var pokemonId = (int)pokemon.WrappedData.PokemonId;
+                var costume = pokemon.WrappedData.PokemonDisplay.Costume;
+                var gender = pokemon.WrappedData.PokemonDisplay.Gender;
+                var form = pokemon.WrappedData.PokemonDisplay.Form;
+
+                var id = pokemonId.ToString("000");
+                var g = (gender == Gender.Female) ? "f" : "";
+                var c = (costume == Costume.Unset) ? "" : "-" + costume.ToString("00");
+                var f = (form == Form.Unset) ? "" : "-" + form.ToString("00");
+                var s = (pokemon.WrappedData.PokemonDisplay.Shiny) ? "_shiny" : "";
+
+                Uri iconUri = null;
+
+                string[] femaleIcons = { "003", "012", "019", "020", "025", "026", "029", "030", "031", "041", "042", "044", "045", "064", "065", "084", "085", "097", "111", "112", "118", "119", "123", "129", "130", "154", "165", "166", "178", "185", "186", "190", "194", "195", "198", "202", "203", "207", "208", "212", "214", "215", "217", "221", "224", "229", "232" };
+
+                if (femaleIcons.Contains(id))
+                {
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{g}{f}{c}{s}.png");
+                }
+                else
+                {
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{f}{c}{s}.png");
+                };
+
+                if (parameter as string == "icon")
+                    return iconUri;
+                return new BitmapImage(iconUri);
+            }
+
             if (parameter as string == "costume")
             {
                 switch (pokemon.WrappedData.PokemonDisplay.Costume)
@@ -2827,7 +2858,8 @@ namespace PokemonGo_UWP.Utils
 
             var ts = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp);
             var tsloc = ts.ToLocalTime();
-            var tsstr = tsloc.ToString("g", CultureInfo.CurrentUICulture);
+            CultureInfo ci = new CultureInfo("fi-FI");
+            var tsstr = tsloc.ToString("g", ci);
             return tsstr;
 //            string returnValue = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToLocalTime().ToString("{0:g}");
 

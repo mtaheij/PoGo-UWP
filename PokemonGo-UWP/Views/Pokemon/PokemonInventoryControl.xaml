@@ -46,8 +46,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Margin="5,0"
-                               Source="{x:Bind PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                               x:Phase="2" />
+                               Source="{Binding Converter={StaticResource PokemonToPokemonDisplayConverter}, ConverterParameter=bitmap}" />
                 <Viewbox Grid.Row="1"
                                  Margin="0,-4,0,0"
                                  Height="12"
@@ -124,8 +123,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Margin="5,0"
-                               Source="{x:Bind PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
-                               x:Phase="2" />
+                               Source="{Binding Converter={StaticResource PokemonToPokemonDisplayConverter}, ConverterParameter=bitmap}" />
                 <Viewbox Grid.Row="1"
                                  Margin="0,-4,0,0"
                                  Height="12"

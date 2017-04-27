@@ -112,7 +112,7 @@ namespace PokemonGo_UWP.Utils
         public string PokehashAuthKey
         {
 //            get { return Get(string.Empty); }
-            get { return Get("3H4O9I2N7X3E9E0U0L7W"); }
+            get { return Get("7K4T2P8C4D1D1O6N2C4W"); }
             set { Set(value); }
         }
         #endregion
@@ -125,7 +125,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsMusicEnabled
 		{
-			get { return Get(true); }
+			get { return Get(false); }
 		    set
 		    {
 		        Set(value);
@@ -139,7 +139,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsRememberMapZoomEnabled
 		{
-			get { return Get(false); }
+			get { return Get(true); }
 			set { Set(value); }
 		}
 		public double MapPitch
@@ -154,12 +154,12 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsVibrationEnabled
 		{
-			get { return Get(false); }
+			get { return Get(true); }
 			set { Set(value); }
 		}
         public bool IsBatterySaverEnabled
         {
-            get { return Get(false); }
+            get { return Get(true); }
             set { Set(value); }
         }
         public LiveTileModes LiveTileMode
@@ -169,7 +169,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public PokemonSortingModes PokemonSortingMode
 		{
-			get { return Get(PokemonSortingModes.Combat); }
+			get { return Get(PokemonSortingModes.Number); }
 			set { Set(value); }
 		}
 		public double Zoomlevel

@@ -262,6 +262,7 @@ namespace POGOLib.Official.Util.Hash
                     if (ratePeriodEnd > authKey.RatePeriodEnd)
                     {
                         authKey.RatePeriodEnd = ratePeriodEnd;
+                        authKey.Requests = authKey.MaxRequestCount - rateRequestsRemaining;
                     }
 
                     return response;

@@ -126,7 +126,7 @@
                          StretchDirection="DownOnly">
                     <Image x:Name="PokemonImage"
                            Height="128"
-                           Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                           Source="{Binding Converter={StaticResource PokemonToPokemonDisplayConverter}, ConverterParameter=bitmap}"
                            Canvas.ZIndex="5"
                            Stretch="Uniform" />
                 </Viewbox>
