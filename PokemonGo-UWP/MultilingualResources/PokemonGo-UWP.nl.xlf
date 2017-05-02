@@ -1077,6 +1077,14 @@ Je hebt ook {1} Stardust, {2} Candy en {3} XP gekregen.</target>
           <source>Stay aware of your surroundings.</source>
           <target state="new">Stay aware of your surroundings.</target>
         </trans-unit>
+        <trans-unit id="EvolveButton0.Content" translate="yes" xml:space="preserve">
+          <source>EVOLVE</source>
+          <target state="new">EVOLVE</target>
+        </trans-unit>
+        <trans-unit id="EvolveButton1.Content" translate="yes" xml:space="preserve">
+          <source>EVOLVE</source>
+          <target state="new">EVOLVE</target>
+        </trans-unit>
       </group>
     </body>
   </file>

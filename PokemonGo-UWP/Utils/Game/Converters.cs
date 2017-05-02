@@ -145,6 +145,65 @@ namespace PokemonGo_UWP.Utils
         }
     }
 
+    public class PokemonToEvolveWithItemConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            int index = 0;
+            int.TryParse(parameter.ToString().Substring(0, 1), out index);
+            var noEvo = false;
+            if (GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch.Count() <= index)
+                noEvo = true;
+            var pokeId = GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).PokemonId;
+            // show only one evolve button for Eevee and Tyrogue
+            if (index > 0 && (pokeId == PokemonId.Eevee || pokeId == PokemonId.Tyrogue))
+                noEvo = true;
+            var param = parameter.ToString().Substring(1);
+            switch (param)
+            {
+                case "visibility":
+                    //                    if (value == null || GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch.Count() <= index)
+                    if (value == null || noEvo)
+                    {
+                        return Visibility.Collapsed;
+                    }
+
+                    return Visibility.Visible;
+                case "candyimage":
+                    if (value == null || noEvo) return "";
+                    return new PokemonFamilyToCandyImageConverter().Convert(GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).Type, targetType, parameter, language);
+                case "candyneeded":
+                    if (value == null || noEvo) return 0;
+                    return GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].CandyCost;
+                case "candyforeground":
+                    if (value == null || noEvo) return new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    var extraData = GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId);
+                    return extraData.EvolutionBranch[index].CandyCost > GameClient.CandyInventory.FirstOrDefault(item => item.FamilyId == extraData.FamilyId).Candy_ ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : BootStrapper.Current.Resources["TitleTextColor"];
+                case "itemimage":
+                    if (value == null || noEvo) return "";
+                    return new ItemIdToItemIconConverter().Convert(GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement, targetType, parameter, language);
+                case "itemneeded":
+                    if (value == null || noEvo) return 0;
+                    return (GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement == 0 ? string.Empty : "1");
+                case "itemforeground":
+                    if (value == null || noEvo) return new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    var currentEvoItem = GameClient.ItemsInventory.FirstOrDefault(item => item.ItemId == GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement);
+                    return currentEvoItem == null || currentEvoItem.Count == 0 ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : BootStrapper.Current.Resources["TitleTextColor"];
+                default:
+                    return null; ;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
     public class PokemonIdToPokedexDescription : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -263,23 +322,31 @@ namespace PokemonGo_UWP.Utils
                 var gender = pokemon.WrappedData.PokemonDisplay.Gender;
                 var form = pokemon.WrappedData.PokemonDisplay.Form;
 
-                var id = pokemonId.ToString("000");
+/*                var id = pokemonId.ToString("000");
                 var g = (gender == Gender.Female) ? "f" : "";
                 var c = (costume == Costume.Unset) ? "" : "-" + costume.ToString("00");
                 var f = (form == Form.Unset) ? "" : "-" + form.ToString("00");
                 var s = (pokemon.WrappedData.PokemonDisplay.Shiny) ? "_shiny" : "";
+                */
+                var id = pokemonId.ToString("000");
+                //var g = (gender == Gender.Female) ? "_01" : "_00";
+                var c = (costume == Costume.Unset) ? "" : "_" + costume.ToString("00");
+                var f = (form == Form.Unset) ? "" : "_" + form.ToString("00");
+                var s = (pokemon.WrappedData.PokemonDisplay.Shiny) ? "_shiny" : "";
 
                 Uri iconUri = null;
 
-                string[] femaleIcons = { "003", "012", "019", "020", "025", "026", "029", "030", "031", "041", "042", "044", "045", "064", "065", "084", "085", "097", "111", "112", "118", "119", "123", "129", "130", "154", "165", "166", "178", "185", "186", "190", "194", "195", "198", "202", "203", "207", "208", "212", "214", "215", "217", "221", "224", "229", "232" };
+                string[] femaleIcons = { "003", "012", "019", "020", "025", "026", "041", "042", "044", "045", "064", "065", "084", "085", "097", "111", "112", "118", "119", "123", "129", "130", "154", "165", "166", "178", "185", "186", "190", "194", "195", "198", "202", "203", "207", "208", "212", "214", "215", "217", "221", "224", "229", "232" };
 
-                if (femaleIcons.Contains(id))
+                if (gender == Gender.Female && femaleIcons.Contains(id))
                 {
-                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{g}{f}{c}{s}.png");
+                    //iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{g}{f}{c}{s}.png");
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/decrypted/pokemon_icon_{id}_01{f}{c}{s}.png");
                 }
                 else
                 {
-                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{f}{c}{s}.png");
+                    //iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{f}{c}{s}.png");
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/decrypted/pokemon_icon_{id}_00{f}{c}{s}.png");
                 };
 
                 if (parameter as string == "icon")
@@ -293,6 +360,8 @@ namespace PokemonGo_UWP.Utils
                 {
                     case Costume.Holiday2016:
                         return "Holiday2016";
+                    case Costume.Anniversary:
+                        return "Anniversary";
                     case Costume.Unset:
                     default:
                         return "none";

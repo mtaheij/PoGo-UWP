@@ -595,26 +595,29 @@ namespace PokemonGo_UWP.ViewModels
 
         #endregion
 
-        private DelegateCommand _evolvePokemonCommand;
+        private DelegateCommand <int> _evolvePokemonCommand;
 
-        public DelegateCommand EvolvePokemonCommand => _evolvePokemonCommand ?? (_evolvePokemonCommand = new DelegateCommand(() =>
+        public DelegateCommand <int> EvolvePokemonCommand => _evolvePokemonCommand ?? (_evolvePokemonCommand = new DelegateCommand<int>((index) =>
         {
-            // Ask for confirmation before evolving the Pokemon
-            var dialog = new PoGoMessageDialog("", string.Format(Resources.CodeResources.GetString("EvolvePokemonWarningText"),
-                Resources.Pokemon.GetString(SelectedPokemon.PokemonId.ToString())))
-            {
-                AcceptText = Resources.CodeResources.GetString("YesText"),
-                CancelText = Resources.CodeResources.GetString("NoText"),
-                CoverBackground = true,
-                AnimationType = PoGoMessageDialogAnimation.Bottom
-            };
-            dialog.AcceptInvoked += async (sender, e) =>
-            {
-                try
-                {
-                    ServerRequestRunning = true;
+
+        // Ask for confirmation before evolving the Pokemon
+        var dialog = new PoGoMessageDialog("", string.Format(Resources.CodeResources.GetString("EvolvePokemonWarningText"),
+            Resources.Pokemon.GetString(SelectedPokemon.PokemonId.ToString())))
+        {
+            AcceptText = Resources.CodeResources.GetString("YesText"),
+            CancelText = Resources.CodeResources.GetString("NoText"),
+            CoverBackground = true,
+            AnimationType = PoGoMessageDialogAnimation.Bottom
+        };
+        dialog.AcceptInvoked += async (sender, e) =>
+        {
+        try
+        {
+                var item = GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).EvolutionBranch[index].EvolutionItemRequirement;
+        ServerRequestRunning = true;
                     // Send evolve request
-                    EvolvePokemonResponse res = await GameClient.EvolvePokemon(SelectedPokemon.WrappedData, POGOProtos.Inventory.Item.ItemId.ItemUnknown);
+                    //EvolvePokemonResponse res = await GameClient.EvolvePokemon(SelectedPokemon.WrappedData, POGOProtos.Inventory.Item.ItemId.ItemUnknown);
+                    EvolvePokemonResponse res = await GameClient.EvolvePokemon(SelectedPokemon.WrappedData, item);
                     RaisePropertyChanged(() => EvolvedPokemonId);
                     switch (res.Result)
                     {
@@ -649,11 +652,26 @@ namespace PokemonGo_UWP.ViewModels
             dialog.Show();
             }, CanEvolve));
 
-        private bool CanEvolve()
+        private bool CanEvolve(int index)
         {
             if (SelectedPokemon == null || ServerRequestRunning) return false;
+            if (GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).EvolutionBranch.Count() <= index) return false;
+            var hasCandies = false;
+            var hasEvoItem = true;
+//            var currentCandy = GameClient.CandyInventory.FirstOrDefault(item => item.FamilyId == GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).FamilyId);
+//            return currentCandy != null && currentCandy.Candy_ >= GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).CandyToEvolve;
+            // check for candies
             var currentCandy = GameClient.CandyInventory.FirstOrDefault(item => item.FamilyId == GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).FamilyId);
-            return currentCandy != null && currentCandy.Candy_ >= GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).CandyToEvolve;
+            hasCandies = (currentCandy != null && currentCandy.Candy_ >= GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).EvolutionBranch[index].CandyCost);
+            // check for evolution stone
+            if (GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).EvolutionBranch[index].EvolutionItemRequirement == 0)
+                hasEvoItem = true;
+            else
+            {
+                var currentEvoItem = GameClient.ItemsInventory.FirstOrDefault(item => item.ItemId == GameClient.GetExtraDataForPokemon(SelectedPokemon.PokemonId).EvolutionBranch[index].EvolutionItemRequirement);
+                hasEvoItem = (currentEvoItem != null);
+            }
+            return (hasCandies && hasEvoItem);
         }
 
         private DelegateCommand _navigateToEvolvedPokemonCommand;

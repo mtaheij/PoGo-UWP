@@ -15,7 +15,7 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="defaultState" x:DataType="entities:PokemonDataWrapper">
-            <Grid Height="115">
+            <Grid Height="128">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -105,7 +105,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="selectedState" x:DataType="entities:PokemonDataWrapper">
-            <Grid Height="115" Background="Black">
+            <Grid Height="128" Background="Black">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
