@@ -124,7 +124,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsMusicEnabled
 		{
-			get { return Get(false); }
+			get { return Get(true); }
 		    set
 		    {
 		        Set(value);
@@ -138,7 +138,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsRememberMapZoomEnabled
 		{
-			get { return Get(true); }
+			get { return Get(false); }
 			set { Set(value); }
 		}
 		public double MapPitch
@@ -153,12 +153,12 @@ namespace PokemonGo_UWP.Utils
 		}
 		public bool IsVibrationEnabled
 		{
-			get { return Get(true); }
+			get { return Get(false); }
 			set { Set(value); }
 		}
         public bool IsBatterySaverEnabled
         {
-            get { return Get(true); }
+            get { return Get(false); }
             set { Set(value); }
         }
         public LiveTileModes LiveTileMode
@@ -168,7 +168,7 @@ namespace PokemonGo_UWP.Utils
 		}
 		public PokemonSortingModes PokemonSortingMode
 		{
-			get { return Get(PokemonSortingModes.Number); }
+			get { return Get(PokemonSortingModes.Combat); }
 			set { Set(value); }
 		}
 		public double Zoomlevel
