@@ -2925,14 +2925,14 @@ namespace PokemonGo_UWP.Utils
 
             long timestamp = actionLogEntry.TimestampMs;
 
-            var ts = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp);
+ /*           var ts = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp);
             var tsloc = ts.ToLocalTime();
             CultureInfo ci = new CultureInfo("fi-FI");
             var tsstr = tsloc.ToString("g", ci);
-            return tsstr;
-//            string returnValue = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToLocalTime().ToString("{0:g}");
+            return tsstr; */
+            string returnValue = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToLocalTime().ToString("{0:g}");
 
-//            return returnValue;
+            return returnValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
