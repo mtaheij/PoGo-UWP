@@ -65,6 +65,12 @@ namespace PokemonGo_UWP.Utils
                 var repoVersion = GetVersionFromPattern(@"(\d*)\.(\d*)\.(\d*)", VersionInfo.Instance.latest_release.version);
                 var minVersion = GetVersionFromPattern(@"(\d*)\.(\d*)\.(\d*)", VersionInfo.Instance.minimum_version);
 
+                //allow devs to test by using greater version in test builds even if killswitch is active
+                if (IsVersionGreater(minVersion, currentVersion))
+                {
+                    return new UpdateInfo(UpdateStatus.NoUpdate);
+                }
+
                 //compare major & minor & build (ignore revision)
                 if (IsVersionGreater(currentVersion, repoVersion))
                 {

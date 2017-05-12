@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -262,6 +262,7 @@ namespace POGOLib.Official.Util.Hash
                     if (ratePeriodEnd > authKey.RatePeriodEnd)
                     {
                         authKey.RatePeriodEnd = ratePeriodEnd;
+                        authKey.Requests = authKey.MaxRequestCount - rateRequestsRemaining;
                     }
 
                     return response;

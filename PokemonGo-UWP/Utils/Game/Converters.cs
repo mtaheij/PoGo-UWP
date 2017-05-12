@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
 using POGOProtos.Data.Logs;
 using PokemonGo_UWP.Utils.Extensions;
+using System.Globalization;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -144,6 +145,65 @@ namespace PokemonGo_UWP.Utils
         }
     }
 
+    public class PokemonToEvolveWithItemConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            int index = 0;
+            int.TryParse(parameter.ToString().Substring(0, 1), out index);
+            var noEvo = false;
+            if (GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch.Count() <= index)
+                noEvo = true;
+            var pokeId = GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).PokemonId;
+            // show only one evolve button for Eevee and Tyrogue
+            if (index > 0 && (pokeId == PokemonId.Eevee || pokeId == PokemonId.Tyrogue))
+                noEvo = true;
+            var param = parameter.ToString().Substring(1);
+            switch (param)
+            {
+                case "visibility":
+                    //                    if (value == null || GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch.Count() <= index)
+                    if (value == null || noEvo)
+                    {
+                        return Visibility.Collapsed;
+                    }
+
+                    return Visibility.Visible;
+                case "candyimage":
+                    if (value == null || noEvo) return "";
+                    return new PokemonFamilyToCandyImageConverter().Convert(GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).Type, targetType, parameter, language);
+                case "candyneeded":
+                    if (value == null || noEvo) return 0;
+                    return GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].CandyCost;
+                case "candyforeground":
+                    if (value == null || noEvo) return new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    var extraData = GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId);
+                    return extraData.EvolutionBranch[index].CandyCost > GameClient.CandyInventory.FirstOrDefault(item => item.FamilyId == extraData.FamilyId).Candy_ ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : BootStrapper.Current.Resources["TitleTextColor"];
+                case "itemimage":
+                    if (value == null || noEvo) return "";
+                    return new ItemIdToItemIconConverter().Convert(GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement, targetType, parameter, language);
+                case "itemneeded":
+                    if (value == null || noEvo) return 0;
+                    return (GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement == 0 ? string.Empty : "1");
+                case "itemforeground":
+                    if (value == null || noEvo) return new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    var currentEvoItem = GameClient.ItemsInventory.FirstOrDefault(item => item.ItemId == GameClient.GetExtraDataForPokemon(((PokemonDataWrapper)value).PokemonId).EvolutionBranch[index].EvolutionItemRequirement);
+                    return currentEvoItem == null || currentEvoItem.Count == 0 ? new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)) : BootStrapper.Current.Resources["TitleTextColor"];
+                default:
+                    return null; ;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+
+        #endregion
+    }
+
     public class PokemonIdToPokedexDescription : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -255,12 +315,53 @@ namespace PokemonGo_UWP.Utils
             //check if display features not yet implemented
             if (pokemon.WrappedData.PokemonDisplay == null) return "n/a";
 
+            if (parameter as string == "bitmap" || parameter as string == "uri")
+            {
+                var pokemonId = (int)pokemon.WrappedData.PokemonId;
+                var costume = pokemon.WrappedData.PokemonDisplay.Costume;
+                var gender = pokemon.WrappedData.PokemonDisplay.Gender;
+                var form = pokemon.WrappedData.PokemonDisplay.Form;
+
+/*                var id = pokemonId.ToString("000");
+                var g = (gender == Gender.Female) ? "f" : "";
+                var c = (costume == Costume.Unset) ? "" : "-" + costume.ToString("00");
+                var f = (form == Form.Unset) ? "" : "-" + form.ToString("00");
+                var s = (pokemon.WrappedData.PokemonDisplay.Shiny) ? "_shiny" : "";
+                */
+                var id = pokemonId.ToString("000");
+                //var g = (gender == Gender.Female) ? "_01" : "_00";
+                var c = (costume == Costume.Unset) ? "" : "_" + costume.ToString("00");
+                var f = (form == Form.Unset) ? "" : "_" + form.ToString("00");
+                var s = (pokemon.WrappedData.PokemonDisplay.Shiny) ? "_shiny" : "";
+
+                Uri iconUri = null;
+
+                string[] femaleIcons = { "003", "012", "019", "020", "025", "026", "041", "042", "044", "045", "064", "065", "084", "085", "097", "111", "112", "118", "119", "123", "129", "130", "154", "165", "166", "178", "185", "186", "190", "194", "195", "198", "202", "203", "207", "208", "212", "214", "215", "217", "221", "224", "229", "232" };
+
+                if (gender == Gender.Female && femaleIcons.Contains(id))
+                {
+                    //iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{g}{f}{c}{s}.png");
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/decrypted/pokemon_icon_{id}_01{f}{c}{s}.png");
+                }
+                else
+                {
+                    //iconUri = new Uri($"ms-appx:///Assets/Pokemons/3d/{id}{f}{c}{s}.png");
+                    iconUri = new Uri($"ms-appx:///Assets/Pokemons/decrypted/pokemon_icon_{id}_00{f}{c}{s}.png");
+                };
+
+                if (parameter as string == "icon")
+                    return iconUri;
+                return new BitmapImage(iconUri);
+            }
+
             if (parameter as string == "costume")
             {
                 switch (pokemon.WrappedData.PokemonDisplay.Costume)
                 {
                     case Costume.Holiday2016:
                         return "Holiday2016";
+                    case Costume.Anniversary:
+                        return "Anniversary";
                     case Costume.Unset:
                     default:
                         return "none";
@@ -2071,7 +2172,7 @@ namespace PokemonGo_UWP.Utils
                 case TeamColor.Blue:
                     return new Uri(resourceUriString + "_blue.png");
                 case TeamColor.Neutral:
-                    return new Uri(resourceUriString + ".png");
+                    return new Uri(resourceUriString + "_neutral.png");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -2741,7 +2842,28 @@ namespace PokemonGo_UWP.Utils
                     returnValue = $"You received {actionLogEntry.BuddyPokemon.Amount} candy from your buddy Pokemon";
                     break;
                 case ActionLogEntry.ActionOneofCase.CatchPokemon:
-                    returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                    string pokemon = Resources.Pokemon.GetString(actionLogEntry.CatchPokemon.PokemonId.ToString());
+                    switch (actionLogEntry.CatchPokemon.Result)
+                    {
+                        case CatchPokemonLogEntry.Types.Result.PokemonCaptured:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                            returnValue = $"{pokemon} was caught!";
+                            break;
+                        case CatchPokemonLogEntry.Types.Result.PokemonFled:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} ran away.";
+                            returnValue = $"{pokemon} ran away.";
+                            break;
+                        case CatchPokemonLogEntry.Types.Result.PokemonHatched:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was hatched!";
+                            returnValue = $"{pokemon} was hatched!";
+                            break;
+                        default:
+//                            returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
+                            returnValue = $"{pokemon} was caught!";
+                            break;
+                    }
+
+//                    returnValue = $"{actionLogEntry.CatchPokemon.PokemonId} was caught!";
                     break;
             }
 
@@ -2801,8 +2923,14 @@ namespace PokemonGo_UWP.Utils
 
             var actionLogEntry = value as ActionLogEntry;
 
-            long timestamp = actionLogEntry.TimestampMs; 
-            string returnValue = $"{DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToString()}";
+            long timestamp = actionLogEntry.TimestampMs;
+
+ /*           var ts = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp);
+            var tsloc = ts.ToLocalTime();
+            CultureInfo ci = new CultureInfo("fi-FI");
+            var tsstr = tsloc.ToString("g", ci);
+            return tsstr; */
+            string returnValue = DateTimeExtensions.GetDateTimeFromMilliseconds(timestamp).ToLocalTime().ToString("{0:g}");
 
             return returnValue;
         }

@@ -20,6 +20,7 @@
             <utils:ItemClickEventArgsToClickedItemConverter x:Key="ItemClickEventArgsToClickedItemConverter" />
             <utils:TappedRoutedEventArgsToClickedItemConverter x:Key="TappedRoutedEventArgsToClickedItemConverter" />
             <utils:HoldingRoutedEventArgsToClickedItemConverter x:Key="HoldingRoutedEventArgsToClickedItemConverter" />
+            <utils:PokemonToEvolveWithItemConverter x:Key="PokemonToEvolveWithItemConverter" />
             <utils:PokemonIdToPokemonSpriteConverter x:Key="PokemonIdToPokemonSpriteConverter" />
             <utils:BuddyIsDeployedVisibilityConverter x:Key="BuddyIsDeployedVisibilityConverter" />
             <utils:PokemonIsBuddyVisibilityConverter x:Key="PokemonIsBuddyVisibilityConverter" />

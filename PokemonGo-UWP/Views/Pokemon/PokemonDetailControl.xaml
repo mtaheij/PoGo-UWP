@@ -28,7 +28,9 @@
                                 Value="40,8,40,0" />
                         <Setter Target="PowerUpButton.FontSize"
                                 Value="15" />
-                        <Setter Target="EvolveButton.FontSize"
+                        <Setter Target="EvolveButton0.FontSize"
+                                Value="15" />
+                        <Setter Target="EvolveButton1.FontSize"
                                 Value="15" />
                         <Setter Target="PokemonTypeCol.Width"
                                 Value="Auto" />
@@ -47,7 +49,9 @@
                                 Value="16,8,16,0" />
                         <Setter Target="PowerUpButton.FontSize"
                                 Value="12" />
-                        <Setter Target="EvolveButton.FontSize"
+                        <Setter Target="EvolveButton0.FontSize"
+                                Value="12" />
+                        <Setter Target="EvolveButton1.FontSize"
                                 Value="12" />
                         <Setter Target="PokemonTypeCol.Width"
                                 Value="*" />
@@ -125,8 +129,8 @@
                          HorizontalAlignment="Stretch"
                          StretchDirection="DownOnly">
                     <Image x:Name="PokemonImage"
-                           Height="128"
-                           Source="{Binding PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"
+                           Height="256"
+                           Source="{Binding Converter={StaticResource PokemonToPokemonDisplayConverter}, ConverterParameter=bitmap}"
                            Canvas.ZIndex="5"
                            Stretch="Uniform" />
                 </Viewbox>
@@ -420,6 +424,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <!-- Stardust & Candy -->
@@ -547,7 +552,7 @@
                                     Command="{Binding PowerUpPokemonCommand, ElementName=Root}" />
 
                             <!-- Evolve -->
-                            <Border Grid.Column="0"
+<!--                            <Border Grid.Column="0"
                                     Grid.ColumnSpan="2"
                                     Grid.Row="2"
                                     Margin="25,0,0,0"
@@ -597,6 +602,148 @@
                                     Margin="0,0,0,15"
                                     Command="{Binding EvolvePokemonCommand, ElementName=Root}"
                                     Visibility="{Binding Converter={StaticResource PokemonToPokemonEvolveVisibilityConverter}}" />
+-->
+                            <!-- Evolve 0 -->
+                            <Border Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="2"
+                                    Margin="25,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    Height="40"
+                                    Background="#E8EEE0"
+                                    Visibility="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0visibility}">
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Tapped">
+                                        <core:InvokeCommandAction Command="{Binding EvolvePokemonCommand, ElementName=Root}" />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+
+                                <Grid HorizontalAlignment="Right"
+                                      VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="70" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0"
+                                                Margin="10,0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                        <Image HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Height="20"
+                                               Margin="0,0,3,0"
+                                               Source="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0itemimage}" />
+                                        <TextBlock FontSize="12"
+                                                   FontFamily="{StaticResource LatoRegularFont}"
+                                                   Foreground="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0itemforeground}"
+                                                   Text="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0itemneeded}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1"
+                                                Margin="10,0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                        <Image HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Height="20"
+                                               Margin="0,0,3,0"
+                                               Source="{Binding Converter={StaticResource PokemonToCandyImageConverter}}" />
+                                        <TextBlock FontSize="12"
+                                                   FontFamily="{StaticResource LatoRegularFont}"
+                                                   Foreground="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0candyforeground}"
+                                                   Text="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0candyneeded}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <Button x:Name="EvolveButton0"
+                                    Grid.Column="0"
+                                    Grid.Row="2"
+                                    Style="{StaticResource ButtonSubmit}"
+                                    CharacterSpacing="40"
+                                    HorizontalAlignment="Stretch"
+                                    x:Uid="EvolveButton0"
+                                    MinWidth="125"
+                                    Margin="0,0,0,10"
+                                    Command="{Binding EvolvePokemonCommand, ElementName=Root}"
+                                    CommandParameter="0"
+                                    
+                                    Visibility="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=0visibility}" >
+                            </Button>
+
+                            <!-- Evolve 1 -->
+                            <Border Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="3"
+                                    Margin="25,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    Height="40"
+                                    Background="#E8EEE0"
+                                    Visibility="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1visibility}">
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Tapped">
+                                        <core:InvokeCommandAction Command="{Binding EvolvePokemonCommand, ElementName=Root}" />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+
+                                <Grid HorizontalAlignment="Right"
+                                      VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="70" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0"
+                                                Margin="10,0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                        <Image HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Height="20"
+                                               Margin="0,0,3,0"
+                                               Source="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1itemimage}" />
+                                        <TextBlock FontSize="12"
+                                                   FontFamily="{StaticResource LatoRegularFont}"
+                                                   Foreground="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1itemforeground}"
+                                                   Text="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1itemneeded}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1"
+                                                Margin="10,0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                        <Image HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Height="20"
+                                               Margin="0,0,3,0"
+                                               Source="{Binding Converter={StaticResource PokemonToCandyImageConverter}}" />
+                                        <TextBlock FontSize="12"
+                                                   FontFamily="{StaticResource LatoRegularFont}"
+                                                   Foreground="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1candyforeground}"
+                                                   Text="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1candyneeded}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <Button x:Name="EvolveButton1"
+                                    Grid.Column="0"
+                                    Grid.Row="3"
+                                    Style="{StaticResource ButtonSubmit}"
+                                    CharacterSpacing="40"
+                                    HorizontalAlignment="Stretch"
+                                    x:Uid="EvolveButton1"
+                                    MinWidth="125"
+                                    Margin="0,0,0,10"
+                                    Command="{Binding EvolvePokemonCommand, ElementName=Root}"
+                                    CommandParameter="1"
+                                    Visibility="{Binding Converter={StaticResource PokemonToEvolveWithItemConverter}, ConverterParameter=1visibility}" />
 
                         </Grid>
 

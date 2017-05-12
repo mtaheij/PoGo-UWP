@@ -406,4 +406,10 @@
   <data name="RememberToBeAlertTextBlock2.Text" xml:space="preserve">
     <value>Stay aware of your surroundings.</value>
   </data>
+  <data name="EvolveButton0.Content" xml:space="preserve">
+    <value>EVOLVE</value>
+  </data>
+  <data name="EvolveButton1.Content" xml:space="preserve">
+    <value>EVOLVE</value>
+  </data>
 </root>

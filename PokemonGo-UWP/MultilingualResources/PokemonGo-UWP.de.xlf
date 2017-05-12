@@ -1080,6 +1080,14 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
           <source>Stay aware of your surroundings.</source>
           <target state="new">Stay aware of your surroundings.</target>
         </trans-unit>
+        <trans-unit id="EvolveButton0.Content" translate="yes" xml:space="preserve">
+          <source>EVOLVE</source>
+          <target state="new">EVOLVE</target>
+        </trans-unit>
+        <trans-unit id="EvolveButton1.Content" translate="yes" xml:space="preserve">
+          <source>EVOLVE</source>
+          <target state="new">EVOLVE</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -3248,6 +3256,10 @@ Du hast auch {1} Sternenstaub, {2} Bonbon und {3} EP erhalten.</target>
         <trans-unit id="ZapCannon" translate="yes" xml:space="preserve">
           <source>Zap Cannon</source>
           <target state="new">Zap Cannon</target>
+        </trans-unit>
+        <trans-unit id="HiddenPowerFast" translate="yes" xml:space="preserve">
+          <source>Hidden Power</source>
+          <target state="new">Hidden Power</target>
         </trans-unit>
       </group>
     </body>
