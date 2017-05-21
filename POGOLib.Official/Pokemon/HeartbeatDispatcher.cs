@@ -93,6 +93,8 @@ namespace POGOLib.Official.Pokemon
                 }
             }
 
+            firstRefreshCompleted?.TrySetResult(false);
+
             Logger.Debug("Heartbeat got cancelled");
         }
 
