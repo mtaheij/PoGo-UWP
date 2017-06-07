@@ -1,3 +1,7 @@
+# IMPORTANT
+A new version has been developed by another gitter:
+Check on: https://github.com/mtaheij/PoGo-UWP
+
 # Warning!
 
 As of version 1.2.2:
