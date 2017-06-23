@@ -34,6 +34,7 @@ using POGOProtos.Networking.Responses;
 using POGOLib.Official.Util.Hash.PokeHash;
 using POGOLib.Official.Util.Hash;
 using Windows.System.Profile;
+using PokemonGo_UWP.Utils.Game;
 
 namespace PokemonGo_UWP
 {
@@ -65,6 +66,11 @@ namespace PokemonGo_UWP
         /// The TileUpdater instance for the app.
         /// </summary>
         public static TileUpdater LiveTileUpdater { get; private set; }
+
+        /// <summary>
+        /// Indicator that can be set from Web configuration file
+        /// </summary>
+        public static bool GymsAreDisabled = false;
 
         #endregion
 
@@ -375,6 +381,13 @@ namespace PokemonGo_UWP
                 }
             }
 
+            var webConfigurationInfo = await WebConfigurationManager.GetWebConfiguration();
+            if (webConfigurationInfo != null)
+            {
+                WebConfigurationInfo wci = (WebConfigurationInfo)webConfigurationInfo;
+                GymsAreDisabled = wci.gymsaredisabled;
+            }
+
             AsyncSynchronizationContext.Register();
 
             // Let the user know when there is no available PokehashKey, it will look like the game 'hangs'
@@ -581,7 +594,5 @@ namespace PokemonGo_UWP
         }
 
         #endregion
-
     }
-
 }

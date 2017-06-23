@@ -20,8 +20,6 @@ using POGOProtos.Enums;
 using POGOProtos.Networking.Platform;
 using POGOProtos.Networking.Platform.Requests;
 using POGOProtos.Networking.Platform.Responses;
-using System.Diagnostics;
-using static POGOProtos.Networking.Envelopes.RequestEnvelope.Types;
 
 namespace POGOLib.Official.Net
 {
@@ -127,18 +125,14 @@ namespace POGOLib.Official.Net
                 {
                     new Request
                     {
-                        RequestType = RequestType.GetPlayer,
-                        RequestMessage = new GetPlayerMessage
-                        {
-
-                        }.ToByteString()
+                        RequestType = RequestType.GetPlayer
                     },
                     new Request
                     {
                         RequestType = RequestType.CheckChallenge,
                         RequestMessage = new CheckChallengeMessage
                         {
-
+                            DebugRequest = false
                         }.ToByteString()
                     }
                 });
@@ -454,11 +448,17 @@ namespace POGOLib.Official.Net
                 requestEnvelope.AuthTicket = _session.AccessToken.AuthTicket;
             }
 
-            PlatformRequest platformRequest = await _rpcEncryption.GenerateSignatureAsync(requestEnvelope);
-            if (platformRequest != null)
+            if (requestEnvelope.Requests.Count > 0 &&
+                requestEnvelope.Requests[0].RequestType == RequestType.GetMapObjects)
             {
-                requestEnvelope.PlatformRequests.Add(platformRequest);
+                requestEnvelope.Requests.Add(new Request
+                {
+                    RequestType = RequestType.GetInbox,
+                    RequestMessage = ByteString.Empty
+                });
             }
+
+            requestEnvelope.PlatformRequests.Add(await _rpcEncryption.GenerateSignatureAsync(requestEnvelope));
 
             if (requestEnvelope.Requests.Count > 0 && (
                     requestEnvelope.Requests[0].RequestType == RequestType.GetMapObjects ||
@@ -622,11 +622,7 @@ namespace POGOLib.Official.Net
                                     requestEnvelope.PlatformRequests.Remove(signature);
                                 }
 
-                                PlatformRequest platformRequest = await _rpcEncryption.GenerateSignatureAsync(requestEnvelope);
-                                if (platformRequest != null)
-                                {
-                                    requestEnvelope.PlatformRequests.Insert(0, platformRequest);
-                                }
+                                requestEnvelope.PlatformRequests.Insert(0, await _rpcEncryption.GenerateSignatureAsync(requestEnvelope));
 
                                 // Re-send envelope.
                                 return await PerformRemoteProcedureCallAsync(requestEnvelope);

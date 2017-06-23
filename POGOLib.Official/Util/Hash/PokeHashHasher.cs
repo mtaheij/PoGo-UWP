@@ -21,14 +21,14 @@ namespace POGOLib.Official.Util.Hash
     ///     to buy an API key, go to this url.
     ///     https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
     /// 
-    ///     Android version: 0.61.0
-    ///     IOS version: 1.31.0
+    ///     Android version: 0.67.1
+    ///     IOS version: 1.37.1
     /// </summary>
     public class PokeHashHasher : IHasher
     {
         private const string PokeHashUrl = "https://pokehash.buddyauth.com/";
 
-        private const string PokeHashEndpoint = "api/v133_1/hash";
+        private const string PokeHashEndpoint = "api/v137_1/hash";
 
         private readonly List<PokeHashAuthKey> _authKeys;
 
@@ -79,9 +79,9 @@ namespace POGOLib.Official.Util.Hash
             _keySelection = new Semaphore(1, 1);
         }
 
-        public Version PokemonVersion { get; } = new Version("0.63.1");
+        public Version PokemonVersion { get; } = new Version("0.67.1");
 
-        public long Unknown25 { get; } = 5348175887752539474;
+        public long Unknown25 { get; } = 5395925083854747393;
 
         public async Task<HashData> GetHashDataAsync(RequestEnvelope requestEnvelope, Signature signature, byte[] locationBytes, byte[][] requestsBytes, byte[] serializedTicket)
         {
@@ -134,7 +134,7 @@ namespace POGOLib.Official.Util.Hash
                             break;
 
                         case (HttpStatusCode)429:
-                            message = $"Your request has been limited. {response}";
+                            message = $"Your request has been limited. {responseContent}";
                             break;
 
                         default:

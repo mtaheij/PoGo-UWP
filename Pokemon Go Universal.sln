@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonGo-UWP", "PokemonGo-UWP\PokemonGo-UWP.csproj", "{498AE076-ECDF-4E50-BD1A-171E89D908B5}"
 EndProject
@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitmodules = .gitmodules
 		README.md = README.md
 		version.json = version.json
+		webconfiguration.json = webconfiguration.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POGOLib.Official", "POGOLib.Official\POGOLib.Official.csproj", "{BF6E16FC-9465-4202-9B7F-43AFBFC87EF4}"

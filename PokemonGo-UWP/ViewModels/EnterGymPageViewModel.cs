@@ -70,31 +70,38 @@ namespace PokemonGo_UWP.ViewModels
                 }
                 else
                 {
-                    // Navigating from game page, so we need to actually load the Gym
-                    Busy.SetBusy(true, "Loading Gym");
-                    CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
-                    NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
-                    Logger.Info($"Entering {CurrentGym.Id}");
-                    CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
-                    CurrentGymState = CurrentGymInfo.GymState;
-                    RaisePropertyChanged(() => GymLevel);
-                    RaisePropertyChanged(() => GymPrestigeFull);
-                    RaisePropertyChanged(() => DeployPokemonCommandVisibility);
-                    RaisePropertyChanged(() => TrainCommandVisibility);
-                    RaisePropertyChanged(() => FightCommandVisibility);
-                    RaisePropertyChanged(() => DeployCommandButtonEnabled);
-                    RaisePropertyChanged(() => TrainCommandButtonEnabled);
-                    RaisePropertyChanged(() => BattleCommandButtonEnabled);
-                    RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
-                    Busy.SetBusy(false);
-
-                    if (GameClient.PlayerData.Team == POGOProtos.Enums.TeamColor.Neutral)
+                    if (App.GymsAreDisabled)
                     {
-                        PlayerTeamUnset?.Invoke(this, null);
+                        GymsAreDisabled?.Invoke(this, null);
                     }
                     else
                     {
-                        GymLoaded?.Invoke(this, null);
+                        // Navigating from game page, so we need to actually load the Gym
+                        Busy.SetBusy(true, "Loading Gym");
+                        CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
+                        NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
+                        Logger.Info($"Entering {CurrentGym.Id}");
+                        CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                        CurrentGymState = CurrentGymInfo.GymState;
+                        RaisePropertyChanged(() => GymLevel);
+                        RaisePropertyChanged(() => GymPrestigeFull);
+                        RaisePropertyChanged(() => DeployPokemonCommandVisibility);
+                        RaisePropertyChanged(() => TrainCommandVisibility);
+                        RaisePropertyChanged(() => FightCommandVisibility);
+                        RaisePropertyChanged(() => DeployCommandButtonEnabled);
+                        RaisePropertyChanged(() => TrainCommandButtonEnabled);
+                        RaisePropertyChanged(() => BattleCommandButtonEnabled);
+                        RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
+                        Busy.SetBusy(false);
+
+                        if (GameClient.PlayerData.Team == POGOProtos.Enums.TeamColor.Neutral)
+                        {
+                            PlayerTeamUnset?.Invoke(this, null);
+                        }
+                        else
+                        {
+                            GymLoaded?.Invoke(this, null);
+                        }
                     }
                 }
             }
@@ -360,7 +367,7 @@ namespace PokemonGo_UWP.ViewModels
         }
         #endregion
 
-         #region Game Logic
+        #region Game Logic
 
         #region Shared Logic
 
@@ -425,6 +432,11 @@ namespace PokemonGo_UWP.ViewModels
         ///     Event fired if the Player is not yet level 5
         /// </summary>
         public event EventHandler PlayerLevelInsufficient;
+
+        /// <summary>
+        ///     Event fired if the Gyms are disabled
+        /// </summary>
+        public event EventHandler GymsAreDisabled;
 
         /// <summary>
         ///     Event fired if the Player is level 5, but has not yet chosen a team

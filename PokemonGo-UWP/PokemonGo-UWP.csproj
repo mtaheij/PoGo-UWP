@@ -1046,6 +1046,7 @@
     <Compile Include="Entities\ItemDataWrapper.cs" />
     <Compile Include="Entities\PokemonDataWrapper.cs" />
     <Compile Include="Entities\PokemonModel.cs" />
+    <Compile Include="Entities\WebConfigurationInfo.cs" />
     <Compile Include="Enums\AuthType.cs" />
     <Compile Include="Exceptions\LocationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1062,6 +1063,7 @@
     <Compile Include="Utils\Game\FortDataStatus.cs" />
     <Compile Include="Entities\VersionInfo.cs" />
     <Compile Include="Utils\Game\TutorialNavigationModes.cs" />
+    <Compile Include="Utils\Game\WebConfigurationManager.cs" />
     <Compile Include="Utils\Helpers\AsyncSynchronisationContext.cs" />
     <Compile Include="Utils\Helpers\AudioUtils.cs" />
     <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
