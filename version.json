@@ -1,12 +1,12 @@
 {
-  "minimum_version": "1.3.5",
+  "minimum_version": "1.3.8"
   "unknown25": 5348175887752539474,
   "seed1": 1189692920,
-  "version_number": 6100,
+  "version_number": 6701,
   "settings_updated": "2017-02-19T00:00:00",
   "latest_release": {
-    "version": "1.3.7",
-    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.3.7-beta/PokemonGo-UWP_1.3.7.0_{arch}.appxbundle",
+    "version": "1.3.8",
+    "setup_file": "https://github.com/mtaheij/PoGo-UWP/releases/download/v1.3.8-beta/PokemonGo-UWP_1.3.8.0_{arch}.appxbundle",
     "dependencies": [
     ]
   }
