@@ -1,0 +1,3 @@
+[submodule "POGOLib"]
+	path = POGOLib
+	url = ../../AeonLucid/POGOLib.git
