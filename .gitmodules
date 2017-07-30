@@ -1,3 +1,4 @@
 [submodule "POGOLib"]
 	path = POGOLib
-	url = ../../AeonLucid/POGOLib.git
+	url = https://github.com/AeonLucid/POGOLib.git
+	branch = master
