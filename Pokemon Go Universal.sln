@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonGo-UWP", "PokemonGo-UWP\PokemonGo-UWP.csproj", "{498AE076-ECDF-4E50-BD1A-171E89D908B5}"
 EndProject
@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version.json = version.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POGOLib.Official", "POGOLib\POGOLib.Official\POGOLib.Official.csproj", "{BF6E16FC-9465-4202-9B7F-43AFBFC87EF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POGOLib.Official", "POGOLib\POGOLib.Official\POGOLib.Official.csproj", "{BF6E16FC-9465-4202-9B7F-43AFBFC87EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POGOLib.Official.Google", "POGOLib\POGOLib.Official.Google\POGOLib.Official.Google.csproj", "{7F6C1F66-B837-4C65-97C6-D52956E598AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POGOLib.Official.Google", "POGOLib\POGOLib.Official.Google\POGOLib.Official.Google.csproj", "{7F6C1F66-B837-4C65-97C6-D52956E598AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +46,8 @@ Global
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Debug|x86.Build.0 = Debug|x86
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Debug|x86.Deploy.0 = Debug|x86
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|Any CPU.ActiveCfg = Release|x86
+		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|Any CPU.Build.0 = Release|x86
+		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|Any CPU.Deploy.0 = Release|x86
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|ARM.ActiveCfg = Release|ARM
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|ARM.Build.0 = Release|ARM
 		{498AE076-ECDF-4E50-BD1A-171E89D908B5}.Release|ARM.Deploy.0 = Release|ARM
@@ -67,6 +69,8 @@ Global
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Debug|x86.ActiveCfg = Debug|x86
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Debug|x86.Build.0 = Debug|x86
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|Any CPU.ActiveCfg = Release|x86
+		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|Any CPU.Build.0 = Release|x86
+		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|Any CPU.Deploy.0 = Release|x86
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|ARM.ActiveCfg = Release|ARM
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|ARM.Build.0 = Release|ARM
 		{00CFBEEF-2166-423A-A3D5-9722DF7F2F5A}.Release|ARM.Deploy.0 = Release|ARM
