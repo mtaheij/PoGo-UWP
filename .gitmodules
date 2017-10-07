@@ -1,4 +1,4 @@
 [submodule "POGOLib"]
 	path = POGOLib
-	url = https://github.com/AeonLucid/POGOLib.git
-	branch = master
+	url = https://github.com/Furtif/POGOLib.git
+	branch = PoGo-UWP
