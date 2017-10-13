@@ -1435,16 +1435,6 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\POGOLib.Official.Google\POGOLib.Official.Google.csproj">
-      <Project>{7f6c1f66-b837-4c65-97c6-d52956e598ae}</Project>
-      <Name>POGOLib.Official.Google</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\POGOLib.Official\POGOLib.Official.csproj">
-      <Project>{bf6e16fc-9465-4202-9b7f-43afbfc87ef4}</Project>
-      <Name>POGOLib.Official</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

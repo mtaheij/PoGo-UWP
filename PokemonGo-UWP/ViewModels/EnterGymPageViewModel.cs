@@ -918,7 +918,7 @@ namespace PokemonGo_UWP.ViewModels
                                 break;
                         }
 
-                        var rewarded = battleActions.Select(x => x.BattleResults?.PlayerExperienceAwarded).Where(x => x != null);
+                        var rewarded = battleActions.Select(x => x.BattleResults?.PlayerXpAwarded).Where(x => x != null);
                         var lastAction = battleActions.LastOrDefault();
 
                         if (lastAction.Type == BattleActionType.ActionTimedOut ||
@@ -938,7 +938,7 @@ namespace PokemonGo_UWP.ViewModels
                         {
                             if (lastAction.BattleResults != null)
                             {
-                                var exp = lastAction.BattleResults.PlayerExperienceAwarded;
+                                var exp = lastAction.BattleResults.PlayerXpAwarded;
                                 foreach (int xp in exp)
                                 {
                                     _totalPlayerXpEarned += xp;
