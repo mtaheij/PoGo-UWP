@@ -477,7 +477,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Event fired when the deployment of a Pokemon went wrong
         /// </summary>
-        public event EventHandler<FortDeployPokemonResponse.Types.Result> DeployPokemonError;
+        public event EventHandler<GymDeployResponse.Types.Result> DeployPokemonError;
 
         /// <summary>
         ///     Event fired when the train or battle command failed
@@ -1462,12 +1462,12 @@ namespace PokemonGo_UWP.ViewModels
 
                             switch (fortDeployResponse.Result)
                             {
-                                case FortDeployPokemonResponse.Types.Result.NoResultSet:
+                                case GymDeployResponse.Types.Result.NoResultSet:
                                     break;
-                                case FortDeployPokemonResponse.Types.Result.Success:
+                                case GymDeployResponse.Types.Result.Success:
                                     // Remove the deployed pokemon from the inventory on screen and update the Gymstate
                                     PokemonInventory.Remove(SelectedPokemon);
-                                    CurrentGymState = fortDeployResponse.GymState;
+                                    CurrentGymState.FortData = CurrentGym.FortData;
 
                                     RaisePropertyChanged(() => PokemonInventory);
                                     RaisePropertyChanged(() => CurrentGymState);
@@ -1488,16 +1488,24 @@ namespace PokemonGo_UWP.ViewModels
                                     PokemonDeployed?.Invoke(this, null);
                                     break;
 
-                                case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
-                                case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
-                                case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
-                                case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
-                                case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoTeam:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonIsBuddy:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
+                                case GymDeployResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
+                                case GymDeployResponse.Types.Result.ErrorFortDeployLockout:
+                                case GymDeployResponse.Types.Result.ErrorFortIsFull:
+                                case GymDeployResponse.Types.Result.ErrorNotInRange:
+                                case GymDeployResponse.Types.Result.ErrorOpposingTeamOwnsFort:
+                                case GymDeployResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
+                                case GymDeployResponse.Types.Result.ErrorPlayerHasNoNickname:
+                                case GymDeployResponse.Types.Result.ErrorPlayerHasNoTeam:
+                                case GymDeployResponse.Types.Result.ErrorPokemonIsBuddy:
+                                case GymDeployResponse.Types.Result.ErrorPokemonNotFullHp:
+                                case GymDeployResponse.Types.Result.ErrorInvalidPokemon:
+                                case GymDeployResponse.Types.Result.ErrorLegendaryPokemon:
+                                case GymDeployResponse.Types.Result.ErrorNotAPokemon:
+                                case GymDeployResponse.Types.Result.ErrorPoiInaccessible:
+                                case GymDeployResponse.Types.Result.ErrorRaidActive:
+                                case GymDeployResponse.Types.Result.ErrorTeamDeployLockout:
+                                case GymDeployResponse.Types.Result.ErrorTooManyDeployed:
+                                case GymDeployResponse.Types.Result.ErrorTooManyOfSameKind:
                                     DeployPokemonError?.Invoke(this, fortDeployResponse.Result);
                                     break;
                                 default:
