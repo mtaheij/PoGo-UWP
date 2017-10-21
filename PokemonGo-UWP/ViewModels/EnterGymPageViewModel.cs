@@ -1458,7 +1458,7 @@ namespace PokemonGo_UWP.ViewModels
                         try
                         {
                             ServerRequestRunning = true;
-                            var fortDeployResponse = await GameClient.FortDeployPokemon(CurrentGym.Id, SelectedPokemon.Id);
+                            var fortDeployResponse = await GameClient.GymDeployPokemon(CurrentGym.Id, SelectedPokemon.Id);
 
                             switch (fortDeployResponse.Result)
                             {

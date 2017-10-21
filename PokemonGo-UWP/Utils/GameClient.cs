@@ -2334,31 +2334,31 @@ namespace PokemonGo_UWP.Utils
         /// <param name="fortId"></param>
         /// <param name="pokemonId"></param>
         /// <returns></returns>
-        public static async Task<FortDeployPokemonResponse> FortDeployPokemon(string fortId, ulong pokemonId)
+        public static async Task<GymDeployResponse> GymDeployPokemon(string fortId, ulong pokemonId)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.FortDeployPokemon,
-                RequestMessage = new FortDeployPokemonMessage
+                RequestType = RequestType.GymDeploy,
+                RequestMessage = new GymDeployMessage
                 {
                     PokemonId = pokemonId,
-                    FortId = fortId,
+                    FortId = fortId, 
                     PlayerLatitude = _session.Player.Latitude,
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
 
-            FortDeployPokemonResponse fortDeployPokemonResponse = null;
+            GymDeployResponse fortDeployPokemonResponse = null;
             try
             {
-                fortDeployPokemonResponse = FortDeployPokemonResponse.Parser.ParseFrom(response);
+                fortDeployPokemonResponse = GymDeployResponse.Parser.ParseFrom(response);
             }
             catch (Exception ex)
             {
                 if (response.IsEmpty)
                     throw new Exception("FortDeployPokemon parsing failed because response was empty", ex);
 
-                return new FortDeployPokemonResponse() { Result = FortDeployPokemonResponse.Types.Result.NoResultSet };
+                return new GymDeployResponse() { Result = GymDeployResponse.Types.Result.NoResultSet };
             }
             return fortDeployPokemonResponse;
         }
