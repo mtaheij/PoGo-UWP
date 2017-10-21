@@ -2298,32 +2298,32 @@ namespace PokemonGo_UWP.Utils
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns></returns>
-        public static async Task<GetGymDetailsResponse> GetGymDetails(string gymid, double latitude, double longitude)
+        public static async Task<GymGetInfoResponse> GetGymDetails(string gymid, double latitude, double longitude)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.GetGymDetails,
-                RequestMessage = new GetGymDetailsMessage
+                RequestType = RequestType.GymGetInfo,
+                RequestMessage = new GymGetInfoMessage
                 {
                     GymId = gymid,
-                    GymLatitude = latitude,
-                    GymLongitude = longitude,
-                    PlayerLatitude = _session.Player.Latitude,
-                    PlayerLongitude = _session.Player.Longitude
+                    GymLatDegrees = latitude,
+                    GymLngDegrees = longitude,
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
 
-            GetGymDetailsResponse getGymDetailsResponse = null;
+            GymGetInfoResponse getGymDetailsResponse = null;
             try
             {
-                getGymDetailsResponse = GetGymDetailsResponse.Parser.ParseFrom(response);
+                getGymDetailsResponse = GymGetInfoResponse.Parser.ParseFrom(response);
             }
             catch (Exception ex)
             {
                 if (response.IsEmpty)
                     throw new Exception("GetGymDetails parsing failed because response was empty", ex);
 
-                return new GetGymDetailsResponse() { Result = GetGymDetailsResponse.Types.Result.Unset };
+                return new GymGetInfoResponse() { Result = GymGetInfoResponse.Types.Result.Unset };
             }
             return getGymDetailsResponse;
         }
@@ -2370,63 +2370,64 @@ namespace PokemonGo_UWP.Utils
         /// <param name="defendingPokemonId"></param>
         /// <param name="attackingPokemonIds"></param>
         /// <returns></returns>
-        public static async Task<StartGymBattleResponse> StartGymBattle(string gymId, ulong defendingPokemonId, IEnumerable<ulong>attackingPokemonIds)
+        public static async Task<GymStartSessionResponse> StartGymBattle(string gymId, ulong defendingPokemonId, IEnumerable<ulong>attackingPokemonIds)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.StartGymBattle,
-                RequestMessage = new StartGymBattleMessage
+                RequestType = RequestType.GymStartSession,
+                RequestMessage = new GymStartSessionMessage
                 {
                     GymId = gymId,
-                    DefendingPokemonId = defendingPokemonId,
-                    AttackingPokemonIds = {attackingPokemonIds},
-                    PlayerLatitude = _session.Player.Latitude,
-                    PlayerLongitude = _session.Player.Longitude
+                    DefendingPokemonId = defendingPokemonId, 
+                    AttackingPokemonId = {attackingPokemonIds},
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
 
-            StartGymBattleResponse startGymBattleResponse = null;
+            GymStartSessionResponse startGymBattleResponse = null;
             try
             {
-                startGymBattleResponse = StartGymBattleResponse.Parser.ParseFrom(response);
+                startGymBattleResponse = GymStartSessionResponse.Parser.ParseFrom(response);
             }
             catch (Exception ex)
             {
                 if (response.IsEmpty)
                     throw new Exception("StartGymBattle parsing failed because response was empty", ex);
 
-                return new StartGymBattleResponse() { Result = StartGymBattleResponse.Types.Result.Unset };
+                return new GymStartSessionResponse() { Result = GymStartSessionResponse.Types.Result.Unset };
             }
             return startGymBattleResponse;
         }
 
-        public static async Task<AttackGymResponse> AttackGym(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
+        public static async Task<GymBattleAttackResponse> AttackGym(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction, long serverMS)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.AttackGym,
-                RequestMessage = new AttackGymMessage
+                RequestType = RequestType.GymBattleAttack,
+                RequestMessage = new GymBattleAttackMessage
                 {
                     GymId = gymId,
                     BattleId = battleId,
                     AttackActions = {battleActions},
                     LastRetrievedAction = lastRetrievedAction,
-                    PlayerLatitude = _session.Player.Latitude,
-                    PlayerLongitude = _session.Player.Longitude
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude,
+                    TimestampMs = serverMS
                 }.ToByteString()
             }, false);
 
-            AttackGymResponse attackGymResponse = null;
+            GymBattleAttackResponse attackGymResponse = null;
             try
             {
-                attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
+                attackGymResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
             }
             catch (Exception ex)
             {
                 if (response.IsEmpty)
                     throw new Exception("AttackGym parsing failed because response was empty", ex);
 
-                return new AttackGymResponse() { Result = AttackGymResponse.Types.Result.Unset };
+                return new GymBattleAttackResponse() { Result = GymBattleAttackResponse.Types.Result.Unset };
             }
             return attackGymResponse;
         }
