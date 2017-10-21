@@ -17,7 +17,7 @@
     "XamlAnimatedGif": "1.1.10"
   },
   "frameworks": {
-    "uap10.0.10586": {}
+    "uap10.0.10240": {}
   },
   "runtimes": {
     "win10-arm": {},
