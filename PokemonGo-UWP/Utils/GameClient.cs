@@ -1093,32 +1093,32 @@ namespace PokemonGo_UWP.Utils
         ///     Gets player's inventoryDelta
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetInventoryResponse> GetInventory()
+        public static async Task<GetHoloInventoryResponse> GetInventory()
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.GetInventory,
+                RequestType = RequestType.GetHoloInventory,
                 RequestMessage =
-                new GetInventoryMessage
+                new GetHoloInventoryMessage
                 {
                     LastTimestampMs = 0
                 }.ToByteString()
             });
 
-            GetInventoryResponse getInventoryResponse = null;
+            GetHoloInventoryResponse getHoloInventoryResponse = null;
             try
             {
-                getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
+                getHoloInventoryResponse = GetHoloInventoryResponse.Parser.ParseFrom(response);
             }
             catch (Exception ex)
             {
                 if (response.IsEmpty)
-                    throw new Exception("GetInventory parsing failed because response was empty", ex);
+                    throw new Exception("GetHoloInventory parsing failed because response was empty", ex);
 
-                return new GetInventoryResponse() { Success = false };
+                return new GetHoloInventoryResponse() { Success = false };
             }
 
-            return getInventoryResponse;
+            return getHoloInventoryResponse;
         }
 
         /// <summary>
@@ -1367,7 +1367,7 @@ namespace PokemonGo_UWP.Utils
         {
             var fullInventory = _session.Player.Inventory.InventoryItems;
 
-            // By sending an Echo request, GetInventory will also be send. This will update the inventory by itself
+            // By sending an Echo request, GetHoloInventory will also be send. This will update the inventory by itself
             if (ForceUpdate)
             {
                 var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
