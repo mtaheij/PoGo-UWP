@@ -166,32 +166,68 @@ namespace PokemonGo_UWP.Views
             });
         }
 
-        private void GameManagerViewModelOnDeployPokemonError(object sender, FortDeployPokemonResponse.Types.Result result)
+        private void GameManagerViewModelOnDeployPokemonError(object sender, GymDeployResponse.Types.Result result)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 switch (result)
                 {
-                    case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
+                    case GymDeployResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorAlreadyHasPokemonOnFort");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
+                    case GymDeployResponse.Types.Result.ErrorFortDeployLockout:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorFortDeployLockout");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
+                    case GymDeployResponse.Types.Result.ErrorFortIsFull:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorFortIsFull");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
+                    case GymDeployResponse.Types.Result.ErrorNotInRange:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorNotInRange");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
+                    case GymDeployResponse.Types.Result.ErrorOpposingTeamOwnsFort:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorOpposingTeamOwnsFort");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
+                    case GymDeployResponse.Types.Result.ErrorPlayerHasNoNickname:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerHasNoNickname");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
+                    case GymDeployResponse.Types.Result.ErrorPokemonNotFullHp:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPokemonNotFullHp");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorInvalidPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorInvalidPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorLegendaryPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorLegendaryPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorNotAPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorNotAPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerBelowMinimumLevel");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPlayerHasNoTeam:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerHasNoTeam");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPoiInaccessible:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPoiInaccessible");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPokemonIsBuddy:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPokemonIsBuddy");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorRaidActive:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorRaidActive");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTeamDeployLockout:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTeamDeployLockout");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTooManyDeployed:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTooManyDeployed");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTooManyOfSameKind:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTooManyOfSameKind");
+                        break;
+                    case GymDeployResponse.Types.Result.NoResultSet:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("NoResultSet");
                         break;
                 }
                 ErrorMessageText.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
