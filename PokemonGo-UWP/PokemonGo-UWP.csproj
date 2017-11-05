@@ -22,6 +22,7 @@
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppxBundle>Always</AppxBundle>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <PackageCertificateThumbprint>92EA2EC2946EBA96F4D94F6B12D7FDC3DB39BDE6</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -758,6 +759,7 @@
     <Content Include="Assets\UI\player-avatar.png" />
     <Content Include="Assets\UI\pokeballLoading.gif" />
     <Content Include="Assets\UI\Professor.png" />
+    <Content Include="Assets\UI\raids_loading_screen.png" />
     <Content Include="Assets\UI\Spotlight.png" />
     <Content Include="Assets\UI\steelix_loading_screen.png" />
     <Content Include="Assets\UI\walk.png" />

@@ -136,13 +136,13 @@ namespace PokemonGo_UWP.ViewModels
                         {
 
                         }
-                        catch (PokeHashException)
-                        {
-                            var errorMessage = Utils.Resources.CodeResources.GetString("PokeHashException");
-                            ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
-                            dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
-                            dialog.Show();
-                        }
+                        //catch (PokeHashException)
+                        //{
+                        //    var errorMessage = Utils.Resources.CodeResources.GetString("PokeHashException");
+                        //    ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
+                        //    dialog.Closed += (ss, ee) => { Application.Current.Exit(); };
+                        //    dialog.Show();
+                        //}
                         catch (HashVersionMismatchException ex)
                         {
                             var errorMessage = ex.Message + Utils.Resources.CodeResources.GetString("PokeHashVersionMismatch");

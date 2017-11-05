@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Google.Common.Geometry;
 using Google.Protobuf.Collections;
 using POGOProtos.Data;
 using POGOProtos.Data.Player;
@@ -31,6 +30,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
 using POGOProtos.Data.Logs;
 using PokemonGo_UWP.Utils.Extensions;
+using Google.Common.Geometry;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -1011,7 +1011,7 @@ namespace PokemonGo_UWP.Utils
             var task = Task.Run(async () =>
             {
                 var cellCenter = new S2CellId((ulong)value).ChildEndForLevel(30).ToLatLng();
-                MapLocationFinderResult result = await MapLocationFinder.FindLocationsAtAsync(new Geopoint(new BasicGeoposition() { Latitude = cellCenter.LatDegrees, Longitude = cellCenter.LngDegrees }));
+                MapLocationFinderResult result = await MapLocationFinder.FindLocationsAtAsync(new Geopoint(new BasicGeoposition() { Latitude = cellCenter.LatDegrees, Longitude = cellCenter.LngDegrees}));
 
                 if (result.Status == MapLocationFinderStatus.Success && result.Locations.Count != 0)
                 {

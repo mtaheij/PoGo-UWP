@@ -39,14 +39,14 @@ namespace PokemonGo_UWP.Views
             set { SetValue(CurrentGymProperty, value); }
         }
 
-        public static readonly DependencyProperty GymMembershipsProperty =
-            DependencyProperty.Register(nameof(GymMemberships), typeof(ObservableCollection<GymMembership>), typeof(GymMembersControl),
+        public static readonly DependencyProperty GymDefendersProperty =
+            DependencyProperty.Register(nameof(GymDefenders), typeof(ObservableCollection<GymDefender>), typeof(GymMembersControl),
                 new PropertyMetadata(null));
 
-        public ObservableCollection<GymMembership> GymMemberships
+        public ObservableCollection<GymDefender> GymDefenders
         {
-            get { return (ObservableCollection<GymMembership>)GetValue(GymMembershipsProperty); }
-            set { SetValue(GymMembershipsProperty, value); }
+            get { return (ObservableCollection<GymDefender>)GetValue(GymDefendersProperty); }
+            set { SetValue(GymDefendersProperty, value); }
         }
 
         public static readonly DependencyProperty SelectedGymMembershipProperty =

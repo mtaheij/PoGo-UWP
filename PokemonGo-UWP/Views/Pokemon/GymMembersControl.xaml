@@ -14,7 +14,7 @@
     d:DesignWidth="360">
 
     <UserControl.Resources>
-        <DataTemplate x:Key="GymMemberDataTemplate" x:DataType="protos:GymMembership">
+        <DataTemplate x:Key="GymMemberDataTemplate" x:DataType="protos:GymDefender">
             <Grid Width="360">
                 <!--Base-->
                 <Image  x:Name="BaseImage" 
@@ -55,7 +55,7 @@
                 <Image  Width="200" 
                         Height="200" 
                         Margin="0,60,0,0" 
-                        Source="{Binding PokemonData.PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"/>
+                        Source="{Binding MotivatedPokemon.Pokemon.PokemonId, Converter={StaticResource PokemonIdToPokemonSpriteConverter}}"/>
                 <Grid   HorizontalAlignment="Left" 
                         VerticalAlignment="Center" 
                         Margin="5,0,0,240" >
@@ -77,7 +77,7 @@
                                 HorizontalAlignment="Left"
                                 Foreground="#DDDDDD" 
                                 FontSize="26" 
-                                Text="{Binding PokemonData, Converter={StaticResource PokemonDataToPokemonNameConverter}}"/>
+                                Text="{Binding MotivatedPokemon.Pokemon, Converter={StaticResource PokemonDataToPokemonNameConverter}}"/>
                     <Rectangle Grid.Row="2" 
                                Fill="#DDDDDD" 
                                Width="100" 
@@ -93,7 +93,7 @@
                         <TextBlock Foreground="#DDDDDD" 
                                    FontSize="26" 
                                    Margin="4,0,0,0" 
-                                   Text="{Binding PokemonData.Cp}"/>
+                                   Text="{Binding MotivatedPokemon.Pokemon.Cp}"/>
                     </StackPanel>
                 </Grid>
             </Grid>

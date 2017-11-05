@@ -126,7 +126,7 @@ namespace PokemonGo_UWP.Views
             GymMembersControl.DataContext = null;
             GymMembersControl.DataContext = ViewModel;
 
-            GymMembersControl.GymMemberships = ViewModel.GymMemberships;
+            GymMembersControl.GymDefenders = ViewModel.GymDefenders;
         }
 
         private void GameManagerViewModelOnEnterOutOfRange(object sender, EventArgs eventArgs)
