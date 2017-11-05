@@ -21,6 +21,7 @@ using POGOProtos.Settings.Master;
 using Windows.UI.Xaml;
 using PokemonGo_UWP.Utils.Game;
 using POGOLib.Official.Logging;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -372,6 +373,7 @@ namespace PokemonGo_UWP.ViewModels
                 {
                     if (CurrentPokemon.EncounterId == 0) // Starter Pokemon, return to Tutorial page
                     {
+                        HockeyClient.Current.TrackPageView("TutorialPage");
                         NavigationService.Navigate(typeof(TutorialPage), TutorialNavigationModes.StarterPokemonCatched);
                         return;
                     }
@@ -379,6 +381,7 @@ namespace PokemonGo_UWP.ViewModels
                     GameClient.ToggleUpdateTimer();
                     if (currentPokemon != null)
                     {
+                        HockeyClient.Current.TrackPageView("PokemonDetailPage");
                         NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
                         {
                             SelectedPokemonId = _capturedPokemonId.ToString(),
@@ -387,6 +390,7 @@ namespace PokemonGo_UWP.ViewModels
                     }
                     else
                     {
+                        HockeyClient.Current.TrackPageView("GameMapPage");
                         NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.PokemonUpdate);
                     }
                 }, () => true));
@@ -404,7 +408,11 @@ namespace PokemonGo_UWP.ViewModels
                 GameClient.ToggleUpdateTimer();
             }
 
-            Dispatcher.Dispatch(() => NavigationService.GoBack());
+            Dispatcher.Dispatch(() =>
+            {
+                HockeyClient.Current.TrackEvent("GoBack from CapturePokemonPage");
+                NavigationService.GoBack();
+            });
         }, () => true));
 
         #endregion

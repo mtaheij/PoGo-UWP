@@ -1,4 +1,5 @@
-﻿using PokemonGo_UWP.Entities;
+﻿using Microsoft.HockeyApp;
+using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using System.Collections.Generic;
@@ -190,6 +191,7 @@ namespace PokemonGo_UWP.ViewModels
                 // Clear stored token
                 GameClient.DoLogout();
                 // Navigate to login page
+                HockeyClient.Current.TrackPageView("MainPage");
                 NavigationService.Navigate(typeof(MainPage));
                 // Remove all pages from the history
                 NavigationService.ClearHistory();
@@ -210,10 +212,12 @@ namespace PokemonGo_UWP.ViewModels
                 // Navigate back if we didn't change map settings
                 if (_mapSettingsChangedCounter%2 == 0)
                 {
+                    HockeyClient.Current.TrackEvent("GoBack from SettingsPage");
                     NavigationService.GoBack();
                 }
                 else
                 {
+                    HockeyClient.Current.TrackPageView("GameMapPage");
                     NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.SettingsUpdate);
                 }
             }));

@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Collections;
+using Microsoft.HockeyApp;
 using Newtonsoft.Json;
 using POGOProtos.Data;
 using POGOProtos.Data.Player;
@@ -415,6 +416,7 @@ namespace PokemonGo_UWP.ViewModels
                 }
                 AudioUtils.StopSounds();
 
+                HockeyClient.Current.TrackPageView("GameMapPage");
                 await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
             }, () => true));
         #endregion
@@ -436,6 +438,7 @@ namespace PokemonGo_UWP.ViewModels
 
                 AudioUtils.StopSounds();
 
+                HockeyClient.Current.TrackPageView("GameMapPage");
                 await NavigationService.NavigateAsync(typeof(GameMapPage), GameMapNavigationModes.AppStart);
 
             }, () => true));

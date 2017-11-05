@@ -33,6 +33,8 @@ using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
 using POGOLib.Official.Util.Hash.PokeHash;
 using POGOLib.Official.Util.Hash;
+using Windows.System.Profile;
+using PokemonGo_UWP.Utils.Game;
 
 namespace PokemonGo_UWP
 {
@@ -64,6 +66,11 @@ namespace PokemonGo_UWP
         /// The TileUpdater instance for the app.
         /// </summary>
         public static TileUpdater LiveTileUpdater { get; private set; }
+
+        /// <summary>
+        /// Indicator that can be set from Web configuration file
+        /// </summary>
+        public static bool GymsAreDisabled = false;
 
         #endregion
 
@@ -155,9 +162,12 @@ namespace PokemonGo_UWP
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
-                    UpdateLiveTile(e.NewItems.Cast<PokemonData>().OrderByDescending(c => c.DisplayCp).ToList());
+                    List<PokemonData> pokemonList = e.NewItems?.Cast<PokemonData>().OrderByDescending(c => c.DisplayCp).ToList();
+                    if (pokemonList != null)
+                    {
+                        UpdateLiveTile(pokemonList);
+                    }
                     break;
-
             }
         }
 
@@ -299,6 +309,13 @@ namespace PokemonGo_UWP
         /// <returns></returns>
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            if (!CheckWindowsBuildVersion())
+            {
+                var dialog = new MessageDialog("The minimum required Windows version for this App is 10.0.14393 (Aniversary Update). PoGo-UWP will exit now");
+                await dialog.ShowAsync();
+                App.Current.Exit();
+            }
+
             bool forceToMainPage = false;
             // Check for updates (ignore resume)
             if (startKind == StartKind.Launch)
@@ -325,7 +342,7 @@ namespace PokemonGo_UWP
                 if (latestUpdateInfo.Status == UpdateManager.UpdateStatus.UpdateAvailable)
                 {
                     var dialog =
-                        new MessageDialog(string.Format(Utils.Resources.CodeResources.GetString("UpdatedVersion"),
+                        new MessageDialog(string.Format(Utils.Resources.CodeResources.GetString("UpdatedVersionText"),
                             latestUpdateInfo.Version, latestUpdateInfo.Description));
 
                     dialog.Commands.Add(new UICommand(Utils.Resources.CodeResources.GetString("YesText")) { Id = 0 });
@@ -335,11 +352,11 @@ namespace PokemonGo_UWP
 
                     var result = await dialog.ShowAsyncQueue();
 
-                    if ((int)result.Id != 0)
-                        return;
-
-                    var t1 = UpdateManager.InstallUpdate();
-                    forceToMainPage = true;
+                    if ((int)result.Id == 0)
+                    {
+                        var t1 = UpdateManager.InstallUpdate();
+                        forceToMainPage = true;
+                    }
                 }
                 else if (latestUpdateInfo.Status == UpdateManager.UpdateStatus.UpdateForced)
                 {
@@ -364,6 +381,12 @@ namespace PokemonGo_UWP
                 }
             }
 
+            var webConfigurationInfo = await WebConfigurationManager.GetWebConfiguration();
+            if (webConfigurationInfo != null)
+            {
+                WebConfigurationInfo wci = (WebConfigurationInfo)webConfigurationInfo;
+                GymsAreDisabled = wci.gymsaredisabled;
+            }
 
             AsyncSynchronizationContext.Register();
 
@@ -373,6 +396,7 @@ namespace PokemonGo_UWP
             // See if there is a key for the PokeHash server, ask one from the user if there isn't
             if (String.IsNullOrEmpty(SettingsService.Instance.PokehashAuthKey))
             {
+                HockeyClient.Current.TrackPageView("PokehashKeyPage");
                 await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
 
                 return;
@@ -381,6 +405,7 @@ namespace PokemonGo_UWP
             var currentAccessToken = GameClient.GetAccessToken();
             if (currentAccessToken == null || forceToMainPage)
             {
+                HockeyClient.Current.TrackPageView("MainPage");
                 await NavigationService.NavigateAsync(typeof(MainPage));
                 return;
             }
@@ -391,6 +416,7 @@ namespace PokemonGo_UWP
                     await GameClient.InitializeSession();
                     if (GameClient.IsInitialized)
                     {
+                        HockeyClient.Current.TrackPageView("GameMapPage");
                         NavigationService.Navigate(typeof(GameMapPage), GameMapNavigationModes.AppStart);
                     }
                 }
@@ -400,6 +426,7 @@ namespace PokemonGo_UWP
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                     dialog.Show();
 
+                    HockeyClient.Current.TrackPageView("MainPage");
                     await NavigationService.NavigateAsync(typeof(MainPage));
                 }
                 catch (LocationException)
@@ -428,6 +455,7 @@ namespace PokemonGo_UWP
                     ConfirmationDialog dialog = new Views.ConfirmationDialog(errorMessage);
                     dialog.Show();
 
+                    HockeyClient.Current.TrackPageView("PokehashKeyPage");
                     await NavigationService.NavigateAsync(typeof(PokehashKeyPage), GameMapNavigationModes.AppStart);
                 }
             }
@@ -537,14 +565,34 @@ namespace PokemonGo_UWP
                 catch (Exception ex)
                 {
                     Logger.Debug(ex.Message);
-                    if (!string.IsNullOrEmpty(ApplicationKeys.HockeyAppToken))
-                        HockeyClient.Current.TrackException(ex);
+                    HockeyClient.Current.TrackException(ex);
                 }
             });
         }
 
+        internal bool CheckWindowsBuildVersion()
+        {
+            // get the system family name
+            AnalyticsVersionInfo ai = AnalyticsInfo.VersionInfo;
+            string SystemFamily = ai.DeviceFamily;
+
+            // get the system version number
+            string sv = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+            ulong v = ulong.Parse(sv);
+            ulong v1 = (v & 0xFFFF000000000000L) >> 48;
+            ulong v2 = (v & 0x0000FFFF00000000L) >> 32;
+            ulong v3 = (v & 0x00000000FFFF0000L) >> 16;
+            ulong v4 = (v & 0x000000000000FFFFL);
+            string SystemVersion = $"{v1}.{v2}.{v3}.{v4}";
+
+            if (v1 < 10 || (v1 == 10 && v3 < 14393))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         #endregion
-
     }
-
 }

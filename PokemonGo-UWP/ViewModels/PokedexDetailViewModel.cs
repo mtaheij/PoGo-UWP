@@ -7,6 +7,7 @@ using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using POGOProtos.Enums;
 using Template10.Mvvm;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -63,6 +64,7 @@ namespace PokemonGo_UWP.ViewModels
           _closeCommand ??
           (_closeCommand = new DelegateCommand(() =>
           {
+              HockeyClient.Current.TrackEvent("GoBack from PokedexDetailPage");
               NavigationService.GoBack();
           }, () => true)
           );

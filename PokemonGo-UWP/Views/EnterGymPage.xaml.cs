@@ -59,6 +59,7 @@ namespace PokemonGo_UWP.Views
             ViewModel.EnterSuccess += GameManagerViewModelOnEnterSuccess;
 
             ViewModel.PlayerLevelInsufficient += GameManagerViewModelOnPlayerLevelInsufficient;
+            ViewModel.GymsAreDisabled += GameManagerViewModelOnGymsAreDisabled;
             ViewModel.PlayerTeamUnset += GameManagerViewModelOnPlayerTeamUnset;
 
             ViewModel.PlayerTeamSet += GameManagerViewModelOnPlayerTeamSet;
@@ -93,6 +94,7 @@ namespace PokemonGo_UWP.Views
             ViewModel.EnterSuccess -= GameManagerViewModelOnEnterSuccess;
 
             ViewModel.PlayerLevelInsufficient -= GameManagerViewModelOnPlayerLevelInsufficient;
+            ViewModel.GymsAreDisabled -= GameManagerViewModelOnGymsAreDisabled;
             ViewModel.PlayerTeamUnset -= GameManagerViewModelOnPlayerTeamUnset;
 
             ViewModel.PlayerTeamSet -= GameManagerViewModelOnPlayerTeamSet;
@@ -221,6 +223,16 @@ namespace PokemonGo_UWP.Views
             dialog.Show();
         }
 
+        private void GameManagerViewModelOnGymsAreDisabled(object sender, EventArgs e)
+        {
+            ProfessorDialog dialog = new ProfessorDialog(BackGroundType.Light, false);
+            dialog.Messages.Add(new MessageEntry("I regret to inform you that gyms are currently disabled.", 60));
+            dialog.Messages.Add(new MessageEntry("The new battling system has not yet been implemented.", 60));
+            dialog.Messages.Add(new MessageEntry("Come back when there is a new version of POGO-UWP!", 60));
+
+            dialog.Closed += Dialog_Closed;
+            dialog.Show();
+        }
 
         private void GameManagerViewModelOnAskForAttackTeam(object sender, EventArgs e)
         {

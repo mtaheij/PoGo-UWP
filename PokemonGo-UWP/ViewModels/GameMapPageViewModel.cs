@@ -25,6 +25,7 @@ using PokemonGo_UWP.Controls;
 using POGOProtos.Inventory;
 using PokemonGo_UWP.Utils.Game;
 using POGOLib.Official.Logging;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -126,6 +127,7 @@ namespace PokemonGo_UWP.ViewModels
                     // Go into the Tutorial Mode until the playerprofile is in the correct state
                     if (!CheckTutorialStateOk())
                     {
+                        HockeyClient.Current.TrackPageView("TutorialPage");
                         await NavigationService.NavigateAsync(typeof(TutorialPage), TutorialNavigationModes.TutorialStart);
                         return;
                     }
@@ -365,7 +367,11 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand SettingsCommand
             =>
                 _openSettingsCommand ??
-                (_openSettingsCommand = new DelegateCommand(() => { NavigationService.Navigate(typeof(SettingsPage)); }))
+                (_openSettingsCommand = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("SettingsPage");
+                    NavigationService.Navigate(typeof(SettingsPage));
+                }))
             ;
 
         #endregion
@@ -377,8 +383,11 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand GotoPokemonInventoryPageCommand
             =>
                 _gotoPokemonInventoryPage ??
-                (_gotoPokemonInventoryPage =
-                    new DelegateCommand(() => { NavigationService.Navigate(typeof(PokemonInventoryPage), true); }));
+                (_gotoPokemonInventoryPage = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("PokemonInventoryPage");
+                    NavigationService.Navigate(typeof(PokemonInventoryPage), true);
+                }));
 
         #endregion
 
@@ -389,8 +398,11 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand GotoItemsInventoryPageCommand
             =>
                 _gotoItemsInventoryPage ??
-                (_gotoItemsInventoryPage =
-                    new DelegateCommand(() => { NavigationService.Navigate(typeof(ItemsInventoryPage), true); }));
+                (_gotoItemsInventoryPage = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("ItemsInventoryPage");
+                    NavigationService.Navigate(typeof(ItemsInventoryPage), true);
+                }));
 
         #endregion
 
@@ -401,15 +413,21 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand GotoPlayerProfilePageCommand
             =>
                 _gotoPlayerProfilePage ??
-                (_gotoPlayerProfilePage =
-                    new DelegateCommand(() => { NavigationService.Navigate(typeof(PlayerProfilePage), true); }));
+                (_gotoPlayerProfilePage = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("PlayerProfilePage");
+                    NavigationService.Navigate(typeof(PlayerProfilePage), true);
+                }));
 
         private DelegateCommand _gotoPokedexPage;
         public DelegateCommand GotoPokedexPageCommand
             =>
                 _gotoPokedexPage ??
-                (_gotoPokedexPage =
-                    new DelegateCommand(() => { NavigationService.Navigate(typeof(PokedexPage)); }));
+                (_gotoPokedexPage = new DelegateCommand(() => 
+                {
+                    HockeyClient.Current.TrackPageView("PokedexPage");
+                    NavigationService.Navigate(typeof(PokedexPage));
+                }));
 
         #endregion
 

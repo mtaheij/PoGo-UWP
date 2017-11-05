@@ -11,6 +11,7 @@ using POGOProtos.Inventory;
 using POGOProtos.Networking.Responses;
 using Template10.Mvvm;
 using POGOLib.Official.Logging;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -94,6 +95,7 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand ReturnToPokemonInventoryScreen => _returnToPokemonInventoryScreen ?? (
             _returnToPokemonInventoryScreen = new DelegateCommand(() =>
             {
+                HockeyClient.Current.TrackEvent("GoBack from EggDetailPage");
                 NavigationService.GoBack();
             }, () => true));
 

@@ -16,6 +16,7 @@ using PokemonGo_UWP.Utils.Extensions;
 using Windows.UI.Xaml.Media.Animation;
 using PokemonGo_UWP.Controls;
 using POGOProtos.Networking.Responses;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
 {
@@ -217,6 +218,7 @@ namespace PokemonGo_UWP.ViewModels
             _returnToGameScreen = new DelegateCommand(() => 
             {
                 if (ServerRequestRunning) return;
+                HockeyClient.Current.TrackEvent("GoBack from PokemonInventoryPage");
                 NavigationService.GoBack();
             }, () => true));
 
@@ -252,6 +254,7 @@ namespace PokemonGo_UWP.ViewModels
             }
             else
             {
+                HockeyClient.Current.TrackPageView("PokemonDetailPage");
                 NavigationService.Navigate(typeof(PokemonDetailPage), new SelectedPokemonNavModel()
                 {
                     SelectedPokemonId = selectedPokemon.Id.ToString(),
@@ -267,6 +270,7 @@ namespace PokemonGo_UWP.ViewModels
         private DelegateCommand<PokemonDataWrapper> _gotoEggDetailCommand;
         public DelegateCommand<PokemonDataWrapper> GotoEggDetailCommand => _gotoEggDetailCommand ?? (_gotoEggDetailCommand = new DelegateCommand<PokemonDataWrapper>((selectedEgg) =>
        {
+           HockeyClient.Current.TrackPageView("EggDetailPage");
            NavigationService.Navigate(typeof(EggDetailPage), selectedEgg.Id.ToString(), new SuppressNavigationTransitionInfo());
        }));
 

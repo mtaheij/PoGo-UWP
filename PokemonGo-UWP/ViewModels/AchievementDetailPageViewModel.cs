@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Navigation;
 using PokemonGo_UWP.Utils;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels {
     public class AchievementDetailPageViewModel : ViewModelBase {
@@ -73,7 +74,13 @@ namespace PokemonGo_UWP.ViewModels {
         /// <summary>
         ///     Going back to map page
         /// </summary>
-        public DelegateCommand ReturnToProfileScreen => _returnToRProfileScreen ?? (_returnToRProfileScreen = new DelegateCommand(() => { NavigationService.GoBack(); }, () => true));
+        public DelegateCommand ReturnToProfileScreen => 
+            _returnToRProfileScreen ?? (_returnToRProfileScreen = new DelegateCommand(() => 
+            {
+                HockeyClient.Current.TrackEvent("GoBack from AchievementDetailPage");
+                NavigationService.GoBack();
+            }, 
+                () => true));
 
         #endregion
 

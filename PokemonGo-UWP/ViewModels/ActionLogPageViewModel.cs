@@ -1,4 +1,5 @@
-﻿using POGOProtos.Data.Logs;
+﻿using Microsoft.HockeyApp;
+using POGOProtos.Data.Logs;
 using POGOProtos.Networking.Responses;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
@@ -100,7 +101,13 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Going back to profile page
         /// </summary>
-        public DelegateCommand ReturnToProfileScreen => _returnToProfileScreen ?? (_returnToProfileScreen = new DelegateCommand(() => { NavigationService.GoBack(); }, () => true));
+        public DelegateCommand ReturnToProfileScreen => 
+            _returnToProfileScreen ?? (_returnToProfileScreen = new DelegateCommand(() => 
+            {
+                HockeyClient.Current.TrackEvent("GoBack from ActionLogPage");
+                NavigationService.GoBack();
+            }, 
+                () => true));
 
         #endregion
 
