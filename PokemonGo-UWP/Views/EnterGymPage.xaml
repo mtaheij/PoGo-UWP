@@ -283,7 +283,7 @@
 
         <!--Memberships-->
         <local:GymMembersControl x:Name="GymMembersControl" 
-                                 GymMemberships="{Binding GymMemberships}" 
+                                 GymDefenders="{Binding GymDefenders}" 
                                  CurrentGym="{Binding CurrentGym}"
                                  UltimatePokemon="{Binding UltimatePokemon}"/>
 
@@ -316,7 +316,7 @@
                 </Ellipse>
                 <Ellipse Width="72" Height="72">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding CurrentGymInfo.Urls[0]}"
+                        <ImageBrush ImageSource="{Binding CurrentGymInfo.Url}"
                                     Stretch="UniformToFill" />
                     </Ellipse.Fill>
                 </Ellipse>
@@ -330,7 +330,7 @@
                 <Border Background="#88333333" CornerRadius="5" >
                     <TextBlock x:Name="GymXP" Margin="16,2,10,2" FontSize="16" Opacity="0.8"
                                Foreground="{Binding CurrentGym.OwnedByTeam, Converter={StaticResource PlayerTeamToTeamColorBrushConverter}}">
-                        <Run Text="{Binding CurrentGymState.FortData.GymPoints}"></Run>
+                        <Run Text="{Binding CurrentGymStatusAndDefenders.PokemonFortProto.GymDisplay.TotalGymCp}"></Run>
                         <Run Text=" / "></Run>
                         <Run Text="{Binding GymPrestigeFull}"/>
                     </TextBlock>

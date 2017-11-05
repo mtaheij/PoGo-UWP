@@ -20,7 +20,7 @@ namespace POGOLib.Official.LoginProviders
             _username = username;
             _password = password;
         }
-
+        
         /// <summary>
         /// The unique identifier of the <see cref="GoogleLoginProvider"/>.
         /// </summary>

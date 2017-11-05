@@ -48,9 +48,9 @@ namespace PokemonGo_UWP.ViewModels
             {
                 // Recovering the state
                 CurrentGym = JsonConvert.DeserializeObject<FortDataWrapper>((string)suspensionState[nameof(CurrentGym)]);
-                CurrentGymInfo = JsonConvert.DeserializeObject<GetGymDetailsResponse>((string)suspensionState[nameof(CurrentGymInfo)]);
-                CurrentGymState = CurrentGymInfo.GymState;
-                CurrentEnterResponse = JsonConvert.DeserializeObject<GetGymDetailsResponse>((string)suspensionState[nameof(CurrentEnterResponse)]);
+                CurrentGymInfo = JsonConvert.DeserializeObject<GymGetInfoResponse>((string)suspensionState[nameof(CurrentGymInfo)]);
+                CurrentGymStatusAndDefenders = CurrentGymInfo.GymStatusAndDefenders;
+                CurrentEnterResponse = JsonConvert.DeserializeObject<GymGetInfoResponse>((string)suspensionState[nameof(CurrentEnterResponse)]);
                 RaisePropertyChanged(() => GymLevel);
                 RaisePropertyChanged(() => GymPrestigeFull);
                 RaisePropertyChanged(() => DeployPokemonCommandVisibility);
@@ -74,8 +74,8 @@ namespace PokemonGo_UWP.ViewModels
                     CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
                     NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
                     Logger.Info($"Entering {CurrentGym.Id}");
-                    CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
-                    CurrentGymState = CurrentGymInfo.GymState;
+                    CurrentGymInfo = await GameClient.GymGetInfo(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                    CurrentGymStatusAndDefenders = CurrentGymInfo.GymStatusAndDefenders;
                     RaisePropertyChanged(() => GymLevel);
                     RaisePropertyChanged(() => GymPrestigeFull);
                     RaisePropertyChanged(() => DeployPokemonCommandVisibility);
@@ -140,15 +140,21 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Infos on the current Gym
         /// </summary>
-        private GetGymDetailsResponse _currentGymInfo;
+        private GymGetInfoResponse _currentGymInfo;
 
         /// <summary>
         ///     Results of the current Gym enter
         /// </summary>
-        private GetGymDetailsResponse _currentEnterResponse;
+        private GymGetInfoResponse _currentEnterResponse;
+
+        /// <summary>
+        ///     Info on the state and defenders of the current Gym
+        /// </summary>
+        private GymStatusAndDefenders _currentGymStatusAndDefenders;
 
         /// <summary>
         ///     Info on the state of the current Gym
+        ///     TODO: Remove after deploy has changed
         /// </summary>
         private GymState _currentGymState;
 
@@ -168,10 +174,19 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Infos on the current Gym
         /// </summary>
-        public GetGymDetailsResponse CurrentGymInfo
+        public GymGetInfoResponse CurrentGymInfo
         {
             get { return _currentGymInfo; }
             set { Set(ref _currentGymInfo, value); }
+        }
+
+        /// <summary>
+        ///     Info on the state and defenders of the current Gym
+        /// </summary>
+        public GymStatusAndDefenders CurrentGymStatusAndDefenders
+        {
+            get { return _currentGymStatusAndDefenders; }
+            set { Set(ref _currentGymStatusAndDefenders, value); }
         }
 
         /// <summary>
@@ -186,7 +201,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Results of the current Gym enter
         /// </summary>
-        public GetGymDetailsResponse CurrentEnterResponse
+        public GymGetInfoResponse CurrentEnterResponse
         {
             get { return _currentEnterResponse; }
             set { Set(ref _currentEnterResponse, value); }
@@ -199,10 +214,10 @@ namespace PokemonGo_UWP.ViewModels
         {
             get
             {
-                if (CurrentGymState == null) return 0;
-                if (CurrentGymState.FortData == null) return 0;
+                if (CurrentGymStatusAndDefenders == null) return 0;
+                if (CurrentGymStatusAndDefenders.PokemonFortProto == null) return 0;
 
-                long points = CurrentGymState.FortData.GymPoints;
+                long points = CurrentGymStatusAndDefenders.PokemonFortProto.GymDisplay.TotalGymCp;
                 if (points < 2000) return 1;
                 if (points < 4000) return 2;
                 if (points < 8000) return 3;
@@ -253,7 +268,7 @@ namespace PokemonGo_UWP.ViewModels
             get
             {
                 if (CurrentGym?.OwnedByTeam != GameClient.PlayerData.Team) return Visibility.Collapsed;
-                if (CurrentGymState.DeployLockout) return Visibility.Collapsed;
+                if (CurrentGymStatusAndDefenders.PokemonFortProto.DeployLockoutEndMs > 0) return Visibility.Collapsed;
                 
                 return Visibility.Visible;
             }
@@ -291,16 +306,20 @@ namespace PokemonGo_UWP.ViewModels
         {
             get
             {
+                // TODO: Re-enable
+                return false;
+                /*
                 var distance = GeoHelper.Distance(CurrentGym?.Geoposition, LocationServiceHelper.Instance.Geoposition.Coordinate.Point);
                 if (distance > GameClient.GameSetting.FortSettings.InteractionRangeMeters) return false;
 
                 bool isDeployed = GameClient.GetDeployedPokemons().Count() > 0 ? GameClient.GetDeployedPokemons().Any(a => a.DeployedFortId.Equals(CurrentGym.Id)) : false;
-                if (GymLevel > CurrentGymState.Memberships.Count && !isDeployed)
+                if (GymLevel > CurrentGymStatusAndDefenders.GymDefender.Count && !isDeployed)
                     return true;
 
                 if (CurrentGym.OwnedByTeam != GameClient.PlayerData.Team) return false;
 
                 return true;
+                */
             }
         }
 
@@ -308,12 +327,16 @@ namespace PokemonGo_UWP.ViewModels
         {
             get
             {
+                // TODO: Re-enable
+                return false;
+                /*
                 var distance = GeoHelper.Distance(CurrentGym?.Geoposition, LocationServiceHelper.Instance.Geoposition.Coordinate.Point);
                 if (distance > GameClient.GameSetting.FortSettings.InteractionRangeMeters) return false;
 
                 if (CurrentGym.OwnedByTeam == GameClient.PlayerData.Team) return false;
 
                 return true;
+                */
             }
         }
 
@@ -327,17 +350,17 @@ namespace PokemonGo_UWP.ViewModels
             }
         }
 
-        public ObservableCollection<GymMembership> GymMemberships
+        public ObservableCollection<GymDefender> GymDefenders
         {
             get
             {
-                ObservableCollection<GymMembership> memberships = new ObservableCollection<GymMembership>();
-                if (CurrentGymState == null) return memberships;
-                foreach (GymMembership membership in CurrentGymState.Memberships)
+                ObservableCollection<GymDefender> defenders = new ObservableCollection<GymDefender>();
+                if (CurrentGymStatusAndDefenders == null) return defenders;
+                foreach (GymDefender defender in CurrentGymStatusAndDefenders.GymDefender)
                 {
-                    memberships.Add(membership);
+                    defenders.Add(defender);
                 }
-                return memberships;
+                return defenders;
             }
         }
 
@@ -346,12 +369,12 @@ namespace PokemonGo_UWP.ViewModels
             get
             {
                 PokemonData ultimatePokemon = new PokemonData();
-                if (CurrentGymState != null)
+                if (CurrentGymStatusAndDefenders != null)
                 {
-                    if (CurrentGymState.Memberships != null && CurrentGymState.Memberships.Count > 0)
+                    if (CurrentGymStatusAndDefenders.GymDefender != null && CurrentGymStatusAndDefenders.GymDefender.Count > 0)
                     {
-                        GymMembership lastMembership = CurrentGymState.Memberships[CurrentGymState.Memberships.Count - 1];
-                        ultimatePokemon = lastMembership.PokemonData;
+                        GymDefender lastDefender = CurrentGymStatusAndDefenders.GymDefender[CurrentGymStatusAndDefenders.GymDefender.Count - 1];
+                        ultimatePokemon = lastDefender.MotivatedPokemon.Pokemon;
                     }
                 }
                 return ultimatePokemon;
@@ -411,6 +434,11 @@ namespace PokemonGo_UWP.ViewModels
         public event EventHandler EnterOutOfRange;
 
         /// <summary>
+        ///     Event fired if the user tried to enter a Gym which is disabled
+        /// </summary>
+        public event EventHandler EnterDisabled;
+
+        /// <summary>
         /// <summary>
         ///     Event fired if the Player's inventory is full and he can't get items from the Pokestop
         /// </summary>
@@ -460,7 +488,7 @@ namespace PokemonGo_UWP.ViewModels
         /// <summary>
         ///     Event fired when the deployment of a Pokemon went wrong
         /// </summary>
-        public event EventHandler<FortDeployPokemonResponse.Types.Result> DeployPokemonError;
+        public event EventHandler<GymDeployResponse.Types.Result> DeployPokemonError;
 
         /// <summary>
         ///     Event fired when the train or battle command failed
@@ -508,13 +536,13 @@ namespace PokemonGo_UWP.ViewModels
                 Busy.SetBusy(true, "Entering Gym");
                 Logger.Info($"Entering {CurrentGymInfo.Name} [ID = {CurrentGym.Id}]");
                 CurrentEnterResponse =
-                    await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                    await GameClient.GymGetInfo(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                 Busy.SetBusy(false);
                 switch (CurrentEnterResponse.Result)
                 {
-                    case GetGymDetailsResponse.Types.Result.Unset:
+                    case GymGetInfoResponse.Types.Result.Unset:
                         break;
-                    case GetGymDetailsResponse.Types.Result.Success:
+                    case GymGetInfoResponse.Types.Result.Success:
                         // Success, we play the animation and update inventory
                         Logger.Info("Entering Gym success");
 
@@ -522,10 +550,15 @@ namespace PokemonGo_UWP.ViewModels
                         EnterSuccess?.Invoke(this, null);
                         //GameClient.UpdateInventory();
                         break;
-                    case GetGymDetailsResponse.Types.Result.ErrorNotInRange:
+                    case GymGetInfoResponse.Types.Result.ErrorNotInRange:
                         // Gym can't be used because it's out of range, there's nothing that we can do
                         Logger.Info("Entering Gym out of range");
                         EnterOutOfRange?.Invoke(this, null);
+                        break;
+                    case GymGetInfoResponse.Types.Result.ErrorGymDisabled:
+                        // Gym can't be used because it's disabled, there's nothing that we can do
+                        Logger.Info("Entering Gym disabled");
+                        EnterDisabled?.Invoke(this, null);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -619,12 +652,12 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand TrainCommand => _trainCommand ?? (
             _trainCommand = new DelegateCommand(() =>
             {
-                var defenders = CurrentGymState.Memberships.Select(x => x.PokemonData).ToList();
+                var defenders = CurrentGymStatusAndDefenders.GymDefender.Select(x => x.MotivatedPokemon.Pokemon).ToList();
 
                 if (defenders.Count < 1)
                     return;
 
-                if (CurrentGymState.FortData.IsInBattle)
+                if (CurrentGymStatusAndDefenders.PokemonFortProto.IsInBattle)
                 {
                     BattleError?.Invoke(this, "GymUnderAttack");
                     return;
@@ -776,17 +809,17 @@ namespace PokemonGo_UWP.ViewModels
 
                     ServerRequestRunning = true;
 
-                    var defenders = CurrentGymState.Memberships.Select(x => x.PokemonData).ToList();
+                    var defenders = CurrentGymStatusAndDefenders.GymDefender.Select(x => x.MotivatedPokemon.Pokemon).ToList();
                     if (defenders.Count < 1)
                         return;
 
-                    if (CurrentGymState.FortData.IsInBattle)
+                    if (CurrentGymStatusAndDefenders.PokemonFortProto.IsInBattle)
                     {
                         BattleError?.Invoke(this, Utils.Resources.CodeResources.GetString("GymUnderAttack"));
                         return;
                     }
 
-                    bool isTraining = (GameClient.PlayerData.Team == CurrentGymState.FortData.OwnedByTeam);
+                    bool isTraining = (GameClient.PlayerData.Team == CurrentGymStatusAndDefenders.PokemonFortProto.OwnedByTeam);
 
                     var badassPokemon = AttackTeamMembers;
                     var pokemonDatas = badassPokemon.Select(x => x.WrappedData).ToArray();
@@ -901,7 +934,7 @@ namespace PokemonGo_UWP.ViewModels
                                 break;
                         }
 
-                        var rewarded = battleActions.Select(x => x.BattleResults?.PlayerExperienceAwarded).Where(x => x != null);
+                        var rewarded = battleActions.Select(x => x.BattleResults?.PlayerXpAwarded).Where(x => x != null);
                         var lastAction = battleActions.LastOrDefault();
 
                         if (lastAction.Type == BattleActionType.ActionTimedOut ||
@@ -921,7 +954,7 @@ namespace PokemonGo_UWP.ViewModels
                         {
                             if (lastAction.BattleResults != null)
                             {
-                                var exp = lastAction.BattleResults.PlayerExperienceAwarded;
+                                var exp = lastAction.BattleResults.PlayerXpAwarded;
                                 foreach (int xp in exp)
                                 {
                                     _totalPlayerXpEarned += xp;
@@ -945,7 +978,7 @@ namespace PokemonGo_UWP.ViewModels
                     }
 
                     BattleOutcomeResultEventArgs ea = new BattleOutcomeResultEventArgs("", _totalPlayerXpEarned, _totalGymPrestigeDelta, _pokemonDefeated, _lastAttackGymResponse);
-                    NewGymPoints = CurrentGymInfo.GymState.FortData.GymPoints + _totalGymPrestigeDelta;
+                    NewGymPoints = CurrentGymInfo.GymStatusAndDefenders.PokemonFortProto.GymPoints + _totalGymPrestigeDelta;
                     RaisePropertyChanged(() => NewGymPoints);
 
                     if (!isVictory || _isAbandoned)
@@ -1037,7 +1070,7 @@ namespace PokemonGo_UWP.ViewModels
 
         private int _currentAttackerEnergy;
 
-        private async Task<List<BattleAction>> AttackGym(CancellationTokenSource cancellationToken, GetGymDetailsResponse currentFortData, StartGymBattleResponse startResponse, int counter)
+        private async Task<List<BattleAction>> AttackGym(CancellationTokenSource cancellationToken, GymGetInfoResponse currentFortData, StartGymBattleResponse startResponse, int counter)
         {
             long serverMs = startResponse.BattleLog.BattleStartTimestampMs;
             var lastActions = startResponse.BattleLog.BattleActions.ToList();
@@ -1051,7 +1084,7 @@ namespace PokemonGo_UWP.ViewModels
             PokemonData attacker = null;
             PokemonData defender = null;
 
-            FortData gym = currentFortData.GymState.FortData;
+            FortData gym = currentFortData.GymStatusAndDefenders.PokemonFortProto;
             _currentAttackerEnergy = 0;
 
             while(!_battleTrackerCancellation.IsCancellationRequested)
@@ -1346,12 +1379,12 @@ namespace PokemonGo_UWP.ViewModels
         public DelegateCommand FightCommand => _fightCommand ?? (
             _fightCommand = new DelegateCommand(() =>
             {
-                var defenders = CurrentGymState.Memberships.Select(x => x.PokemonData).ToList();
+                var defenders = CurrentGymStatusAndDefenders.GymDefender.Select(x => x.MotivatedPokemon.Pokemon).ToList();
 
                 if (defenders.Count < 1)
                     return;
 
-                if (CurrentGymState.FortData.IsInBattle)
+                if (CurrentGymStatusAndDefenders.PokemonFortProto.IsInBattle)
                 {
                     BattleError?.Invoke(this, "GymUnderAttack");
                     return;
@@ -1442,19 +1475,19 @@ namespace PokemonGo_UWP.ViewModels
                         try
                         {
                             ServerRequestRunning = true;
-                            var fortDeployResponse = await GameClient.FortDeployPokemon(CurrentGym.Id, SelectedPokemon.Id);
+                            var gymDeployResponse = await GameClient.GymDeploy(CurrentGym.Id, SelectedPokemon.Id);
 
-                            switch (fortDeployResponse.Result)
+                            switch (gymDeployResponse.Result)
                             {
-                                case FortDeployPokemonResponse.Types.Result.NoResultSet:
+                                case GymDeployResponse.Types.Result.NoResultSet:
                                     break;
-                                case FortDeployPokemonResponse.Types.Result.Success:
+                                case GymDeployResponse.Types.Result.Success:
                                     // Remove the deployed pokemon from the inventory on screen and update the Gymstate
                                     PokemonInventory.Remove(SelectedPokemon);
-                                    CurrentGymState = fortDeployResponse.GymState;
+                                    CurrentGymStatusAndDefenders = gymDeployResponse.GymStatusAndDefenders;
 
                                     RaisePropertyChanged(() => PokemonInventory);
-                                    RaisePropertyChanged(() => CurrentGymState);
+                                    RaisePropertyChanged(() => CurrentGymStatusAndDefenders);
                                     RaisePropertyChanged(() => GymLevel);
                                     RaisePropertyChanged(() => GymPrestigeFull);
                                     RaisePropertyChanged(() => DeployPokemonCommandVisibility);
@@ -1462,7 +1495,7 @@ namespace PokemonGo_UWP.ViewModels
                                     RaisePropertyChanged(() => FightCommandVisibility);
                                     RaisePropertyChanged(() => DeployCommandButtonEnabled);
                                     RaisePropertyChanged(() => OutOfRangeMessageBorderVisibility);
-                                    RaisePropertyChanged(() => GymMemberships);
+                                    RaisePropertyChanged(() => GymDefenders);
 
                                     // TODO: Implement message informing about success of deployment (Shell needed)
                                     //GameClient.UpdateInventory();
@@ -1472,17 +1505,25 @@ namespace PokemonGo_UWP.ViewModels
                                     PokemonDeployed?.Invoke(this, null);
                                     break;
 
-                                case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
-                                case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
-                                case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
-                                case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
-                                case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoTeam:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonIsBuddy:
-                                case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
-                                    DeployPokemonError?.Invoke(this, fortDeployResponse.Result);
+                                case GymDeployResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
+                                case GymDeployResponse.Types.Result.ErrorFortDeployLockout:
+                                case GymDeployResponse.Types.Result.ErrorFortIsFull:
+                                case GymDeployResponse.Types.Result.ErrorNotInRange:
+                                case GymDeployResponse.Types.Result.ErrorOpposingTeamOwnsFort:
+                                case GymDeployResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
+                                case GymDeployResponse.Types.Result.ErrorPlayerHasNoNickname:
+                                case GymDeployResponse.Types.Result.ErrorPlayerHasNoTeam:
+                                case GymDeployResponse.Types.Result.ErrorPokemonIsBuddy:
+                                case GymDeployResponse.Types.Result.ErrorPokemonNotFullHp:
+                                case GymDeployResponse.Types.Result.ErrorInvalidPokemon:
+                                case GymDeployResponse.Types.Result.ErrorLegendaryPokemon:
+                                case GymDeployResponse.Types.Result.ErrorNotAPokemon:
+                                case GymDeployResponse.Types.Result.ErrorPoiInaccessible:
+                                case GymDeployResponse.Types.Result.ErrorRaidActive:
+                                case GymDeployResponse.Types.Result.ErrorTeamDeployLockout:
+                                case GymDeployResponse.Types.Result.ErrorTooManyDeployed:
+                                case GymDeployResponse.Types.Result.ErrorTooManyOfSameKind:
+                                    DeployPokemonError?.Invoke(this, gymDeployResponse.Result);
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
@@ -1538,8 +1579,8 @@ namespace PokemonGo_UWP.ViewModels
             _closeBattleOutcomeCommand = new DelegateCommand(async() =>
             {
                 // Get new GymInfo, because it might have been changed
-                CurrentGymInfo = await GameClient.GetGymDetails(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
-                CurrentGymState = CurrentGymInfo.GymState;
+                CurrentGymInfo = await GameClient.GymGetInfo(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
+                CurrentGymStatusAndDefenders = CurrentGymInfo.GymStatusAndDefenders;
                 RaisePropertyChanged(() => GymLevel);
                 RaisePropertyChanged(() => GymPrestigeFull);
                 RaisePropertyChanged(() => DeployPokemonCommandVisibility);
@@ -1560,7 +1601,7 @@ namespace PokemonGo_UWP.ViewModels
             _autoSelectCommand ?? (
             _autoSelectCommand = new DelegateCommand(() =>
             {
-                bool isTraining = (GameClient.PlayerData.Team == CurrentGymState.FortData.OwnedByTeam);
+                bool isTraining = (GameClient.PlayerData.Team == CurrentGymStatusAndDefenders.PokemonFortProto.OwnedByTeam);
 
                 var attackTeam = CompleteAttackTeam(isTraining);
                 if (attackTeam != null && attackTeam.Count() == 6)
@@ -1584,9 +1625,9 @@ namespace PokemonGo_UWP.ViewModels
 
             while (attackers.Count < 6)
             {
-                foreach (var defenderPokemon in GymMemberships)
+                foreach (var defenderPokemon in GymDefenders)
                 {
-                    var defender = new PokemonDataWrapper(defenderPokemon.PokemonData);
+                    var defender = new PokemonDataWrapper(defenderPokemon.MotivatedPokemon.Pokemon);
                     var attacker = GetBestAgainst(attackers, defender, isTraining);
                     if (attacker != null)
                     {
@@ -1605,8 +1646,8 @@ namespace PokemonGo_UWP.ViewModels
         {
             Logger.Info(string.Format("Checking pokemon for {0} ({1} CP). Already collected team has: {2}", defender.PokemonId, defender.Cp, string.Join(", ", myTeam.Select(s => string.Format("{0} ({1} CP)", s.PokemonId, s.Cp)))));
 
-            GymMembership defenderMembership = GymMemberships.FirstOrDefault(f => f.PokemonData.Id == defender.Id);
-            AnyPokemonStat defenderStat = new AnyPokemonStat(new PokemonDataWrapper(defenderMembership.PokemonData));
+            GymDefender gDefender = GymDefenders.FirstOrDefault(f => f.MotivatedPokemon.Pokemon.Id == defender.Id);
+            AnyPokemonStat defenderStat = new AnyPokemonStat(new PokemonDataWrapper(gDefender.MotivatedPokemon.Pokemon));
 
             var allPokemonStats = new List<MyPokemonStat>();
             foreach (PokemonData pokemonData in GameClient.PokemonsInventory)

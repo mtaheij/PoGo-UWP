@@ -124,7 +124,7 @@ namespace PokemonGo_UWP.Views
             GymMembersControl.DataContext = null;
             GymMembersControl.DataContext = ViewModel;
 
-            GymMembersControl.GymMemberships = ViewModel.GymMemberships;
+            GymMembersControl.GymDefenders = ViewModel.GymDefenders;
         }
 
         private void GameManagerViewModelOnEnterOutOfRange(object sender, EventArgs eventArgs)
@@ -164,31 +164,31 @@ namespace PokemonGo_UWP.Views
             });
         }
 
-        private void GameManagerViewModelOnDeployPokemonError(object sender, FortDeployPokemonResponse.Types.Result result)
+        private void GameManagerViewModelOnDeployPokemonError(object sender, GymDeployResponse.Types.Result result)
         {
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 switch (result)
                 {
-                    case FortDeployPokemonResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
+                    case GymDeployResponse.Types.Result.ErrorAlreadyHasPokemonOnFort:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorAlreadyHasPokemonOnFort");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorFortDeployLockout:
+                    case GymDeployResponse.Types.Result.ErrorFortDeployLockout:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorFortDeployLockout");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorFortIsFull:
+                    case GymDeployResponse.Types.Result.ErrorFortIsFull:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorFortIsFull");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorNotInRange:
+                    case GymDeployResponse.Types.Result.ErrorNotInRange:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorNotInRange");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorOpposingTeamOwnsFort:
+                    case GymDeployResponse.Types.Result.ErrorOpposingTeamOwnsFort:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorOpposingTeamOwnsFort");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorPlayerHasNoNickname:
+                    case GymDeployResponse.Types.Result.ErrorPlayerHasNoNickname:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerHasNoNickname");
                         break;
-                    case FortDeployPokemonResponse.Types.Result.ErrorPokemonNotFullHp:
+                    case GymDeployResponse.Types.Result.ErrorPokemonNotFullHp:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPokemonNotFullHp");
                         break;
                 }

@@ -20,6 +20,9 @@ using POGOProtos.Enums;
 using POGOProtos.Networking.Platform;
 using POGOProtos.Networking.Platform.Requests;
 using POGOProtos.Networking.Platform.Responses;
+using System.Diagnostics;
+using static POGOProtos.Networking.Envelopes.RequestEnvelope.Types;
+using POGOLib.Official.Extensions;
 
 namespace POGOLib.Official.Net
 {
@@ -47,13 +50,16 @@ namespace POGOLib.Official.Net
 
         private string _mapKey;
 
+        private readonly RandomIdGenerator idGenerator = new RandomIdGenerator();
+
         private readonly List<RequestType> _defaultRequests = new List<RequestType>
         {
             RequestType.CheckChallenge,
             RequestType.GetHatchedEggs,
-            RequestType.GetInventory,
+            RequestType.GetHoloInventory,
             RequestType.CheckAwardedBadges,
-            RequestType.DownloadSettings
+            RequestType.DownloadSettings,
+            RequestType.GetInbox
         };
 
         private readonly ConcurrentQueue<RequestEnvelope> _rpcQueue = new ConcurrentQueue<RequestEnvelope>();
@@ -80,7 +86,7 @@ namespace POGOLib.Official.Net
         
         internal Platform GetPlatform()
         {
-            return _session.DeviceInfo.DeviceBrand == "Apple" ? Platform.Ios : Platform.Android;
+            return _session.Device.DeviceInfo.DeviceBrand == "Apple" ? Platform.Ios : Platform.Android;
         }
 
         private long PositiveRandom()
@@ -116,13 +122,20 @@ namespace POGOLib.Official.Net
         {
             // Send GetPlayer to check if we're connected and authenticated
             GetPlayerResponse playerResponse;
+
+            int loop = 0;
+
             do
             {
                 var response = await SendRemoteProcedureCallAsync(new[]
                 {
                     new Request
                     {
-                        RequestType = RequestType.GetPlayer
+                        RequestType = RequestType.GetPlayer,
+                        RequestMessage = new GetPlayerMessage
+                        {
+
+                        }.ToByteString()
                     },
                     new Request
                     {
@@ -138,7 +151,8 @@ namespace POGOLib.Official.Net
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 }
-            } while (!playerResponse.Success);
+                loop++;
+            } while (!playerResponse.Success && loop < 10);
 
             _session.Player.Data = playerResponse.PlayerData;
 
@@ -303,6 +317,8 @@ namespace POGOLib.Official.Net
         /// <returns></returns>
         private ulong GetNextRequestId()
         {
+            //Change to random requestId https://github.com/pogodevorg/pgoapi/pull/217
+            /*
             if (_requestCount == 1)
             {
                 IncrementRequestCount();
@@ -324,7 +340,9 @@ namespace POGOLib.Official.Net
             // So we'll just use the same for iOS since it doesn't hurt, and means less code required.
             ulong r = (((ulong)PositiveRandom() | ((_requestCount + 1) >> 31)) << 32) | (_requestCount + 1);
             IncrementRequestCount();
-            return r;
+            return r;*/
+
+            return idGenerator.Next();
         }
 
         /// <summary>
@@ -346,19 +364,21 @@ namespace POGOLib.Official.Net
                 },
                 new Request
                 {
-                    RequestType = RequestType.GetHatchedEggs
+                    RequestType = RequestType.GetHatchedEggs,
+                    RequestMessage = new GetHatchedEggsMessage().ToByteString()
                 },
                 new Request
                 {
-                    RequestType = RequestType.GetInventory,
-                    RequestMessage = new GetInventoryMessage
+                    RequestType = RequestType.GetHoloInventory,
+                    RequestMessage = new GetHoloInventoryMessage
                     {
                         LastTimestampMs = _session.Player.Inventory.LastInventoryTimestampMs
                     }.ToByteString()
                 },
                 new Request
                 {
-                    RequestType = RequestType.CheckAwardedBadges
+                    RequestType = RequestType.CheckAwardedBadges,
+                    RequestMessage = new CheckAwardedBadgesMessage().ToByteString()
                 }
             };
 
@@ -380,7 +400,16 @@ namespace POGOLib.Official.Net
                     }.ToByteString()
                 });
             }
-            
+
+            request.Add(new Request
+            {
+                RequestType = RequestType.GetInbox,
+                RequestMessage = new GetInboxMessage
+                {
+                    IsHistory = true
+                }.ToByteString() 
+            });
+
             //If Incense is active we add this:
             //request.Add(new Request
             //{
@@ -740,8 +769,8 @@ namespace POGOLib.Official.Net
                         }
                         break;
 
-                    case RequestType.GetInventory: // Get_Inventory
-                        var inventory = GetInventoryResponse.Parser.ParseFrom(bytes);
+                    case RequestType.GetHoloInventory: // Get_Inventory
+                        var inventory = GetHoloInventoryResponse.Parser.ParseFrom(bytes);
                         if (inventory.Success)
                         {
                             if (inventory.InventoryDelta.NewTimestampMs >=
@@ -767,7 +796,15 @@ namespace POGOLib.Official.Net
                         break;
 
                     case RequestType.DownloadSettings: // Download_Settings
-                        var downloadSettings = DownloadSettingsResponse.Parser.ParseFrom(bytes);
+                        DownloadSettingsResponse downloadSettings = null;
+                        try
+                        {
+                            downloadSettings = DownloadSettingsResponse.Parser.ParseFrom(bytes);
+                        }
+                        catch (Exception)
+                        {
+                            downloadSettings = new DownloadSettingsResponse() { Error = "Could not parse downloadSettings" };
+                        }
                         if (string.IsNullOrEmpty(downloadSettings.Error))
                         {
                             if (downloadSettings.Settings == null)

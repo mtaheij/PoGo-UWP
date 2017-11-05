@@ -403,7 +403,7 @@ namespace PokemonGo_UWP.Utils
 
             Configuration.IgnoreHashVersion = false;
             Configuration.Hasher = new PokeHashHasher(SettingsService.Instance.PokehashAuthKey);
-            ((PokeHashHasher)Configuration.Hasher).PokehashSleeping += GameClient_PokehashSleeping;
+            //((PokeHashHasher)Configuration.Hasher).PokehashSleeping += GameClient_PokehashSleeping;
 
             // Login
             ILoginProvider loginProvider;
@@ -785,9 +785,9 @@ namespace PokemonGo_UWP.Utils
         }
 
         private static void LocationHelperPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if(e.PropertyName==nameof(LocationServiceHelper.Instance.Geoposition))
-			{
+        {
+            if(e.PropertyName==nameof(LocationServiceHelper.Instance.Geoposition))
+            {
                 if (_lastPlayerLocationUpdate == null || _lastPlayerLocationUpdate.AddSeconds((int)GameClient.GameSetting.MapSettings.GetMapObjectsMinRefreshSeconds) < DateTime.Now)
                 {
                     // Updating player's position
@@ -798,8 +798,8 @@ namespace PokemonGo_UWP.Utils
                         _session.Player.SetCoordinates(position.Latitude, position.Longitude, LocationServiceHelper.Instance.Geoposition.Coordinate.Accuracy);
                     }
                 }
-			}
-		}
+            }
+        }
 
         private static DateTime _lastPlayerLocationUpdate;
         private static bool _isSessionEnabled = true;
@@ -1051,6 +1051,27 @@ namespace PokemonGo_UWP.Utils
             var getInventoryResponse = GetInventoryResponse.Parser.ParseFrom(response);
 
             return getInventoryResponse;
+        }
+
+        /// <summary>
+        ///     Gets player's inventory
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<GetHoloInventoryResponse> GetHoloInventory()
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.GetHoloInventory,
+                RequestMessage =
+                new GetHoloInventoryMessage
+                {
+                    ItemBeenSeen = 0,
+                    LastTimestampMs = 0
+                }.ToByteString()
+            });
+            var getHoloInventoryResponse = GetHoloInventoryResponse.Parser.ParseFrom(response);
+
+            return getHoloInventoryResponse;
         }
 
         /// <summary>
@@ -1914,7 +1935,6 @@ namespace PokemonGo_UWP.Utils
         #endregion
 
         #region Gym Handling
-
         /// <summary>
         ///     Gets the details for the given Gym
         /// </summary>
@@ -1922,23 +1942,23 @@ namespace PokemonGo_UWP.Utils
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns></returns>
-        public static async Task<GetGymDetailsResponse> GetGymDetails(string gymid, double latitude, double longitude)
+        public static async Task<GymGetInfoResponse> GymGetInfo(string gymid, double latitude, double longitude)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.GetGymDetails,
-                RequestMessage = new GetGymDetailsMessage
+                RequestType = RequestType.GymGetInfo,
+                RequestMessage = new GymGetInfoMessage
                 {
                     GymId = gymid,
-                    GymLatitude = latitude,
-                    GymLongitude = longitude,
-                    PlayerLatitude = _session.Player.Latitude,
-                    PlayerLongitude = _session.Player.Longitude
+                    GymLatDegrees = latitude,
+                    GymLngDegrees = longitude,
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
-            var getGymDetailsResponse = GetGymDetailsResponse.Parser.ParseFrom(response);
+            var gymGetDetailsResponse = GymGetInfoResponse.Parser.ParseFrom(response);
 
-            return getGymDetailsResponse;
+            return gymGetDetailsResponse;
         }
 
         /// <summary>
@@ -1947,12 +1967,12 @@ namespace PokemonGo_UWP.Utils
         /// <param name="fortId"></param>
         /// <param name="pokemonId"></param>
         /// <returns></returns>
-        public static async Task<FortDeployPokemonResponse> FortDeployPokemon(string fortId, ulong pokemonId)
+        public static async Task<GymDeployResponse> GymDeploy(string fortId, ulong pokemonId)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
-                RequestType = RequestType.FortDeployPokemon,
-                RequestMessage = new FortDeployPokemonMessage
+                RequestType = RequestType.GymDeploy,
+                RequestMessage = new GymDeployMessage
                 {
                     PokemonId = pokemonId,
                     FortId = fortId,
@@ -1960,13 +1980,14 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var fortDeployPokemonResponse = FortDeployPokemonResponse.Parser.ParseFrom(response);
+            var gymDeployResponse = GymDeployResponse.Parser.ParseFrom(response);
 
-            return fortDeployPokemonResponse;
+            return gymDeployResponse;
         }
 
         /// <summary>
         ///     Start a gym battle using a set of pokemons
+        ///     TODO: Replace by GYM_START_SESSION
         /// </summary>
         /// <param name="gymId"></param>
         /// <param name="defendingPokemonId"></param>
@@ -1991,6 +2012,32 @@ namespace PokemonGo_UWP.Utils
             return startGymBattleResponse;
         }
 
+        /// <summary>
+        ///     Start a gym session
+        /// </summary>
+        /// <param name="gymId"></param>
+        /// <param name="defendingPokemonId"></param>
+        /// <param name="attackingPokemonIds"></param>
+        /// <returns></returns>
+        public static async Task<GymStartSessionResponse> GymStartSession(string gymId, ulong defendingPokemonId, IEnumerable<ulong> attackingPokemonIds)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.GymStartSession,
+                RequestMessage = new GymStartSessionMessage
+                {
+                    GymId = gymId,
+                    DefendingPokemonId = defendingPokemonId,
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude
+                }.ToByteString()
+            });
+            var gymStartSessionResponse = GymStartSessionResponse.Parser.ParseFrom(response);
+
+            return gymStartSessionResponse;
+        }
+
+        // TODO: Replace by GYM_BATTLE_ATTACK
         public static async Task<AttackGymResponse> AttackGym(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
@@ -2009,6 +2056,27 @@ namespace PokemonGo_UWP.Utils
             var attackGymResponse = AttackGymResponse.Parser.ParseFrom(response);
 
             return attackGymResponse;
+        }
+
+        public static async Task<GymBattleAttackResponse> GymBattleAttack(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.GymBattleAttack,
+                RequestMessage = new GymBattleAttackMessage
+                {
+                    GymId = gymId,
+                    BattleId = battleId,
+                    AttackActions = { battleActions },
+                    LastRetrievedAction = lastRetrievedAction,
+                    PlayerLatDegrees = _session.Player.Latitude,
+                    PlayerLngDegrees = _session.Player.Longitude,
+                    TimestampMs = 0
+                }.ToByteString()
+            }, false);
+            var gymBattleAttackResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
+
+            return gymBattleAttackResponse;
         }
 
         /// The following _client.Fort methods need implementation:

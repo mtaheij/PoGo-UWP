@@ -1,9 +1,11 @@
 ﻿{
   "dependencies": {
-    "Google.Protobuf.Tools": "3.1.0",
+    "GeoCoordinate.NetStandard1": "1.0.1",
+    "Google.Protobuf": "3.4.1",
+    "Google.Protobuf.Tools": "3.3.0",
     "HockeySDK.UWP": "4.1.5",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "Newtonsoft.Json": "9.0.1",
+    "Newtonsoft.Json": "10.0.3",
     "Nito.AsyncEx": "3.0.1",
     "NotificationsExtensions.Win10": "14332.0.2",
     "Octokit": "0.22.0",
@@ -14,7 +16,7 @@
     "XamlAnimatedGif": "1.1.6"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10586": {}
   },
   "runtimes": {
     "win10-arm": {},

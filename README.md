@@ -32,10 +32,6 @@ There are 3 social chat groups to make sure everyone can use their favorite serv
 
 The skype group is used for Text/Voice chat and general disscussion, as well as support.
 
-[Telegram](https://telegram.me/PoGoUWP)
-
-For telegram users, there is also a Telegram superchat that is also for general disscussion, ideas and support.
-
 [Discord](https://discord.gg/4GMbEWH)
 
 The Discord is used mostly for live voice chat and is about the same subjects above groups are.
