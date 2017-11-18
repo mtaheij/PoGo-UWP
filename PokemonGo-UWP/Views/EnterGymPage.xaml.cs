@@ -193,6 +193,42 @@ namespace PokemonGo_UWP.Views
                     case GymDeployResponse.Types.Result.ErrorPokemonNotFullHp:
                         ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPokemonNotFullHp");
                         break;
+                    case GymDeployResponse.Types.Result.ErrorInvalidPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorInvalidPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorLegendaryPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorLegendaryPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorNotAPokemon:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorNotAPokemon");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPlayerBelowMinimumLevel:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerBelowMinimumLevel");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPlayerHasNoTeam:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPlayerHasNoTeam");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPoiInaccessible:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPoiInaccessible");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorPokemonIsBuddy:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorPokemonIsBuddy");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorRaidActive:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorRaidActive");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTeamDeployLockout:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTeamDeployLockout");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTooManyDeployed:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTooManyDeployed");
+                        break;
+                    case GymDeployResponse.Types.Result.ErrorTooManyOfSameKind:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("ErrorTooManyOfSameKind");
+                        break;
+                    case GymDeployResponse.Types.Result.NoResultSet:
+                        ErrorMessageText.Text = Utils.Resources.CodeResources.GetString("NoResultSet");
+                        break;
                 }
                 ErrorMessageText.Visibility = ErrorMessageBorder.Visibility = Visibility.Visible;
 

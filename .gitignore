@@ -19,3 +19,7 @@ obj/
 *.tss
 /pokehash keys.txt
 /interesting links for development.txt
+/PokemonGo-UWP/PokemonGo-UWP.nuget.props
+/PokemonGo-UWP/PokemonGo-UWP.nuget.targets
+/PokemonGo-UWP.Tests/PokemonGo-UWP.Tests.nuget.props
+/PokemonGo-UWP.Tests/PokemonGo-UWP.Tests.nuget.targets
