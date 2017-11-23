@@ -2717,6 +2717,35 @@ namespace PokemonGo_UWP.Utils
 
             return downloadSettingsResponse;
         }
+
+        public static async Task<DownloadGmTemplatesResponse> DownloadGmTemplates(long basisBatchId, long batchId, int pageOffset)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.DownloadGameMasterTemplates,
+                RequestMessage = new DownloadGmTemplatesMessage
+                {
+                    BasisBatchId = basisBatchId,
+                    BatchId = batchId,
+                    PageOffset = pageOffset
+                }.ToByteString()
+            });
+
+            DownloadGmTemplatesResponse downloadGmTemplatesResponse = null;
+            try
+            {
+                downloadGmTemplatesResponse = DownloadGmTemplatesResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("DownloadSettings parsing failed because response was empty", ex);
+
+                return new DownloadGmTemplatesResponse() { };
+            }
+
+            return downloadGmTemplatesResponse;
+        }
         #endregion
 
         #region Misc
