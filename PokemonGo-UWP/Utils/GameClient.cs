@@ -2739,7 +2739,7 @@ namespace PokemonGo_UWP.Utils
             catch (Exception ex)
             {
                 if (response.IsEmpty)
-                    throw new Exception("DownloadSettings parsing failed because response was empty", ex);
+                    throw new Exception("DownloadGmTemplates parsing failed because response was empty", ex);
 
                 return new DownloadGmTemplatesResponse() { };
             }
