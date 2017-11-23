@@ -427,8 +427,8 @@ namespace PokemonGo_UWP.Utils
             }
 
             var locRandom = new Random();
-            var initLat = pos.Coordinate.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
-            var initLong = pos.Coordinate.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLat = pos.Coordinate.Point.Position.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLong = pos.Coordinate.Point.Position.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
 
             try
             {
@@ -743,7 +743,7 @@ namespace PokemonGo_UWP.Utils
         /// We fire this event when the current compass position changes
         /// </summary>
         public static event EventHandler<CompassReading> HeadingUpdated;
-        private static void compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
+        private static void Compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
         {
             HeadingUpdated?.Invoke(sender, args.Reading);
         }
@@ -767,14 +767,14 @@ namespace PokemonGo_UWP.Utils
                         case MapAutomaticOrientationModes.Compass:
                             _compass = Compass.GetDefault();
                             _compass.ReportInterval = Math.Max(_compass.MinimumReportInterval, 50);
-                            _compass.ReadingChanged += compass_ReadingChanged;
+                            _compass.ReadingChanged += Compass_ReadingChanged;
                             break;
                         case MapAutomaticOrientationModes.None:
                         case MapAutomaticOrientationModes.GPS:
                         default:
                             if (_compass != null)
                             {
-                                _compass.ReadingChanged -= compass_ReadingChanged;
+                                _compass.ReadingChanged -= Compass_ReadingChanged;
                                 _compass = null;
                             }
                             break;
@@ -830,6 +830,7 @@ namespace PokemonGo_UWP.Utils
         /// <param name="isEnabled"></param>
         public static async void ToggleUpdateTimer(bool isEnabled = true)
         {
+            await Task.Delay(0);
             if (_session == null) return;
 
             Logger.Info($"Called ToggleUpdateTimer({isEnabled})");
@@ -946,8 +947,8 @@ namespace PokemonGo_UWP.Utils
                 RequestType = RequestType.GetIncensePokemon,
                 RequestMessage = new GetIncensePokemonMessage
                 {
-                    PlayerLatitude = geoposition.Coordinate.Latitude,
-                    PlayerLongitude = geoposition.Coordinate.Longitude
+                    PlayerLatitude = geoposition.Coordinate.Point.Position.Latitude,
+                    PlayerLongitude = geoposition.Coordinate.Point.Position.Longitude
                 }.ToByteString()
             });
 
@@ -984,7 +985,11 @@ namespace PokemonGo_UWP.Utils
             ItemId.ItemPinapBerry,
             ItemId.ItemRazzBerry,
             ItemId.ItemUltraBall,
-            ItemId.ItemWeparBerry
+            ItemId.ItemWeparBerry,
+            ItemId.ItemGoldenNanabBerry,
+            ItemId.ItemGoldenPinapBerry,
+            ItemId.ItemGoldenRazzBerry,
+            ItemId.ItemPremierBall
         };
 
         /// <summary>
