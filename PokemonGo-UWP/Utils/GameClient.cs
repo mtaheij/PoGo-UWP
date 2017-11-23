@@ -2318,6 +2318,7 @@ namespace PokemonGo_UWP.Utils
         #region Gym Handling
         /// <summary>
         ///     Gets the details for the given Gym
+        ///     TODO: Replace by GYM_DETAILS
         /// </summary>
         /// <param name="gymid"></param>
         /// <param name="latitude"></param>
@@ -2337,9 +2338,21 @@ namespace PokemonGo_UWP.Utils
                     PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymGetDetailsResponse = GymGetInfoResponse.Parser.ParseFrom(response);
 
-            return gymGetDetailsResponse;
+            GymGetInfoResponse gymGetInfoResponse = null;
+            try
+            {
+                 gymGetInfoResponse = GymGetInfoResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymGetInfo parsing failed because response was empty", ex);
+
+                return new GymGetInfoResponse() { Result = GymGetInfoResponse.Types.Result.Unset };
+            }
+
+            return gymGetInfoResponse;
         }
 
         /// <summary>
@@ -2361,7 +2374,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymDeployResponse = GymDeployResponse.Parser.ParseFrom(response);
+
+            GymDeployResponse gymDeployResponse = null;
+            try
+            {
+                gymDeployResponse = GymDeployResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymDeploy parsing failed because response was empty", ex);
+
+                return new GymDeployResponse() { Result = GymDeployResponse.Types.Result.NoResultSet };
+            }
 
             return gymDeployResponse;
         }
@@ -2424,7 +2449,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymStartSessionResponse = GymStartSessionResponse.Parser.ParseFrom(response);
+
+            GymStartSessionResponse gymStartSessionResponse = null;
+            try
+            {
+                gymStartSessionResponse = GymStartSessionResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymStartSession parsing failed because response was empty", ex);
+
+                return new GymStartSessionResponse() { Result = GymStartSessionResponse.Types.Result.Unset };
+            }
 
             return gymStartSessionResponse;
         }
@@ -2461,7 +2498,7 @@ namespace PokemonGo_UWP.Utils
             return attackGymResponse;
         }
 
-        public static async Task<GymBattleAttackResponse> GymBattleAttack(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
+        public static async Task<GymBattleAttackResponse> GymBattleAttack(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction, long timestampMs)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
@@ -2474,11 +2511,23 @@ namespace PokemonGo_UWP.Utils
                     LastRetrievedAction = lastRetrievedAction,
                     PlayerLatDegrees = _session.Player.Latitude,
                     PlayerLngDegrees = _session.Player.Longitude,
-                    TimestampMs = 0
+                    TimestampMs = timestampMs
                 }.ToByteString()
             }, false);
-            var gymBattleAttackResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
 
+            GymBattleAttackResponse gymBattleAttackResponse = null;
+
+            try
+            {
+                gymBattleAttackResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymBattleAttack parsing failed because response was empty", ex);
+
+                return new GymBattleAttackResponse() { Result = GymBattleAttackResponse.Types.Result.Unset };
+            }
             return gymBattleAttackResponse;
         }
 
@@ -2741,7 +2790,7 @@ namespace PokemonGo_UWP.Utils
                 if (response.IsEmpty)
                     throw new Exception("DownloadGmTemplates parsing failed because response was empty", ex);
 
-                return new DownloadGmTemplatesResponse() { };
+                return new DownloadGmTemplatesResponse() { Result = DownloadGmTemplatesResponse.Types.Result.Unset };
             }
 
             return downloadGmTemplatesResponse;
