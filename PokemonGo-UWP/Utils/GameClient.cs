@@ -403,7 +403,7 @@ namespace PokemonGo_UWP.Utils
                 _session.AccessTokenUpdated -= SessionOnAccessTokenUpdated;
                 _session.InventoryUpdate -= InventoryOnUpdate;
                 _session.MapUpdate -= MapOnUpdate;
-                _session.CaptchaReceived -= SessionOnCaptchaReceived;
+                //_session.CaptchaReceived -= SessionOnCaptchaReceived;
                 _session.RpcClient.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
                 _session.RpcClient.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
             }
@@ -455,7 +455,7 @@ namespace PokemonGo_UWP.Utils
             _session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
             _session.InventoryUpdate += InventoryOnUpdate;
             _session.MapUpdate += MapOnUpdate;
-            _session.CaptchaReceived += SessionOnCaptchaReceived;
+            //_session.CaptchaReceived += SessionOnCaptchaReceived;
             _session.RpcClient.HatchedEggsReceived += SessionOnHatchedEggsReceived;
             _session.RpcClient.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
 
@@ -533,6 +533,7 @@ namespace PokemonGo_UWP.Utils
             Logger.Info("Saved access token to file.");
         }
 
+        /*
         private static async void SessionOnCaptchaReceived(object sender, CaptchaEventArgs e)
         {
             var session = (Session)sender;
@@ -549,6 +550,7 @@ namespace PokemonGo_UWP.Utils
                 });
             }
         }
+        */
 
         private static void SessionOnHatchedEggsReceived(object sender, GetHatchedEggsResponse hatchedEggResponse)
         {
