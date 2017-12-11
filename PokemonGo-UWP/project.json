@@ -3,7 +3,7 @@
     "Google.Protobuf.Tools": "3.4.0",
     "HockeySDK.UWP": "4.1.6",
     "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.4",
-    "Newtonsoft.Json": "9.0.1",
+    "Newtonsoft.Json": "10.0.3",
     "Nito.AsyncEx": "4.0.1",
     "NotificationsExtensions.Win10": "14332.0.2",
     "Octokit": "0.28.0",
