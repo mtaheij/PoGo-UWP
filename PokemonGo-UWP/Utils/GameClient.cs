@@ -427,8 +427,8 @@ namespace PokemonGo_UWP.Utils
             }
 
             var locRandom = new Random();
-            var initLat = pos.Coordinate.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
-            var initLong = pos.Coordinate.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLat = pos.Coordinate.Point.Position.Latitude + locRandom.NextDouble(-0.000030, 0.000030);
+            var initLong = pos.Coordinate.Point.Position.Longitude + locRandom.NextDouble(-0.000030, 0.000030);
 
             try
             {
@@ -743,7 +743,7 @@ namespace PokemonGo_UWP.Utils
         /// We fire this event when the current compass position changes
         /// </summary>
         public static event EventHandler<CompassReading> HeadingUpdated;
-        private static void compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
+        private static void Compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
         {
             HeadingUpdated?.Invoke(sender, args.Reading);
         }
@@ -767,14 +767,14 @@ namespace PokemonGo_UWP.Utils
                         case MapAutomaticOrientationModes.Compass:
                             _compass = Compass.GetDefault();
                             _compass.ReportInterval = Math.Max(_compass.MinimumReportInterval, 50);
-                            _compass.ReadingChanged += compass_ReadingChanged;
+                            _compass.ReadingChanged += Compass_ReadingChanged;
                             break;
                         case MapAutomaticOrientationModes.None:
                         case MapAutomaticOrientationModes.GPS:
                         default:
                             if (_compass != null)
                             {
-                                _compass.ReadingChanged -= compass_ReadingChanged;
+                                _compass.ReadingChanged -= Compass_ReadingChanged;
                                 _compass = null;
                             }
                             break;
@@ -830,6 +830,7 @@ namespace PokemonGo_UWP.Utils
         /// <param name="isEnabled"></param>
         public static async void ToggleUpdateTimer(bool isEnabled = true)
         {
+            await Task.Delay(0);
             if (_session == null) return;
 
             Logger.Info($"Called ToggleUpdateTimer({isEnabled})");
@@ -946,8 +947,8 @@ namespace PokemonGo_UWP.Utils
                 RequestType = RequestType.GetIncensePokemon,
                 RequestMessage = new GetIncensePokemonMessage
                 {
-                    PlayerLatitude = geoposition.Coordinate.Latitude,
-                    PlayerLongitude = geoposition.Coordinate.Longitude
+                    PlayerLatitude = geoposition.Coordinate.Point.Position.Latitude,
+                    PlayerLongitude = geoposition.Coordinate.Point.Position.Longitude
                 }.ToByteString()
             });
 
@@ -984,7 +985,11 @@ namespace PokemonGo_UWP.Utils
             ItemId.ItemPinapBerry,
             ItemId.ItemRazzBerry,
             ItemId.ItemUltraBall,
-            ItemId.ItemWeparBerry
+            ItemId.ItemWeparBerry,
+            ItemId.ItemGoldenNanabBerry,
+            ItemId.ItemGoldenPinapBerry,
+            ItemId.ItemGoldenRazzBerry,
+            ItemId.ItemPremierBall
         };
 
         /// <summary>
@@ -2313,6 +2318,7 @@ namespace PokemonGo_UWP.Utils
         #region Gym Handling
         /// <summary>
         ///     Gets the details for the given Gym
+        ///     TODO: Replace by GYM_DETAILS
         /// </summary>
         /// <param name="gymid"></param>
         /// <param name="latitude"></param>
@@ -2332,9 +2338,21 @@ namespace PokemonGo_UWP.Utils
                     PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymGetDetailsResponse = GymGetInfoResponse.Parser.ParseFrom(response);
 
-            return gymGetDetailsResponse;
+            GymGetInfoResponse gymGetInfoResponse = null;
+            try
+            {
+                 gymGetInfoResponse = GymGetInfoResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymGetInfo parsing failed because response was empty", ex);
+
+                return new GymGetInfoResponse() { Result = GymGetInfoResponse.Types.Result.Unset };
+            }
+
+            return gymGetInfoResponse;
         }
 
         /// <summary>
@@ -2356,7 +2374,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLongitude = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymDeployResponse = GymDeployResponse.Parser.ParseFrom(response);
+
+            GymDeployResponse gymDeployResponse = null;
+            try
+            {
+                gymDeployResponse = GymDeployResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymDeploy parsing failed because response was empty", ex);
+
+                return new GymDeployResponse() { Result = GymDeployResponse.Types.Result.NoResultSet };
+            }
 
             return gymDeployResponse;
         }
@@ -2419,7 +2449,19 @@ namespace PokemonGo_UWP.Utils
                     PlayerLngDegrees = _session.Player.Longitude
                 }.ToByteString()
             });
-            var gymStartSessionResponse = GymStartSessionResponse.Parser.ParseFrom(response);
+
+            GymStartSessionResponse gymStartSessionResponse = null;
+            try
+            {
+                gymStartSessionResponse = GymStartSessionResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymStartSession parsing failed because response was empty", ex);
+
+                return new GymStartSessionResponse() { Result = GymStartSessionResponse.Types.Result.Unset };
+            }
 
             return gymStartSessionResponse;
         }
@@ -2456,7 +2498,7 @@ namespace PokemonGo_UWP.Utils
             return attackGymResponse;
         }
 
-        public static async Task<GymBattleAttackResponse> GymBattleAttack(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction)
+        public static async Task<GymBattleAttackResponse> GymBattleAttack(string gymId, string battleId, List<BattleAction> battleActions, BattleAction lastRetrievedAction, long timestampMs)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
@@ -2469,11 +2511,23 @@ namespace PokemonGo_UWP.Utils
                     LastRetrievedAction = lastRetrievedAction,
                     PlayerLatDegrees = _session.Player.Latitude,
                     PlayerLngDegrees = _session.Player.Longitude,
-                    TimestampMs = 0
+                    TimestampMs = timestampMs
                 }.ToByteString()
             }, false);
-            var gymBattleAttackResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
 
+            GymBattleAttackResponse gymBattleAttackResponse = null;
+
+            try
+            {
+                gymBattleAttackResponse = GymBattleAttackResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("GymBattleAttack parsing failed because response was empty", ex);
+
+                return new GymBattleAttackResponse() { Result = GymBattleAttackResponse.Types.Result.Unset };
+            }
             return gymBattleAttackResponse;
         }
 
@@ -2711,6 +2765,35 @@ namespace PokemonGo_UWP.Utils
             }
 
             return downloadSettingsResponse;
+        }
+
+        public static async Task<DownloadGmTemplatesResponse> DownloadGmTemplates(long basisBatchId, long batchId, int pageOffset)
+        {
+            var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
+            {
+                RequestType = RequestType.DownloadGameMasterTemplates,
+                RequestMessage = new DownloadGmTemplatesMessage
+                {
+                    BasisBatchId = basisBatchId,
+                    BatchId = batchId,
+                    PageOffset = pageOffset
+                }.ToByteString()
+            });
+
+            DownloadGmTemplatesResponse downloadGmTemplatesResponse = null;
+            try
+            {
+                downloadGmTemplatesResponse = DownloadGmTemplatesResponse.Parser.ParseFrom(response);
+            }
+            catch (Exception ex)
+            {
+                if (response.IsEmpty)
+                    throw new Exception("DownloadGmTemplates parsing failed because response was empty", ex);
+
+                return new DownloadGmTemplatesResponse() { Result = DownloadGmTemplatesResponse.Types.Result.Unset };
+            }
+
+            return downloadGmTemplatesResponse;
         }
         #endregion
 
