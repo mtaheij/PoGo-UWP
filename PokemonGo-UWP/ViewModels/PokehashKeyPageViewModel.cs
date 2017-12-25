@@ -19,7 +19,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
-using POGOLib.Official.Util.Hash.PokeHash;
+using POGOLib.Official.Exceptions;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels

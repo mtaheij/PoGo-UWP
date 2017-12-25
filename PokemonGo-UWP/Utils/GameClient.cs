@@ -53,6 +53,7 @@ using POGOProtos.Data.Battle;
 using PokemonGo_UWP.Exceptions;
 using POGOLib.Official.Net.Captcha;
 using Microsoft.HockeyApp;
+using POGOLib.Official.Exceptions;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -404,8 +405,8 @@ namespace PokemonGo_UWP.Utils
                 _session.InventoryUpdate -= InventoryOnUpdate;
                 _session.MapUpdate -= MapOnUpdate;
                 _session.CaptchaReceived -= SessionOnCaptchaReceived;
-                _session.RpcClient.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
-                _session.RpcClient.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
+                _session.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
+                _session.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
             }
 
             Configuration.IgnoreHashVersion = false;
@@ -456,8 +457,8 @@ namespace PokemonGo_UWP.Utils
             _session.InventoryUpdate += InventoryOnUpdate;
             _session.MapUpdate += MapOnUpdate;
             _session.CaptchaReceived += SessionOnCaptchaReceived;
-            _session.RpcClient.HatchedEggsReceived += SessionOnHatchedEggsReceived;
-            _session.RpcClient.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
+            _session.HatchedEggsReceived += SessionOnHatchedEggsReceived;
+            _session.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
 
             sw.Stop();
             HockeyClient.Current.TrackMetric("Login time", sw.ElapsedMilliseconds);

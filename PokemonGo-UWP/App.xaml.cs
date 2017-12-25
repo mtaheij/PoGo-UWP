@@ -31,7 +31,7 @@ using System.Diagnostics;
 using POGOLib.Official.Logging;
 using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
-using POGOLib.Official.Util.Hash.PokeHash;
+using POGOLib.Official.Exceptions;
 using POGOLib.Official.Util.Hash;
 using Windows.System.Profile;
 using PokemonGo_UWP.Utils.Game;
