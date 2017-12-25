@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PokemonGo_UWP.Utils
+﻿namespace PokemonGo_UWP.Utils
 {
-	/// <summary>
-	/// Contains the different modes available for the MapAutomaticOrientation
-	/// </summary>
-	public enum MapAutomaticOrientationModes
+    /// <summary>
+    /// Contains the different modes available for the MapAutomaticOrientation
+    /// </summary>
+    public enum MapAutomaticOrientationModes
 	{
 		/// <summary>
 		/// No rotation of map

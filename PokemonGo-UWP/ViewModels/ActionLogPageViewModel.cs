@@ -2,12 +2,10 @@
 using POGOProtos.Data.Logs;
 using POGOProtos.Networking.Responses;
 using PokemonGo_UWP.Utils;
-using PokemonGo_UWP.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;

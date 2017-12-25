@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Newtonsoft.Json;
@@ -17,7 +13,7 @@ using Template10.Mvvm;
 
 namespace PokemonGo_UWP.Entities
 {
-    
+
     public class LuredPokemon : IMapPokemon
     {
         /// <summary>

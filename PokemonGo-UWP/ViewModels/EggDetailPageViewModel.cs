@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
-using PokemonGo_UWP.Views;
 using POGOProtos.Inventory;
 using POGOProtos.Networking.Responses;
 using Template10.Mvvm;

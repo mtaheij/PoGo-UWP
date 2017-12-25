@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using PokemonGo_UWP.Utils;
@@ -7,7 +6,8 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Microsoft.HockeyApp;
 
-namespace PokemonGo_UWP.ViewModels {
+namespace PokemonGo_UWP.ViewModels
+{
     public class AchievementDetailPageViewModel : ViewModelBase {
 
         #region Lifecycle Handlers

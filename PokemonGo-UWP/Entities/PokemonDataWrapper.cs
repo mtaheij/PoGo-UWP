@@ -1,14 +1,10 @@
 ﻿using Newtonsoft.Json;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Utils.Helpers;
-using PokemonGo_UWP.Views;
 using POGOProtos.Data;
-using POGOProtos.Data.Player;
 using POGOProtos.Enums;
 using POGOProtos.Inventory;
 using POGOProtos.Inventory.Item;
-using Template10.Common;
-using Template10.Mvvm;
 using System.ComponentModel;
 
 namespace PokemonGo_UWP.Entities

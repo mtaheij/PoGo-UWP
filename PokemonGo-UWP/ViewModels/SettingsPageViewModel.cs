@@ -3,11 +3,8 @@ using PokemonGo_UWP.Entities;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Template10.Mvvm;
-using Windows.ApplicationModel.Resources.Core;
-using Windows.Storage;
 
 namespace PokemonGo_UWP.ViewModels
 {

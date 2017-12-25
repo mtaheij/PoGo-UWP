@@ -9,7 +9,6 @@ using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
-using Newtonsoft.Json.Linq;
 using POGOLib.Official.Exceptions;
 using PokemonGo_UWP.Exceptions;
 using POGOLib.Official.Util.Hash;

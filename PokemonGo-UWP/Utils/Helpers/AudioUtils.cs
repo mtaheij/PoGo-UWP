@@ -1,10 +1,6 @@
 using System;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage;
-using Windows.UI.Xaml.Media;
 
 namespace PokemonGo_UWP.Utils
 {

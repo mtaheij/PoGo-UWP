@@ -16,8 +16,6 @@ using PokemonGo_UWP.Utils;
 using Template10.Common;
 using PokemonGo_UWP.Utils.Helpers;
 using System.ComponentModel;
-using Windows.UI.Popups;
-using Windows.UI.ViewManagement;
 using System.Threading.Tasks;
 using PokemonGo_UWP.Entities;
 
