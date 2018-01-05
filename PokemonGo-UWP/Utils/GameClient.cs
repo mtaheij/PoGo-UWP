@@ -399,6 +399,10 @@ namespace PokemonGo_UWP.Utils
                 _session.CaptchaReceived -= SessionOnCaptchaReceived;
                 _session.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
                 _session.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
+                //_session.AssetDigestUpdated -= ????;
+                //_session.LocalConfigUpdated -= ????;
+                //_session.UrlsUpdated -= ????;
+                //_session.ItemTemplatesUpdated -= ????;
             }
 
             Configuration.IgnoreHashVersion = false;
@@ -451,6 +455,20 @@ namespace PokemonGo_UWP.Utils
             _session.CaptchaReceived += SessionOnCaptchaReceived;
             _session.HatchedEggsReceived += SessionOnHatchedEggsReceived;
             _session.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
+            //_session.AssetDigestUpdated += ????;
+            //_session.LocalConfigUpdated += ????;
+            //_session.UrlsUpdated += ????;
+            //_session.ItemTemplatesUpdated += ????;
+
+            if (_session.Player.Banned)
+            {
+                //
+            }
+
+            if (_session.Player.Warn)
+            {
+                ////
+            }
 
             sw.Stop();
             HockeyClient.Current.TrackMetric("Login time", sw.ElapsedMilliseconds);
@@ -1808,7 +1826,7 @@ namespace PokemonGo_UWP.Utils
         /// <param name="encounterId"></param>
         /// <param name="spawnpointId"></param>
         /// <returns></returns>
-        public static async Task<DiskEncounterResponse> EncounterLurePokemon(ulong encounterId, string fortId)
+        public static async Task<DiskEncounterResponse> EncounterLurePokemon(ulong encounterId, string fortId, double fortlat, double fortlgn)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
@@ -1818,7 +1836,9 @@ namespace PokemonGo_UWP.Utils
                     EncounterId = encounterId,
                     FortId = fortId,
                     PlayerLatitude = _session.Player.Latitude,
-                    PlayerLongitude = _session.Player.Longitude
+                    PlayerLongitude = _session.Player.Longitude,
+                    GymLatDegrees = fortlat,
+                    GymLngDegrees = fortlgn
                 }.ToByteString()
             });
 
@@ -1883,18 +1903,28 @@ namespace PokemonGo_UWP.Utils
         public static async Task<CatchPokemonResponse> CatchPokemon(ulong encounterId, string spawnpointId, ItemId captureItem, bool hitPokemon = true)
         {
             var random = new Random();
+
+            var arPlusValues = new ARPlusEncounterValues
+            {
+                //TODO: revise this....
+                Awareness = (float)0.000,
+                Proximity = (float)0.000,
+                PokemonFrightened = false
+            };
+
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
                 RequestType = RequestType.CatchPokemon,
                 RequestMessage = new CatchPokemonMessage
                 {
+                    ArPlusValues = arPlusValues,
                     EncounterId = encounterId,
                     Pokeball = captureItem,
                     SpawnPointId = spawnpointId,
                     HitPokemon = hitPokemon,
                     NormalizedReticleSize = random.NextDouble() * 1.95D,
                     SpinModifier = random.NextDouble(),
-                    NormalizedHitPosition = 1
+                    NormalizedHitPosition = 1,                    
                 }.ToByteString()
             });
             CatchPokemonResponse catchPokemonResponse = null;
