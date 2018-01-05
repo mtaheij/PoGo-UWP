@@ -1,10 +1,7 @@
-﻿using POGOProtos.Data.Battle;
-using POGOProtos.Enums;
+﻿using POGOProtos.Enums;
 using POGOProtos.Networking.Responses;
-using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.ViewModels;
 using System;
-using System.Threading.Tasks;
 using Template10.Common;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

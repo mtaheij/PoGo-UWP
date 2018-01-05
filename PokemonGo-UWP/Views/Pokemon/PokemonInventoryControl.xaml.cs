@@ -3,7 +3,6 @@ using PokemonGo_UWP.Utils;
 using System.Collections.ObjectModel;
 using Template10.Common;
 using Template10.Mvvm;
-using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

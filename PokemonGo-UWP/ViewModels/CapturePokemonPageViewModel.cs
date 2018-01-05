@@ -99,7 +99,8 @@ namespace PokemonGo_UWP.ViewModels
             }
             else if (CurrentPokemon is LuredPokemon)
             {
-                CurrentLureEncounter = await GameClient.EncounterLurePokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId);
+                //TODO: revise this...
+                CurrentLureEncounter = await GameClient.EncounterLurePokemon(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, CurrentPokemon.Geoposition.Position.Latitude, CurrentPokemon.Geoposition.Position.Longitude);
                 CurrentEncounter = new EncounterResponse()
                 {
                     Background = EncounterResponse.Types.Background.Park,

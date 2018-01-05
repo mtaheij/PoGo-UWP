@@ -1,25 +1,18 @@
-﻿using Google.Protobuf;
-using Newtonsoft.Json;
-using POGOLib.Official.LoginProviders;
-using POGOLib.Official.Net.Authentication.Data;
+﻿using POGOLib.Official.Net.Authentication.Data;
 using POGOLib.Official.Util.Hash;
-using POGOProtos.Networking.Envelopes;
-using POGOProtos.Networking.Requests;
-using POGOProtos.Networking.Requests.Messages;
 using PokemonGo_UWP.Exceptions;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
-using POGOLib.Official.Util.Hash.PokeHash;
+using POGOLib.Official.Exceptions;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels

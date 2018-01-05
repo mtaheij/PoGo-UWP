@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Utils.Helpers;
-using PokemonGo_UWP.Views;
 using POGOProtos.Inventory.Item;
-using Template10.Common;
 using Template10.Mvvm;
 using System.ComponentModel;
 

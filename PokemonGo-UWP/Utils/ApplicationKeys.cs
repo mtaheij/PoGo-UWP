@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace PokemonGo_UWP.Utils
 {
     public static class ApplicationKeys

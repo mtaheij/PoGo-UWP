@@ -9,14 +9,9 @@ using POGOProtos.Data.Player;
 using POGOProtos.Enums;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
-using Windows.UI.Xaml.Controls;
-using Newtonsoft.Json;
 using PokemonGo_UWP.Views;
 using Template10.Common;
 using Google.Protobuf;
-using POGOProtos.Networking.Responses;
-using POGOProtos.Data.Logs;
-using Template10.Utils;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels

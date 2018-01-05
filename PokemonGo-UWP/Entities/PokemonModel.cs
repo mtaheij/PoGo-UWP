@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
-using Google.Protobuf.WellKnownTypes;
 using PokemonGo_UWP.Utils;
 using POGOProtos.Data;
 using POGOProtos.Enums;

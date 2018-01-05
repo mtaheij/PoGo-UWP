@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Newtonsoft.Json;
@@ -11,7 +7,6 @@ using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Utils.Helpers;
 using PokemonGo_UWP.Views;
 using POGOProtos.Enums;
-using POGOProtos.Map.Fort;
 using Template10.Common;
 using Template10.Mvvm;
 using POGOProtos.Networking.Responses;

@@ -3,11 +3,8 @@ using Windows.UI.Popups;
 using PokemonGo_UWP.Views;
 using Template10.Common;
 using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Microsoft.HockeyApp;
-using POGOLib.Official.LoginProviders;
-using POGOLib.Official.Net.Authentication.Exceptions;
 using POGOLib.Official.Util.Hash;
 
 namespace PokemonGo_UWP.Utils

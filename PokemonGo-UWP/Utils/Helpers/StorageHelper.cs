@@ -2,10 +2,6 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.Storage;
-using System.Xml.Serialization;
-using System.IO;
-using System.Text;
-using Windows.Storage.Streams;
 
 #if WINDOWS_PHONE
 using Q42.WinRT.Phone;

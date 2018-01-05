@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.Devices.Geolocation;
 
 namespace PokemonGo_UWP.Utils.Helpers
 {
-	public class LocationServiceHelper : BindableBase
+    public class LocationServiceHelper : BindableBase
 	{
 		#region Singleton
 		private readonly static Lazy<LocationServiceHelper> _instance = new Lazy<LocationServiceHelper>(() => new LocationServiceHelper());
