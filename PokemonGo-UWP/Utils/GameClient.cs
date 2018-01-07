@@ -386,7 +386,7 @@ namespace PokemonGo_UWP.Utils
                 case LogLevel.Notice:
                     break;
             }
-            //Write here by logtype
+            Debug.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{logLevel}] {message}");
         }
 
         /// <summary>

@@ -96,11 +96,6 @@ namespace PokemonGo_UWP
             // Init the proximity helper to turn the screen off when it's in your pocket
             _proximityHelper = new ProximityHelper();
             _proximityHelper.EnableDisplayAutoOff(false);
-
-            GameClient.CurrentSession.Logger.RegisterLogOutput((level, message) =>
-            {
-                Debug.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{level}] {message}");
-            });
         }
 
         #endregion
