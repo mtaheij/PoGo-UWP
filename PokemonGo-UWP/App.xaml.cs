@@ -97,7 +97,7 @@ namespace PokemonGo_UWP
             _proximityHelper = new ProximityHelper();
             _proximityHelper.EnableDisplayAutoOff(false);
 
-            POGOLib.Official.Logging.Logger.RegisterLogOutput((level, message) =>
+            GameClient.CurrentSession.Logger.RegisterLogOutput((level, message) =>
             {
                 Debug.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{level}] {message}");
             });
@@ -119,7 +119,7 @@ namespace PokemonGo_UWP
         private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             e.SetObserved();
-            Logger.Error(e.Exception.Message);
+            GameClient.CurrentSession.Logger.Error(e.Exception.Message);
             if (!string.IsNullOrEmpty(ApplicationKeys.HockeyAppToken))
                 HockeyClient.Current.TrackException(e.Exception);
         }
@@ -133,12 +133,12 @@ namespace PokemonGo_UWP
             await WindowWrapper.Current().Dispatcher.DispatchAsync(() => {
                 if (tmpNetworkStatus)
                 {
-                    Logger.Notice("Network is online");
+                    GameClient.CurrentSession.Logger.Notice("Network is online");
                     Busy.SetBusy(false);
                 }
                 else
                 {
-                    Logger.Notice("Network is offline");
+                    GameClient.CurrentSession.Logger.Notice("Network is offline");
                     Busy.SetBusy(true, Utils.Resources.CodeResources.GetString("WaitingForNetworkText"));
                 }
             });
@@ -192,7 +192,7 @@ namespace PokemonGo_UWP
             {
                 for (var i = 0; i < hatchedEggResponse.PokemonId.Count; i++)
                 {
-                    Logger.Info("Egg Hatched");
+                    GameClient.CurrentSession.Logger.Info("Egg Hatched");
 
                     var currentPokemon = hatchedEggResponse.HatchedPokemon[i];
 
@@ -554,13 +554,13 @@ namespace PokemonGo_UWP
                     }
                     if (tile != null)
                     {
-                        Logger.Debug(tile.GetContent());
+                        GameClient.CurrentSession.Logger.Debug(tile.GetContent());
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(ex.Message);
+                    GameClient.CurrentSession.Logger.Debug(ex.Message);
                     HockeyClient.Current.TrackException(ex);
                 }
             });

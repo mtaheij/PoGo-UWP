@@ -321,7 +321,7 @@ namespace PokemonGo_UWP.ViewModels
                         await GameClient.InitializeDataUpdate();
                         break;
                     default:
-                        Logger.Error("Error during GPS activation");
+                        GameClient.CurrentSession.Logger.Error("Error during GPS activation");
                         await
                             new MessageDialog(Resources.CodeResources.GetString("NoGpsPermissionsText")).ShowAsyncQueue();
                         BootStrapper.Current.Exit();

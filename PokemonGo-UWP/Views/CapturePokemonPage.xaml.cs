@@ -73,7 +73,7 @@ namespace PokemonGo_UWP.Views
                     pokeballStopped = true;
                     pokemonHit = true;
                     timer.Cancel();
-                    Logger.Info("Hit Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
+                    GameClient.CurrentSession.Logger.Info("Hit Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
                                  ThrowItemPosition.Z);
                 }
                 else if (ThrowItemPosition.Y > 50)
@@ -81,7 +81,7 @@ namespace PokemonGo_UWP.Views
                     // We missed the pokemon...
                     timer.Cancel();
                     pokeballStopped = true;
-                    Logger.Info("Missed Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
+                    GameClient.CurrentSession.Logger.Info("Missed Pokemon! " + ThrowItemPosition.X + ", " + ThrowItemPosition.Y + ", " +
                                  ThrowItemPosition.Z);
                 }
 
@@ -273,7 +273,7 @@ namespace PokemonGo_UWP.Views
 
         private void LaunchPokeballButton_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            Logger.Debug("Manipulation Started...");
+            GameClient.CurrentSession.Logger.Debug("Manipulation Started...");
 
             // Show the ball a little bigger when held
             PokeballTransform.ScaleX *= 1.05f;
@@ -311,7 +311,7 @@ namespace PokemonGo_UWP.Views
 
         private void LaunchPokeballButton_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            Logger.Debug("Manipulation Completed...");
+            GameClient.CurrentSession.Logger.Debug("Manipulation Completed...");
 
             // Disable the pokeball so that we can't try and throw it again
             ViewModel.PokeballButtonEnabled = false;

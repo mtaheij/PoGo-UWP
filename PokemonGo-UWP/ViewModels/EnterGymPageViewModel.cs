@@ -77,7 +77,7 @@ namespace PokemonGo_UWP.ViewModels
                         Busy.SetBusy(true, "Loading Gym");
                         CurrentGym = (FortDataWrapper)NavigationHelper.NavigationState[nameof(CurrentGym)];
                         NavigationHelper.NavigationState.Remove(nameof(CurrentGym));
-                        Logger.Info($"Entering {CurrentGym.Id}");
+                        GameClient.CurrentSession.Logger.Info($"Entering {CurrentGym.Id}");
                         CurrentGymInfo = await GameClient.GymGetInfo(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                         CurrentGymStatusAndDefenders = CurrentGymInfo.GymStatusAndDefenders;
                         RaisePropertyChanged(() => GymLevel);
@@ -547,7 +547,7 @@ namespace PokemonGo_UWP.ViewModels
             _enterCurrentGym = new DelegateCommand(async () =>
             {
                 Busy.SetBusy(true, "Entering Gym");
-                Logger.Info($"Entering {CurrentGymInfo.Name} [ID = {CurrentGym.Id}]");
+                GameClient.CurrentSession.Logger.Info($"Entering {CurrentGymInfo.Name} [ID = {CurrentGym.Id}]");
                 CurrentEnterResponse =
                     await GameClient.GymGetInfo(CurrentGym.Id, CurrentGym.Latitude, CurrentGym.Longitude);
                 Busy.SetBusy(false);
@@ -557,7 +557,7 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                     case GymGetInfoResponse.Types.Result.Success:
                         // Success, we play the animation and update inventory
-                        Logger.Info("Entering Gym success");
+                        GameClient.CurrentSession.Logger.Info("Entering Gym success");
 
                         // What to do when we are in the Gym?
                         EnterSuccess?.Invoke(this, null);
@@ -565,12 +565,12 @@ namespace PokemonGo_UWP.ViewModels
                         break;
                     case GymGetInfoResponse.Types.Result.ErrorNotInRange:
                         // Gym can't be used because it's out of range, there's nothing that we can do
-                        Logger.Info("Entering Gym out of range");
+                        GameClient.CurrentSession.Logger.Info("Entering Gym out of range");
                         EnterOutOfRange?.Invoke(this, null);
                         break;
                     case GymGetInfoResponse.Types.Result.ErrorGymDisabled:
                         // Gym can't be used because it's disabled, there's nothing that we can do
-                        Logger.Info("Entering Gym disabled");
+                        GameClient.CurrentSession.Logger.Info("Entering Gym disabled");
                         EnterDisabled?.Invoke(this, null);
                         break;
                     default:
@@ -587,7 +587,7 @@ namespace PokemonGo_UWP.ViewModels
             _setPlayerTeam = new DelegateCommand(async () =>
                 {
                     Busy.SetBusy(true, "Setting player team");
-                    Logger.Info($"Setting player team to { ChosenTeam }");
+                    GameClient.CurrentSession.Logger.Info($"Setting player team to { ChosenTeam }");
                     var response = await GameClient.SetPlayerTeam(ChosenTeam);
                     Busy.SetBusy(false);
                     switch (response.Status)
@@ -837,7 +837,7 @@ namespace PokemonGo_UWP.ViewModels
                     var badassPokemon = AttackTeamMembers;
                     var pokemonDatas = badassPokemon.Select(x => x.WrappedData).ToArray();
 
-                    Logger.Debug("Start gym battle with : " + string.Join(", ", defenders.Select(x => x.PokemonId.ToString())));
+                    GameClient.CurrentSession.Logger.Debug("Start gym battle with : " + string.Join(", ", defenders.Select(x => x.PokemonId.ToString())));
 
                     var index = 0;
                     bool isVictory = true;
@@ -891,15 +891,15 @@ namespace PokemonGo_UWP.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            Logger.Debug("Can't start battle: " + ex.Message);
+                            GameClient.CurrentSession.Logger.Debug("Can't start battle: " + ex.Message);
                             isFailedToStart = true;
                             isVictory = false;
 
-                            Logger.Debug("Start battle result: " + result);
-                            Logger.Debug("CurrentGym: " + CurrentGym);
-                            Logger.Debug("PokemonDatas: " + string.Join(", ", pokemonDatas.Select(s => string.Format("Id: {0} Name: {1} CP: {2} HP: {3}", s.Id, s.PokemonId, s.Cp, s.Stamina))));
-                            Logger.Debug("DefenderId: " + defenderPokemonId);
-                            Logger.Debug("ActionsLog -> " + string.Join(Environment.NewLine, battleActions));
+                            GameClient.CurrentSession.Logger.Debug("Start battle result: " + result);
+                            GameClient.CurrentSession.Logger.Debug("CurrentGym: " + CurrentGym);
+                            GameClient.CurrentSession.Logger.Debug("PokemonDatas: " + string.Join(", ", pokemonDatas.Select(s => string.Format("Id: {0} Name: {1} CP: {2} HP: {3}", s.Id, s.PokemonId, s.Cp, s.Stamina))));
+                            GameClient.CurrentSession.Logger.Debug("DefenderId: " + defenderPokemonId);
+                            GameClient.CurrentSession.Logger.Debug("ActionsLog -> " + string.Join(Environment.NewLine, battleActions));
 
                             break;
                         }
@@ -926,7 +926,7 @@ namespace PokemonGo_UWP.ViewModels
                         switch (result.Battle.BattleLog.State)
                         {
                             case BattleState.Active:
-                                Logger.Debug("Time to start Attack Mode");
+                                GameClient.CurrentSession.Logger.Debug("Time to start Attack Mode");
                                 thisAttackActions = await AttackGym(_battleTrackerCancellation, CurrentGymInfo, result, index).ConfigureAwait(false);
                                 battleActions.AddRange(thisAttackActions);
                                 break;
@@ -943,7 +943,7 @@ namespace PokemonGo_UWP.ViewModels
                                 isVictory = true;
                                 break;
                             default:
-                                Logger.Debug($"Unhandled result starting gym battle: {result}");
+                                GameClient.CurrentSession.Logger.Debug($"Unhandled result starting gym battle: {result}");
                                 break;
                         }
 
@@ -984,7 +984,7 @@ namespace PokemonGo_UWP.ViewModels
 
                                 await Task.Delay(2000).ConfigureAwait(false);
 
-                                Logger.Debug(string.Format("Exp: {0}, Gym points: {1}, Next defender Id: {2}", exp, point, defenderPokemonId));
+                                GameClient.CurrentSession.Logger.Debug(string.Format("Exp: {0}, Gym points: {1}, Next defender Id: {2}", exp, point, defenderPokemonId));
                             }
                             continue;
                         }
@@ -1010,7 +1010,7 @@ namespace PokemonGo_UWP.ViewModels
                     }
 
                     // We have been victorious on all defenders, or we have been defeated ourselves
-                    Logger.Debug(string.Join(Environment.NewLine, battleActions.OrderBy(o => o.ActionStartMs).Select(s => s).Distinct()));
+                    GameClient.CurrentSession.Logger.Debug(string.Join(Environment.NewLine, battleActions.OrderBy(o => o.ActionStartMs).Select(s => s).Distinct()));
 
                     AttackTeamSelectionClosed?.Invoke(this, null);
                     BattleEnded?.Invoke(this, null);
@@ -1041,22 +1041,22 @@ namespace PokemonGo_UWP.ViewModels
                     switch (result.Battle.BattleLog.State)
                     {
                         case BattleState.Active:
-                            Logger.Info("Start new battle...");
+                            GameClient.CurrentSession.Logger.Info("Start new battle...");
                             return result;
                         case BattleState.Defeated:
-                            Logger.Info("We were defated in battle.");
+                            GameClient.CurrentSession.Logger.Info("We were defated in battle.");
                             return result;
                         case BattleState.Victory:
-                            Logger.Info("We were victorious");
+                            GameClient.CurrentSession.Logger.Info("We were victorious");
                             return result;
                         case BattleState.TimedOut:
-                            Logger.Info("We ran out of time");
+                            GameClient.CurrentSession.Logger.Info("We ran out of time");
                             return result;
                         case BattleState.StateUnset:
-                            Logger.Info($"Error ocurred: {result.Battle.BattleLog.State}");
+                            GameClient.CurrentSession.Logger.Info($"Error ocurred: {result.Battle.BattleLog.State}");
                             break;
                         default:
-                            Logger.Info($"Error ocurred: {result.Battle.BattleLog.State}");
+                            GameClient.CurrentSession.Logger.Info($"Error ocurred: {result.Battle.BattleLog.State}");
                             break;
                     }
                 }
@@ -1076,7 +1076,7 @@ namespace PokemonGo_UWP.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Gym details:" + gym);
+                GameClient.CurrentSession.Logger.Error("Gym details:" + gym);
                 throw ex;
             }
         }
@@ -1088,8 +1088,8 @@ namespace PokemonGo_UWP.ViewModels
             long serverMs = startResponse.Battle.BattleLog.BattleStartTimestampMs;
             var lastActions = startResponse.Battle.BattleLog.BattleActions.ToList();
 
-            Logger.Info($"Gym battle started; fighting trainer: {startResponse.Battle.Defender.TrainerPublicProfile.Name}");
-            Logger.Info($"We are attacking: {startResponse.Battle.Defender.ActivePokemon.PokemonData.PokemonId} ({startResponse.Battle.Defender.ActivePokemon.PokemonData.Cp} CP)");
+            GameClient.CurrentSession.Logger.Info($"Gym battle started; fighting trainer: {startResponse.Battle.Defender.TrainerPublicProfile.Name}");
+            GameClient.CurrentSession.Logger.Info($"We are attacking: {startResponse.Battle.Defender.ActivePokemon.PokemonData.PokemonId} ({startResponse.Battle.Defender.ActivePokemon.PokemonData.Cp} CP)");
 
             int loops = 0;
             List<BattleAction> emptyActions = new List<BattleAction>();
@@ -1106,13 +1106,13 @@ namespace PokemonGo_UWP.ViewModels
                 {
                     RaisePropertyChanged(nameof(RemainingBattleTime));
 
-                    Logger.Info("Starting loop");
+                    GameClient.CurrentSession.Logger.Info("Starting loop");
                     var last = lastActions.Where(w => !AttackTeamMembers.Any(a => a.Id.Equals(w.ActivePokemonId))).LastOrDefault();
                     BattleAction lastSpecialAttack = lastActions.Where(w => !AttackTeamMembers.Any(a => a.Id.Equals(w.ActivePokemonId)) && w.Type == BattleActionType.ActionSpecialAttack).LastOrDefault();
 
                     //var attackActionz = last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyActions : AttackActions;
                     var attackActionz = last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyActions : GetActions(serverMs, attacker, defender, _currentAttackerEnergy, last, lastSpecialAttack);
-                    Logger.Info(string.Format("Going to make attacks : {0}", string.Join(", ", attackActionz.Select(s => string.Format("{0} -> {1}", s.Type, s.DurationMs)))));
+                    GameClient.CurrentSession.Logger.Info(string.Format("Going to make attacks : {0}", string.Join(", ", attackActionz.Select(s => string.Format("{0} -> {1}", s.Type, s.DurationMs)))));
 
                     BattleAction a2 = (last == null || last.Type == BattleActionType.ActionVictory || last.Type == BattleActionType.ActionDefeat ? emptyAction : last);
                     GymBattleAttackResponse attackResult = null;
@@ -1128,7 +1128,7 @@ namespace PokemonGo_UWP.ViewModels
                         attackResult = await GameClient.GymBattleAttack(gym.Id, startResponse.Battle.BattleId, attackActionz, a2, serverMs).ConfigureAwait(false);
                         _lastAttackGymResponse = attackResult;
                         long timeAfter = DateTime.UtcNow.ToUnixTime();
-                        Logger.Debug(string.Format("Finished making attack call: {0}", timeAfter - timeBefore));
+                        GameClient.CurrentSession.Logger.Debug(string.Format("Finished making attack call: {0}", timeAfter - timeBefore));
                         AttackActions.Clear();
 
                         var attackTime = attackActionz.Sum(x => x.DurationMs);
@@ -1137,22 +1137,22 @@ namespace PokemonGo_UWP.ViewModels
                         if (attackActionz.Any(a => a.Type != BattleActionType.ActionSpecialAttack))
                             attackTimeCorrected = attackTime - (int)(timeAfter - timeBefore);
 
-                        Logger.Debug(string.Format("Waiting for attack to be prepared: {0} (last call was {1}, after correction {2})", attackTime, timeAfter, attackTimeCorrected > 0 ? attackTimeCorrected : 0));
+                        GameClient.CurrentSession.Logger.Debug(string.Format("Waiting for attack to be prepared: {0} (last call was {1}, after correction {2})", attackTime, timeAfter, attackTimeCorrected > 0 ? attackTimeCorrected : 0));
                         if (attackTimeCorrected > 0)
                             await Task.Delay(attackTimeCorrected).ConfigureAwait(false);
 
                         if (attackActionz.Any(a => a.Type == BattleActionType.ActionSwapPokemon))
                         {
-                            Logger.Info("Extra wait after SWAP call");
+                            GameClient.CurrentSession.Logger.Info("Extra wait after SWAP call");
                             await Task.Delay(2000).ConfigureAwait(false);
                         }
                     }
                     catch (Exception)
                     {
-                        Logger.Warn("Bad attack gym");
-                        Logger.Debug(string.Format("Last retrieved action was: {0}", a2));
-                        Logger.Debug(string.Format("Actions to perform were: {0}", string.Join(", ", attackActionz)));
-                        Logger.Debug(string.Format("Attacker was: {0}, defender was: {1}", attacker, defender));
+                        GameClient.CurrentSession.Logger.Warn("Bad attack gym");
+                        GameClient.CurrentSession.Logger.Debug(string.Format("Last retrieved action was: {0}", a2));
+                        GameClient.CurrentSession.Logger.Debug(string.Format("Actions to perform were: {0}", string.Join(", ", attackActionz)));
+                        GameClient.CurrentSession.Logger.Debug(string.Format("Attacker was: {0}, defender was: {1}", attacker, defender));
 
                         continue;
                     };
@@ -1161,7 +1161,7 @@ namespace PokemonGo_UWP.ViewModels
 
                     if (attackResult.Result == GymBattleAttackResponse.Types.Result.Success)
                     {
-                        Logger.Info("Attack success");
+                        GameClient.CurrentSession.Logger.Info("Attack success");
                         defender = attackResult.BattleUpdate.ActiveDefender?.PokemonData;
                         if (defender != null)
                         {
@@ -1186,7 +1186,7 @@ namespace PokemonGo_UWP.ViewModels
                                 CurrentAttackerBattlePokemon = attackResult.BattleUpdate.ActiveAttacker;
                                 CurrentAttackerPokemon = new PokemonDataWrapper(attacker);
 
-                                Logger.Debug($"(GYM ATTACK) : Defender {attackResult.BattleUpdate.ActiveDefender.PokemonData.PokemonId.ToString()  } HP {attackResult.BattleUpdate.ActiveDefender.CurrentHealth} - Attacker  {attackResult.BattleUpdate.ActiveAttacker.PokemonData.PokemonId.ToString()} ({attackResult.BattleUpdate.ActiveAttacker.PokemonData.Cp} CP)  HP/Sta {attackResult.BattleUpdate.ActiveAttacker.CurrentHealth}/{attackResult.BattleUpdate.ActiveAttacker.CurrentEnergy}");
+                                GameClient.CurrentSession.Logger.Debug($"(GYM ATTACK) : Defender {attackResult.BattleUpdate.ActiveDefender.PokemonData.PokemonId.ToString()  } HP {attackResult.BattleUpdate.ActiveDefender.CurrentHealth} - Attacker  {attackResult.BattleUpdate.ActiveAttacker.PokemonData.PokemonId.ToString()} ({attackResult.BattleUpdate.ActiveAttacker.PokemonData.Cp} CP)  HP/Sta {attackResult.BattleUpdate.ActiveAttacker.CurrentHealth}/{attackResult.BattleUpdate.ActiveAttacker.CurrentEnergy}");
                                 if (attackResult != null && attackResult.BattleUpdate.ActiveAttacker != null)
                                 {
                                     CurrentAttackerBattlePokemon.CurrentHealth = attackResult.BattleUpdate.ActiveAttacker.CurrentHealth;
@@ -1199,38 +1199,38 @@ namespace PokemonGo_UWP.ViewModels
                                 }
                                 break;
                             case BattleState.Defeated:
-                                Logger.Info($"We were defeated... (AttackGym)");
+                                GameClient.CurrentSession.Logger.Info($"We were defeated... (AttackGym)");
                                 return lastActions;
                             case BattleState.TimedOut:
-                                Logger.Info($"Our attack timed out...:");
+                                GameClient.CurrentSession.Logger.Info($"Our attack timed out...:");
                                 return lastActions;
                             case BattleState.StateUnset:
-                                Logger.Info($"State was unset?: {attackResult}");
+                                GameClient.CurrentSession.Logger.Info($"State was unset?: {attackResult}");
                                 return lastActions;
 
                             case BattleState.Victory:
-                                Logger.Info($"We were victorious!: ");
+                                GameClient.CurrentSession.Logger.Info($"We were victorious!: ");
                                 await Task.Delay(2000).ConfigureAwait(false);
                                 return lastActions;
                             default:
-                                Logger.Info($"Unhandled attack response: {attackResult}");
+                                GameClient.CurrentSession.Logger.Info($"Unhandled attack response: {attackResult}");
                                 continue;
                         }
-                        Logger.Info($"{attackResult}");
+                        GameClient.CurrentSession.Logger.Info($"{attackResult}");
                     }
                     else
                     {
-                        Logger.Error($"Unexpected attack result: {attackResult}");
+                        GameClient.CurrentSession.Logger.Error($"Unexpected attack result: {attackResult}");
                         break;
                     }
 
-                    Logger.Info("Finished attack");
+                    GameClient.CurrentSession.Logger.Info("Finished attack");
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warn("Bad request sent to server - ");
-                    Logger.Warn("Did NOT finish attack");
-                    Logger.Warn(ex.Message);
+                    GameClient.CurrentSession.Logger.Warn("Bad request sent to server - ");
+                    GameClient.CurrentSession.Logger.Warn("Did NOT finish attack");
+                    GameClient.CurrentSession.Logger.Warn(ex.Message);
                 };
             }
             return lastActions;
@@ -1276,7 +1276,7 @@ namespace PokemonGo_UWP.ViewModels
                         ActivePokemonId = attacker.Id,
                     };
 
-                    Logger.Info(string.Format("Trying to dodge an attack {0}, lastSpecialAttack.DamageWindowsStartTimestampMs: {1}, serverMs: {2}", dodge, lastSpecialAttack.DamageWindowsStartTimestampMs, serverMs));
+                    GameClient.CurrentSession.Logger.Info(string.Format("Trying to dodge an attack {0}, lastSpecialAttack.DamageWindowsStartTimestampMs: {1}, serverMs: {2}", dodge, lastSpecialAttack.DamageWindowsStartTimestampMs, serverMs));
                     actions.Add(dodge);
                 }
                 else
@@ -1288,7 +1288,7 @@ namespace PokemonGo_UWP.ViewModels
                         action2.DurationMs = specialMove.DurationMs;
                         action2.DamageWindowsStartTimestampMs = specialMove.DamageWindowStartMs;
                         action2.DamageWindowsEndTimestampMs = specialMove.DamageWindowEndMs;
-                        Logger.Info(string.Format("Trying to make an special attack {0}, on: {1}, duration: {2}", specialMove.MovementId, serverMs, specialMove.DurationMs));
+                        GameClient.CurrentSession.Logger.Info(string.Format("Trying to make an special attack {0}, on: {1}, duration: {2}", specialMove.MovementId, serverMs, specialMove.DurationMs));
                     }
                     else if (canDoAttack)
                     {
@@ -1296,11 +1296,11 @@ namespace PokemonGo_UWP.ViewModels
                         action2.DurationMs = normalMove.DurationMs;
                         action2.DamageWindowsStartTimestampMs = normalMove.DamageWindowStartMs;
                         action2.DamageWindowsEndTimestampMs = normalMove.DamageWindowEndMs;
-                        Logger.Info(string.Format("Trying to make an normal attack {0}, on: {1}, duration: {2}", normalMove.MovementId, serverMs, normalMove.DurationMs));
+                        GameClient.CurrentSession.Logger.Info(string.Format("Trying to make an normal attack {0}, on: {1}, duration: {2}", normalMove.MovementId, serverMs, normalMove.DurationMs));
                     }
                     else
                     {
-                        Logger.Info("SHIT, no action available");
+                        GameClient.CurrentSession.Logger.Info("SHIT, no action available");
                     }
                     action2.ActionStartMs = now.ToUnixTime();
                     action2.TargetIndex = -1;
@@ -1657,7 +1657,7 @@ namespace PokemonGo_UWP.ViewModels
 
         private PokemonDataWrapper GetBestAgainst(List<PokemonDataWrapper> myTeam, PokemonDataWrapper defender, bool isTraining)
         {
-            Logger.Info(string.Format("Checking pokemon for {0} ({1} CP). Already collected team has: {2}", defender.PokemonId, defender.Cp, string.Join(", ", myTeam.Select(s => string.Format("{0} ({1} CP)", s.PokemonId, s.Cp)))));
+            GameClient.CurrentSession.Logger.Info(string.Format("Checking pokemon for {0} ({1} CP). Already collected team has: {2}", defender.PokemonId, defender.Cp, string.Join(", ", myTeam.Select(s => string.Format("{0} ({1} CP)", s.PokemonId, s.Cp)))));
 
             GymDefender gDefender = GymDefenders.FirstOrDefault(f => f.MotivatedPokemon.Pokemon.Id == defender.Id);
             AnyPokemonStat defenderStat = new AnyPokemonStat(new PokemonDataWrapper(gDefender.MotivatedPokemon.Pokemon));
@@ -1702,7 +1702,7 @@ namespace PokemonGo_UWP.ViewModels
                     .OrderByDescending(o => o.Cp)
                     .Take(6 - myTeam.Count());
 
-            Logger.Info("Best others are: " + string.Join(", ", data.Select(s => s.PokemonId)));
+            GameClient.CurrentSession.Logger.Info("Best others are: " + string.Join(", ", data.Select(s => s.PokemonId)));
             return data.Select(s => new PokemonDataWrapper(s));
         }
 
