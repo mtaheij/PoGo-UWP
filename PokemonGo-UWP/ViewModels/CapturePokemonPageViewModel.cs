@@ -201,7 +201,7 @@ namespace PokemonGo_UWP.ViewModels
                 CurrentPokemon = (IMapPokemon)NavigationHelper.NavigationState[nameof(CurrentPokemon)];
                 Busy.SetBusy(true, string.Format(Resources.CodeResources.GetString("LoadingEncounterText"), Resources.Pokemon.GetString(CurrentPokemon.PokemonId.ToString())));
                 NavigationHelper.NavigationState.Remove(nameof(CurrentPokemon));
-                Logger.Info($"Catching {CurrentPokemon.PokemonId}");
+                GameClient.CurrentSession.Logger.Info($"Catching {CurrentPokemon.PokemonId}");
                 await HandleEncounter();
             }
         }
@@ -507,7 +507,7 @@ namespace PokemonGo_UWP.ViewModels
         {
             LastItemUsed = SelectedCaptureItem.ItemId;
             var catched = false;
-            Logger.Info($"Launched {SelectedCaptureItem} at {CurrentPokemon.PokemonId}");
+            GameClient.CurrentSession.Logger.Info($"Launched {SelectedCaptureItem} at {CurrentPokemon.PokemonId}");
             if (SelectedCaptureItem.ItemId == ItemId.ItemPokeBall || SelectedCaptureItem.ItemId == ItemId.ItemGreatBall || SelectedCaptureItem.ItemId == ItemId.ItemMasterBall || SelectedCaptureItem.ItemId == ItemId.ItemUltraBall)
             {
                 PokeballButtonEnabled = false;
@@ -562,7 +562,7 @@ namespace PokemonGo_UWP.ViewModels
                 switch (encounterTutorialCompleteResponse.Result)
                 {
                     case EncounterTutorialCompleteResponse.Types.Result.Success:
-                        Logger.Info($"We caught {CurrentPokemon.PokemonId}");
+                        GameClient.CurrentSession.Logger.Info($"We caught {CurrentPokemon.PokemonId}");
                         CurrentCaptureAward = encounterTutorialCompleteResponse.CaptureAward;
                         CaptureXpToTotalCaptureXpConverter converter = new Utils.CaptureXpToTotalCaptureXpConverter();
                         GameClient.AddGameXP((int)converter.Convert(CurrentCaptureAward.Xp, typeof(int), null, null));
@@ -573,7 +573,7 @@ namespace PokemonGo_UWP.ViewModels
                         }
                         return true;
                     case EncounterTutorialCompleteResponse.Types.Result.Unset:
-                        Logger.Info($"We got an 'unset' response for {CurrentPokemon.PokemonId}");
+                        GameClient.CurrentSession.Logger.Info($"We got an 'unset' response for {CurrentPokemon.PokemonId}");
                         CurrentCaptureAward = new CaptureAward();
                         CatchSuccess?.Invoke(this, null);
                         _capturedPokemonId = 0;
@@ -581,7 +581,7 @@ namespace PokemonGo_UWP.ViewModels
                     default:
                         break;
                 }
-                Logger.Info($"{CurrentPokemon.PokemonId} escaped");
+                GameClient.CurrentSession.Logger.Info($"{CurrentPokemon.PokemonId} escaped");
                 CatchEscape?.Invoke(this, null);
                 return false;
             }
@@ -600,13 +600,13 @@ namespace PokemonGo_UWP.ViewModels
                 switch (caughtPokemonResponse.Status)
                 {
                     case CatchPokemonResponse.Types.CatchStatus.CatchError:
-                        Logger.Info("CatchError!");
+                        GameClient.CurrentSession.Logger.Info("CatchError!");
                         //await GameClient.UpdateInventory();
                         // TODO: what can we do?
                         break;
 
                     case CatchPokemonResponse.Types.CatchStatus.CatchSuccess:
-                        Logger.Info($"We caught {CurrentPokemon.PokemonId}");
+                        GameClient.CurrentSession.Logger.Info($"We caught {CurrentPokemon.PokemonId}");
                         CurrentCaptureAward = caughtPokemonResponse.CaptureAward;
                         CaptureXpToTotalCaptureXpConverter converter = new Utils.CaptureXpToTotalCaptureXpConverter();
                         GameClient.AddGameXP((int)converter.Convert(CurrentCaptureAward.Xp, typeof(int), null, null));
@@ -624,14 +624,14 @@ namespace PokemonGo_UWP.ViewModels
                         return true;
 
                     case CatchPokemonResponse.Types.CatchStatus.CatchEscape:
-                        Logger.Info($"{CurrentPokemon.PokemonId} escaped");
+                        GameClient.CurrentSession.Logger.Info($"{CurrentPokemon.PokemonId} escaped");
                         CatchEscape?.Invoke(this, null);
                         _canUseBerry = true;
                         //await GameClient.UpdateInventory();
                         break;
 
                     case CatchPokemonResponse.Types.CatchStatus.CatchFlee:
-                        Logger.Info($"{CurrentPokemon.PokemonId} fled");
+                        GameClient.CurrentSession.Logger.Info($"{CurrentPokemon.PokemonId} fled");
                         CatchFlee?.Invoke(this, null);
                         //await GameClient.UpdateInventory();
                         if (CurrentPokemon is MapPokemonWrapper)
@@ -646,7 +646,7 @@ namespace PokemonGo_UWP.ViewModels
                         break;
 
                     case CatchPokemonResponse.Types.CatchStatus.CatchMissed:
-                        Logger.Info($"We missed {CurrentPokemon.PokemonId}");
+                        GameClient.CurrentSession.Logger.Info($"We missed {CurrentPokemon.PokemonId}");
                         //await GameClient.UpdateInventory();
                         break;
 
@@ -664,7 +664,7 @@ namespace PokemonGo_UWP.ViewModels
         private async Task ThrowBerry()
         {
             SelectedCaptureItem = SelectAvailablePokeBall(); //To set it immediatelly, because button image would be berry until responses
-            Logger.Info($"Used {LastItemUsed}.");
+            GameClient.CurrentSession.Logger.Info($"Used {LastItemUsed}.");
 
             //var berryResponse = await GameClient.UseCaptureItem(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, LastItemUsed ?? ItemId.ItemRazzBerry);
             var berryResponse = await GameClient.UseItemEncounter(CurrentPokemon.EncounterId, CurrentPokemon.SpawnpointId, LastItemUsed ?? ItemId.ItemRazzBerry);
@@ -675,12 +675,12 @@ namespace PokemonGo_UWP.ViewModels
             {
                 // TODO: visual feedback
                 // TODO: do we need to handle the returned values or are they needed just to animate the 3d model?
-                Logger.Info($"Success when using {LastItemUsed}.");
+                GameClient.CurrentSession.Logger.Info($"Success when using {LastItemUsed}.");
                 BerrySuccess?.Invoke(this, null);
                 _canUseBerry = false;
             }
             else
-                Logger.Info($"Failure when using {LastItemUsed}.");
+                GameClient.CurrentSession.Logger.Info($"Failure when using {LastItemUsed}.");
         }
 
         #endregion

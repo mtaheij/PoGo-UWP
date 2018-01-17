@@ -116,7 +116,7 @@ namespace PokemonGo_UWP.ViewModels
                         Load(SelectedEgg.Id);
                         break;
                     default:
-                        Logger.Info($"Error using {incubator.Id} on {SelectedEgg.Id}");
+                        GameClient.CurrentSession.Logger.Info($"Error using {incubator.Id} on {SelectedEgg.Id}");
                         break;
                 }
             }, incubator => true));

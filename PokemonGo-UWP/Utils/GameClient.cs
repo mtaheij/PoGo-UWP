@@ -125,6 +125,17 @@ namespace PokemonGo_UWP.Utils
         #region Game Vars
 
         /// <summary>
+        ///     App's current Session
+        /// </summary>
+        public static Session CurrentSession
+        {
+            get
+            {               
+                return _session;
+            }
+        }
+
+        /// <summary>
         ///     App's current version
         /// </summary>
         public static string CurrentVersion
@@ -361,6 +372,23 @@ namespace PokemonGo_UWP.Utils
             SettingsService.Instance.AccessTokenString = JsonConvert.SerializeObject(_session.AccessToken);
         }
 
+        public static void LoggerFucntion(LogLevel logLevel, string message)
+        {
+            //TODO: revise this..
+            switch (logLevel)
+            {
+                case LogLevel.Warn:
+                    break;
+                case LogLevel.Error:
+                    break;
+                case LogLevel.Info:
+                    break;
+                case LogLevel.Notice:
+                    break;
+            }
+            Debug.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}][{logLevel}] {message}");
+        }
+
         /// <summary>
         /// Gets current AccessToken
         /// </summary>
@@ -439,6 +467,8 @@ namespace PokemonGo_UWP.Utils
                     _session = await Login.GetSession(loginProvider, initLat, initLong);
                     SaveAccessToken();
                 }
+
+                
             }
             catch (PtcLoginException ex)
             {
@@ -459,6 +489,7 @@ namespace PokemonGo_UWP.Utils
             //_session.LocalConfigUpdated += ????;
             //_session.UrlsUpdated += ????;
             //_session.ItemTemplatesUpdated += ????;
+            _session.Logger.RegisterLogOutput(LoggerFucntion);
 
             if (_session.Player.Banned)
             {
@@ -539,16 +570,17 @@ namespace PokemonGo_UWP.Utils
 
         private static void SessionOnAccessTokenUpdated(object sender, EventArgs eventArgs)
         {
+            var session = (Session)sender;
             SaveAccessToken();
 
-            Logger.Info("Saved access token to file.");
+            session.Logger.Info("Saved access token to file.");
         }
 
         private static async void SessionOnCaptchaReceived(object sender, CaptchaEventArgs e)
         {
             var session = (Session)sender;
 
-            Logger.Warn($"Captcha received: {e.CaptchaUrl}");
+            session.Logger.Warn($"Captcha received: {e.CaptchaUrl}");
 
             //GOTO THE REQUIRED PAGE
             if (BootStrapper.Current.NavigationService.CurrentPageType != typeof(ChallengePage))
@@ -576,7 +608,7 @@ namespace PokemonGo_UWP.Utils
             Session session = sender as Session;
             Inventory inventory = session.Player.Inventory;
             UpdateLocalInventory(inventory);
-            Logger.Info("Inventory was updated.");
+            session.Logger.Info("Inventory was updated.");
         }
 
         private async static void MapOnUpdate(object sender, EventArgs e)
@@ -586,7 +618,7 @@ namespace PokemonGo_UWP.Utils
                 Session session = sender as Session;
                 Map map = session.Map;
                 await UpdateMapObjects(map);
-                Logger.Info("Map was updated.");
+                session.Logger.Info("Map was updated.");
             }
         }
 
@@ -844,7 +876,7 @@ namespace PokemonGo_UWP.Utils
             await Task.Delay(0);
             if (_session == null) return;
 
-            Logger.Info($"Called ToggleUpdateTimer({isEnabled})");
+            _session.Logger.Info($"Called ToggleUpdateTimer({isEnabled})");
             if (isEnabled)
             {
                 _isSessionEnabled = true;
@@ -868,13 +900,13 @@ namespace PokemonGo_UWP.Utils
             {
                 // update catchable pokemons
                 var newCatchablePokemons = map.Cells.SelectMany(x => x.CatchablePokemons).Select(item => new MapPokemonWrapper(item)).ToArray();
-                Logger.Info($"Found {newCatchablePokemons.Length} catchable pokemons");
+                _session.Logger.Info($"Found {newCatchablePokemons.Length} catchable pokemons");
                 CatchablePokemons.UpdateWith(newCatchablePokemons, x => x,
                     (x, y) => x.EncounterId == y.EncounterId);
 
                 // update nearby pokemons
                 var newNearByPokemons = map.Cells.SelectMany(x => x.NearbyPokemons).ToArray();
-                Logger.Info($"Found {newNearByPokemons.Length} nearby pokemons");
+                _session.Logger.Info($"Found {newNearByPokemons.Length} nearby pokemons");
                 // for this collection the ordering is important, so we follow a slightly different update mechanism
                 NearbyPokemons.UpdateByIndexWith(newNearByPokemons, x => new NearbyPokemonWrapper(x));
 
@@ -883,7 +915,7 @@ namespace PokemonGo_UWP.Utils
                     .SelectMany(x => x.Forts)
                     .Where(x => x.Type == FortType.Checkpoint)
                     .ToArray();
-                Logger.Info($"Found {newPokeStops.Length} nearby PokeStops");
+                _session.Logger.Info($"Found {newPokeStops.Length} nearby PokeStops");
                 NearbyPokestops.UpdateWith(newPokeStops, x => new FortDataWrapper(x), (x, y) => x.Id == y.Id);
 
                 // update gyms on map
@@ -891,12 +923,12 @@ namespace PokemonGo_UWP.Utils
                     .SelectMany(x => x.Forts)
                     .Where(x => x.Type == FortType.Gym)
                     .ToArray();
-                Logger.Info($"Found {newGyms.Length} nearby Gyms");
+                _session.Logger.Info($"Found {newGyms.Length} nearby Gyms");
                 NearbyGyms.UpdateWith(newGyms, x => new FortDataWrapper(x), (x, y) => x.Id == y.Id);
 
                 // Update LuredPokemon
                 var newLuredPokemon = newPokeStops.Where(item => item.LureInfo != null).Select(item => new LuredPokemon(item.LureInfo, item.Latitude, item.Longitude)).ToArray();
-                Logger.Info($"Found {newLuredPokemon.Length} lured Pokemon");
+                _session.Logger.Info($"Found {newLuredPokemon.Length} lured Pokemon");
                 LuredPokemons.UpdateByIndexWith(newLuredPokemon, x => x);
 
                 // Update IncensePokemon
@@ -908,11 +940,11 @@ namespace PokemonGo_UWP.Utils
                         IncensePokemon[] newIncensePokemon;
                         newIncensePokemon = new IncensePokemon[1];
                         newIncensePokemon[0] = new IncensePokemon(incensePokemonResponse, incensePokemonResponse.Latitude, incensePokemonResponse.Longitude);
-                        Logger.Info($"Found incense Pokemon {incensePokemonResponse.PokemonId}");
+                        _session.Logger.Info($"Found incense Pokemon {incensePokemonResponse.PokemonId}");
                         IncensePokemons.UpdateByIndexWith(newIncensePokemon, x => x);
                     }
                 }
-                Logger.Info("Finished updating map objects");
+                _session.Logger.Info("Finished updating map objects");
 
                 // Update BuddyPokemon Stats
                 if (PlayerData.BuddyPokemon.Id != 0)
@@ -920,7 +952,7 @@ namespace PokemonGo_UWP.Utils
                     var buddyWalkedResponse = await GetBuddyWalked();
                     if (buddyWalkedResponse.Success)
                     {
-                        Logger.Info($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
+                        _session.Logger.Info($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
                     };
                 }
             });

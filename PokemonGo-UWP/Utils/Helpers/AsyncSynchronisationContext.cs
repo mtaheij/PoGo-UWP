@@ -72,7 +72,7 @@ namespace PokemonGo_UWP.Utils
                 }
 
                 if (exception != null)
-                    Logger.Error(exception.Message);
+                   GameClient.CurrentSession.Logger.Error(exception.Message);
             };
         }
     }
