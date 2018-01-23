@@ -10,6 +10,7 @@ using POGOProtos.Enums;
 using Template10.Common;
 using Template10.Mvvm;
 using POGOProtos.Networking.Responses;
+using POGOProtos.Map.Pokemon;
 
 namespace PokemonGo_UWP.Entities
 {
@@ -19,13 +20,13 @@ namespace PokemonGo_UWP.Entities
         /// Infos on the current lured Pokemon
         /// </summary>
         [JsonProperty, JsonConverter(typeof(ProtobufJsonNetConverter))]
-        private GetIncensePokemonResponse _incensePokemonResponse;
+        private MapPokemon _incensePokemon;
 
         public Point Anchor => new Point(0.5, 1);
 
-        public IncensePokemon(GetIncensePokemonResponse incensePokemonResponse, double lat, double lng)
+        public IncensePokemon(MapPokemon incensePokemon, double lat, double lng)
         {
-            _incensePokemonResponse = incensePokemonResponse;
+            _incensePokemon = incensePokemon;
             Geoposition = new Geopoint(GetLocation(lat, lng, 1));
         }
 
@@ -33,7 +34,7 @@ namespace PokemonGo_UWP.Entities
         {
             var incense = (IncensePokemon)update;
 
-            _incensePokemonResponse = incense._incensePokemonResponse;
+            _incensePokemon = incense._incensePokemon;
             Geoposition = incense.Geoposition;
 
             OnPropertyChanged(nameof(PokemonId));
@@ -44,11 +45,11 @@ namespace PokemonGo_UWP.Entities
 
         #region Wrapped Properties
 
-        public PokemonId PokemonId => _incensePokemonResponse.PokemonId;
+        public PokemonId PokemonId => _incensePokemon.PokemonId;
 
-        public ulong EncounterId => _incensePokemonResponse.EncounterId;
+        public ulong EncounterId => _incensePokemon.EncounterId;
 
-        public string SpawnpointId => _incensePokemonResponse.EncounterLocation;
+        public string SpawnpointId => _incensePokemon.SpawnPointId;
 
         public Geopoint Geoposition { get; set; }
 

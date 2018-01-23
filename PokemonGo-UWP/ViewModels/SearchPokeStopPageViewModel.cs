@@ -13,7 +13,6 @@ using POGOProtos.Networking.Responses;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Google.Protobuf;
-using POGOLib.Official.Logging;
 using PokemonGo_UWP.Utils.Extensions;
 using Microsoft.HockeyApp;
 

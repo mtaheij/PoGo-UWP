@@ -46,6 +46,7 @@ using PokemonGo_UWP.Exceptions;
 using POGOLib.Official.Net.Captcha;
 using Microsoft.HockeyApp;
 using POGOLib.Official.Exceptions;
+using static POGOProtos.Networking.Responses.DownloadItemTemplatesResponse.Types;
 
 namespace PokemonGo_UWP.Utils
 {
@@ -427,6 +428,11 @@ namespace PokemonGo_UWP.Utils
                 _session.CaptchaReceived -= SessionOnCaptchaReceived;
                 _session.HatchedEggsReceived -= SessionOnHatchedEggsReceived;
                 _session.CheckAwardedBadgesReceived -= SessionOnCheckAwardedBadgesReceived;
+                _session.BuddyWalked -= OnBuddyWalked;
+                _session.TemporalBanReceived -= OnTemporalBanReceived;
+                //_session.InboxDataReceived -= ????;
+
+                // used if _session.ManageRessources is set to true this returns responses
                 //_session.AssetDigestUpdated -= ????;
                 //_session.LocalConfigUpdated -= ????;
                 //_session.UrlsUpdated -= ????;
@@ -466,9 +472,7 @@ namespace PokemonGo_UWP.Utils
                 {
                     _session = await Login.GetSession(loginProvider, initLat, initLong);
                     SaveAccessToken();
-                }
-
-                
+                }                
             }
             catch (PtcLoginException ex)
             {
@@ -485,11 +489,17 @@ namespace PokemonGo_UWP.Utils
             _session.CaptchaReceived += SessionOnCaptchaReceived;
             _session.HatchedEggsReceived += SessionOnHatchedEggsReceived;
             _session.CheckAwardedBadgesReceived += SessionOnCheckAwardedBadgesReceived;
+            _session.BuddyWalked += OnBuddyWalked;
+            _session.TemporalBanReceived += OnTemporalBanReceived;
+            //_session.InboxDataReceived += ????;
+
+            // used if _session.ManageRessources is set to true this returns responses
             //_session.AssetDigestUpdated += ????;
             //_session.LocalConfigUpdated += ????;
             //_session.UrlsUpdated += ????;
             //_session.ItemTemplatesUpdated += ????;
             _session.Logger.RegisterLogOutput(LoggerFucntion);
+            _session.ManageRessources = false;
 
             if (_session.Player.Banned)
             {
@@ -505,6 +515,13 @@ namespace PokemonGo_UWP.Utils
             HockeyClient.Current.TrackMetric("Login time", sw.ElapsedMilliseconds);
 
             await Task.CompletedTask;
+        }
+
+        private static void OnTemporalBanReceived(object sender, EventArgs e)
+        {
+            // Close session;
+            var session = (Session)sender;      
+            DoLogout();
         }
 
         public static event EventHandler<int> PokehashSleeping;
@@ -566,6 +583,12 @@ namespace PokemonGo_UWP.Utils
             }
 
             IsInitialized = true;
+        }
+
+        private static void OnBuddyWalked (object sender, GetBuddyWalkedResponse data)
+        {
+            var session = (Session)sender;
+            session.Logger.Info($"BuddyWalked CandyID: {data.FamilyCandyId}, CandyCount: {data.CandyEarnedCount}");
         }
 
         private static void SessionOnAccessTokenUpdated(object sender, EventArgs eventArgs)
@@ -932,21 +955,24 @@ namespace PokemonGo_UWP.Utils
                 LuredPokemons.UpdateByIndexWith(newLuredPokemon, x => x);
 
                 // Update IncensePokemon
+                //_session.IncenseUsed
                 if (IsIncenseActive)
                 {
-                    var incensePokemonResponse = await GetIncensePokemons(LocationServiceHelper.Instance.Geoposition);
-                    if (incensePokemonResponse.Result == GetIncensePokemonResponse.Types.Result.IncenseEncounterAvailable)
-                    {
+                   //var incensePokemonResponse = await GetIncensePokemons(LocationServiceHelper.Instance.Geoposition);
+                   if (_session.IncenseUsed && _session.Map.IncensePokemon != null)
+                    { 
                         IncensePokemon[] newIncensePokemon;
                         newIncensePokemon = new IncensePokemon[1];
-                        newIncensePokemon[0] = new IncensePokemon(incensePokemonResponse, incensePokemonResponse.Latitude, incensePokemonResponse.Longitude);
-                        _session.Logger.Info($"Found incense Pokemon {incensePokemonResponse.PokemonId}");
+                        newIncensePokemon[0] = new IncensePokemon(_session.Map.IncensePokemon, _session.Map.IncensePokemon.Latitude, _session.Map.IncensePokemon.Longitude);
+                        _session.Logger.Info($"Found incense Pokemon {_session.Map.IncensePokemon.PokemonId}");
                         IncensePokemons.UpdateByIndexWith(newIncensePokemon, x => x);
                     }
                 }
                 _session.Logger.Info("Finished updating map objects");
 
                 // Update BuddyPokemon Stats
+                // This is a common request is now set to OnBuddyWalked
+                /*
                 if (PlayerData.BuddyPokemon.Id != 0)
                 {
                     var buddyWalkedResponse = await GetBuddyWalked();
@@ -955,6 +981,7 @@ namespace PokemonGo_UWP.Utils
                         _session.Logger.Info($"BuddyWalked CandyID: {buddyWalkedResponse.FamilyCandyId}, CandyCount: {buddyWalkedResponse.CandyEarnedCount}");
                     };
                 }
+                */
             });
         }
 
@@ -983,6 +1010,10 @@ namespace PokemonGo_UWP.Utils
         /// </summary>
         /// <param name="geoposition"></param>
         /// <returns></returns>
+        /// 
+        //Can be used return _session.Map.IncensePokemon;
+        //If session Incense used value _session.IncenseUsed is set to and this request is part of common requests True
+        /*
         private static async Task<GetIncensePokemonResponse> GetIncensePokemons(Geoposition geoposition)
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
@@ -1010,6 +1041,7 @@ namespace PokemonGo_UWP.Utils
 
             return getIncensePokemonResponse;
         }
+        */
 
         #endregion
 
@@ -1221,8 +1253,11 @@ namespace PokemonGo_UWP.Utils
             return getLevelUpRewardsResponse;
         }
 
-        public static async Task<DownloadItemTemplatesResponse> GetItemTemplates()
+        public static Task<List<ItemTemplate>> GetItemTemplates()
         {
+            //Can be used return _session.Templates.ItemTemplates;
+            return Task.FromResult(_session.Templates.ItemTemplates);
+            /*
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
             {
                 RequestType = RequestType.DownloadItemTemplates,
@@ -1249,6 +1284,7 @@ namespace PokemonGo_UWP.Utils
             }
 
             return downloadItemTemplatesResponse;
+            */
         }
 
         /// <summary>
@@ -1258,7 +1294,7 @@ namespace PokemonGo_UWP.Utils
         private static async Task UpdateItemTemplates(bool ForceRefresh)
         {
             // Get all the templates
-            var itemTemplates = await DataCache.GetAsync("itemTemplates", async () => (await GetItemTemplates()).ItemTemplates, DateTime.Now.AddMonths(1), ForceRefresh);
+            var itemTemplates = await DataCache.GetAsync("itemTemplates",  () => (GetItemTemplates()), DateTime.Now.AddMonths(1), ForceRefresh);
 
             // Update Pokedex data
             PokemonSettings = await DataCache.GetAsync(nameof(PokemonSettings), async () =>
@@ -1513,6 +1549,8 @@ namespace PokemonGo_UWP.Utils
             });
         }
 
+        //This is a cummon request
+        /*
         public static async Task<GetBuddyWalkedResponse> GetBuddyWalked()
         {
             var response = await _session.RpcClient.SendRemoteProcedureCallAsync(new Request
@@ -1539,6 +1577,7 @@ namespace PokemonGo_UWP.Utils
 
             return getBuddyWalkedResponse;
         }
+        */
 
         public static async Task<CheckAwardedBadgesResponse> GetNewlyAwardedBadges()
         {

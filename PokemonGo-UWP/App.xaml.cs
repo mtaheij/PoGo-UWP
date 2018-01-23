@@ -23,12 +23,9 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using PokemonGo_UWP.Utils.Helpers;
-using System.Diagnostics;
-using POGOLib.Official.Logging;
 using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
 using POGOLib.Official.Exceptions;
-using POGOLib.Official.Util.Hash;
 using Windows.System.Profile;
 using PokemonGo_UWP.Utils.Game;
 

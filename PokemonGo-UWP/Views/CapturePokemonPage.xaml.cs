@@ -10,7 +10,6 @@ using PokemonGo_UWP.Utils;
 using Windows.UI.Xaml.Navigation;
 using POGOProtos.Inventory.Item;
 using Template10.Common;
-using POGOLib.Official.Logging;
 
 namespace PokemonGo_UWP.Views
 {

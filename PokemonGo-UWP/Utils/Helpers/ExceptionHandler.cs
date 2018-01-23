@@ -5,7 +5,7 @@ using Template10.Common;
 using System;
 using Windows.UI.Xaml;
 using Microsoft.HockeyApp;
-using POGOLib.Official.Util.Hash;
+using POGOLib.Official.Exceptions;
 
 namespace PokemonGo_UWP.Utils
 {

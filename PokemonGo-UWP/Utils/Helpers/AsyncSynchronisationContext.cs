@@ -1,5 +1,4 @@
-﻿using POGOLib.Official.Logging;
-using System;
+﻿using System;
 using System.Threading;
 
 namespace PokemonGo_UWP.Utils
