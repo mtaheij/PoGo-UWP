@@ -378,9 +378,6 @@ namespace PokemonGo_UWP
 
             AsyncSynchronizationContext.Register();
 
-            // Let the user know when there is no available PokehashKey, it will look like the game 'hangs'
-            GameClient.PokehashSleeping += GameClient_PokehashSleeping;
-
             // See if there is a key for the PokeHash server, ask one from the user if there isn't
             if (String.IsNullOrEmpty(SettingsService.Instance.PokehashAuthKey))
             {
