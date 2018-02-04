@@ -439,9 +439,8 @@ namespace PokemonGo_UWP.Utils
                 //_session.ItemTemplatesUpdated -= ????;
             }
 
-            Configuration.IgnoreHashVersion = false;
+            //Configuration.IgnoreHashVersion = false;
             Configuration.Hasher = new PokeHashHasher(SettingsService.Instance.PokehashAuthKey);
-            //((PokeHashHasher)Configuration.Hasher).PokehashSleeping += GameClient_PokehashSleeping;
 
             // Login
             ILoginProvider loginProvider;
@@ -522,13 +521,6 @@ namespace PokemonGo_UWP.Utils
             // Close session;
             var session = (Session)sender;      
             DoLogout();
-        }
-
-        public static event EventHandler<int> PokehashSleeping;
-
-        private static void GameClient_PokehashSleeping(object sender, int sleepTime)
-        {
-            PokehashSleeping?.Invoke(sender, sleepTime);
         }
 
         /// <summary>
