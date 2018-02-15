@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.Bcl.Build": "1.0.21",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.6"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.7"
   },
   "frameworks": {
     "uap10.0.10240": {}

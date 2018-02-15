@@ -465,7 +465,7 @@ namespace PokemonGo_UWP.Utils
                 AccessToken accessToken = GetAccessToken();
                 if (accessToken != null && !accessToken.IsExpired)
                 {
-                    _session = Login.GetSession(loginProvider, accessToken, initLat, initLong);
+                    _session = await Login.GetSession(loginProvider, accessToken, initLat, initLong);
                 }
                 else
                 {
