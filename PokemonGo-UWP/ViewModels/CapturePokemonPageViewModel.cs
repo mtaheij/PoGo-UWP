@@ -20,7 +20,6 @@ using Resources = PokemonGo_UWP.Utils.Resources;
 using POGOProtos.Settings.Master;
 using Windows.UI.Xaml;
 using PokemonGo_UWP.Utils.Game;
-using POGOLib.Official.Logging;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels

@@ -18,7 +18,6 @@ using PokemonGo_UWP.Utils.Extensions;
 using PokemonGo_UWP.Controls;
 using Windows.UI.Xaml;
 using PokemonGo_UWP.Utils.Helpers;
-using POGOLib.Official.Logging;
 using POGOProtos.Data.Battle;
 using System.Threading;
 using System.Diagnostics;

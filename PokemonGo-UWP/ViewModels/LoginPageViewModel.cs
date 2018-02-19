@@ -11,7 +11,6 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using POGOLib.Official.Exceptions;
 using PokemonGo_UWP.Exceptions;
-using POGOLib.Official.Util.Hash;
 using Windows.UI.Xaml;
 
 namespace PokemonGo_UWP.ViewModels

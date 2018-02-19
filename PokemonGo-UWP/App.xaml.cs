@@ -23,12 +23,9 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using PokemonGo_UWP.Utils.Helpers;
-using System.Diagnostics;
-using POGOLib.Official.Logging;
 using PokemonGo_UWP.Exceptions;
 using POGOProtos.Networking.Responses;
 using POGOLib.Official.Exceptions;
-using POGOLib.Official.Util.Hash;
 using Windows.System.Profile;
 using PokemonGo_UWP.Utils.Game;
 
@@ -380,9 +377,6 @@ namespace PokemonGo_UWP
             }
 
             AsyncSynchronizationContext.Register();
-
-            // Let the user know when there is no available PokehashKey, it will look like the game 'hangs'
-            GameClient.PokehashSleeping += GameClient_PokehashSleeping;
 
             // See if there is a key for the PokeHash server, ask one from the user if there isn't
             if (String.IsNullOrEmpty(SettingsService.Instance.PokehashAuthKey))

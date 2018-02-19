@@ -9,7 +9,6 @@ using PokemonGo_UWP.Utils;
 using POGOProtos.Inventory;
 using POGOProtos.Networking.Responses;
 using Template10.Mvvm;
-using POGOLib.Official.Logging;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels

@@ -1,5 +1,4 @@
 ﻿using POGOLib.Official.Net.Authentication.Data;
-using POGOLib.Official.Util.Hash;
 using PokemonGo_UWP.Exceptions;
 using PokemonGo_UWP.Utils;
 using PokemonGo_UWP.Views;

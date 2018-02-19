@@ -21,7 +21,6 @@ using POGOProtos.Enums;
 using POGOProtos.Map.Pokemon;
 using Google.Protobuf;
 using PokemonGo_UWP.Utils.Game;
-using POGOLib.Official.Logging;
 using Microsoft.HockeyApp;
 
 namespace PokemonGo_UWP.ViewModels
