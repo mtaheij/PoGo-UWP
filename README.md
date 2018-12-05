@@ -1,5 +1,9 @@
 # Warning!
 
+PLEASE BE AWARE THAT THIS VERSION IS NO LONGER MAINTAINED!
+The effort to keep a running version of PoGo-UWP did not match the available playing time thereafter anymore.
+The code will be available for others, but no new versions are being built here. Please find another fork or repo that is still active.
+
 As of version 1.2.2:
 To use this App, you will need a (paid) authorization key for a third-party hashing service.
 Such a key can be obtained on the following page: https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
