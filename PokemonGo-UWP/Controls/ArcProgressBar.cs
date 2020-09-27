@@ -120,6 +120,14 @@ namespace PokemonGo_UWP.Controls
             control.Draw();
         }
 
+        private static void OnMinimumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) 
+        {
+
+            var control = d as ArcProgressBar;
+            control.SetControlSize();
+            control.Draw();
+        }
+
         private void Draw()
         {
             Children.Clear();
