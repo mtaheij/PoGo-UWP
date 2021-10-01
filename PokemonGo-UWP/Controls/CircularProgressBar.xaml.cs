@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -9,7 +9,7 @@ namespace PokemonGo_UWP.Controls
 {
     public sealed partial class CircularProgressBar
     {
-        #region ChangedEventHandlers
+        #region ChangedEventHandlers
 
         private static void OnPercentageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
@@ -20,12 +20,14 @@ namespace PokemonGo_UWP.Controls
         private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             var circularProgress = sender as CircularProgressBar;
-            if (circularProgress != null) return;
-            
-            if (circularProgress.Value == 0) circularProgress.Percentage = 0;
+            if (circularProgress != null)
+            {
+                if (circularProgress.Value == 0)
+                    circularProgress.Percentage = 0;
 
-            var currentValue = Math.Min(circularProgress.Value, circularProgress.Maximum);
-            circularProgress.Percentage = (double)currentValue / circularProgress.Maximum * 100;
+                var currentValue = Math.Min(circularProgress.Value, circularProgress.Maximum);
+                circularProgress.Percentage = (double)currentValue / circularProgress.Maximum * 100;
+            }
         }
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -45,14 +47,12 @@ namespace PokemonGo_UWP.Controls
 
         #endregion
 
-        #region Properties
+        #region Properties
 
         private static readonly DependencyProperty PercentageProperty = DependencyProperty.Register("Percentage", typeof(double), typeof(CircularProgressBar), new PropertyMetadata(65d, OnPercentageChanged));
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register("StrokeThickness", typeof(int), typeof(CircularProgressBar), new PropertyMetadata(5));
 
-       public static readonly DependencyProperty StrokeLengthProperty = DependencyProperty.Register("StrokeLength", typeof(int), typeof(CircularProgressBar), new PropertyMetadata(5));
-        
         public static readonly DependencyProperty SegmentColorProperty = DependencyProperty.Register("SegmentColor", typeof(Brush), typeof(CircularProgressBar), new PropertyMetadata(new SolidColorBrush(Colors.DeepSkyBlue)));
 
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register("Diameter", typeof(int), typeof(CircularProgressBar), new PropertyMetadata(25, OnPropertyChanged));
@@ -69,7 +69,7 @@ namespace PokemonGo_UWP.Controls
 
         #endregion
 
-        #region Values
+        #region Values
 
         public int Diameter
         {
@@ -93,12 +93,6 @@ namespace PokemonGo_UWP.Controls
         {
             get { return (int)GetValue(StrokeThicknessProperty); }
             set { SetValue(StrokeThicknessProperty, value); }
-        }
-        
-        public int StrokeLength
-        {
-            get { return (int)GetValue(StrokeLengthProperty); }
-            set { SetValue(StrokeLengthProperty, value); }
         }
 
         private double Percentage
@@ -167,13 +161,13 @@ namespace PokemonGo_UWP.Controls
                 TranslateY = PathRoot.StrokeThickness / 2
             };
 
-            bool largeArc = Angle => 180.0;
+            bool largeArc = Angle > 180.0;
 
             Size outerArcSize = new Size(Diameter, Diameter);
 
             PathFigure.StartPoint = startPoint;
 
-            if (startPoint.X == Math.Round(endPoint.X) && (startPoint.Y == Math.Round(endPoint.Y)))
+            if (startPoint.X == Math.Round(endPoint.X) && startPoint.Y == Math.Round(endPoint.Y))
                 endPoint.X -= 0.01;
 
             ArcSegment.Point = endPoint;
